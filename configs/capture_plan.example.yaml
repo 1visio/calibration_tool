@@ -1,4 +1,3 @@
-#8.3测试
 schema_version: 1
 dataset_id: calibration_capture_demo
 output_dir: ../data/calibration_capture_demo
@@ -68,3 +67,4 @@ tasks:
     filename_template: laser_plane/{exposure_folder}/{pose_id}{index_suffix}{suffix}
     camera:
       exposure_us: 1200.0
+
