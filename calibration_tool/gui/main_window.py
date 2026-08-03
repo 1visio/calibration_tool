@@ -79,6 +79,7 @@ class CalibrationWizardWindow(QMainWindow):
         self.capture_page.capture_finished.connect(
             lambda result: self.statusBar().showMessage(f"采集完成：{result.output_dir}", 10000)
         )
+        self.capture_page.request_camera_page.connect(lambda: self.steps.setCurrentRow(1))
         self.calibration_page.workflow_finished.connect(self._workflow_finished)
 
     def _set_step(self, index: int) -> None:

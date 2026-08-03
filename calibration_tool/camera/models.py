@@ -86,18 +86,34 @@ class QualityThresholds:
     min_dynamic_range_u8: float = 20.0
     min_laser_coverage: float = 0.30
     require_chessboard_detection: bool = True
+    max_chessboard_saturation_fraction: float = 0.005
+    max_chessboard_highlight_fraction: float = 0.20
+    max_chessboard_p995_u8: float = 245.0
+    max_laser_saturation_fraction: float = 0.001
+    max_laser_peak_saturation_fraction: float = 0.02
+    max_laser_peak_near_saturation_fraction: float = 0.10
+    max_laser_saturated_width_px: float = 1.0
 
     def __post_init__(self) -> None:
         for name in (
             "max_saturation_fraction",
             "max_dark_fraction",
             "min_laser_coverage",
+            "max_chessboard_saturation_fraction",
+            "max_chessboard_highlight_fraction",
+            "max_laser_saturation_fraction",
+            "max_laser_peak_saturation_fraction",
+            "max_laser_peak_near_saturation_fraction",
         ):
             value = float(getattr(self, name))
             if not 0.0 <= value <= 1.0:
                 raise ValueError(f"{name} 必须位于 [0, 1]")
         if self.min_dynamic_range_u8 < 0:
             raise ValueError("min_dynamic_range_u8 不能为负数")
+        if not 0.0 <= float(self.max_chessboard_p995_u8) <= 255.0:
+            raise ValueError("max_chessboard_p995_u8 必须位于 [0, 255]")
+        if self.max_laser_saturated_width_px < 0:
+            raise ValueError("max_laser_saturated_width_px 不能为负数")
 
 
 @dataclass(frozen=True, slots=True)
@@ -111,6 +127,13 @@ class FrameQuality:
     dark_fraction: float
     focus_laplacian: float
     laser_coverage: float | None = None
+    laser_peak_saturation_fraction: float | None = None
+    laser_peak_near_saturation_fraction: float | None = None
+    laser_saturated_width_p95_px: float | None = None
+    laser_fwhm_p50_px: float | None = None
+    laser_fwhm_p95_px: float | None = None
+    chessboard_highlight_fraction: float | None = None
+    chessboard_p995_u8: float | None = None
     chessboard_detected: bool | None = None
     chessboard_pattern_used: tuple[int, int] | None = None
     chessboard_detection_method: str | None = None

@@ -1,0 +1,1300 @@
+schema_version: 1
+dataset_id: laser_plane_fit_capture_demo
+status: in_progress
+created_at: '2026-08-03T11:13:49.162+00:00'
+updated_at: '2026-08-03T11:14:06.358+00:00'
+completed_at: null
+plan_sha256: 44ffc2df918afb2e5e28d9e148aa51a672ccd4a86703bc46108ea9794ea372b8
+plan:
+  dataset_id: laser_plane_fit_capture_demo
+  output_dir: D:\Docs\linelaserscan\calibration_tool\data\laser_plane\fit
+  backend: mvs
+  serial_number: ''
+  camera:
+    exposure_us: 1200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    max_saturation_fraction: 0.05
+    max_dark_fraction: 0.95
+    min_dynamic_range_u8: 20.0
+    min_laser_coverage: 0.3
+    require_chessboard_detection: true
+    max_chessboard_saturation_fraction: 0.005
+    max_chessboard_highlight_fraction: 0.2
+    max_chessboard_p995_u8: 245.0
+    max_laser_saturation_fraction: 0.001
+    max_laser_peak_saturation_fraction: 0.02
+    max_laser_peak_near_saturation_fraction: 0.1
+    max_laser_saturated_width_px: 1.0
+  board_pattern:
+  - 11
+  - 8
+  metadata: {}
+  backend_options: {}
+  tasks:
+  - task_id: chess_001
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 350000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '001'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: &id001 {}
+  - task_id: nolaser_001
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '001'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_001
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '001'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_002
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 350000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '002'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_002
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '002'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_002
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '002'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_003
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 350000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '003'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_003
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '003'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_003
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '003'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_004
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 350000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '004'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_004
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '004'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_004
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '004'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_005
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 350000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '005'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_005
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '005'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_005
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '005'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_006
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 350000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '006'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_006
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '006'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_006
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '006'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_007
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 350000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '007'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_007
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '007'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_007
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '007'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_008
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 350000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: 008
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_008
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: 008
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_008
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: 008
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_009
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 350000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: 009
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_009
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: 009
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_009
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: 009
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_010
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 350000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '010'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_010
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '010'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_010
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '010'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_011
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 350000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '011'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_011
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '011'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_011
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '011'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_012
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 350000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '012'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_012
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '012'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_012
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '012'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_013
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 350000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '013'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_013
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '013'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_013
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '013'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_014
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 350000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '014'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_014
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '014'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_014
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '014'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_015
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 350000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '015'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_015
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '015'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_015
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 500.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '015'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+device: null
+network_packet_size: null
+tasks:
+  chess_001:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-03T11:13:49.366+00:00'
+  nolaser_001:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-03T11:13:58.593+00:00'
+  laser_001:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-03T11:14:06.358+00:00'
+  chess_002:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  nolaser_002:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  laser_002:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  chess_003:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  nolaser_003:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  laser_003:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  chess_004:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  nolaser_004:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  laser_004:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  chess_005:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  nolaser_005:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  laser_005:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  chess_006:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  nolaser_006:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  laser_006:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  chess_007:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  nolaser_007:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  laser_007:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  chess_008:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  nolaser_008:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  laser_008:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  chess_009:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  nolaser_009:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  laser_009:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  chess_010:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  nolaser_010:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  laser_010:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  chess_011:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  nolaser_011:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  laser_011:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  chess_012:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  nolaser_012:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  laser_012:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  chess_013:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  nolaser_013:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  laser_013:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  chess_014:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  nolaser_014:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  laser_014:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  chess_015:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  nolaser_015:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+  laser_015:
+    status: pending
+    frames_expected: 1
+    frames_captured: 0
+    error: null
+frames:
+- task_id: chess_001
+  pose_id: '001'
+  role: chessboard
+  tags: *id001
+  index: 1
+  filename: chess 001.tif
+  sha256: 83cb401606b3eed97b53ce944478f47b2246fc4faad1fddc142cfedf92825f75
+  camera_frame_number: 49
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 3635524306467
+  host_timestamp_ns: 1785755629003744800
+  host_monotonic_ns: 1399617981425600
+  requested_camera:
+    exposure_us: 350000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 350000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 58.726749420166016
+    p01_dn: 6.0
+    p50_dn: 56.0
+    p99_dn: 143.0
+    dynamic_range_u8: 137.0
+    saturation_fraction: 0.0
+    dark_fraction: 0.004458957248263889
+    focus_laplacian: 45.217572170336915
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: 0.0
+    chessboard_p995_u8: 147.0
+    chessboard_detected: true
+    chessboard_pattern_used:
+    - 11
+    - 8
+    chessboard_detection_method: classic
+    chessboard_hint: 完整棋盘检测通过
+    warnings: []
+    passed: true
+- task_id: nolaser_001
+  pose_id: '001'
+  role: nolaser
+  tags: {}
+  index: 1
+  filename: nolaser 001.tif
+  sha256: 1643b99eb6d86f895e25bf88e716e038119a10572510d73abfd473e22e129cbc
+  camera_frame_number: 179
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 3636457078467
+  host_timestamp_ns: 1785755638354607800
+  host_monotonic_ns: 1399627331818000
+  requested_camera:
+    exposure_us: 500.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 500.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 1.994612972566756e-07
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 0.0
+    dynamic_range_u8: 0.0
+    saturation_fraction: 0.0
+    dark_fraction: 1.0
+    focus_laplacian: 3.989225898692811e-06
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - image_too_dark
+    - dynamic_range_low
+    passed: false
+- task_id: laser_001
+  pose_id: '001'
+  role: laser
+  tags: {}
+  index: 1
+  filename: laser 001.tif
+  sha256: bac507c99ae66d8d3e2664df81fc5c619b11ec042c2572038bd07db9762ef776
+  camera_frame_number: 151
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 3637223050988
+  host_timestamp_ns: 1785755645997055800
+  host_monotonic_ns: 1399634974299100
+  requested_camera:
+    exposure_us: 500.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 500.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.07829394191503525
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 0.0
+    dynamic_range_u8: 22.0
+    saturation_fraction: 3.78976460375817e-06
+    dark_fraction: 0.9977885726230596
+    focus_laplacian: 9.335251353144159
+    laser_coverage: 0.7871732026143791
+    laser_peak_saturation_fraction: 0.008822003113648157
+    laser_peak_near_saturation_fraction: 0.008822003113648157
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 3.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings: []
+    passed: true
+quality_summary:
+  frames: 3
+  passed: 2
+  warnings: 1
+  warning_counts:
+    image_too_dark: 1
+    dynamic_range_low: 1

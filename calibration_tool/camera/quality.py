@@ -38,6 +38,13 @@ def analyze_frame(
     dynamic_range_u8 = (dynamic_high - p01) * scale_to_u8
 
     laser_coverage: float | None = None
+    laser_peak_saturation_fraction: float | None = None
+    laser_peak_near_saturation_fraction: float | None = None
+    laser_saturated_width_p95_px: float | None = None
+    laser_fwhm_p50_px: float | None = None
+    laser_fwhm_p95_px: float | None = None
+    chessboard_highlight_fraction: float | None = None
+    chessboard_p995_u8: float | None = None
     chessboard_detected: bool | None = None
     chessboard_pattern_used: tuple[int, int] | None = None
     chessboard_detection_method: str | None = None
@@ -56,12 +63,55 @@ def analyze_frame(
         background = np.percentile(values, 50, axis=0)
         peak = np.max(values, axis=0)
         minimum_contrast = max(sensor_max_value * 0.05, (p99 - p01) * 0.20)
-        laser_coverage = float(np.mean((peak - background) >= minimum_contrast))
+        active_columns = (peak - background) >= minimum_contrast
+        laser_coverage = float(np.mean(active_columns))
         if laser_coverage < thresholds.min_laser_coverage:
             warnings.append("laser_coverage_low")
+        if saturation_fraction > thresholds.max_laser_saturation_fraction:
+            warnings.append("laser_saturation_high")
+        if np.any(active_columns):
+            active_peak = peak[active_columns]
+            active_background = background[active_columns]
+            active_values = values[:, active_columns]
+            laser_peak_saturation_fraction = float(
+                np.mean(active_peak >= sensor_max_value * 0.995)
+            )
+            laser_peak_near_saturation_fraction = float(
+                np.mean(active_peak >= sensor_max_value * 0.98)
+            )
+            saturated_widths = np.sum(
+                active_values >= sensor_max_value * 0.995,
+                axis=0,
+            )
+            laser_saturated_width_p95_px = float(np.percentile(saturated_widths, 95))
+            half_max_levels = active_background + (active_peak - active_background) * 0.5
+            fwhm_widths = np.sum(active_values >= half_max_levels[None, :], axis=0)
+            laser_fwhm_p50_px = float(np.percentile(fwhm_widths, 50))
+            laser_fwhm_p95_px = float(np.percentile(fwhm_widths, 95))
+            if laser_peak_saturation_fraction > thresholds.max_laser_peak_saturation_fraction:
+                warnings.append("laser_peak_saturated")
+            if laser_peak_near_saturation_fraction > thresholds.max_laser_peak_near_saturation_fraction:
+                warnings.append("laser_peak_near_saturation")
+            if laser_saturated_width_p95_px > thresholds.max_laser_saturated_width_px:
+                warnings.append("laser_saturated_line_wide")
+        else:
+            laser_peak_saturation_fraction = 0.0
+            laser_peak_near_saturation_fraction = 0.0
+            laser_saturated_width_p95_px = 0.0
+            laser_fwhm_p50_px = 0.0
+            laser_fwhm_p95_px = 0.0
     elif mode == "chessboard":
         if board_pattern is None:
             raise ValueError("chessboard 质量模式需要 board_pattern=(cols, rows)")
+        chessboard_highlight_fraction = float(np.mean(values >= sensor_max_value * 0.96))
+        chessboard_p995_u8 = float(np.percentile(values, 99.5) * scale_to_u8)
+        if saturation_fraction > thresholds.max_chessboard_saturation_fraction:
+            warnings.append("chessboard_saturation_high")
+        if (
+            chessboard_highlight_fraction > thresholds.max_chessboard_highlight_fraction
+            or chessboard_p995_u8 > thresholds.max_chessboard_p995_u8
+        ):
+            warnings.append("chessboard_near_saturation")
         detection = detect_chessboard_for_quality(normalized, board_pattern)
         chessboard_detected = detection["detected"]
         chessboard_pattern_used = detection["pattern"]
@@ -80,6 +130,13 @@ def analyze_frame(
         dark_fraction=dark_fraction,
         focus_laplacian=focus,
         laser_coverage=laser_coverage,
+        laser_peak_saturation_fraction=laser_peak_saturation_fraction,
+        laser_peak_near_saturation_fraction=laser_peak_near_saturation_fraction,
+        laser_saturated_width_p95_px=laser_saturated_width_p95_px,
+        laser_fwhm_p50_px=laser_fwhm_p50_px,
+        laser_fwhm_p95_px=laser_fwhm_p95_px,
+        chessboard_highlight_fraction=chessboard_highlight_fraction,
+        chessboard_p995_u8=chessboard_p995_u8,
         chessboard_detected=chessboard_detected,
         chessboard_pattern_used=chessboard_pattern_used,
         chessboard_detection_method=chessboard_detection_method,

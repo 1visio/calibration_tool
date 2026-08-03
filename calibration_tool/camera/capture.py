@@ -146,6 +146,7 @@ def run_capture_plan(
     *,
     resume: bool = False,
     interactive: bool = False,
+    interactive_preview: bool = False,
     progress: ProgressCallback | None = None,
     prompt: Callable[[str], str] = input,
 ) -> CaptureResult:
@@ -185,11 +186,13 @@ def run_capture_plan(
             task_state.update(status="capturing", frames_captured=0, error=None, started_at=_utc_now())
             manifest["frames"] = [item for item in manifest["frames"] if item["task_id"] != task.task_id]
             _save_state(work_dir, manifest)
-            if interactive and task.instruction:
+            if interactive and task.instruction and not interactive_preview:
                 prompt(f"{task.instruction}\n准备完成后按 Enter 开始采集 {task.task_id}：")
             assert session is not None
             if session.config != task.config:
                 session.configure(task.config)
+            if interactive_preview:
+                _interactive_task_preview(session, task, plan)
             applied = session.config
             session.start()
             for _ in range(task.settle_frames):
@@ -295,6 +298,89 @@ def run_capture_plan(
         quality_passed_frames=int(summary["passed"]),
         quality_warning_frames=int(summary["warnings"]),
     )
+
+
+def _interactive_task_preview(
+    session,
+    task,
+    plan: CapturePlan,
+) -> None:
+    """在批量采集前打开可确认的实时窗口，不写入预览帧。"""
+    window = f"capture-plan · {task.task_id}"
+    try:
+        cv2.namedWindow(window, cv2.WINDOW_NORMAL)
+        session.start()
+        while True:
+            frame = session.get_frame(session.config.timeout_ms)
+            quality = analyze_frame(
+                frame.image,
+                sensor_max_value=session.config.sensor_max_value,
+                mode=task.quality_mode,
+                thresholds=plan.quality_thresholds,
+                board_pattern=plan.board_pattern,
+            )
+            display = cv2.convertScaleAbs(
+                frame.image,
+                alpha=255.0 / float(session.config.sensor_max_value),
+            )
+            if task.quality_mode == "chessboard" and plan.board_pattern is not None:
+                _draw_chessboard_corners(display, plan.board_pattern)
+            display = cv2.cvtColor(display, cv2.COLOR_GRAY2BGR)
+            lines = [
+                f"{task.task_id}  exposure={session.config.exposure_us:g} us  gain={session.config.gain_db:g} dB",
+                f"settle_frames={task.settle_frames}  frames={task.frames}",
+                f"quality={'PASS' if quality.passed else 'WARN: ' + ', '.join(quality.warnings)}",
+                f"range={quality.dynamic_range_u8:.1f} DN8  focus={quality.focus_laplacian:.1f}",
+                "Enter/Space: continue    Esc/Q: abort",
+            ]
+            if quality.laser_coverage is not None:
+                lines.append(f"laser coverage={quality.laser_coverage:.1%}")
+            if quality.chessboard_hint:
+                lines.append(quality.chessboard_hint)
+            for index, line in enumerate(lines):
+                cv2.putText(
+                    display,
+                    line,
+                    (16, 30 + index * 26),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.65,
+                    (0, 255, 0) if quality.passed else (0, 165, 255),
+                    2,
+                    cv2.LINE_AA,
+                )
+            cv2.imshow(window, display)
+            key = cv2.waitKey(1) & 0xFF
+            if key in (13, 32):
+                return
+            if key in (27, ord("q"), ord("Q")):
+                raise CaptureError(f"用户取消任务预览：{task.task_id}")
+    except CaptureError:
+        raise
+    except Exception as exc:
+        raise CaptureError(f"无法打开交互预览窗口：{exc}") from exc
+    finally:
+        try:
+            session.stop()
+        finally:
+            try:
+                cv2.destroyWindow(window)
+                cv2.waitKey(1)
+            except cv2.error:
+                pass
+
+
+def _draw_chessboard_corners(image, pattern: tuple[int, int]) -> bool:
+    flags = cv2.CALIB_CB_ADAPTIVE_THRESH | cv2.CALIB_CB_NORMALIZE_IMAGE
+    found, corners = cv2.findChessboardCorners(image, pattern, flags)
+    if not found and hasattr(cv2, "findChessboardCornersSB"):
+        found, corners = cv2.findChessboardCornersSB(
+            image,
+            pattern,
+            cv2.CALIB_CB_NORMALIZE_IMAGE | cv2.CALIB_CB_EXHAUSTIVE,
+        )
+    if found:
+        cv2.drawChessboardCorners(image, pattern, corners, True)
+    return bool(found)
 
 
 def preview_camera(

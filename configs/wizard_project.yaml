@@ -1,0 +1,11 @@
+schema_version: 1
+project_id: line-laser-calibration
+workspace: D:\Docs\linelaserscan\calibration_tool\projects\default
+camera_config: camera.mvs.example.yaml
+workflow_plan: capture_laser_plane_fit.yaml
+acceptance_plan: null
+capture_output: D:\Docs\linelaserscan\calibration_tool\projects\default\data
+board:
+  pattern_cols: 11
+  pattern_rows: 8
+  square_size_mm: 20.0

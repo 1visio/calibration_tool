@@ -33,6 +33,25 @@ class CameraQualityTests(unittest.TestCase):
         quality = analyze_frame(image, sensor_max_value=4095, mode="laser")
         self.assertNotIn("image_too_dark", quality.warnings)
         self.assertGreater(quality.laser_coverage, 0.9)
+        self.assertEqual(quality.laser_fwhm_p50_px, 3.0)
+        self.assertEqual(quality.laser_fwhm_p95_px, 3.0)
+
+    def test_laser_mode_detects_local_peak_saturation(self):
+        image = np.full((200, 200), 10, dtype=np.uint8)
+        image[100, :] = 255
+        quality = analyze_frame(image, sensor_max_value=255, mode="laser")
+        self.assertLess(quality.saturation_fraction, 0.05)
+        self.assertIn("laser_saturation_high", quality.warnings)
+        self.assertIn("laser_peak_saturated", quality.warnings)
+        self.assertEqual(quality.laser_saturated_width_p95_px, 1.0)
+        self.assertEqual(quality.laser_fwhm_p50_px, 1.0)
+
+    def test_laser_mode_warns_before_hard_saturation(self):
+        image = np.full((120, 160), 12, dtype=np.uint8)
+        image[60, :] = 250
+        quality = analyze_frame(image, sensor_max_value=255, mode="laser")
+        self.assertEqual(quality.laser_peak_saturation_fraction, 0.0)
+        self.assertIn("laser_peak_near_saturation", quality.warnings)
 
     def test_chessboard_mode_detects_complete_pattern(self):
         square = 36
@@ -50,6 +69,25 @@ class CameraQualityTests(unittest.TestCase):
         self.assertTrue(quality.chessboard_detected)
         self.assertEqual(quality.chessboard_pattern_used, (11, 8))
         self.assertNotIn("chessboard_not_found", quality.warnings)
+
+    def test_chessboard_mode_detects_near_saturated_white_squares(self):
+        square = 36
+        rows, columns = 9, 12
+        board = np.full((rows * square, columns * square), 20, dtype=np.uint8)
+        for row in range(rows):
+            for column in range(columns):
+                if (row + column) % 2:
+                    board[
+                        row * square:(row + 1) * square,
+                        column * square:(column + 1) * square,
+                    ] = 250
+        image = np.full((board.shape[0] + 100, board.shape[1] + 100), 110, dtype=np.uint8)
+        image[50:50 + board.shape[0], 50:50 + board.shape[1]] = board
+        quality = analyze_frame(
+            image, sensor_max_value=255, mode="chessboard", board_pattern=(11, 8)
+        )
+        self.assertTrue(quality.chessboard_detected)
+        self.assertIn("chessboard_near_saturation", quality.warnings)
 
 
 if __name__ == "__main__":

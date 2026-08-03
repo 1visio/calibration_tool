@@ -1,0 +1,12 @@
+schema_version: 1
+workflow: D:\Docs\linelaserscan\calibration_tool\configs\workflow.example.yaml
+started_utc: '2026-08-03T10:43:59.567519+00:00'
+completed_utc: '2026-08-03T10:43:59.567519+00:00'
+status: completed
+stages: []
+gates: []
+counts:
+  pass: 0
+  warn: 0
+  fail: 0
+overall: pass

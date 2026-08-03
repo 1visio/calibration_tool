@@ -21,6 +21,13 @@ quality:
   min_dynamic_range_u8: 20.0
   min_laser_coverage: 0.30
   require_chessboard_detection: true
+  max_chessboard_saturation_fraction: 0.005
+  max_chessboard_highlight_fraction: 0.20
+  max_chessboard_p995_u8: 245.0
+  max_laser_saturation_fraction: 0.001
+  max_laser_peak_saturation_fraction: 0.02
+  max_laser_peak_near_saturation_fraction: 0.10
+  max_laser_saturated_width_px: 1.0
 
 board:
   pattern_cols: 11

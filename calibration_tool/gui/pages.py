@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import csv
 from dataclasses import asdict, replace
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
 import cv2
-from PySide6.QtCore import QSignalBlocker, QThreadPool, Qt, Signal, QUrl
+from PySide6.QtCore import QSignalBlocker, QThreadPool, Qt, Signal, QTimer, QUrl
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import (
     QCheckBox,
@@ -34,10 +35,14 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from ..camera import build_camera_provider, load_camera_config, run_capture_plan
+from ..camera import build_camera_provider, load_camera_config, load_capture_plan, run_capture_plan
+from ..camera.config import capture_plan_hash
+from ..camera.capture import _new_manifest, _save_state, _write_image
 from ..acceptance import build_acceptance_report
 from ..camera.models import CapturePlan, CaptureTask
+from ..camera.quality import analyze_frame, quality_to_dict
 from ..io_utils import load_document, resolve_relative
+from ..io_utils import sha256_file
 from ..workflow import run_workflow
 from .project import WizardProject
 from .widgets import ImagePreview, ResidualPlot
@@ -149,6 +154,7 @@ class ProjectPage(QWidget):
 
 class CameraPage(QWidget):
     status_changed = Signal(str)
+    frame_ready = Signal(object, object)
 
     def __init__(self, thread_pool: QThreadPool, parent=None) -> None:
         super().__init__(parent)
@@ -156,6 +162,8 @@ class CameraPage(QWidget):
         self.runtime: dict[str, Any] | None = None
         self.preview_thread: PreviewThread | None = None
         self.last_frame = None
+        self.last_quality: dict[str, Any] | None = None
+        self._pending_capture: tuple[int, Callable[[Any, dict[str, Any]], None]] | None = None
         self._workers: set[FunctionWorker] = set()
         layout = QVBoxLayout(self)
         title = QLabel("2. 连接相机并调整采集参数"); title.setObjectName("pageTitle"); layout.addWidget(title)
@@ -265,7 +273,7 @@ class CameraPage(QWidget):
             self.devices.addItem(device.display_name, device.serial_number)
         self.status.setText(f"找到 {len(devices)} 台相机")
 
-    def start_preview(self) -> None:
+    def start_preview(self, initial_discard_frames: int = 3) -> None:
         if self.runtime is None:
             QMessageBox.warning(self, "尚未配置", "请先加载相机配置"); return
         self.stop_preview()
@@ -275,7 +283,8 @@ class CameraPage(QWidget):
             )
             thread = PreviewThread(
                 provider, self.selected_serial(), self.current_config(), str(self.quality_mode.currentData()),
-                self.runtime["quality_thresholds"], self.runtime["board_pattern"], self,
+                self.runtime["quality_thresholds"], self.runtime["board_pattern"],
+                initial_discard_frames=initial_discard_frames, parent=self,
             )
         except Exception as exc:
             self._show_error("无法开始取流", str(exc)); return
@@ -289,13 +298,14 @@ class CameraPage(QWidget):
         thread.parameter_update_failed.connect(
             lambda message: self._show_error("在线参数更新失败", message)
         )
-        thread.finished.connect(self._preview_finished)
+        thread.finished.connect(lambda thread=thread: self._preview_finished(thread))
         self.preview_button.setEnabled(False); self.stop_button.setEnabled(True)
         self._set_restart_controls_enabled(False)
         thread.start()
 
     def _on_frame(self, frame, quality: dict[str, Any]) -> None:
         self.last_frame = frame
+        self.last_quality = quality
         sensor_max = self.preview_thread.config.sensor_max_value if self.preview_thread else self.current_config().sensor_max_value
         self.preview.set_array(
             frame.image,
@@ -303,14 +313,23 @@ class CameraPage(QWidget):
             sensor_max_value=sensor_max,
         )
         warnings = "、".join(_quality_warning_text(item) for item in quality["warnings"]) or "通过"
-        coverage = quality.get("laser_coverage")
-        coverage_text = f" · 激光覆盖 {coverage:.1%}" if coverage is not None else ""
+        thresholds = self.runtime["quality_thresholds"] if self.runtime else None
+        coverage_text = _laser_quality_metrics_text(quality, thresholds)
         chess_hint = quality.get("chessboard_hint")
         chess_text = f" · {chess_hint}" if chess_hint else ""
         self.quality.setText(
             f"{warnings} · 动态范围 {quality['dynamic_range_u8']:.1f} DN8 · "
             f"清晰度 {quality['focus_laplacian']:.1f}{coverage_text}{chess_text}"
         )
+        self.frame_ready.emit(frame, quality)
+        pending = self._pending_capture
+        if pending is not None:
+            remaining, callback = pending
+            if remaining > 0:
+                self._pending_capture = (remaining - 1, callback)
+            else:
+                self._pending_capture = None
+                callback(frame, quality)
 
     def _update_quality_help(self) -> None:
         descriptions = {
@@ -321,10 +340,29 @@ class CameraPage(QWidget):
         self.quality_help.setText(descriptions[str(self.quality_mode.currentData())])
 
     def stop_preview(self) -> None:
-        if self.preview_thread is not None and self.preview_thread.isRunning():
+        self.cancel_pending_capture()
+        thread = self.preview_thread
+        if thread is not None and thread.isRunning():
             self.status.setText("正在停止取流…")
-            if not self.preview_thread.stop():
+            if not thread.stop():
                 self.status.setText("相机停止超时，请检查连接")
+                return
+            self._preview_finished(thread)
+
+    def capture_after_settle(
+        self,
+        discard_frames: int,
+        callback: Callable[[Any, dict[str, Any]], None],
+    ) -> bool:
+        """在当前预览流中丢弃指定帧后，把下一帧交给回调。"""
+        thread = self.preview_thread
+        if thread is None or thread.isFinished() or self._pending_capture is not None:
+            return False
+        self._pending_capture = (max(0, int(discard_frames)), callback)
+        return True
+
+    def cancel_pending_capture(self) -> None:
+        self._pending_capture = None
 
     def apply_live_parameters(self) -> None:
         thread = self.preview_thread
@@ -352,7 +390,10 @@ class CameraPage(QWidget):
         ):
             widget.setEnabled(enabled)
 
-    def _preview_finished(self) -> None:
+    def _preview_finished(self, thread: PreviewThread | None = None) -> None:
+        if thread is not None and self.preview_thread is not thread:
+            return
+        self.cancel_pending_capture()
         self.preview_button.setEnabled(True); self.stop_button.setEnabled(False)
         self._set_restart_controls_enabled(True)
         if not self.status.text().startswith("取流失败"):
@@ -383,13 +424,23 @@ class CameraPage(QWidget):
 
 class CapturePage(QWidget):
     capture_finished = Signal(object)
+    request_camera_page = Signal()
 
     def __init__(self, thread_pool: QThreadPool, camera_page: CameraPage, parent=None) -> None:
         super().__init__(parent)
         self.thread_pool = thread_pool; self.camera_page = camera_page; self._workers: set[FunctionWorker] = set()
+        self.loaded_plan: CapturePlan | None = None
+        self.loaded_plan_path: Path | None = None
+        self.guided_preview_index: int | None = None
+        self._preview_request_token = 0
+        self._pending_preview_callback: Callable[[], None] | None = None
+        self._capture_in_progress = False
         layout = QVBoxLayout(self)
         title = QLabel("3. 批量采集标定图像"); title.setObjectName("pageTitle"); layout.addWidget(title)
         form = QFormLayout()
+        self.plan_path = QLineEdit()
+        load_plan_button = QPushButton("加载计划")
+        plan_row = QHBoxLayout(); plan_row.addWidget(_path_row(self.plan_path, self, file_filter="YAML (*.yaml *.yml)"), 1); plan_row.addWidget(load_plan_button)
         self.output = QLineEdit(); self.dataset_id = QLineEdit("calibration_dataset"); self.pose_id = QLineEdit("pose_01")
         self.role = QComboBox(); self.role.addItem("相机内参棋盘", "intrinsics"); self.role.addItem("激光平面", "laser_plane"); self.role.addItem("地面外参", "ground")
         self.exposures = QLineEdit("1200"); self.exposures.setPlaceholderText("例如 400, 800, 1200")
@@ -400,18 +451,68 @@ class CapturePage(QWidget):
         self.quality_mode.addItem("激光线（激光开启）", "laser")
         self.quality_mode.addItem("通用曝光", "generic")
         self.resume = QCheckBox("续采对应的 .inprogress 数据集")
+        form.addRow("采集计划 YAML", plan_row)
         form.addRow("输出数据集", _path_row(self.output, self, directory=True))
         form.addRow("数据集 ID", self.dataset_id); form.addRow("姿态 ID", self.pose_id); form.addRow("采集用途", self.role)
         form.addRow("曝光序列 (μs)", self.exposures); form.addRow("每个曝光帧数", self.frames)
         form.addRow("参数切换后丢帧", self.settle); form.addRow("质量模式", self.quality_mode)
         form.addRow("异常恢复", self.resume)
         layout.addLayout(form)
-        self.start_button = QPushButton("开始批量采集"); layout.addWidget(self.start_button)
-        self.progress = QTextEdit(); self.progress.setReadOnly(True); layout.addWidget(self.progress, 1)
+
+        self.plan_tasks = QListWidget()
+        self.plan_tasks.setMaximumHeight(150)
+        self.plan_status = QLabel("未加载 capture-plan；上方单姿态采集仍可使用。")
+        self.plan_status.setWordWrap(True)
+        plan_buttons = QHBoxLayout()
+        self.preview_task_button = QPushButton("预览选中任务")
+        self.capture_task_button = QPushButton("稳定后保存任务帧")
+        self.next_task_button = QPushButton("下一任务")
+        plan_buttons.addWidget(self.preview_task_button); plan_buttons.addWidget(self.capture_task_button); plan_buttons.addWidget(self.next_task_button)
+        self.start_button = QPushButton("开始批量采集")
+        self.progress = QTextEdit(); self.progress.setReadOnly(True)
+
+        live_panel = QGroupBox("任务实时画面")
+        live_layout = QVBoxLayout(live_panel)
+        self.live_preview = ImagePreview()
+        self.live_auto_stretch = QCheckBox("自动拉伸预览（仅改变显示）")
+        self.live_quality = QLabel("尚未取流")
+        self.live_quality.setWordWrap(True)
+        self.live_camera = QLabel("当前任务：--")
+        self.live_camera.setWordWrap(True)
+        live_layout.addWidget(self.live_preview, 1)
+        live_layout.addWidget(self.live_auto_stretch)
+        live_layout.addWidget(self.live_camera)
+        live_layout.addWidget(self.live_quality)
+
+        left = QWidget()
+        left_layout = QVBoxLayout(left)
+        left_layout.setContentsMargins(0, 0, 0, 0)
+        left_layout.addWidget(self.plan_tasks)
+        left_layout.addWidget(self.plan_status)
+        left_layout.addLayout(plan_buttons)
+        left_layout.addWidget(self.start_button)
+        left_layout.addWidget(self.progress, 1)
+        content = QSplitter(Qt.Orientation.Horizontal)
+        content.addWidget(left)
+        content.addWidget(live_panel)
+        content.setStretchFactor(0, 1)
+        content.setStretchFactor(1, 1)
+        layout.addWidget(content, 1)
+
         self.start_button.clicked.connect(self.start_capture); self.role.currentIndexChanged.connect(self._role_changed)
+        load_plan_button.clicked.connect(self.load_guided_plan)
+        self.preview_task_button.clicked.connect(self.preview_selected_task)
+        self.capture_task_button.clicked.connect(self.capture_current_task_frame)
+        self.next_task_button.clicked.connect(self.select_next_task)
+        self.live_auto_stretch.toggled.connect(
+            lambda checked: self.live_preview.refresh_display(auto_stretch=checked)
+        )
+        self.camera_page.frame_ready.connect(self._on_camera_frame)
 
     def set_project(self, project: WizardProject) -> None:
         self.output.setText(str((project.capture_output or project.workspace / "data") / self.dataset_id.text()))
+        if project.workflow_plan and project.workflow_plan.name.startswith("capture_"):
+            self.plan_path.setText(str(resolve_relative(project.source_path or project.workspace / "wizard_project.yaml", project.workflow_plan)))
 
     def _role_changed(self) -> None:
         mode = "chessboard" if self.role.currentData() == "intrinsics" else "laser"
@@ -456,6 +557,300 @@ class CapturePage(QWidget):
         worker.signals.error.connect(lambda message: self._capture_error(message))
         worker.signals.finished.connect(lambda: self.start_button.setEnabled(True))
         self._workers.add(worker); worker.signals.finished.connect(lambda: self._workers.discard(worker)); self.thread_pool.start(worker)
+
+    def load_guided_plan(self) -> None:
+        path = Path(self.plan_path.text()).expanduser()
+        try:
+            plan = load_capture_plan(path)
+        except Exception as exc:
+            QMessageBox.critical(self, "采集计划无效", str(exc)); return
+        self.camera_page.stop_preview()
+        self.loaded_plan = plan
+        self.loaded_plan_path = path.resolve()
+        self.output.setText(str(plan.output_dir))
+        self.dataset_id.setText(plan.dataset_id)
+        self.plan_tasks.clear()
+        for index, task in enumerate(plan.tasks, start=1):
+            self.plan_tasks.addItem(
+                f"{index:02d}. {task.task_id} · pose {task.pose_id} · {task.quality_mode} · {task.config.exposure_us:g} μs · {task.instruction}"
+            )
+        self.plan_tasks.setCurrentRow(0)
+        self.guided_preview_index = None
+        self.plan_status.setText(
+            f"已加载 {plan.dataset_id}：{len(plan.tasks)} 个任务，backend={plan.backend}，输出到 {plan.output_dir}"
+        )
+
+    def _selected_plan_task(self, *, silent: bool = False) -> tuple[int, CaptureTask] | None:
+        if self.loaded_plan is None:
+            if not silent:
+                QMessageBox.information(self, "未加载计划", "请先加载 capture-plan YAML")
+            return None
+        row = self.plan_tasks.currentRow()
+        if row < 0 or row >= len(self.loaded_plan.tasks):
+            if not silent:
+                QMessageBox.information(self, "未选择任务", "请先在任务列表中选择一个 task")
+            return None
+        return row, self.loaded_plan.tasks[row]
+
+    def _on_camera_frame(self, frame, quality: dict[str, Any]) -> None:
+        self.live_preview.set_array(
+            frame.image,
+            auto_stretch=self.live_auto_stretch.isChecked(),
+            sensor_max_value=(
+                self.camera_page.preview_thread.config.sensor_max_value
+                if self.camera_page.preview_thread is not None
+                else None
+            ),
+        )
+        warnings = "、".join(_quality_warning_text(item) for item in quality["warnings"]) or "通过"
+        thresholds = (
+            self.loaded_plan.quality_thresholds
+            if self.loaded_plan is not None
+            else (self.camera_page.runtime or {}).get("quality_thresholds")
+        )
+        coverage_text = _laser_quality_metrics_text(quality, thresholds)
+        chess_hint = quality.get("chessboard_hint")
+        chess_text = f" · {chess_hint}" if chess_hint else ""
+        self.live_quality.setText(
+            f"{warnings} · 动态范围 {quality['dynamic_range_u8']:.1f} DN8 · "
+            f"清晰度 {quality['focus_laplacian']:.1f}{coverage_text}{chess_text}"
+        )
+        task_text = "当前任务：--"
+        selected = self._selected_plan_task(silent=True)
+        if selected is not None:
+            _, task = selected
+            applied = (
+                self.camera_page.preview_thread.config
+                if self.camera_page.preview_thread is not None
+                else task.config
+            )
+            task_text = (
+                f"当前任务：{task.task_id} · 曝光 {applied.exposure_us:g} μs · "
+                f"增益 {applied.gain_db:g} dB · 稳定帧 {task.settle_frames}"
+            )
+        self.live_camera.setText(task_text)
+
+    def preview_selected_task(self, on_started: Callable[[], None] | None = None) -> None:
+        selected = self._selected_plan_task()
+        if selected is None:
+            return
+        row, task = selected
+        assert self.loaded_plan is not None
+        runtime = dict(self.camera_page.runtime or {})
+        if "calibration_src" not in runtime:
+            QMessageBox.warning(self, "相机配置不足", "请先在第 2 页加载相机配置，以确定 calibration_src"); return
+        runtime.update(
+            source=self.loaded_plan_path,
+            backend=self.loaded_plan.backend,
+            serial_number=self.loaded_plan.serial_number,
+            camera=task.config,
+            quality_thresholds=self.loaded_plan.quality_thresholds,
+            board_pattern=self.loaded_plan.board_pattern,
+            backend_options=self.loaded_plan.backend_options,
+        )
+        self._preview_request_token += 1
+        token = self._preview_request_token
+        self._pending_preview_callback = on_started
+        self.camera_page.stop_preview()
+        self.camera_page.runtime = runtime
+        self.camera_page.backend_label.setText(self.loaded_plan.backend)
+        self.camera_page.devices.clear()
+        serial = self.loaded_plan.serial_number
+        if self.loaded_plan.backend == "synthetic":
+            serial = serial or "SIM-001"
+            self.camera_page.devices.addItem(f"模拟相机 · SN {serial}", serial)
+            runtime["serial_number"] = serial
+        elif serial:
+            self.camera_page.devices.addItem(f"计划指定相机 · SN {serial}", serial)
+        self.camera_page.exposure.setValue(task.config.exposure_us)
+        self.camera_page.gain.setValue(task.config.gain_db)
+        self.camera_page.pixel_format.setCurrentText(task.config.pixel_format)
+        self.camera_page.offset_x.setValue(task.config.offset_x)
+        self.camera_page.offset_y.setValue(task.config.offset_y)
+        self.camera_page.width.setValue(task.config.width)
+        self.camera_page.height.setValue(task.config.height)
+        self.camera_page.quality_mode.setCurrentIndex(
+            self.camera_page.quality_mode.findData(task.quality_mode)
+        )
+        self.camera_page.last_frame = None
+        self.camera_page.last_quality = None
+        self.guided_preview_index = row
+        self.plan_status.setText(f"正在切换到 {task.task_id} 预览：{task.instruction}")
+        QTimer.singleShot(
+            350,
+            lambda: self._start_guided_preview(
+                token, row, task.task_id, task.instruction, task.settle_frames
+            ),
+        )
+
+    def _start_guided_preview(
+        self,
+        token: int,
+        row: int,
+        task_id: str,
+        instruction: str,
+        settle_frames: int,
+    ) -> None:
+        if token != self._preview_request_token:
+            return
+        if self.loaded_plan is None or row < 0 or row >= len(self.loaded_plan.tasks):
+            return
+        self.camera_page.start_preview(initial_discard_frames=settle_frames)
+        self.guided_preview_index = row
+        self.plan_status.setText(f"正在预览 {task_id}：{instruction}")
+        callback = self._pending_preview_callback
+        self._pending_preview_callback = None
+        if callback is not None:
+            QTimer.singleShot(0, callback)
+
+    def capture_current_task_frame(self) -> None:
+        if self._capture_in_progress:
+            self.plan_status.setText("正在等待稳定帧，请稍候…")
+            return
+        selected = self._selected_plan_task()
+        if selected is None:
+            return
+        row, task = selected
+        self._capture_in_progress = True
+        self.capture_task_button.setEnabled(False)
+        self.preview_task_button.setEnabled(False)
+        self.next_task_button.setEnabled(False)
+
+        def save_after_settle(frame, _quality) -> None:
+            self._capture_in_progress = False
+            self.capture_task_button.setEnabled(True)
+            self.preview_task_button.setEnabled(True)
+            self.next_task_button.setEnabled(True)
+            try:
+                completed = self._save_guided_frame(task, frame)
+            except Exception as exc:
+                QMessageBox.critical(self, "保存任务失败", str(exc))
+                return
+            if completed:
+                self._mark_task_row(row)
+                self.select_next_task()
+            else:
+                self.plan_status.setText(
+                    f"{task.task_id} 尚未采满 {task.frames} 帧；继续点击保存完成该任务。"
+                )
+
+        if self.guided_preview_index != row or self.camera_page.preview_thread is None:
+            self.preview_selected_task(
+                on_started=lambda: self._schedule_guided_capture(task, save_after_settle)
+            )
+            return
+        self._schedule_guided_capture(task, save_after_settle)
+
+    def _schedule_guided_capture(
+        self,
+        task: CaptureTask,
+        callback: Callable[[Any, dict[str, Any]], None],
+    ) -> None:
+        if self.camera_page.capture_after_settle(task.settle_frames, callback):
+            self.plan_status.setText(
+                f"{task.task_id}：已应用曝光，丢弃 {task.settle_frames} 帧后保存下一帧…"
+            )
+            return
+        self._capture_in_progress = False
+        self.capture_task_button.setEnabled(True)
+        self.preview_task_button.setEnabled(True)
+        self.next_task_button.setEnabled(True)
+        QMessageBox.warning(self, "尚未取流", "任务预览尚未建立，请等待实时画面出现后重试。")
+
+    def _save_guided_frame(self, task: CaptureTask, frame: Any) -> bool:
+        assert self.loaded_plan is not None
+        output_dir = self.loaded_plan.output_dir.expanduser().resolve()
+        work_dir = output_dir.parent / f".{output_dir.name}.inprogress"
+        manifest_path = work_dir / "dataset_manifest.yaml"
+        if output_dir.exists():
+            raise RuntimeError(f"输出数据集已经存在，不会覆盖：{output_dir}")
+        if manifest_path.is_file():
+            manifest = load_document(manifest_path)
+            if manifest.get("plan_sha256") != capture_plan_hash(self.loaded_plan):
+                raise RuntimeError("当前采集计划与未完成数据集不一致，拒绝续采")
+        elif work_dir.exists() and not self.resume.isChecked():
+            raise RuntimeError(f"发现未完成数据集；确认后勾选续采：{work_dir}")
+        else:
+            work_dir.mkdir(parents=True, exist_ok=True)
+            manifest = _new_manifest(self.loaded_plan)
+        task_state = manifest["tasks"][task.task_id]
+        captured = int(task_state.get("frames_captured") or 0)
+        if captured >= task.frames:
+            raise RuntimeError(f"{task.task_id} 已采满 {task.frames} 帧")
+        index = captured + 1
+        relative = task.relative_path(index)
+        destination = work_dir / relative
+        _write_image(destination, frame)
+        quality = quality_to_dict(analyze_frame(
+            frame.image,
+            sensor_max_value=task.config.sensor_max_value,
+            mode=task.quality_mode,
+            thresholds=self.loaded_plan.quality_thresholds,
+            board_pattern=self.loaded_plan.board_pattern,
+        ))
+        record = {
+            "task_id": task.task_id,
+            "pose_id": task.pose_id,
+            "role": task.role,
+            "tags": task.tags,
+            "index": index,
+            "filename": relative.as_posix(),
+            "sha256": sha256_file(destination, normalize_newlines=False),
+            "camera_frame_number": frame.camera_frame_number,
+            "camera_frame_gap": None,
+            "transport_warnings": [],
+            "camera_timestamp_ticks": frame.camera_timestamp_ticks,
+            "host_timestamp_ns": frame.host_timestamp_ns,
+            "host_monotonic_ns": frame.host_monotonic_ns,
+            "requested_camera": asdict(task.config),
+            "applied_camera": asdict(self.camera_page.preview_thread.config if self.camera_page.preview_thread else task.config),
+            "quality": quality,
+        }
+        manifest["frames"] = [
+            item for item in manifest["frames"]
+            if not (item["task_id"] == task.task_id and int(item["index"]) == index)
+        ]
+        manifest["frames"].append(record)
+        task_state.update(
+            status="completed" if index >= task.frames else "capturing",
+            frames_captured=index,
+            completed_at=_utc_now_text() if index >= task.frames else None,
+        )
+        task_completed = index >= task.frames
+        if all(item.get("status") == "completed" for item in manifest["tasks"].values()):
+            manifest["status"] = "completed"
+            manifest["completed_at"] = _utc_now_text()
+            _save_state(work_dir, manifest)
+            work_dir.replace(output_dir)
+            self.progress.append(f"完成：{output_dir}")
+            self.capture_finished.emit(type("Result", (), {"output_dir": output_dir})())
+            return task_completed
+        else:
+            _save_state(work_dir, manifest)
+            self.progress.append(
+                f"{task.task_id}  {index}/{task.frames}  {','.join(quality['warnings']) or '通过'}  → {relative.as_posix()}"
+            )
+            return task_completed
+
+    def _mark_task_row(self, row: int) -> None:
+        item = self.plan_tasks.item(row)
+        if item and not item.text().startswith("✓ "):
+            item.setText("✓ " + item.text())
+
+    def select_next_task(self, *, auto_preview: bool = True) -> None:
+        if self.loaded_plan is None:
+            return
+        row = self.plan_tasks.currentRow()
+        for candidate in range(row + 1, len(self.loaded_plan.tasks)):
+            item = self.plan_tasks.item(candidate)
+            if item and not item.text().startswith("✓ "):
+                self.plan_tasks.setCurrentRow(candidate)
+                if auto_preview:
+                    self.preview_selected_task()
+                else:
+                    self.plan_status.setText(f"下一任务：{self.loaded_plan.tasks[candidate].instruction}")
+                return
+        self.plan_status.setText("没有后续未完成任务。")
 
     def _capture_progress(self, event: dict[str, Any]) -> None:
         if event.get("event") == "frame":
@@ -751,6 +1146,12 @@ def _labeled_path(label: str, line_edit: QLineEdit, parent: QWidget, file_filter
 def _quality_warning_text(code: str) -> str:
     return {
         "saturation_high": "过曝像素过多",
+        "chessboard_saturation_high": "棋盘亮区过曝",
+        "chessboard_near_saturation": "棋盘白格接近饱和",
+        "laser_saturation_high": "激光饱和像素过多",
+        "laser_peak_saturated": "激光峰值已饱和",
+        "laser_peak_near_saturation": "激光峰值接近饱和",
+        "laser_saturated_line_wide": "激光饱和线宽过大",
         "image_too_dark": "图像整体过暗",
         "dynamic_range_low": "动态范围不足",
         "laser_coverage_low": "激光横向覆盖不足",
@@ -758,3 +1159,34 @@ def _quality_warning_text(code: str) -> str:
         "chessboard_pattern_mismatch": "棋盘内角点配置不匹配",
         "chessboard_obscured_by_laser": "激光线遮挡棋盘",
     }.get(code, code)
+
+
+def _laser_quality_metrics_text(quality: dict[str, Any], thresholds: Any | None) -> str:
+    coverage = quality.get("laser_coverage")
+    if coverage is None:
+        return ""
+    parts = [f"覆盖 {coverage:.1%}"]
+    saturated = quality.get("laser_peak_saturation_fraction")
+    near = quality.get("laser_peak_near_saturation_fraction")
+    saturated_width = quality.get("laser_saturated_width_p95_px")
+    fwhm_p50 = quality.get("laser_fwhm_p50_px")
+    fwhm_p95 = quality.get("laser_fwhm_p95_px")
+    if saturated is not None:
+        limit = getattr(thresholds, "max_laser_peak_saturation_fraction", None)
+        suffix = f"≤{limit:.1%}" if isinstance(limit, (int, float)) else ""
+        parts.append(f"峰饱 {saturated:.1%}{suffix}")
+    if near is not None:
+        limit = getattr(thresholds, "max_laser_peak_near_saturation_fraction", None)
+        suffix = f"≤{limit:.1%}" if isinstance(limit, (int, float)) else ""
+        parts.append(f"近饱 {near:.1%}{suffix}")
+    if saturated_width is not None:
+        limit = getattr(thresholds, "max_laser_saturated_width_px", None)
+        suffix = f"≤{limit:.1f}px" if isinstance(limit, (int, float)) else ""
+        parts.append(f"饱和宽P95 {saturated_width:.1f}px{suffix}")
+    if fwhm_p50 is not None and fwhm_p95 is not None:
+        parts.append(f"FWHM P50/P95 {fwhm_p50:.1f}/{fwhm_p95:.1f}px")
+    return " · 激光" + "，".join(parts)
+
+
+def _utc_now_text() -> str:
+    return datetime.now(timezone.utc).isoformat(timespec="milliseconds")

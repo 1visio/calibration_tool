@@ -90,6 +90,11 @@ def build_parser() -> argparse.ArgumentParser:
     capture.add_argument("plan", type=Path)
     capture.add_argument("--resume", action="store_true")
     capture.add_argument("--interactive", action="store_true", help="每项任务按提示确认后再采集")
+    capture.add_argument(
+        "--preview-window",
+        action="store_true",
+        help="交互采集时打开实时 OpenCV 窗口；Enter/Space 确认任务，Esc/Q 取消",
+    )
     capture.add_argument("--calibration-src", type=Path, default=DEFAULT_CALIBRATION_SRC)
 
     exposure = sub.add_parser("capture-exposure-series", help="按多个曝光值批量采集同一姿态")
@@ -198,6 +203,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 provider,
                 resume=args.resume,
                 interactive=args.interactive,
+                interactive_preview=args.preview_window,
                 progress=_capture_progress,
             ))
         elif args.command == "capture-exposure-series":

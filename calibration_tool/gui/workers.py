@@ -53,6 +53,7 @@ class PreviewThread(QThread):
         quality_mode: str,
         thresholds: QualityThresholds,
         board_pattern: tuple[int, int] | None,
+        initial_discard_frames: int = 3,
         parent: QObject | None = None,
     ) -> None:
         super().__init__(parent)
@@ -62,6 +63,7 @@ class PreviewThread(QThread):
         self.quality_mode = quality_mode
         self.thresholds = thresholds
         self.board_pattern = board_pattern
+        self.initial_discard_frames = max(0, int(initial_discard_frames))
         self._parameter_lock = threading.Lock()
         self._pending_exposure_gain: tuple[float, float] | None = None
 
@@ -81,7 +83,7 @@ class PreviewThread(QThread):
             session = self.provider.open(self.serial_number, self.config)
             self.opened.emit(session.device, session.config)
             session.start()
-            for _ in range(3):
+            for _ in range(self.initial_discard_frames):
                 session.get_frame(session.config.timeout_ms)
             while not self.isInterruptionRequested():
                 pending = self._take_pending_exposure_gain()
