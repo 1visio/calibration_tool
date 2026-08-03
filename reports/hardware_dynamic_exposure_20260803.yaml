@@ -1,0 +1,9 @@
+passed: true
+timed_out: false
+errors: []
+initial_exposure_us: 1200.0
+applied_exposure_us: 50000.0
+before_mean_dn: 1.4691705641403698
+after_mean_dn: 55.95102861192492
+before_frames: 4
+after_frames: 4

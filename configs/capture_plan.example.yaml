@@ -1,0 +1,63 @@
+schema_version: 1
+dataset_id: calibration_capture_demo
+output_dir: ../data/calibration_capture_demo
+backend: synthetic
+serial_number: SIM-001
+
+# 采集几何以现有离线/在线工具 config 所引用的 golden 内参为准。
+metadata:
+  purpose: stage2_acquisition_smoke
+  golden_runtime_configs:
+    - ../../linelaser_tool/laser_measurement_tool/configs/measure_tool.yaml
+    - ../../0704line-laser-3d-scanner/laser_measurement_tool/configs/measure_tool.yaml
+
+camera:
+  exposure_us: 1200.0
+  gain_db: 0.0
+  pixel_format: Mono8
+  offset_x: 0
+  offset_y: 0
+  width: 2448
+  height: 2048
+  timeout_ms: 2000
+
+quality:
+  max_saturation_fraction: 0.05
+  max_dark_fraction: 0.95
+  min_dynamic_range_u8: 20.0
+  min_laser_coverage: 0.30
+  require_chessboard_detection: true
+
+board:
+  pattern_cols: 11
+  pattern_rows: 8
+
+backend_options:
+  target_fps: 30.0
+  seed: 20260803
+
+tasks:
+  - task_id: laser_pose_01_800us
+    pose_id: pose_01
+    role: laser_plane
+    instruction: 固定棋盘姿态并打开线激光。
+    frames: 2
+    settle_frames: 5
+    image_format: png
+    quality_mode: laser
+    filename_template: laser_plane/{exposure_folder}/{pose_id}{index_suffix}{suffix}
+    camera:
+      exposure_us: 800.0
+
+  - task_id: laser_pose_01_1200us
+    pose_id: pose_01
+    role: laser_plane
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    frames: 2
+    settle_frames: 5
+    image_format: png
+    quality_mode: laser
+    filename_template: laser_plane/{exposure_folder}/{pose_id}{index_suffix}{suffix}
+    camera:
+      exposure_us: 1200.0
+

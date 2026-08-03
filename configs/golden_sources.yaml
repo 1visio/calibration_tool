@@ -1,0 +1,61 @@
+schema_version: 1
+
+# 路径相对于本文件。当前两套运行工具引用的是同一组几何标定值，
+# 但运行时提取器设置不同；baseline 会保留差异并由质量门禁报告。
+sources:
+  offline_measurement_tool:
+    role: offline
+    config: ../../linelaser_tool/laser_measurement_tool/configs/measure_tool.yaml
+    expected_extractor: shared_steger
+  online_measurement_tool:
+    role: online
+    config: ../../0704line-laser-3d-scanner/laser_measurement_tool/configs/measure_tool.yaml
+    expected_extractor: shared_steger
+
+regressions:
+  intrinsics_current:
+    kind: mapping
+    path: ../../calibration/outputs/0729calib_17_result_fix_k3/calibration_result.yaml
+    selectors:
+      fit_image_count: fit_metrics.image_count
+      test_image_count: test_metrics.image_count
+      fit_rmse_px: fit_metrics.overall_reprojection_rmse
+      fit_p95_per_image_rmse_px: fit_metrics.p95_per_image_rmse
+  laser_plane_current:
+    kind: mapping
+    path: ../../calibration/outputs/0729calibv2steger_laser_plane_17config/laser_plane.yaml
+    selectors:
+      train_rmse_mm: metrics.train_fit_inliers.rmse_mm
+      validation_rmse_mm: metrics.validation.rmse_mm
+      validation_p95_mm: metrics.validation.p95_mm
+      validation_max_mm: metrics.validation.max_mm
+      extractor_method: centre_extraction.method
+  laser_pair_motion_current:
+    kind: pair_motion_csv
+    path: ../../calibration/outputs/0729calibv2steger_laser_plane_17config/pair_motion_diagnostics.csv
+  ground_hybrid_current:
+    kind: mapping
+    path: ../../calibration/outputs/0729groundv2steger_extrinsic_steger/camera_ground_extrinsics.yaml
+    selectors:
+      ground_z_std_mm: quality_checks.ground_z_std_mm
+      ground_z_std_passed: quality_checks.ground_z_std_passed
+      camera_height_mm: camera_installation.camera_height_above_ground_mm
+  ground_board_only_current:
+    kind: mapping
+    path: ../../calibration/outputs/0730_ground_extrinsics_board_only/camera_ground_extrinsics.yaml
+    selectors:
+      fit_rmse_mm: quality_checks.fit_zg.rmse_mm
+      validation_rmse_mm: quality_checks.validation_zg.rmse_mm
+      validation_p95_mm: quality_checks.validation_zg.p95_abs_mm
+      validation_max_mm: quality_checks.validation_zg.max_abs_mm
+  compensation_current:
+    kind: compensation_metrics
+    path: ../../calibration/outputs/0731groundv2steger_bias_v4tool_none/compensation_metrics.json
+    selectors:
+      loaded_frame_count: loaded_frame_count
+      build_frame_count: build_frame_count
+      evaluation_frame_count: evaluation_frame_count
+      profile_before_rms_mm: metrics.profile_before_rms_mm
+      profile_after_rms_mm: metrics.profile_after_rms_mm
+      median_frame_after_rms_mm: metrics.median_frame_after_rms_mm
+

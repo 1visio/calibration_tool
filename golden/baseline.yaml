@@ -1,0 +1,251 @@
+schema_version: 1
+generated_utc: '2026-08-03T00:40:47.439193+00:00'
+registry_path: D:\Docs\linelaserscan\calibration_tool\configs\golden_sources.yaml
+sources:
+  offline_measurement_tool:
+    config_path: D:\Docs\linelaserscan\linelaser_tool\laser_measurement_tool\configs\measure_tool.yaml
+    config_sha256: f9193a2d89d4ab1a43c81298d3df291b7b492c38b4dd4b1e987f63afd5ca2ddb
+    config_raw_sha256: f9193a2d89d4ab1a43c81298d3df291b7b492c38b4dd4b1e987f63afd5ca2ddb
+    semantic_sha256: 5eab2cb2e8f63270f97a46faeb481f80eb758fb817becb6f4141d7658096d60f
+    schema_version: 1
+    selected_extractor:
+      method: steger
+      options:
+        sigma: 3.0
+        threshold: 30.0
+        deriv_thresh: 0.5
+        roi_margin: 120
+        roi_max_height: 512
+        scan_axis: column
+      profile_sha256: 603cde423e233b3bff3a0af34437bc4185dbfcf4ccf09435b8779dc706afedb5
+    expected_extractor: shared_steger
+    camera:
+      image_width: 2448
+      image_height: 2048
+      camera_matrix:
+      - - 4673.620127352747
+        - 0.0
+        - 1226.1313971052375
+      - - 0.0
+        - 4673.817763927308
+        - 1016.3154640451509
+      - - 0.0
+        - 0.0
+        - 1.0
+      dist_coeffs:
+      - -0.03357255376253552
+      - 0.08428603881690039
+      - 0.0003945196923672397
+      - -0.0004813009664215808
+      - 0.0
+    calibration_files:
+      intrinsics:
+        path: D:\Docs\linelaserscan\linelaser_tool\laser_measurement_tool\configs\calibration\camera_intrinsics.yaml
+        exists: true
+        sha256: 8e17d1c86085e406568172cd89a6115888b9beeded829b18334e3564fb15976a
+        raw_sha256: 8e17d1c86085e406568172cd89a6115888b9beeded829b18334e3564fb15976a
+        size_bytes: 355
+      laser_plane:
+        path: D:\Docs\linelaserscan\linelaser_tool\laser_measurement_tool\configs\calibration\laser_plane.yaml
+        exists: true
+        sha256: b08b88abcd1793fcd25b73ba703d303deb6209e27386b17e76d90a3b0aa39054
+        raw_sha256: b08b88abcd1793fcd25b73ba703d303deb6209e27386b17e76d90a3b0aa39054
+        size_bytes: 243
+      extrinsics:
+        path: D:\Docs\linelaserscan\linelaser_tool\laser_measurement_tool\configs\calibration\camera_ground_extrinsics.yaml
+        exists: true
+        sha256: ef80ef2c4adf111366da1dce647bb27f80087947d51e3c95ab521aad87b7bc18
+        raw_sha256: ef80ef2c4adf111366da1dce647bb27f80087947d51e3c95ab521aad87b7bc18
+        size_bytes: 667
+      ground_u_compensation:
+        path: D:\Docs\linelaserscan\linelaser_tool\laser_measurement_tool\configs\calibration\ground_u_compensation.csv
+        exists: true
+        sha256: 4b14655a4d0fa0d9acafdd13dc27683bcfc3106f26da34639729ac69a1ffdbc5
+        raw_sha256: 4b14655a4d0fa0d9acafdd13dc27683bcfc3106f26da34639729ac69a1ffdbc5
+        size_bytes: 56013
+    manifest: null
+    findings:
+    - code: expected_extractor_mismatch
+      severity: fail
+      message: 运行 config 选择 steger，golden 标定链要求 shared_steger
+    snapshot_files:
+      config: snapshots\offline_measurement_tool\measure_tool.yaml
+      intrinsics: snapshots\offline_measurement_tool\calibration\camera_intrinsics.yaml
+      laser_plane: snapshots\offline_measurement_tool\calibration\laser_plane.yaml
+      extrinsics: snapshots\offline_measurement_tool\calibration\camera_ground_extrinsics.yaml
+      ground_u_compensation: snapshots\offline_measurement_tool\calibration\ground_u_compensation.csv
+  online_measurement_tool:
+    config_path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\measure_tool.yaml
+    config_sha256: 59edc42918fddc18dda07b8a4e7ef7b611589f22c01580ea056e19f404039f07
+    config_raw_sha256: e2f7c1d3bb892d1c10410090a06e90ffa2049398c490aa85afc89d63b5a7474d
+    semantic_sha256: dac546a91ac4106e38c9b73812b800e302d46ab3b7bb471556419fd122fc52ca
+    schema_version: 1
+    selected_extractor:
+      method: centroid
+      options:
+        background_kernel: 51
+        min_local_contrast_dn: 20.0
+        centroid_window_radius: 5
+        segment_min_columns: 42
+        continuity_max_column_gap: 2
+        continuity_max_vertical_jump: 14.0
+        correction_window: 7
+        correction_max_shift: 3.5
+        scan_axis: column
+      profile_sha256: 05620b6bcc934f4e31a90fd03a5aa7b259d1eb810a796eaca30c40459e3b756d
+    expected_extractor: shared_steger
+    camera:
+      image_width: 2448
+      image_height: 2048
+      camera_matrix:
+      - - 4673.620127352747
+        - 0.0
+        - 1226.1313971052375
+      - - 0.0
+        - 4673.817763927308
+        - 1016.3154640451509
+      - - 0.0
+        - 0.0
+        - 1.0
+      dist_coeffs:
+      - -0.03357255376253552
+      - 0.08428603881690039
+      - 0.0003945196923672397
+      - -0.0004813009664215808
+      - 0.0
+    calibration_files:
+      intrinsics:
+        path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\camera_intrinsics.yaml
+        exists: true
+        sha256: 8e17d1c86085e406568172cd89a6115888b9beeded829b18334e3564fb15976a
+        raw_sha256: 2fcd7e40373b1d201398eea7bdbcb54e26987efaee8ca3e01c29cc63037f9335
+        size_bytes: 368
+      laser_plane:
+        path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\laser_plane.yaml
+        exists: true
+        sha256: b08b88abcd1793fcd25b73ba703d303deb6209e27386b17e76d90a3b0aa39054
+        raw_sha256: 5e327e8d4d712c4a76ba66f4e0ba0e97d65ca85719ec04121fafeecfeab69a0b
+        size_bytes: 252
+      extrinsics:
+        path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\camera_ground_extrinsics.yaml
+        exists: true
+        sha256: ef80ef2c4adf111366da1dce647bb27f80087947d51e3c95ab521aad87b7bc18
+        raw_sha256: 6a25576433bc3dab4428c49a3bf08f9b455436103c8c872a27b51d062c9b7dfd
+        size_bytes: 680
+      ground_u_compensation:
+        path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\ground_u_compensation.csv
+        exists: true
+        sha256: 4b14655a4d0fa0d9acafdd13dc27683bcfc3106f26da34639729ac69a1ffdbc5
+        raw_sha256: 8b50a3436e156ba7913634590bb6d1824b9540215ec908a95e1a41837d0f80db
+        size_bytes: 58462
+    manifest:
+      path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\manifest.yaml
+      exists: true
+      sha256: 26210269dd392792f9df24672ebd4c734aa8f2a170f905f480e5a4178fa1b2f4
+      package_id: mv-cs050-60gm-runtime-20260731-v1
+      algorithm: shared_steger
+      quality:
+        intrinsics_rms_px: 0.109626
+        laser_plane_rmse_mm: 0.142713
+        laser_plane_p95_mm: 0.27126
+        camera_height_mm: 711.942
+      files:
+        intrinsics:
+          path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\camera_intrinsics.yaml
+          expected_sha256: 8e17d1c86085e406568172cd89a6115888b9beeded829b18334e3564fb15976a
+          actual_sha256: 8e17d1c86085e406568172cd89a6115888b9beeded829b18334e3564fb15976a
+          matches: true
+        laser_plane:
+          path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\laser_plane.yaml
+          expected_sha256: b08b88abcd1793fcd25b73ba703d303deb6209e27386b17e76d90a3b0aa39054
+          actual_sha256: b08b88abcd1793fcd25b73ba703d303deb6209e27386b17e76d90a3b0aa39054
+          matches: true
+        extrinsics:
+          path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\camera_ground_extrinsics.yaml
+          expected_sha256: ef80ef2c4adf111366da1dce647bb27f80087947d51e3c95ab521aad87b7bc18
+          actual_sha256: ef80ef2c4adf111366da1dce647bb27f80087947d51e3c95ab521aad87b7bc18
+          matches: true
+        ground_u_compensation:
+          path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\ground_u_compensation.csv
+          expected_sha256: 4b14655a4d0fa0d9acafdd13dc27683bcfc3106f26da34639729ac69a1ffdbc5
+          actual_sha256: 4b14655a4d0fa0d9acafdd13dc27683bcfc3106f26da34639729ac69a1ffdbc5
+          matches: true
+    findings:
+    - code: runtime_manifest_extractor_mismatch
+      severity: fail
+      message: 运行 config 选择 centroid，标定 manifest 声明 shared_steger
+    - code: expected_extractor_mismatch
+      severity: fail
+      message: 运行 config 选择 centroid，golden 标定链要求 shared_steger
+    snapshot_files:
+      config: snapshots\online_measurement_tool\measure_tool.yaml
+      manifest: snapshots\online_measurement_tool\calibration\manifest.yaml
+      intrinsics: snapshots\online_measurement_tool\calibration\camera_intrinsics.yaml
+      laser_plane: snapshots\online_measurement_tool\calibration\laser_plane.yaml
+      extrinsics: snapshots\online_measurement_tool\calibration\camera_ground_extrinsics.yaml
+      ground_u_compensation: snapshots\online_measurement_tool\calibration\ground_u_compensation.csv
+regressions:
+  intrinsics_current:
+    path: D:\Docs\linelaserscan\calibration\outputs\0729calib_17_result_fix_k3\calibration_result.yaml
+    sha256: bcc11b6d0e6c69c966626d28c87d2412cee4eec177ba28503629cab0488364ce
+    kind: mapping
+    values:
+      fit_image_count: 17
+      test_image_count: 0
+      fit_rmse_px: 0.10962606966495514
+      fit_p95_per_image_rmse_px: 0.14280444681644439
+    snapshot_file: snapshots\regressions\intrinsics_current\calibration_result.yaml
+  laser_plane_current:
+    path: D:\Docs\linelaserscan\calibration\outputs\0729calibv2steger_laser_plane_17config\laser_plane.yaml
+    sha256: bfc7028e25138cdf75f498765aac2af82d0e26e4a57730c3fe3da6d0d2b3661a
+    kind: mapping
+    values:
+      train_rmse_mm: 0.11252986758050873
+      validation_rmse_mm: 0.14271337831516562
+      validation_p95_mm: 0.27125979587686677
+      validation_max_mm: 0.37439438665902003
+      extractor_method: steger_2d
+    snapshot_file: snapshots\regressions\laser_plane_current\laser_plane.yaml
+  laser_pair_motion_current:
+    path: D:\Docs\linelaserscan\calibration\outputs\0729calibv2steger_laser_plane_17config\pair_motion_diagnostics.csv
+    sha256: 06ccceff93e326dfad4e7e1c70f7ee84ecbd7182b4af31ed0a2e49f32874f16b
+    kind: pair_motion_csv
+    values:
+      training_frame_count: 18
+      training_moved_count: 2
+      training_unresolved_count: 3
+      training_excluded_count: 0
+      max_training_displacement_px: 19.79898987322333
+    snapshot_file: snapshots\regressions\laser_pair_motion_current\pair_motion_diagnostics.csv
+  ground_hybrid_current:
+    path: D:\Docs\linelaserscan\calibration\outputs\0729groundv2steger_extrinsic_steger\camera_ground_extrinsics.yaml
+    sha256: 9ae7432e7750195a826599e9aea194f655c7abc289540bf38afa50f39227bf18
+    kind: mapping
+    values:
+      ground_z_std_mm: 3.1965334518709363
+      ground_z_std_passed: false
+      camera_height_mm: 711.9421666134897
+    snapshot_file: snapshots\regressions\ground_hybrid_current\camera_ground_extrinsics.yaml
+  ground_board_only_current:
+    path: D:\Docs\linelaserscan\calibration\outputs\0730_ground_extrinsics_board_only\camera_ground_extrinsics.yaml
+    sha256: 3ba7c7df627ee9e5e5902ef628d95db7e6f81aa7385da12aea7901a70004184a
+    kind: mapping
+    values:
+      fit_rmse_mm: 0.05050885183183119
+      validation_rmse_mm: 0.08579030589750002
+      validation_p95_mm: 0.1580980770748397
+      validation_max_mm: 0.17054617086466806
+    snapshot_file: snapshots\regressions\ground_board_only_current\camera_ground_extrinsics.yaml
+  compensation_current:
+    path: D:\Docs\linelaserscan\calibration\outputs\0731groundv2steger_bias_v4tool_none\compensation_metrics.json
+    sha256: 6d657c4512796dc06097ea80cb45675e968f639b05750a326df221d6a267a7b4
+    kind: compensation_metrics
+    values:
+      loaded_frame_count: 10
+      build_frame_count: 10
+      evaluation_frame_count: 10
+      profile_before_rms_mm: 4.386009208789544
+      profile_after_rms_mm: 0.0005429215034774087
+      median_frame_after_rms_mm: 0.002537647593410312
+      independent_validation_frame_count: 0
+    snapshot_file: snapshots\regressions\compensation_current\compensation_metrics.json

@@ -1,0 +1,29 @@
+id,status,actual,expected,message
+workflow.present,pass,,workflow report,缺少 workflow 报告
+quality_report.1.overall,fail,fail,pass or warn,上游质量报告不能为 fail
+quality_report.1.source.offline_measurement_tool.expected_extractor_mismatch,fail,,,运行 config 选择 steger，golden 标定链要求 shared_steger
+quality_report.1.source.offline_measurement_tool.manifest_missing,warn,,self-contained manifest,运行配置尚未绑定自包含 manifest
+quality_report.1.source.online_measurement_tool.runtime_manifest_extractor_mismatch,fail,,,运行 config 选择 centroid，标定 manifest 声明 shared_steger
+quality_report.1.source.online_measurement_tool.expected_extractor_mismatch,fail,,,运行 config 选择 centroid，golden 标定链要求 shared_steger
+quality_report.1.intrinsics.fit_rmse,pass,0.10962606966495514,"{'op': 'le', 'value': 0.3}",内参拟合集总体重投影 RMSE 应不高于 0.30 px
+quality_report.1.intrinsics.independent_test,fail,0,"{'op': 'ge', 'value': 1}",必须保留至少一张完全独立的内参测试图
+quality_report.1.laser_plane.validation_rmse,pass,0.14271337831516562,"{'op': 'le', 'value': 0.25}",激光平面独立验证 RMSE 应不高于 0.25 mm
+quality_report.1.laser_plane.validation_p95,pass,0.27125979587686677,"{'op': 'le', 'value': 0.5}",激光平面独立验证 P95 应不高于 0.50 mm
+quality_report.1.laser_plane.no_pair_motion,fail,2,"{'op': 'eq', 'value': 0}",拟合用棋盘/无激光/有激光三联图不允许检测到明显位移
+quality_report.1.laser_plane.motion_resolved,fail,3,"{'op': 'eq', 'value': 0}",拟合用三联图运动检查必须全部可解析或经人工确认
+quality_report.1.ground.hybrid_flatness,fail,False,"{'op': 'truthy', 'value': True}",混合式地面外参必须通过地面 Z 标准差门禁
+quality_report.1.ground.board_validation_rmse,pass,0.08579030589750002,"{'op': 'le', 'value': 0.2}",棋盘基准面外参独立验证 RMSE 应不高于 0.20 mm
+quality_report.1.compensation.independent_validation,fail,0,"{'op': 'ge', 'value': 1}",地面补偿必须使用未参与建表的独立帧验证
+runtime.profile_clean,fail,2,0,运行配置、manifest 和算法 profile 必须一致
+runtime.finding.1.runtime_manifest_extractor_mismatch,fail,,,运行 config 选择 centroid，标定 manifest 声明 shared_steger
+runtime.finding.2.expected_extractor_mismatch,fail,,,运行 config 选择 centroid，golden 标定链要求 shared_steger
+golden.matches,pass,0,0,当前配置和标定产物不能偏离 golden baseline
+compensation.independent_validation,pass,"{'loaded': 10, 'build': 8, 'evaluation': 2}",evaluation > 0 and build + evaluation == loaded,补偿必须使用未参与建表的 holdout 帧验收
+compensation.after_pv,pass,0.05873289624393907,<= 0.25,补偿后平均剖面 P–V
+compensation.after_rms,pass,0.00444087662061441,<= 0.05,补偿后平均剖面 RMS
+compensation.pv_reduction,pass,0.9772527516977196,>= 0.8,P–V 降幅
+compensation.rms_reduction,pass,0.9932999497583206,>= 0.8,RMS 降幅
+compensation.repeatability,pass,0.003680367800876153,<= 0.02,重复性 sigma 中位数
+artifact.1.exists,pass,D:\Docs\linelaserscan\calibration\outputs\_analysis_v4_ground_bias_holdout_linear\ground_bias_table.csv,existing file,验收产物必须存在
+artifact.2.exists,pass,D:\Docs\linelaserscan\calibration\outputs\_analysis_v4_ground_bias_holdout_linear\z_profile_before_after.png,existing file,验收产物必须存在
+artifact.3.exists,pass,D:\Docs\linelaserscan\calibration\outputs\_analysis_v4_ground_bias_holdout_linear\pointcloud_before_after.png,existing file,验收产物必须存在

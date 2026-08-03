@@ -1,0 +1,93 @@
+schema_version: 1
+generated_utc: '2026-08-03T00:40:47.754191+00:00'
+baseline: D:\Docs\linelaserscan\calibration_tool\golden\baseline.yaml
+policy: D:\Docs\linelaserscan\calibration_tool\configs\quality_policy.yaml
+overall: fail
+counts:
+  pass: 4
+  warn: 1
+  fail: 8
+gates:
+- id: source.offline_measurement_tool.expected_extractor_mismatch
+  status: fail
+  actual: null
+  expected: null
+  message: 运行 config 选择 steger，golden 标定链要求 shared_steger
+- id: source.offline_measurement_tool.manifest_missing
+  status: warn
+  actual: null
+  expected: self-contained manifest
+  message: 运行配置尚未绑定自包含 manifest
+- id: source.online_measurement_tool.runtime_manifest_extractor_mismatch
+  status: fail
+  actual: null
+  expected: null
+  message: 运行 config 选择 centroid，标定 manifest 声明 shared_steger
+- id: source.online_measurement_tool.expected_extractor_mismatch
+  status: fail
+  actual: null
+  expected: null
+  message: 运行 config 选择 centroid，golden 标定链要求 shared_steger
+- id: intrinsics.fit_rmse
+  status: pass
+  actual: 0.10962606966495514
+  expected:
+    op: le
+    value: 0.3
+  message: 内参拟合集总体重投影 RMSE 应不高于 0.30 px
+- id: intrinsics.independent_test
+  status: fail
+  actual: 0
+  expected:
+    op: ge
+    value: 1
+  message: 必须保留至少一张完全独立的内参测试图
+- id: laser_plane.validation_rmse
+  status: pass
+  actual: 0.14271337831516562
+  expected:
+    op: le
+    value: 0.25
+  message: 激光平面独立验证 RMSE 应不高于 0.25 mm
+- id: laser_plane.validation_p95
+  status: pass
+  actual: 0.27125979587686677
+  expected:
+    op: le
+    value: 0.5
+  message: 激光平面独立验证 P95 应不高于 0.50 mm
+- id: laser_plane.no_pair_motion
+  status: fail
+  actual: 2
+  expected:
+    op: eq
+    value: 0
+  message: 拟合用棋盘/无激光/有激光三联图不允许检测到明显位移
+- id: laser_plane.motion_resolved
+  status: fail
+  actual: 3
+  expected:
+    op: eq
+    value: 0
+  message: 拟合用三联图运动检查必须全部可解析或经人工确认
+- id: ground.hybrid_flatness
+  status: fail
+  actual: false
+  expected:
+    op: truthy
+    value: true
+  message: 混合式地面外参必须通过地面 Z 标准差门禁
+- id: ground.board_validation_rmse
+  status: pass
+  actual: 0.08579030589750002
+  expected:
+    op: le
+    value: 0.2
+  message: 棋盘基准面外参独立验证 RMSE 应不高于 0.20 mm
+- id: compensation.independent_validation
+  status: fail
+  actual: 0
+  expected:
+    op: ge
+    value: 1
+  message: 地面补偿必须使用未参与建表的独立帧验证

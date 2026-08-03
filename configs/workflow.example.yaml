@@ -1,0 +1,52 @@
+schema_version: 1
+calibration_src: ../../calibration/src
+continue_on_error: false
+report: ../reports/example_workflow_run.yaml
+
+# 这是结构示例，不会被自动执行。填入新项目路径后运行：
+# python -m calibration_tool workflow configs/workflow.example.yaml
+stages:
+  - name: intrinsics
+    enabled: false
+    options:
+      fit_dir: ../data/intrinsics/fit
+      test_dir: ../data/intrinsics/validation
+      output: ../runs/intrinsics
+      fit_pattern: "*.tif"
+      test_pattern: "*.tif"
+      pattern_cols: 11
+      pattern_rows: 8
+      square_size_mm: 20
+  - name: laser_plane_shared_steger
+    enabled: false
+    options:
+      intrinsics: ../runs/intrinsics/calibration_result.yaml
+      fit_dir: ../data/laser_plane
+      test_dir: ../data/laser_plane
+      fit_ids: 1-18
+      test_ids: 19-22
+      pattern_cols: 11
+      pattern_rows: 8
+      square_size_mm: 20
+      config: ../../calibration/config/laser_plane_core_config.yaml
+      output_dir: ../runs/laser_plane
+  - name: ground_extrinsics_board_only
+    enabled: false
+    options:
+      intrinsics: ../runs/intrinsics/calibration_result.yaml
+      fit_dir: ../data/ground/fit
+      validation_dir: ../data/ground/validation
+      pattern_cols: 11
+      pattern_rows: 8
+      square_size_mm: 20
+      output_dir: ../runs/ground_extrinsics
+  - name: ground_bias
+    enabled: false
+    options:
+      input_dir: ../runs/ground_reference_pointcloud
+      glob: "*/points_ground.csv"
+      output_dir: ../runs/ground_bias
+      validation_count: 6
+      trend: linear
+      aggregate: median
+

@@ -1,0 +1,27 @@
+schema_version: 1
+report_id: current-golden-acceptance-audit
+title: 当前线激光标定链验收报告
+output_dir: ../reports/current_acceptance
+policy: acceptance_policy.golden_audit.yaml
+
+inputs:
+  # 历史 golden 尚无统一 workflow report；新标定应填写阶段 3 的 workflow 报告。
+  workflow_report: null
+  quality_reports:
+    - ../reports/golden_audit.yaml
+  runtime_config: ../../0704line-laser-3d-scanner/laser_measurement_tool/configs/measure_tool.yaml
+  expected_extractor: shared_steger
+  golden_baseline: ../golden/baseline.yaml
+  compensation_metrics: ../../calibration/outputs/_analysis_v4_ground_bias_holdout_linear/compensation_metrics.json
+  artifacts:
+    - ../../calibration/outputs/_analysis_v4_ground_bias_holdout_linear/ground_bias_table.csv
+    - ../../calibration/outputs/_analysis_v4_ground_bias_holdout_linear/z_profile_before_after.png
+    - ../../calibration/outputs/_analysis_v4_ground_bias_holdout_linear/pointcloud_before_after.png
+
+# 只有验收 decision=accepted 时才会执行发布。示例默认关闭，避免误发历史产物。
+release:
+  enabled: false
+  package_id: mv-cs050-60gm-accepted-v1
+  runtime_config: ../../0704line-laser-3d-scanner/laser_measurement_tool/configs/measure_tool.yaml
+  output_dir: ../releases/mv-cs050-60gm-accepted-v1
+

@@ -1,0 +1,389 @@
+schema_version: 1
+report_id: current-golden-acceptance-audit
+title: 当前线激光标定链验收报告
+generated_utc: '2026-08-03T03:32:15.335793+00:00'
+plan: D:\Docs\linelaserscan\calibration_tool\configs\acceptance_plan.example.yaml
+policy: D:\Docs\linelaserscan\calibration_tool\configs\acceptance_policy.golden_audit.yaml
+overall: fail
+decision: rejected
+counts:
+  pass: 15
+  warn: 1
+  fail: 12
+summary:
+  workflow: null
+  quality_report_count: 1
+  runtime_extractor: centroid
+  golden_matches: true
+  compensation_independent_validation: true
+workflow: null
+quality_reports:
+- path: D:\Docs\linelaserscan\calibration_tool\reports\golden_audit.yaml
+  overall: fail
+  counts:
+    pass: 4
+    warn: 1
+    fail: 8
+runtime_profile:
+  config_path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\measure_tool.yaml
+  config_sha256: 59edc42918fddc18dda07b8a4e7ef7b611589f22c01580ea056e19f404039f07
+  config_raw_sha256: e2f7c1d3bb892d1c10410090a06e90ffa2049398c490aa85afc89d63b5a7474d
+  semantic_sha256: dac546a91ac4106e38c9b73812b800e302d46ab3b7bb471556419fd122fc52ca
+  schema_version: 1
+  selected_extractor:
+    method: centroid
+    options:
+      background_kernel: 51
+      min_local_contrast_dn: 20.0
+      centroid_window_radius: 5
+      segment_min_columns: 42
+      continuity_max_column_gap: 2
+      continuity_max_vertical_jump: 14.0
+      correction_window: 7
+      correction_max_shift: 3.5
+      scan_axis: column
+    profile_sha256: 05620b6bcc934f4e31a90fd03a5aa7b259d1eb810a796eaca30c40459e3b756d
+  expected_extractor: shared_steger
+  camera:
+    image_width: 2448
+    image_height: 2048
+    camera_matrix:
+    - - 4673.620127352747
+      - 0.0
+      - 1226.1313971052375
+    - - 0.0
+      - 4673.817763927308
+      - 1016.3154640451509
+    - - 0.0
+      - 0.0
+      - 1.0
+    dist_coeffs:
+    - -0.03357255376253552
+    - 0.08428603881690039
+    - 0.0003945196923672397
+    - -0.0004813009664215808
+    - 0.0
+  calibration_files:
+    intrinsics:
+      path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\camera_intrinsics.yaml
+      exists: true
+      sha256: 8e17d1c86085e406568172cd89a6115888b9beeded829b18334e3564fb15976a
+      raw_sha256: 2fcd7e40373b1d201398eea7bdbcb54e26987efaee8ca3e01c29cc63037f9335
+      size_bytes: 368
+    laser_plane:
+      path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\laser_plane.yaml
+      exists: true
+      sha256: b08b88abcd1793fcd25b73ba703d303deb6209e27386b17e76d90a3b0aa39054
+      raw_sha256: 5e327e8d4d712c4a76ba66f4e0ba0e97d65ca85719ec04121fafeecfeab69a0b
+      size_bytes: 252
+    extrinsics:
+      path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\camera_ground_extrinsics.yaml
+      exists: true
+      sha256: ef80ef2c4adf111366da1dce647bb27f80087947d51e3c95ab521aad87b7bc18
+      raw_sha256: 6a25576433bc3dab4428c49a3bf08f9b455436103c8c872a27b51d062c9b7dfd
+      size_bytes: 680
+    ground_u_compensation:
+      path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\ground_u_compensation.csv
+      exists: true
+      sha256: 4b14655a4d0fa0d9acafdd13dc27683bcfc3106f26da34639729ac69a1ffdbc5
+      raw_sha256: 8b50a3436e156ba7913634590bb6d1824b9540215ec908a95e1a41837d0f80db
+      size_bytes: 58462
+  manifest:
+    path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\manifest.yaml
+    exists: true
+    sha256: 26210269dd392792f9df24672ebd4c734aa8f2a170f905f480e5a4178fa1b2f4
+    package_id: mv-cs050-60gm-runtime-20260731-v1
+    algorithm: shared_steger
+    quality:
+      intrinsics_rms_px: 0.109626
+      laser_plane_rmse_mm: 0.142713
+      laser_plane_p95_mm: 0.27126
+      camera_height_mm: 711.942
+    files:
+      intrinsics:
+        path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\camera_intrinsics.yaml
+        expected_sha256: 8e17d1c86085e406568172cd89a6115888b9beeded829b18334e3564fb15976a
+        actual_sha256: 8e17d1c86085e406568172cd89a6115888b9beeded829b18334e3564fb15976a
+        matches: true
+      laser_plane:
+        path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\laser_plane.yaml
+        expected_sha256: b08b88abcd1793fcd25b73ba703d303deb6209e27386b17e76d90a3b0aa39054
+        actual_sha256: b08b88abcd1793fcd25b73ba703d303deb6209e27386b17e76d90a3b0aa39054
+        matches: true
+      extrinsics:
+        path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\camera_ground_extrinsics.yaml
+        expected_sha256: ef80ef2c4adf111366da1dce647bb27f80087947d51e3c95ab521aad87b7bc18
+        actual_sha256: ef80ef2c4adf111366da1dce647bb27f80087947d51e3c95ab521aad87b7bc18
+        matches: true
+      ground_u_compensation:
+        path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\ground_u_compensation.csv
+        expected_sha256: 4b14655a4d0fa0d9acafdd13dc27683bcfc3106f26da34639729ac69a1ffdbc5
+        actual_sha256: 4b14655a4d0fa0d9acafdd13dc27683bcfc3106f26da34639729ac69a1ffdbc5
+        matches: true
+  findings:
+  - code: runtime_manifest_extractor_mismatch
+    severity: fail
+    message: 运行 config 选择 centroid，标定 manifest 声明 shared_steger
+  - code: expected_extractor_mismatch
+    severity: fail
+    message: 运行 config 选择 centroid，golden 标定链要求 shared_steger
+golden:
+  matches: true
+  change_count: 0
+  changes: []
+compensation:
+  path: D:\Docs\linelaserscan\calibration\outputs\_analysis_v4_ground_bias_holdout_linear\compensation_metrics.json
+  loaded_frame_count: 10
+  build_frame_count: 8
+  evaluation_frame_count: 2
+  independent_validation: true
+  before:
+    profile_pv_mm: 2.5819780688836675
+    profile_rms_mm: 0.6628124357917138
+  after:
+    profile_pv_mm: 0.05873289624393907
+    profile_rms_mm: 0.00444087662061441
+  reduction:
+    pv_fraction: 0.9772527516977196
+    rms_fraction: 0.9932999497583206
+  repeatability_sigma_median_mm: 0.003680367800876153
+gates:
+- id: workflow.present
+  status: pass
+  actual: null
+  expected: workflow report
+  message: 缺少 workflow 报告
+- id: quality_report.1.overall
+  status: fail
+  actual: fail
+  expected: pass or warn
+  message: 上游质量报告不能为 fail
+- id: quality_report.1.source.offline_measurement_tool.expected_extractor_mismatch
+  status: fail
+  actual: null
+  expected: null
+  message: 运行 config 选择 steger，golden 标定链要求 shared_steger
+- id: quality_report.1.source.offline_measurement_tool.manifest_missing
+  status: warn
+  actual: null
+  expected: self-contained manifest
+  message: 运行配置尚未绑定自包含 manifest
+- id: quality_report.1.source.online_measurement_tool.runtime_manifest_extractor_mismatch
+  status: fail
+  actual: null
+  expected: null
+  message: 运行 config 选择 centroid，标定 manifest 声明 shared_steger
+- id: quality_report.1.source.online_measurement_tool.expected_extractor_mismatch
+  status: fail
+  actual: null
+  expected: null
+  message: 运行 config 选择 centroid，golden 标定链要求 shared_steger
+- id: quality_report.1.intrinsics.fit_rmse
+  status: pass
+  actual: 0.10962606966495514
+  expected:
+    op: le
+    value: 0.3
+  message: 内参拟合集总体重投影 RMSE 应不高于 0.30 px
+- id: quality_report.1.intrinsics.independent_test
+  status: fail
+  actual: 0
+  expected:
+    op: ge
+    value: 1
+  message: 必须保留至少一张完全独立的内参测试图
+- id: quality_report.1.laser_plane.validation_rmse
+  status: pass
+  actual: 0.14271337831516562
+  expected:
+    op: le
+    value: 0.25
+  message: 激光平面独立验证 RMSE 应不高于 0.25 mm
+- id: quality_report.1.laser_plane.validation_p95
+  status: pass
+  actual: 0.27125979587686677
+  expected:
+    op: le
+    value: 0.5
+  message: 激光平面独立验证 P95 应不高于 0.50 mm
+- id: quality_report.1.laser_plane.no_pair_motion
+  status: fail
+  actual: 2
+  expected:
+    op: eq
+    value: 0
+  message: 拟合用棋盘/无激光/有激光三联图不允许检测到明显位移
+- id: quality_report.1.laser_plane.motion_resolved
+  status: fail
+  actual: 3
+  expected:
+    op: eq
+    value: 0
+  message: 拟合用三联图运动检查必须全部可解析或经人工确认
+- id: quality_report.1.ground.hybrid_flatness
+  status: fail
+  actual: false
+  expected:
+    op: truthy
+    value: true
+  message: 混合式地面外参必须通过地面 Z 标准差门禁
+- id: quality_report.1.ground.board_validation_rmse
+  status: pass
+  actual: 0.08579030589750002
+  expected:
+    op: le
+    value: 0.2
+  message: 棋盘基准面外参独立验证 RMSE 应不高于 0.20 mm
+- id: quality_report.1.compensation.independent_validation
+  status: fail
+  actual: 0
+  expected:
+    op: ge
+    value: 1
+  message: 地面补偿必须使用未参与建表的独立帧验证
+- id: runtime.profile_clean
+  status: fail
+  actual: 2
+  expected: 0
+  message: 运行配置、manifest 和算法 profile 必须一致
+- id: runtime.finding.1.runtime_manifest_extractor_mismatch
+  status: fail
+  actual: null
+  expected: null
+  message: 运行 config 选择 centroid，标定 manifest 声明 shared_steger
+- id: runtime.finding.2.expected_extractor_mismatch
+  status: fail
+  actual: null
+  expected: null
+  message: 运行 config 选择 centroid，golden 标定链要求 shared_steger
+- id: golden.matches
+  status: pass
+  actual: 0
+  expected: 0
+  message: 当前配置和标定产物不能偏离 golden baseline
+- id: compensation.independent_validation
+  status: pass
+  actual:
+    loaded: 10
+    build: 8
+    evaluation: 2
+  expected: evaluation > 0 and build + evaluation == loaded
+  message: 补偿必须使用未参与建表的 holdout 帧验收
+- id: compensation.after_pv
+  status: pass
+  actual: 0.05873289624393907
+  expected: <= 0.25
+  message: 补偿后平均剖面 P–V
+- id: compensation.after_rms
+  status: pass
+  actual: 0.00444087662061441
+  expected: <= 0.05
+  message: 补偿后平均剖面 RMS
+- id: compensation.pv_reduction
+  status: pass
+  actual: 0.9772527516977196
+  expected: '>= 0.8'
+  message: P–V 降幅
+- id: compensation.rms_reduction
+  status: pass
+  actual: 0.9932999497583206
+  expected: '>= 0.8'
+  message: RMS 降幅
+- id: compensation.repeatability
+  status: pass
+  actual: 0.003680367800876153
+  expected: <= 0.02
+  message: 重复性 sigma 中位数
+- id: artifact.1.exists
+  status: pass
+  actual: D:\Docs\linelaserscan\calibration\outputs\_analysis_v4_ground_bias_holdout_linear\ground_bias_table.csv
+  expected: existing file
+  message: 验收产物必须存在
+- id: artifact.2.exists
+  status: pass
+  actual: D:\Docs\linelaserscan\calibration\outputs\_analysis_v4_ground_bias_holdout_linear\z_profile_before_after.png
+  expected: existing file
+  message: 验收产物必须存在
+- id: artifact.3.exists
+  status: pass
+  actual: D:\Docs\linelaserscan\calibration\outputs\_analysis_v4_ground_bias_holdout_linear\pointcloud_before_after.png
+  expected: existing file
+  message: 验收产物必须存在
+artifacts:
+- role: acceptance_plan
+  path: D:\Docs\linelaserscan\calibration_tool\configs\acceptance_plan.example.yaml
+  exists: true
+  size_bytes: 1302
+  sha256: c8d5c4425a478c9d07e6eb099c19b884cb01bbbbd5d05dc8ec3753552b1b47a7
+- role: acceptance_policy
+  path: D:\Docs\linelaserscan\calibration_tool\configs\acceptance_policy.golden_audit.yaml
+  exists: true
+  size_bytes: 532
+  sha256: a9e33df09496b918ba29a2fe490657d1b2ea85bb856a8f2591d8b947f9dfe559
+- role: calibration_extrinsics
+  path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\camera_ground_extrinsics.yaml
+  exists: true
+  size_bytes: 680
+  sha256: 6a25576433bc3dab4428c49a3bf08f9b455436103c8c872a27b51d062c9b7dfd
+- role: calibration_ground_u_compensation
+  path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\ground_u_compensation.csv
+  exists: true
+  size_bytes: 58462
+  sha256: 8b50a3436e156ba7913634590bb6d1824b9540215ec908a95e1a41837d0f80db
+- role: calibration_intrinsics
+  path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\camera_intrinsics.yaml
+  exists: true
+  size_bytes: 368
+  sha256: 2fcd7e40373b1d201398eea7bdbcb54e26987efaee8ca3e01c29cc63037f9335
+- role: calibration_laser_plane
+  path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\laser_plane.yaml
+  exists: true
+  size_bytes: 252
+  sha256: 5e327e8d4d712c4a76ba66f4e0ba0e97d65ca85719ec04121fafeecfeab69a0b
+- role: calibration_manifest
+  path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\calibration\manifest.yaml
+  exists: true
+  size_bytes: 1094
+  sha256: 0c953ed78d95e6cd76ef7e7940ad700829c637fca268123d23c7a6f20bd802c1
+- role: compensation_artifact
+  path: D:\Docs\linelaserscan\calibration\outputs\_analysis_v4_ground_bias_holdout_linear\ground_bias_table.csv
+  exists: true
+  size_bytes: 204710
+  sha256: f931534e00f9eda32f2e718c8dd4e999507c3cc5f6e6d1855b8be32b4be404fc
+- role: compensation_artifact
+  path: D:\Docs\linelaserscan\calibration\outputs\_analysis_v4_ground_bias_holdout_linear\ground_bias_table.npy
+  exists: true
+  size_bytes: 117492
+  sha256: 2565a60988a339a2ac4238b8a22b9fd285de43ef4236d38ce950aef20dc3e19f
+- role: compensation_artifact
+  path: D:\Docs\linelaserscan\calibration\outputs\_analysis_v4_ground_bias_holdout_linear\pointcloud_before_after.png
+  exists: true
+  size_bytes: 437839
+  sha256: 752f656f3e9073da19540aca4c905ce066c1bbbbbba5417ad43f6103e5a402c4
+- role: compensation_artifact
+  path: D:\Docs\linelaserscan\calibration\outputs\_analysis_v4_ground_bias_holdout_linear\z_profile_before_after.png
+  exists: true
+  size_bytes: 278223
+  sha256: c54c94599c41434548bd511607b437e95ea8f82977eb768968055a2b4783b8fc
+- role: compensation_metrics
+  path: D:\Docs\linelaserscan\calibration\outputs\_analysis_v4_ground_bias_holdout_linear\compensation_metrics.json
+  exists: true
+  size_bytes: 2089
+  sha256: e081307b9284b560013c25f0766c5ae5d9331b153cdcbced19b8ab9928ffd060
+- role: golden_baseline
+  path: D:\Docs\linelaserscan\calibration_tool\golden\baseline.yaml
+  exists: true
+  size_bytes: 12334
+  sha256: 85d89bcd871b7b27204fe50854334859bd505af87f17da7b43d2f16226765169
+- role: quality_report
+  path: D:\Docs\linelaserscan\calibration_tool\reports\golden_audit.yaml
+  exists: true
+  size_bytes: 2715
+  sha256: ad206a0e4e59403e27d06b4536520084bfb9de0b9b034418f030b2f4b679a46b
+- role: runtime_config
+  path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\measure_tool.yaml
+  exists: true
+  size_bytes: 3675
+  sha256: e2f7c1d3bb892d1c10410090a06e90ffa2049398c490aa85afc89d63b5a7474d
+release:
+  status: disabled

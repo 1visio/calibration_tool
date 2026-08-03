@@ -1,0 +1,42 @@
+{
+  "input_dir": "D:\\Docs\\linelaserscan\\calibration\\outputs\\0731groundv2steger_pointcloud_v4_tool",
+  "output_dir": "D:\\Docs\\linelaserscan\\calibration\\outputs\\0731groundv2steger_bias_v4tool_none",
+  "loaded_frame_count": 10,
+  "build_frame_count": 10,
+  "evaluation_frame_count": 10,
+  "skipped_files": [],
+  "table_metadata": {
+    "version": 1,
+    "trend_mode": "none",
+    "aggregate": "median",
+    "column_bin_width_px": 1.0,
+    "min_samples_per_column": 5,
+    "mad_threshold": 3.5,
+    "smooth_window": 1,
+    "build_frame_count": 10,
+    "source_files": [
+      "D:\\Docs\\linelaserscan\\calibration\\outputs\\0731groundv2steger_pointcloud_v4_tool\\pose_1\\points_ground.csv",
+      "D:\\Docs\\linelaserscan\\calibration\\outputs\\0731groundv2steger_pointcloud_v4_tool\\pose_1_02\\points_ground.csv",
+      "D:\\Docs\\linelaserscan\\calibration\\outputs\\0731groundv2steger_pointcloud_v4_tool\\pose_1_03\\points_ground.csv",
+      "D:\\Docs\\linelaserscan\\calibration\\outputs\\0731groundv2steger_pointcloud_v4_tool\\pose_1_04\\points_ground.csv",
+      "D:\\Docs\\linelaserscan\\calibration\\outputs\\0731groundv2steger_pointcloud_v4_tool\\pose_1_05\\points_ground.csv",
+      "D:\\Docs\\linelaserscan\\calibration\\outputs\\0731groundv2steger_pointcloud_v4_tool\\pose_1_06\\points_ground.csv",
+      "D:\\Docs\\linelaserscan\\calibration\\outputs\\0731groundv2steger_pointcloud_v4_tool\\pose_1_07\\points_ground.csv",
+      "D:\\Docs\\linelaserscan\\calibration\\outputs\\0731groundv2steger_pointcloud_v4_tool\\pose_1_08\\points_ground.csv",
+      "D:\\Docs\\linelaserscan\\calibration\\outputs\\0731groundv2steger_pointcloud_v4_tool\\pose_1_09\\points_ground.csv",
+      "D:\\Docs\\linelaserscan\\calibration\\outputs\\0731groundv2steger_pointcloud_v4_tool\\pose_1_10\\points_ground.csv"
+    ]
+  },
+  "metrics": {
+    "evaluation_frame_count": 10,
+    "profile_before_pv_mm": 14.040017810100002,
+    "profile_after_pv_mm": 0.00447744340000007,
+    "profile_before_rms_mm": 4.386009208789544,
+    "profile_after_rms_mm": 0.0005429215034774087,
+    "median_frame_before_pv_mm": 14.039163789,
+    "median_frame_after_pv_mm": 0.017948993750000142,
+    "median_frame_before_rms_mm": 4.386020869599126,
+    "median_frame_after_rms_mm": 0.002537647593410312
+  },
+  "repeatability_sigma_median_mm": 0.002393672861417774
+}

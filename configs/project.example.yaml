@@ -1,0 +1,33 @@
+schema_version: 1
+project_id: example-mv-cs050-60gm
+camera:
+  model: MV-CS050-60GM
+  serial_number: DA7711077
+  image_width: 2448
+  image_height: 2048
+  pixel_format: Mono8
+board:
+  pattern_cols: 11
+  pattern_rows: 8
+  square_size_mm: 20.0
+exposures_us:
+  chessboard: 20000
+  laser_board: 400
+  ground_runtime: 1200
+algorithm_profile:
+  extractor: shared_steger
+  settings:
+    sigma_px: 1.2
+    max_offset_px: 0.75
+    min_normal_y: 0.5
+    min_response_ratio: 0.0005
+datasets:
+  intrinsics_fit: null
+  intrinsics_validation: null
+  laser_plane_fit: null
+  laser_plane_validation: null
+  ground_fit: null
+  ground_validation: null
+  compensation_build: null
+  compensation_validation: null
+

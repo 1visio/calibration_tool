@@ -1,0 +1,200 @@
+schema_version: 1
+dataset_id: hardware_capture_smoke_20260803
+status: completed
+created_at: '2026-08-03T02:27:10.134+00:00'
+updated_at: '2026-08-03T02:27:12.463+00:00'
+completed_at: '2026-08-03T02:27:12.463+00:00'
+plan_sha256: 6cef65307d22e9194372eacb29a490e069863046e8cca653c15d154b664aea85
+plan:
+  dataset_id: hardware_capture_smoke_20260803
+  output_dir: reports\hardware_capture_smoke_20260803
+  backend: mvs
+  serial_number: ''
+  camera:
+    exposure_us: 1200.0
+    gain_db: 0.0
+    pixel_format: Mono12
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    max_saturation_fraction: 0.05
+    max_dark_fraction: 0.95
+    min_dynamic_range_u8: 20.0
+    min_laser_coverage: 0.3
+    require_chessboard_detection: true
+  board_pattern:
+  - 11
+  - 8
+  metadata:
+    kind: exposure_series
+    camera_config: D:\Docs\linelaserscan\calibration_tool\configs\camera.mvs.example.yaml
+  backend_options: {}
+  tasks:
+  - task_id: exposure_01
+    frames: 1
+    filename_template: '{exposure_folder}/{pose_id}{index_suffix}{suffix}'
+    camera:
+      exposure_us: 1000.0
+      gain_db: 0.0
+      pixel_format: Mono12
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: connected_camera
+    role: exposure_series
+    instruction: ''
+    settle_frames: 3
+    image_format: tif
+    quality_mode: laser
+    tags: &id001
+      requested_exposure_us: 1000.0
+  - task_id: exposure_02
+    frames: 1
+    filename_template: '{exposure_folder}/{pose_id}{index_suffix}{suffix}'
+    camera:
+      exposure_us: 1200.0
+      gain_db: 0.0
+      pixel_format: Mono12
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: connected_camera
+    role: exposure_series
+    instruction: ''
+    settle_frames: 3
+    image_format: tif
+    quality_mode: laser
+    tags: &id002
+      requested_exposure_us: 1200.0
+device:
+  model: MV-CS050-60GM
+  serial_number: DA7711077
+  ip_address: 169.254.124.26
+  transport: GigE
+network_packet_size: 8164
+tasks:
+  exposure_01:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    started_at: '2026-08-03T02:27:10.686+00:00'
+    completed_at: '2026-08-03T02:27:11.345+00:00'
+    quality_summary:
+      frames: 1
+      passed: 1
+      warnings: 0
+      warning_counts: {}
+  exposure_02:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    started_at: '2026-08-03T02:27:11.350+00:00'
+    completed_at: '2026-08-03T02:27:12.449+00:00'
+    quality_summary:
+      frames: 1
+      passed: 1
+      warnings: 0
+      warning_counts: {}
+frames:
+- task_id: exposure_01
+  pose_id: connected_camera
+  role: exposure_series
+  tags: *id001
+  index: 1
+  filename: 1000us/connected_camera.tif
+  sha256: 3821ce869a097c9813f3e2eb659164c313e8d954291ab1585867d1e4ba6f8544
+  camera_frame_number: 4
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 475674105267
+  host_timestamp_ns: 1785724031053961800
+  host_monotonic_ns: 1368013322957200
+  requested_camera:
+    exposure_us: 1000.0
+    gain_db: 0.0
+    pixel_format: Mono12
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 1000.0
+    gain_db: 0.0
+    pixel_format: Mono12
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 15.654616355895996
+    p01_dn: 7.0
+    p50_dn: 13.0
+    p99_dn: 26.0
+    dynamic_range_u8: 45.45787545787546
+    saturation_fraction: 1.9946129493464053e-07
+    dark_fraction: 0.9954405142590891
+    focus_laplacian: 5.195787018300303
+    laser_coverage: 0.9763071895424836
+    chessboard_detected: null
+    warnings: []
+    passed: true
+- task_id: exposure_02
+  pose_id: connected_camera
+  role: exposure_series
+  tags: *id002
+  index: 1
+  filename: 1200us/connected_camera.tif
+  sha256: 688eb01572463eb4e95546e2403b7b314670315c241f8ca529e44d850fcd1130
+  camera_frame_number: 4
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 475784519748
+  host_timestamp_ns: 1785724032158457700
+  host_monotonic_ns: 1368014427492800
+  requested_camera:
+    exposure_us: 1200.0
+    gain_db: 0.0
+    pixel_format: Mono12
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 1200.0
+    gain_db: 0.0
+    pixel_format: Mono12
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 18.890605926513672
+    p01_dn: 8.0
+    p50_dn: 16.0
+    p99_dn: 32.0
+    dynamic_range_u8: 54.42490842490842
+    saturation_fraction: 5.983838848039216e-07
+    dark_fraction: 0.9950092789394404
+    focus_laplacian: 7.581693362539488
+    laser_coverage: 0.9771241830065359
+    chessboard_detected: null
+    warnings: []
+    passed: true
+quality_summary:
+  frames: 2
+  passed: 2
+  warnings: 0
+  warning_counts: {}

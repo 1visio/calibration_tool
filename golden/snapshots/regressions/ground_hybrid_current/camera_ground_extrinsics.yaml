@@ -1,0 +1,236 @@
+schema_version: 1
+generated_utc: '2026-07-30T02:26:02.887349+00:00'
+units: mm
+coordinate_convention:
+  Xg: camera +X projected onto ground; approximately image right
+  Zg: ground normal toward camera; positive for protrusions
+  Yg: Zg cross Xg; approximately image up
+  origin: intersection of camera principal axis and ground plane
+T_ground_from_camera:
+- - 0.9999974593961868
+  - -1.4640223003458356e-05
+  - -0.0022541044420844366
+  - 1.604829925389028
+- - -1.6940658945086007e-21
+  - -0.999978908688844
+  - 0.006494780786830639
+  - -4.624017579198343
+- - -0.002254151985105348
+  - -0.006494764286165805
+  - -0.9999763681386152
+  - 711.9421666134897
+- - 0.0
+  - 0.0
+  - 0.0
+  - 1.0
+T_camera_from_ground:
+- - 0.9999974593961867
+  - -1.694070198469807e-21
+  - -0.0022541519851053474
+  - 0.0
+- - -1.4640223003458355e-05
+  - -0.9999789086888436
+  - -0.006494764286165804
+  - -0.0
+- - -0.002254104442084436
+  - 0.006494780786830637
+  - -0.999976368138615
+  - 711.9589915296891
+- - 0.0
+  - 0.0
+  - 0.0
+  - 1.0
+ground_plane_in_camera:
+  equation: n_x*Xc + n_y*Yc + n_z*Zc + D = 0
+  coefficients:
+  - -0.002254151985105348
+  - -0.006494764286165805
+  - -0.9999763681386152
+  - 711.9421666134897
+  normal:
+  - -0.002254151985105348
+  - -0.006494764286165805
+  - -0.9999763681386152
+  D_mm: 711.9421666134897
+ground_origin_in_camera_mm:
+- 0.0
+- -0.0
+- 711.9589915296891
+ground_axes_in_camera:
+  Xg:
+  - 0.9999974593961868
+  - -1.4640223003458356e-05
+  - -0.0022541044420844366
+  Yg:
+  - -1.6940658945086007e-21
+  - -0.999978908688844
+  - 0.006494780786830639
+  Zg:
+  - -0.002254151985105348
+  - -0.006494764286165805
+  - -0.9999763681386152
+camera_installation:
+  optical_axis_to_ground_normal_deg: 0.3939013332644828
+  optical_axis_to_ground_plane_deg: 89.60609866673552
+  camera_height_above_ground_mm: 711.9421666134897
+laser_plane_in_camera:
+  equation: A*Xc + B*Yc + C*Zc + D = 0
+  coefficients:
+  - -0.007674435801431195
+  - 0.957266158017049
+  - 0.28910656469614804
+  - -206.8374851061746
+quality_checks:
+  rotation_orthogonality_frobenius: 3.1401927996151666e-16
+  rotation_determinant: 1.0000000000000004
+  transform_inverse_frobenius: 1.1102344097176432e-16
+  ground_z_median_mm: 0.0
+  ground_z_std_mm: 3.1965334518709363
+  max_ground_z_std_mm: 1.0
+  ground_z_std_passed: false
+normal_estimation:
+  detected_frame_count: 7
+  accepted_frame_count: 7
+  outlier_threshold_deg: 0.44694562699007545
+  frames:
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_chessboard_test\35000us\pose_1.tif
+    reprojection_rmse_px: 0.052523404359817505
+    normal_camera:
+    - 0.002142831557826447
+    - 0.0068428606775785975
+    - 0.9999742914348659
+    angular_error_deg: 0.020939835895630608
+    accepted: true
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_chessboard_test\35000us\pose_2.tif
+    reprojection_rmse_px: 0.05752145126461983
+    normal_camera:
+    - 0.0017232375040164142
+    - 0.0048049760671762705
+    - 0.9999869712438751
+    angular_error_deg: 0.10148581411968231
+    accepted: true
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_chessboard_test\35000us\pose_3.tif
+    reprojection_rmse_px: 0.05378410220146179
+    normal_camera:
+    - 0.0012789149408005956
+    - 0.006967439573353924
+    - 0.9999749092664105
+    angular_error_deg: 0.06209423232968293
+    accepted: true
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_chessboard_test\35000us\pose_4.tif
+    reprojection_rmse_px: 0.046911049634218216
+    normal_camera:
+    - 0.0004968607379973616
+    - 0.007669126179141704
+    - 0.9999704683804694
+    angular_error_deg: 0.1210994093403177
+    accepted: true
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_chessboard_test\35000us\pose_5.tif
+    reprojection_rmse_px: 0.0501154400408268
+    normal_camera:
+    - 0.004107342125718785
+    - 0.006511821863115268
+    - 0.9999703625191526
+    angular_error_deg: 0.10618504419758122
+    accepted: true
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_chessboard_test\35000us\pose_6.tif
+    reprojection_rmse_px: 0.0474969856441021
+    normal_camera:
+    - -0.0021802948216660223
+    - 0.005393512834424563
+    - 0.9999830780237211
+    angular_error_deg: 0.26179315431207434
+    accepted: true
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_chessboard_test\35000us\pose_7.tif
+    reprojection_rmse_px: 0.06287652254104614
+    normal_camera:
+    - 0.008210093738739373
+    - 0.007273387747678391
+    - 0.9999398442863816
+    angular_error_deg: 0.3441609160558787
+    accepted: true
+  failures: []
+ground_laser:
+  processed_frame_count: 10
+  point_count: 20967
+  frames:
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_laserground_test\1200us\pose_1.tif
+    total_columns: 2448
+    quality_valid_count: 2099
+    reconstructed_count: 2099
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_laserground_test\1200us\pose_1_02.tif
+    total_columns: 2448
+    quality_valid_count: 2092
+    reconstructed_count: 2092
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_laserground_test\1200us\pose_1_03.tif
+    total_columns: 2448
+    quality_valid_count: 2104
+    reconstructed_count: 2104
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_laserground_test\1200us\pose_1_04.tif
+    total_columns: 2448
+    quality_valid_count: 2090
+    reconstructed_count: 2090
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_laserground_test\1200us\pose_1_05.tif
+    total_columns: 2448
+    quality_valid_count: 2095
+    reconstructed_count: 2095
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_laserground_test\1200us\pose_1_06.tif
+    total_columns: 2448
+    quality_valid_count: 2095
+    reconstructed_count: 2095
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_laserground_test\1200us\pose_1_07.tif
+    total_columns: 2448
+    quality_valid_count: 2097
+    reconstructed_count: 2097
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_laserground_test\1200us\pose_1_08.tif
+    total_columns: 2448
+    quality_valid_count: 2099
+    reconstructed_count: 2099
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_laserground_test\1200us\pose_1_09.tif
+    total_columns: 2448
+    quality_valid_count: 2097
+    reconstructed_count: 2097
+  - image: D:\Docs\linelaserscan\calibration\data\0729waican_laserground_test\1200us\pose_1_10.tif
+    total_columns: 2448
+    quality_valid_count: 2099
+    reconstructed_count: 2099
+  failures: []
+  centre_extraction:
+    method: steger_2d
+    sigma_px: 1.2
+    max_offset_px: 0.75
+    min_normal_y: 0.5
+    min_response_ratio: 0.0005
+    background_window_px: 31
+    min_prominence_ratio: 0.01
+    profile_smoothing_sigma_px: 0.8
+    background_percentile: 20.0
+    post_filters:
+    - continuity_filter
+    - undistorted_image_line_ransac
+    - laser_plane_intersection_depth_range
+inputs:
+  intrinsics: D:\Docs\linelaserscan\calibration\outputs\0729calib_17_result_fix_k3\calibration_result.yaml
+  laser_plane: D:\Docs\linelaserscan\calibration\outputs\0729calibv2steger_laser_plane_17config\laser_plane.yaml
+  chessboard_dir: D:\Docs\linelaserscan\calibration\data\0729waican_chessboard_test\35000us
+  laser_dir: D:\Docs\linelaserscan\calibration\data\0729waican_laserground_test\1200us
+  pattern_cols: 11
+  pattern_rows: 8
+  square_size_mm: 20.0
+algorithm_variant:
+  base_module: calibrate_ground_extrinsics.py
+  changed_component: ground laser centre extraction only
+  centre_extraction:
+    method: steger_2d
+    sigma_px: 1.2
+    max_offset_px: 0.75
+    min_normal_y: 0.5
+    min_response_ratio: 0.0005
+    background_window_px: 31
+    min_prominence_ratio: 0.01
+    profile_smoothing_sigma_px: 0.8
+    background_percentile: 20.0
+    post_filters:
+    - continuity_filter
+    - undistorted_image_line_ransac
+    - laser_plane_intersection_depth_range

@@ -1,0 +1,81 @@
+coordinate_system: camera
+units: mm
+equation: a*x + b*y + c*z + d = 0
+plane:
+  a: -0.007674435801431195
+  b: 0.957266158017049
+  c: 0.28910656469614804
+  d: -206.8374851061746
+  normal_norm: 1.0
+intrinsics: D:\Docs\linelaserscan\calibration\outputs\0729calib_17_result_fix_k3\calibration_result.yaml
+image_size:
+- 2448
+- 2048
+fit_dir: D:\Docs\linelaserscan\calibration\data\0729chess_laser_test
+test_dir: D:\Docs\linelaserscan\calibration\data\0729chess_laser_test
+chess_pattern: chess {id:03d}.tif
+nolaser_pattern: nolaser {id:03d}.tif
+laser_pattern: laser {id:03d}.tif
+train_ids:
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+- 10
+- 11
+- 12
+- 13
+- 14
+- 15
+- 16
+- 17
+- 18
+validation_ids:
+- 19
+- 20
+- 21
+- 22
+excluded_training_ids: []
+plane_ransac_threshold_mm: 0.5
+distance_definition: absolute orthogonal distance to normalized plane
+distance_variance_ddof: 0
+metrics:
+  train_fit_inliers:
+    point_count: 17266
+    mean_distance_mm: 0.08448213233946704
+    variance_distance_mm2: 0.0055257404130636045
+    rmse_mm: 0.11252986758050873
+    p95_mm: 0.23795146897195707
+    max_mm: 0.49886618366920743
+    mean_signed_distance_mm: 0.0022959621487754576
+    variance_signed_distance_mm2: 0.012657699655498218
+  train_all_extracted:
+    point_count: 17268
+    mean_distance_mm: 0.08453074015116113
+    variance_distance_mm2: 0.00554549876080498
+    rmse_mm: 0.11265409353995133
+    p95_mm: 0.2379783143550256
+    max_mm: 0.5070845206313379
+    mean_signed_distance_mm: 0.002354088859032286
+    variance_signed_distance_mm2: 0.012685403056951884
+  validation:
+    point_count: 3082
+    mean_distance_mm: 0.11296968817094204
+    variance_distance_mm2: 0.007604957904687702
+    rmse_mm: 0.14271337831516562
+    p95_mm: 0.27125979587686677
+    max_mm: 0.37439438665902003
+    mean_signed_distance_mm: 0.04916679207861153
+    variance_signed_distance_mm2: 0.017949734906826165
+centre_extraction:
+  method: steger_2d
+  sigma_px: 1.2
+  max_offset_px: 0.75
+  min_normal_y: 0.5
+  min_response_ratio: 0.0005
+  interactive_plotly_written: true
