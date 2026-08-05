@@ -1,24 +1,24 @@
 schema_version: 1
-generated_utc: '2026-08-03T00:40:47.439193+00:00'
+generated_utc: '2026-08-04T03:22:51.034487+00:00'
 registry_path: D:\Docs\linelaserscan\calibration_tool\configs\golden_sources.yaml
 sources:
   offline_measurement_tool:
     config_path: D:\Docs\linelaserscan\linelaser_tool\laser_measurement_tool\configs\measure_tool.yaml
-    config_sha256: f9193a2d89d4ab1a43c81298d3df291b7b492c38b4dd4b1e987f63afd5ca2ddb
-    config_raw_sha256: f9193a2d89d4ab1a43c81298d3df291b7b492c38b4dd4b1e987f63afd5ca2ddb
-    semantic_sha256: 5eab2cb2e8f63270f97a46faeb481f80eb758fb817becb6f4141d7658096d60f
+    config_sha256: 4f1eaaf89509520cc03095ebe6f5d82fadd5d99e880d57cd68e30604bb0fd3ad
+    config_raw_sha256: 4f1eaaf89509520cc03095ebe6f5d82fadd5d99e880d57cd68e30604bb0fd3ad
+    semantic_sha256: f57aab48cc9290f4290ffd7e38628a5d0fceb0296d594d1b956ab08a02dfe7d0
     schema_version: 1
     selected_extractor:
       method: steger
       options:
-        sigma: 3.0
+        sigma: 1.5
         threshold: 30.0
         deriv_thresh: 0.5
         roi_margin: 120
         roi_max_height: 512
         scan_axis: column
-      profile_sha256: 603cde423e233b3bff3a0af34437bc4185dbfcf4ccf09435b8779dc706afedb5
-    expected_extractor: shared_steger
+      profile_sha256: 14be09943b439ada4571c5a769b002c6bcbb5682db5ca6d2231c1d29cb0bc6a9
+    expected_extractor: steger
     camera:
       image_width: 2448
       image_height: 2048
@@ -64,10 +64,7 @@ sources:
         raw_sha256: 4b14655a4d0fa0d9acafdd13dc27683bcfc3106f26da34639729ac69a1ffdbc5
         size_bytes: 56013
     manifest: null
-    findings:
-    - code: expected_extractor_mismatch
-      severity: fail
-      message: 运行 config 选择 steger，golden 标定链要求 shared_steger
+    findings: []
     snapshot_files:
       config: snapshots\offline_measurement_tool\measure_tool.yaml
       intrinsics: snapshots\offline_measurement_tool\calibration\camera_intrinsics.yaml
@@ -76,24 +73,21 @@ sources:
       ground_u_compensation: snapshots\offline_measurement_tool\calibration\ground_u_compensation.csv
   online_measurement_tool:
     config_path: D:\Docs\linelaserscan\0704line-laser-3d-scanner\laser_measurement_tool\configs\measure_tool.yaml
-    config_sha256: 59edc42918fddc18dda07b8a4e7ef7b611589f22c01580ea056e19f404039f07
-    config_raw_sha256: e2f7c1d3bb892d1c10410090a06e90ffa2049398c490aa85afc89d63b5a7474d
-    semantic_sha256: dac546a91ac4106e38c9b73812b800e302d46ab3b7bb471556419fd122fc52ca
+    config_sha256: 17b23e13c0d285c32b78e360f66e42c8be633e5159312f7a498b940c81509ecc
+    config_raw_sha256: 9255a3f307e31fecef4955802f1e492581bbd0be0056d1c3928cfe340c253e2a
+    semantic_sha256: a128918528093a87a588ef8c484d3564ed53f2ec20d48345ca182ee61a6e8ffb
     schema_version: 1
     selected_extractor:
-      method: centroid
+      method: steger
       options:
-        background_kernel: 51
-        min_local_contrast_dn: 20.0
-        centroid_window_radius: 5
-        segment_min_columns: 42
-        continuity_max_column_gap: 2
-        continuity_max_vertical_jump: 14.0
-        correction_window: 7
-        correction_max_shift: 3.5
+        sigma: 1.5
+        threshold: 30.0
+        deriv_thresh: 0.5
+        roi_margin: 120
+        roi_max_height: 512
         scan_axis: column
-      profile_sha256: 05620b6bcc934f4e31a90fd03a5aa7b259d1eb810a796eaca30c40459e3b756d
-    expected_extractor: shared_steger
+      profile_sha256: 14be09943b439ada4571c5a769b002c6bcbb5682db5ca6d2231c1d29cb0bc6a9
+    expected_extractor: steger
     camera:
       image_width: 2448
       image_height: 2048
@@ -170,13 +164,7 @@ sources:
           expected_sha256: 4b14655a4d0fa0d9acafdd13dc27683bcfc3106f26da34639729ac69a1ffdbc5
           actual_sha256: 4b14655a4d0fa0d9acafdd13dc27683bcfc3106f26da34639729ac69a1ffdbc5
           matches: true
-    findings:
-    - code: runtime_manifest_extractor_mismatch
-      severity: fail
-      message: 运行 config 选择 centroid，标定 manifest 声明 shared_steger
-    - code: expected_extractor_mismatch
-      severity: fail
-      message: 运行 config 选择 centroid，golden 标定链要求 shared_steger
+    findings: []
     snapshot_files:
       config: snapshots\online_measurement_tool\measure_tool.yaml
       manifest: snapshots\online_measurement_tool\calibration\manifest.yaml

@@ -1,0 +1,858 @@
+schema_version: 1
+dataset_id: capture_obs_chessboard_demo
+status: completed
+created_at: '2026-08-04T05:34:59.177+00:00'
+updated_at: '2026-08-04T05:36:44.546+00:00'
+completed_at: '2026-08-04T05:36:44.546+00:00'
+plan_sha256: a5e926eb63791230ef8ddaab35518c0cd439a60700541bf4204d19dcee641ec6
+plan:
+  dataset_id: capture_obs_chessboard_demo
+  output_dir: D:\Docs\linelaserscan\calibration_tool\data\obs\chessboard
+  backend: mvs
+  serial_number: ''
+  camera:
+    exposure_us: 1200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    max_saturation_fraction: 0.05
+    max_dark_fraction: 0.95
+    min_dynamic_range_u8: 20.0
+    min_laser_coverage: 0.3
+    require_chessboard_detection: true
+    max_chessboard_saturation_fraction: 0.005
+    max_chessboard_highlight_fraction: 0.2
+    max_chessboard_p995_u8: 245.0
+    max_laser_saturation_fraction: 0.001
+    max_laser_peak_saturation_fraction: 0.02
+    max_laser_peak_near_saturation_fraction: 0.1
+    max_laser_saturated_width_px: 1.0
+  board_pattern:
+  - 11
+  - 8
+  metadata: {}
+  backend_options: {}
+  tasks:
+  - task_id: chess_001
+    frames: 2
+    filename_template: obs_chess {pose_id}{index_suffix}{suffix}
+    camera:
+      exposure_us: 600.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '001'
+    role: chessboard
+    instruction: 固定棋盘姿态并开启线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: &id001 {}
+  - task_id: chess_002
+    frames: 2
+    filename_template: obs_chess {pose_id}{index_suffix}{suffix}
+    camera:
+      exposure_us: 600.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '002'
+    role: chessboard
+    instruction: 固定棋盘姿态并开启线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_003
+    frames: 2
+    filename_template: obs_chess {pose_id}{index_suffix}{suffix}
+    camera:
+      exposure_us: 600.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '003'
+    role: chessboard
+    instruction: 固定棋盘姿态并开启线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_004
+    frames: 2
+    filename_template: obs_chess {pose_id}{index_suffix}{suffix}
+    camera:
+      exposure_us: 600.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '004'
+    role: chessboard
+    instruction: 固定棋盘姿态并开启线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_005
+    frames: 2
+    filename_template: obs_chess {pose_id}{index_suffix}{suffix}
+    camera:
+      exposure_us: 600.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '005'
+    role: chessboard
+    instruction: 固定棋盘姿态并开启线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_006
+    frames: 2
+    filename_template: obs_chess {pose_id}{index_suffix}{suffix}
+    camera:
+      exposure_us: 600.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '006'
+    role: chessboard
+    instruction: 固定棋盘姿态并开启线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+device: null
+network_packet_size: null
+tasks:
+  chess_001:
+    status: completed
+    frames_expected: 2
+    frames_captured: 2
+    error: null
+    completed_at: '2026-08-04T05:35:03.713+00:00'
+  chess_002:
+    status: completed
+    frames_expected: 2
+    frames_captured: 2
+    error: null
+    completed_at: '2026-08-04T05:35:23.712+00:00'
+  chess_003:
+    status: completed
+    frames_expected: 2
+    frames_captured: 2
+    error: null
+    completed_at: '2026-08-04T05:35:44.178+00:00'
+  chess_004:
+    status: completed
+    frames_expected: 2
+    frames_captured: 2
+    error: null
+    completed_at: '2026-08-04T05:36:05.178+00:00'
+  chess_005:
+    status: completed
+    frames_expected: 2
+    frames_captured: 2
+    error: null
+    completed_at: '2026-08-04T05:36:26.004+00:00'
+  chess_006:
+    status: completed
+    frames_expected: 2
+    frames_captured: 2
+    error: null
+    completed_at: '2026-08-04T05:36:44.546+00:00'
+frames:
+- task_id: chess_001
+  pose_id: '001'
+  role: chessboard
+  tags: *id001
+  index: 1
+  filename: obs_chess 001.tif
+  sha256: 2a35fcb7c2a54d6f38751882443b9d8a36601b90e2fe64879ba428987a021f05
+  camera_frame_number: 551
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1668083475075
+  host_timestamp_ns: 1785821699022721200
+  host_monotonic_ns: 1465694547572600
+  requested_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.29313090443611145
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 28.0
+    saturation_fraction: 8.576835682189543e-06
+    dark_fraction: 0.9976090574576184
+    focus_laplacian: 13.883170333027756
+    laser_coverage: 0.7834967320261438
+    laser_peak_saturation_fraction: 0.01929092805005214
+    laser_peak_near_saturation_fraction: 0.020333680917622523
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 3.0
+    laser_fwhm_p95_px: 3.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings: []
+    passed: true
+- task_id: chess_001
+  pose_id: '001'
+  role: chessboard
+  tags: {}
+  index: 2
+  filename: obs_chess 001_02.tif
+  sha256: 3e8ff7296642dd3d9a215e47f68dbdeab352ce3e0b31351669e8054bb31c0419
+  camera_frame_number: 651
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1668516175476
+  host_timestamp_ns: 1785821703364651200
+  host_monotonic_ns: 1465698889145200
+  requested_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.29366785287857056
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 28.0
+    saturation_fraction: 8.377374387254903e-06
+    dark_fraction: 0.9976070628446692
+    focus_laplacian: 13.83314344608889
+    laser_coverage: 0.7814542483660131
+    laser_peak_saturation_fraction: 0.01881860951385259
+    laser_peak_near_saturation_fraction: 0.01986408782017773
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 3.0
+    laser_fwhm_p95_px: 3.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings: []
+    passed: true
+- task_id: chess_002
+  pose_id: '002'
+  role: chessboard
+  tags: {}
+  index: 1
+  filename: obs_chess 002.tif
+  sha256: 337e053ed9ff5caee9433456415d243b3dc892acee52e2dcec7f594ca3fee28d
+  camera_frame_number: 387
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1670321943075
+  host_timestamp_ns: 1785821721415563600
+  host_monotonic_ns: 1465716940047000
+  requested_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.33762872219085693
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 26.0
+    saturation_fraction: 1.515905841503268e-05
+    dark_fraction: 0.9975663727405024
+    focus_laplacian: 18.427330066926174
+    laser_coverage: 0.809640522875817
+    laser_peak_saturation_fraction: 0.03481331987891019
+    laser_peak_near_saturation_fraction: 0.036831483350151364
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - laser_peak_saturated
+    passed: false
+- task_id: chess_002
+  pose_id: '002'
+  role: chessboard
+  tags: {}
+  index: 2
+  filename: obs_chess 002_02.tif
+  sha256: 54a930319831e1d16e2e8e412e014e7badcc7a0d0b9688b0afee84ea53e42b5d
+  camera_frame_number: 432
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1670516658236
+  host_timestamp_ns: 1785821723357149300
+  host_monotonic_ns: 1465718882418900
+  requested_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.3363511860370636
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 26.0
+    saturation_fraction: 1.555798100490196e-05
+    dark_fraction: 0.9975625829758987
+    focus_laplacian: 18.472482319746838
+    laser_coverage: 0.8075980392156863
+    laser_peak_saturation_fraction: 0.035407182599898834
+    laser_peak_near_saturation_fraction: 0.036418816388467376
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - laser_peak_saturated
+    passed: false
+- task_id: chess_003
+  pose_id: '003'
+  role: chessboard
+  tags: {}
+  index: 1
+  filename: obs_chess 003.tif
+  sha256: fa4b56c72a4bf3835101868a52e0d3f580e01da00bf907abe5eaac42976ee306
+  camera_frame_number: 258
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1672323065756
+  host_timestamp_ns: 1785821741399388100
+  host_monotonic_ns: 1465736924385700
+  requested_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.3082217574119568
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 27.0
+    saturation_fraction: 1.4161751940359478e-05
+    dark_fraction: 0.9974297417534722
+    focus_laplacian: 18.02544029084491
+    laser_coverage: 0.8455882352941176
+    laser_peak_saturation_fraction: 0.03188405797101449
+    laser_peak_near_saturation_fraction: 0.034782608695652174
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 3.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - laser_peak_saturated
+    passed: false
+- task_id: chess_003
+  pose_id: '003'
+  role: chessboard
+  tags: {}
+  index: 2
+  filename: obs_chess 003_02.tif
+  sha256: 58acbf43c8e3f55b88b801c504707d7bbc7e82b4b57746d82225a6e01bc09e39
+  camera_frame_number: 314
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1672565377956
+  host_timestamp_ns: 1785821743823981700
+  host_monotonic_ns: 1465739349192600
+  requested_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.30841323733329773
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 27.0
+    saturation_fraction: 1.4760135825163399e-05
+    dark_fraction: 0.9974301406760621
+    focus_laplacian: 18.044737971685418
+    laser_coverage: 0.8464052287581699
+    laser_peak_saturation_fraction: 0.032818532818532815
+    laser_peak_near_saturation_fraction: 0.033783783783783786
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - laser_peak_saturated
+    passed: false
+- task_id: chess_004
+  pose_id: '004'
+  role: chessboard
+  tags: {}
+  index: 1
+  filename: obs_chess 004.tif
+  sha256: 387bc756d37ba4365f2034a89b46fb0e1260b911cd6df982a5403dc7351d057e
+  camera_frame_number: 393
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1674393187836
+  host_timestamp_ns: 1785821762098103100
+  host_monotonic_ns: 1465757622618400
+  requested_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.3207941949367523
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 29.0
+    saturation_fraction: 1.0371987336601308e-05
+    dark_fraction: 0.9973441728579453
+    focus_laplacian: 14.907327888738388
+    laser_coverage: 0.869281045751634
+    laser_peak_saturation_fraction: 0.022086466165413533
+    laser_peak_near_saturation_fraction: 0.023966165413533833
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 3.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - laser_peak_saturated
+    passed: false
+- task_id: chess_004
+  pose_id: '004'
+  role: chessboard
+  tags: {}
+  index: 2
+  filename: obs_chess 004_02.tif
+  sha256: bd66b6aa7bf8e5d05ada4ac0e12f34d585315e966ad6246bc34c18d102496e8e
+  camera_frame_number: 454
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1674657135075
+  host_timestamp_ns: 1785821764763175700
+  host_monotonic_ns: 1465760287862000
+  requested_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.32043835520744324
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 29.0
+    saturation_fraction: 1.0770909926470589e-05
+    dark_fraction: 0.9973437739353553
+    focus_laplacian: 14.982910754590565
+    laser_coverage: 0.8672385620915033
+    laser_peak_saturation_fraction: 0.023080546396608573
+    laser_peak_near_saturation_fraction: 0.024022609514837492
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 3.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - laser_peak_saturated
+    passed: false
+- task_id: chess_005
+  pose_id: '005'
+  role: chessboard
+  tags: {}
+  index: 1
+  filename: obs_chess 005.tif
+  sha256: 94ac02d63ec0ff4ca2a192277a86313222b8c5a2f0e010285520b3f420a2d1a2
+  camera_frame_number: 416
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1676588182956
+  host_timestamp_ns: 1785821784040915700
+  host_monotonic_ns: 1465779566345700
+  requested_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.29065439105033875
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 27.0
+    saturation_fraction: 1.1768216401143791e-05
+    dark_fraction: 0.9973559410743464
+    focus_laplacian: 16.888800726980605
+    laser_coverage: 0.875
+    laser_peak_saturation_fraction: 0.02287581699346405
+    laser_peak_near_saturation_fraction: 0.028478057889822595
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 3.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - laser_peak_saturated
+    passed: false
+- task_id: chess_005
+  pose_id: '005'
+  role: chessboard
+  tags: {}
+  index: 2
+  filename: obs_chess 005_02.tif
+  sha256: 0c868ca979e1fd57a34cd83a7ee7655cb0e1f55ca3b952d44ad4bfd540ad53b2
+  camera_frame_number: 451
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1676739628076
+  host_timestamp_ns: 1785821785587170600
+  host_monotonic_ns: 1465781111840900
+  requested_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.2908247411251068
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 27.0
+    saturation_fraction: 1.2167138991013073e-05
+    dark_fraction: 0.9973545448452819
+    focus_laplacian: 16.914118349078407
+    laser_coverage: 0.875
+    laser_peak_saturation_fraction: 0.023809523809523808
+    laser_peak_near_saturation_fraction: 0.027544351073762838
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 3.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - laser_peak_saturated
+    passed: false
+- task_id: chess_006
+  pose_id: '006'
+  role: chessboard
+  tags: {}
+  index: 1
+  filename: obs_chess 006.tif
+  sha256: 8a2956b432a3d9f5740a1f07adeba4f15fc0ebccd3c7d07f37ad6c48eee55107
+  camera_frame_number: 26
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1678424138436
+  host_timestamp_ns: 1785821802436772000
+  host_monotonic_ns: 1465797962208000
+  requested_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.2871389091014862
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 27.0
+    saturation_fraction: 8.975758272058824e-06
+    dark_fraction: 0.9975659738179126
+    focus_laplacian: 15.79482812818359
+    laser_coverage: 0.8084150326797386
+    laser_peak_saturation_fraction: 0.021728145528044467
+    laser_peak_near_saturation_fraction: 0.023244062657908033
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - laser_peak_saturated
+    passed: false
+- task_id: chess_006
+  pose_id: '006'
+  role: chessboard
+  tags: {}
+  index: 2
+  filename: obs_chess 006_02.tif
+  sha256: 88504454a9c5d908ae0753882024db98c323b8cebe5ba5f1daf0d96dd64c272d
+  camera_frame_number: 65
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1678592891595
+  host_timestamp_ns: 1785821804126100700
+  host_monotonic_ns: 1465799650650600
+  requested_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.28314048051834106
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 27.0
+    saturation_fraction: 8.975758272058824e-06
+    dark_fraction: 0.997564378127553
+    focus_laplacian: 15.86601586434956
+    laser_coverage: 0.8104575163398693
+    laser_peak_saturation_fraction: 0.021673387096774195
+    laser_peak_near_saturation_fraction: 0.023185483870967742
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - laser_peak_saturated
+    passed: false
+quality_summary:
+  frames: 12
+  passed: 2
+  warnings: 10
+  warning_counts:
+    laser_peak_saturated: 10

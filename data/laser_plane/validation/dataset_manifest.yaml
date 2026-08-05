@@ -1,0 +1,1987 @@
+schema_version: 1
+dataset_id: laser_plane_validation_capture_demo
+status: completed
+created_at: '2026-08-04T03:25:18.269+00:00'
+updated_at: '2026-08-04T03:28:54.664+00:00'
+completed_at: '2026-08-04T03:28:54.664+00:00'
+plan_sha256: 20c58ddb93653beabe4351d408691ad1c77351e83a1dd695f4a61919d3ce01f4
+plan:
+  dataset_id: laser_plane_validation_capture_demo
+  output_dir: D:\Docs\linelaserscan\calibration_tool\data\laser_plane\validation
+  backend: mvs
+  serial_number: ''
+  camera:
+    exposure_us: 1200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    max_saturation_fraction: 0.05
+    max_dark_fraction: 0.95
+    min_dynamic_range_u8: 20.0
+    min_laser_coverage: 0.3
+    require_chessboard_detection: true
+    max_chessboard_saturation_fraction: 0.005
+    max_chessboard_highlight_fraction: 0.2
+    max_chessboard_p995_u8: 245.0
+    max_laser_saturation_fraction: 0.001
+    max_laser_peak_saturation_fraction: 0.02
+    max_laser_peak_near_saturation_fraction: 0.1
+    max_laser_saturated_width_px: 1.0
+  board_pattern:
+  - 11
+  - 8
+  metadata: {}
+  backend_options: {}
+  tasks:
+  - task_id: chess_001
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 60000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '001'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: &id001 {}
+  - task_id: nolaser_001
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 400.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '001'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_001
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 400.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '001'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_002
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 60000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '002'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_002
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 400.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '002'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_002
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 400.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '002'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_003
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 60000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '003'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_003
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 400.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '003'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_003
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 400.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '003'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_004
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 60000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '004'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_004
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 400.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '004'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_004
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 400.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '004'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_005
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 60000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '005'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_005
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 400.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '005'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_005
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 400.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '005'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_006
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 60000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '006'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_006
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 400.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '006'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_006
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 400.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '006'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_007
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 60000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '007'
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_007
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 400.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '007'
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_007
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 400.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: '007'
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+  - task_id: chess_008
+    frames: 1
+    filename_template: chess {pose_id}{suffix}
+    camera:
+      exposure_us: 60000.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: 008
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    tags: {}
+  - task_id: nolaser_008
+    frames: 1
+    filename_template: nolaser {pose_id}{suffix}
+    camera:
+      exposure_us: 400.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: 008
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    tags: {}
+  - task_id: laser_008
+    frames: 1
+    filename_template: laser {pose_id}{suffix}
+    camera:
+      exposure_us: 400.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 2448
+      height: 2048
+      timeout_ms: 2000
+    pose_id: 008
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: {}
+device: null
+network_packet_size: null
+tasks:
+  chess_001:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:25:18.496+00:00'
+  nolaser_001:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:25:22.387+00:00'
+  laser_001:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:25:28.336+00:00'
+  chess_002:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:25:43.212+00:00'
+  nolaser_002:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:25:46.937+00:00'
+  laser_002:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:25:54.302+00:00'
+  chess_003:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:26:10.401+00:00'
+  nolaser_003:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:26:14.751+00:00'
+  laser_003:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:26:21.713+00:00'
+  chess_004:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:26:41.302+00:00'
+  nolaser_004:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:26:44.597+00:00'
+  laser_004:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:26:49.637+00:00'
+  chess_005:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:27:07.840+00:00'
+  nolaser_005:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:27:11.235+00:00'
+  laser_005:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:27:16.983+00:00'
+  chess_006:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:27:50.687+00:00'
+  nolaser_006:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:27:54.315+00:00'
+  laser_006:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:28:00.207+00:00'
+  chess_007:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:28:16.907+00:00'
+  nolaser_007:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:28:20.755+00:00'
+  laser_007:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:28:26.788+00:00'
+  chess_008:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:28:44.501+00:00'
+  nolaser_008:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:28:48.360+00:00'
+  laser_008:
+    status: completed
+    frames_expected: 1
+    frames_captured: 1
+    error: null
+    completed_at: '2026-08-04T03:28:54.664+00:00'
+frames:
+- task_id: chess_001
+  pose_id: '001'
+  role: chessboard
+  tags: *id001
+  index: 1
+  filename: chess 001.tif
+  sha256: 59947b0c1b26e71b2e2e7f11c98d5965529784c3c9bd965d953e6fdce286b15d
+  camera_frame_number: 285
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 889963345995
+  host_timestamp_ns: 1785813918090310800
+  host_monotonic_ns: 1457910426129800
+  requested_camera:
+    exposure_us: 60000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 60000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 55.20668029785156
+    p01_dn: 6.0
+    p50_dn: 60.0
+    p99_dn: 141.0
+    dynamic_range_u8: 135.0
+    saturation_fraction: 0.00043342939389297383
+    dark_fraction: 0.007432725694444444
+    focus_laplacian: 44.243545206218045
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: 0.0005293702767565359
+    chessboard_p995_u8: 151.0
+    chessboard_detected: true
+    chessboard_pattern_used:
+    - 11
+    - 8
+    chessboard_detection_method: classic
+    chessboard_hint: 完整棋盘检测通过
+    warnings: []
+    passed: true
+- task_id: nolaser_001
+  pose_id: '001'
+  role: nolaser
+  tags: {}
+  index: 1
+  filename: nolaser 001.tif
+  sha256: 2da976309f3175681d2061803ee3ec2ff69f69107235cf6899364608ac2c9c65
+  camera_frame_number: 63
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 890370763395
+  host_timestamp_ns: 1785813922170920300
+  host_monotonic_ns: 1457914506845400
+  requested_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.008718254044651985
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 0.0
+    dynamic_range_u8: 0.0
+    saturation_fraction: 0.0
+    dark_fraction: 1.0
+    focus_laplacian: 0.08122901667177287
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - image_too_dark
+    - dynamic_range_low
+    passed: false
+- task_id: laser_001
+  pose_id: '001'
+  role: laser
+  tags: {}
+  index: 1
+  filename: laser 001.tif
+  sha256: 47b71ab9c8c8b17bf5d1963554e2b666f2b83af7f6824cbf0dd2b32202c3a86a
+  camera_frame_number: 109
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 890952497996
+  host_timestamp_ns: 1785813927983426100
+  host_monotonic_ns: 1457920318750500
+  requested_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.0928061455488205
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 19.0
+    saturation_fraction: 7.978451797385621e-06
+    dark_fraction: 0.9980534572227329
+    focus_laplacian: 10.270209218941465
+    laser_coverage: 0.7193627450980392
+    laser_peak_saturation_fraction: 0.017035775127768313
+    laser_peak_near_saturation_fraction: 0.017603634298693924
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: chess_002
+  pose_id: '002'
+  role: chessboard
+  tags: {}
+  index: 1
+  filename: chess 002.tif
+  sha256: b6d7a3a90e0500d910d63fc8151bec6fb1a687a842f07a00bd631adadb05bce4
+  camera_frame_number: 223
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 892440662076
+  host_timestamp_ns: 1785813942870361800
+  host_monotonic_ns: 1457935206241100
+  requested_camera:
+    exposure_us: 60000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 60000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 66.61447143554688
+    p01_dn: 8.0
+    p50_dn: 58.0
+    p99_dn: 131.0
+    dynamic_range_u8: 123.0
+    saturation_fraction: 0.0002347659441380719
+    dark_fraction: 0.0
+    focus_laplacian: 68.41598251377319
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: 0.0003668093213848039
+    chessboard_p995_u8: 132.0
+    chessboard_detected: true
+    chessboard_pattern_used:
+    - 11
+    - 8
+    chessboard_detection_method: classic
+    chessboard_hint: 完整棋盘检测通过
+    warnings: []
+    passed: true
+- task_id: nolaser_002
+  pose_id: '002'
+  role: nolaser
+  tags: {}
+  index: 1
+  filename: nolaser 002.tif
+  sha256: 48a667bf2ab15c2572a0185f3971f33111913c1bb490ef09511a3cfff352efd0
+  camera_frame_number: 60
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 892822725195
+  host_timestamp_ns: 1785813946701534000
+  host_monotonic_ns: 1457939036839600
+  requested_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.023223279044032097
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 1.0
+    saturation_fraction: 0.0
+    dark_fraction: 1.0
+    focus_laplacian: 0.39386385250714867
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - image_too_dark
+    - dynamic_range_low
+    passed: false
+- task_id: laser_002
+  pose_id: '002'
+  role: laser
+  tags: {}
+  index: 1
+  filename: laser 002.tif
+  sha256: 519b23ec10945346933b3f843646f364446c273d0d8fef586a8ed61f0298f6ba
+  camera_frame_number: 142
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 893547526635
+  host_timestamp_ns: 1785813953933441400
+  host_monotonic_ns: 1457946268907700
+  requested_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.1086142510175705
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 16.0
+    saturation_fraction: 4.7870710784313725e-06
+    dark_fraction: 0.9980281256382761
+    focus_laplacian: 10.229504953020328
+    laser_coverage: 0.7802287581699346
+    laser_peak_saturation_fraction: 0.012565445026178011
+    laser_peak_near_saturation_fraction: 0.013089005235602094
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: chess_003
+  pose_id: '003'
+  role: chessboard
+  tags: {}
+  index: 1
+  filename: chess 003.tif
+  sha256: 24642cebf41556d8d890bcdf72d9a80eb2f6ed11dbaae6fc19ebe2e96a8df50d
+  camera_frame_number: 241
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 895148098836
+  host_timestamp_ns: 1785813969960210400
+  host_monotonic_ns: 1457962296023800
+  requested_camera:
+    exposure_us: 60000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 60000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 64.73507690429688
+    p01_dn: 8.0
+    p50_dn: 60.0
+    p99_dn: 125.0
+    dynamic_range_u8: 117.0
+    saturation_fraction: 0.0002190085018382353
+    dark_fraction: 6.382761437908497e-06
+    focus_laplacian: 71.08960259739678
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: 0.00031235638786764703
+    chessboard_p995_u8: 126.0
+    chessboard_detected: true
+    chessboard_pattern_used:
+    - 11
+    - 8
+    chessboard_detection_method: classic
+    chessboard_hint: 完整棋盘检测通过
+    warnings: []
+    passed: true
+- task_id: nolaser_003
+  pose_id: '003'
+  role: nolaser
+  tags: {}
+  index: 1
+  filename: nolaser 003.tif
+  sha256: 6ad2865245bc49624e0976d7b197752d7dd6c2bb28763ebca55ec762f399a6fe
+  camera_frame_number: 73
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 895604110356
+  host_timestamp_ns: 1785813974516112200
+  host_monotonic_ns: 1457966851511800
+  requested_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.009882709011435509
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 0.0
+    dynamic_range_u8: 0.0
+    saturation_fraction: 0.0
+    dark_fraction: 1.0
+    focus_laplacian: 0.1625098932776823
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - image_too_dark
+    - dynamic_range_low
+    passed: false
+- task_id: laser_003
+  pose_id: '003'
+  role: laser
+  tags: {}
+  index: 1
+  filename: laser 003.tif
+  sha256: 76782c4a77ce13e178781158c49583be6ebdad4e93a5ed3ba208561510aa0900
+  camera_frame_number: 131
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 896288620275
+  host_timestamp_ns: 1785813981340235900
+  host_monotonic_ns: 1457973675976300
+  requested_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.08899005502462387
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 18.0
+    saturation_fraction: 3.989225898692811e-06
+    dark_fraction: 0.9979082494000204
+    focus_laplacian: 9.17667742959333
+    laser_coverage: 0.8116830065359477
+    laser_peak_saturation_fraction: 0.008555611474584801
+    laser_peak_near_saturation_fraction: 0.008555611474584801
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 3.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: chess_004
+  pose_id: '004'
+  role: chessboard
+  tags: {}
+  index: 1
+  filename: chess 004.tif
+  sha256: 763c162ea8a304a610cf86befacd02266d654d21ff8c52b2aa0f6606fa6789a6
+  camera_frame_number: 299
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 898241579715
+  host_timestamp_ns: 1785814000864691500
+  host_monotonic_ns: 1457993200730100
+  requested_camera:
+    exposure_us: 60000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 60000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 64.82849884033203
+    p01_dn: 8.0
+    p50_dn: 59.0
+    p99_dn: 129.0
+    dynamic_range_u8: 121.0
+    saturation_fraction: 0.000200857523999183
+    dark_fraction: 0.0012725630616830066
+    focus_laplacian: 71.31726308723263
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: 0.0002840328839869281
+    chessboard_p995_u8: 130.0
+    chessboard_detected: true
+    chessboard_pattern_used:
+    - 11
+    - 8
+    chessboard_detection_method: classic
+    chessboard_hint: 完整棋盘检测通过
+    warnings: []
+    passed: true
+- task_id: nolaser_004
+  pose_id: '004'
+  role: nolaser
+  tags: {}
+  index: 1
+  filename: nolaser 004.tif
+  sha256: e63fe34409e36c5ca8190c9ef857bc657df662a91a1987ef23be6e588894fcc5
+  camera_frame_number: 49
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 898588508796
+  host_timestamp_ns: 1785814004358981800
+  host_monotonic_ns: 1457996694772700
+  requested_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.014737198129296303
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 1.0
+    saturation_fraction: 0.0
+    dark_fraction: 1.0
+    focus_laplacian: 0.2474913752935671
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - image_too_dark
+    - dynamic_range_low
+    passed: false
+- task_id: laser_004
+  pose_id: '004'
+  role: laser
+  tags: {}
+  index: 1
+  filename: laser 004.tif
+  sha256: e0bbd264b29cc08e1a1be1684836de1cab18734ffe901eb8c7c8baddb6eee309
+  camera_frame_number: 87
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 899079061676
+  host_timestamp_ns: 1785814009251283200
+  host_monotonic_ns: 1458001587230600
+  requested_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.0948600023984909
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 18.0
+    saturation_fraction: 2.792458129084967e-06
+    dark_fraction: 0.9979088477839052
+    focus_laplacian: 8.37920584086483
+    laser_coverage: 0.806781045751634
+    laser_peak_saturation_fraction: 0.006582278481012658
+    laser_peak_near_saturation_fraction: 0.006582278481012658
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 3.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: chess_005
+  pose_id: '005'
+  role: chessboard
+  tags: {}
+  index: 1
+  filename: chess 005.tif
+  sha256: 227ce8745cea9c7af953b8fe280dd0f119d17d47665788250e4933b636b1d12a
+  camera_frame_number: 277
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 900900261476
+  host_timestamp_ns: 1785814027461774300
+  host_monotonic_ns: 1458019796966600
+  requested_camera:
+    exposure_us: 60000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 60000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 66.91572570800781
+    p01_dn: 8.0
+    p50_dn: 55.0
+    p99_dn: 131.0
+    dynamic_range_u8: 123.0
+    saturation_fraction: 0.00035065295649509804
+    dark_fraction: 2.592996834150327e-06
+    focus_laplacian: 68.5988613859776
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: 0.00046494427849264703
+    chessboard_p995_u8: 132.0
+    chessboard_detected: true
+    chessboard_pattern_used:
+    - 11
+    - 8
+    chessboard_detection_method: classic
+    chessboard_hint: 完整棋盘检测通过
+    warnings: []
+    passed: true
+- task_id: nolaser_005
+  pose_id: '005'
+  role: nolaser
+  tags: {}
+  index: 1
+  filename: nolaser 005.tif
+  sha256: 44f12f37901d7a0bb647a3c53f5b2cd44baca05c9993f4aaabb4fb680ad43259
+  camera_frame_number: 52
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 901253524556
+  host_timestamp_ns: 1785814030981301000
+  host_monotonic_ns: 1458023317004200
+  requested_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.029882093891501427
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 1.0
+    saturation_fraction: 0.0
+    dark_fraction: 1.0
+    focus_laplacian: 0.5069615981158089
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - image_too_dark
+    - dynamic_range_low
+    passed: false
+- task_id: laser_005
+  pose_id: '005'
+  role: laser
+  tags: {}
+  index: 1
+  filename: laser 005.tif
+  sha256: 773be8490c9edae6514c6cd4fe8b4672cba06f2d2fb7a206303061a1bfc8ce99
+  camera_frame_number: 102
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 901812524036
+  host_timestamp_ns: 1785814036580240100
+  host_monotonic_ns: 1458028916332000
+  requested_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.124725341796875
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 17.0
+    saturation_fraction: 5.784377553104575e-06
+    dark_fraction: 0.9979666915594363
+    focus_laplacian: 11.675389508011005
+    laser_coverage: 0.7875816993464052
+    laser_peak_saturation_fraction: 0.014522821576763486
+    laser_peak_near_saturation_fraction: 0.01504149377593361
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: chess_006
+  pose_id: '006'
+  role: chessboard
+  tags: {}
+  index: 1
+  filename: chess 006.tif
+  sha256: 6bc9a29bbe3952a7ac2690dbeca45c3a474fc3b5196d75126e6c21365d6ff849
+  camera_frame_number: 531
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 905177317556
+  host_timestamp_ns: 1785814070233645300
+  host_monotonic_ns: 1458062569275700
+  requested_camera:
+    exposure_us: 60000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 60000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 59.4443359375
+    p01_dn: 7.0
+    p50_dn: 56.0
+    p99_dn: 112.0
+    dynamic_range_u8: 105.0
+    saturation_fraction: 3.131542330473856e-05
+    dark_fraction: 0.0011403202231413398
+    focus_laplacian: 63.30214775280592
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: 4.248525582107843e-05
+    chessboard_p995_u8: 114.0
+    chessboard_detected: true
+    chessboard_pattern_used:
+    - 11
+    - 8
+    chessboard_detection_method: classic
+    chessboard_hint: 完整棋盘检测通过
+    warnings: []
+    passed: true
+- task_id: nolaser_006
+  pose_id: '006'
+  role: nolaser
+  tags: {}
+  index: 1
+  filename: nolaser 006.tif
+  sha256: 9be801178f54193c3136e1c084bb42462c15587ff2130e617b518fb92725a28a
+  camera_frame_number: 56
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 905560682715
+  host_timestamp_ns: 1785814074059719400
+  host_monotonic_ns: 1458066395093800
+  requested_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.0029839409980922937
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 0.0
+    dynamic_range_u8: 0.0
+    saturation_fraction: 0.0
+    dark_fraction: 1.0
+    focus_laplacian: 0.04261949327252959
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - image_too_dark
+    - dynamic_range_low
+    passed: false
+- task_id: laser_006
+  pose_id: '006'
+  role: laser
+  tags: {}
+  index: 1
+  filename: laser 006.tif
+  sha256: cd1bd139934f7542541022856dd53b204ff03056b8ee700b92db7ed75f3aac30
+  camera_frame_number: 105
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 906134932716
+  host_timestamp_ns: 1785814079815163600
+  host_monotonic_ns: 1458072150636900
+  requested_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.08243156969547272
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 19.0
+    saturation_fraction: 2.3935355392156862e-06
+    dark_fraction: 0.9981783199933619
+    focus_laplacian: 10.00132542030386
+    laser_coverage: 0.7075163398692811
+    laser_peak_saturation_fraction: 0.006928406466512702
+    laser_peak_near_saturation_fraction: 0.006928406466512702
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: chess_007
+  pose_id: '007'
+  role: chessboard
+  tags: {}
+  index: 1
+  filename: chess 007.tif
+  sha256: f81bd85b154e1a9aec6a658b44fa882a7bd726677314174880d651f25508ee88
+  camera_frame_number: 252
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 907803969596
+  host_timestamp_ns: 1785814096508989300
+  host_monotonic_ns: 1458088844820400
+  requested_camera:
+    exposure_us: 60000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 60000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 66.8810043334961
+    p01_dn: 8.0
+    p50_dn: 50.0
+    p99_dn: 129.0
+    dynamic_range_u8: 121.0
+    saturation_fraction: 0.00011329401552287582
+    dark_fraction: 2.1940742442810456e-06
+    focus_laplacian: 62.3705763464328
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: 0.00020285213694852942
+    chessboard_p995_u8: 130.0
+    chessboard_detected: true
+    chessboard_pattern_used:
+    - 11
+    - 8
+    chessboard_detection_method: classic
+    chessboard_hint: 完整棋盘检测通过
+    warnings: []
+    passed: true
+- task_id: nolaser_007
+  pose_id: '007'
+  role: nolaser
+  tags: {}
+  index: 1
+  filename: nolaser 007.tif
+  sha256: 0080b6269c91a26957f2564ce8955069a079c27d8c049fdd16f793a0d41077f4
+  camera_frame_number: 62
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 908201206875
+  host_timestamp_ns: 1785814100484099900
+  host_monotonic_ns: 1458092819330500
+  requested_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.025623196735978127
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 1.0
+    saturation_fraction: 0.0
+    dark_fraction: 1.0
+    focus_laplacian: 0.44720099953980486
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - image_too_dark
+    - dynamic_range_low
+    passed: false
+- task_id: laser_007
+  pose_id: '007'
+  role: laser
+  tags: {}
+  index: 1
+  filename: laser 007.tif
+  sha256: 860b3eda05daf0e7808dc52dfcabf7660563c46912f7fe5b6bab7623fc72d0a8
+  camera_frame_number: 107
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 908788242596
+  host_timestamp_ns: 1785814106368213100
+  host_monotonic_ns: 1458098703851800
+  requested_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.12904946506023407
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 15.0
+    saturation_fraction: 4.7870710784313725e-06
+    dark_fraction: 0.998226988549326
+    focus_laplacian: 14.138630387050075
+    laser_coverage: 0.6985294117647058
+    laser_peak_saturation_fraction: 0.013450292397660818
+    laser_peak_near_saturation_fraction: 0.013450292397660818
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: chess_008
+  pose_id: 008
+  role: chessboard
+  tags: {}
+  index: 1
+  filename: chess 008.tif
+  sha256: 7f26cfd2479ebeaa0b1cbff7d6896393f4e0a6466e8e71429d9b8228a4386216
+  camera_frame_number: 269
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 910563984435
+  host_timestamp_ns: 1785814124085901900
+  host_monotonic_ns: 1458116421099800
+  requested_camera:
+    exposure_us: 60000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 60000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 51.35393524169922
+    p01_dn: 5.0
+    p50_dn: 53.0
+    p99_dn: 89.0
+    dynamic_range_u8: 84.0
+    saturation_fraction: 0.0
+    dark_fraction: 0.010064617481107025
+    focus_laplacian: 34.15913161220044
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: 0.0
+    chessboard_p995_u8: 89.0
+    chessboard_detected: true
+    chessboard_pattern_used:
+    - 11
+    - 8
+    chessboard_detection_method: classic
+    chessboard_hint: 完整棋盘检测通过
+    warnings: []
+    passed: true
+- task_id: nolaser_008
+  pose_id: 008
+  role: nolaser
+  tags: {}
+  index: 1
+  filename: nolaser 008.tif
+  sha256: b4f7b13df90f3103190fef62474a2357eb408109681b69a82834d374205573db
+  camera_frame_number: 62
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 910959509715
+  host_timestamp_ns: 1785814128068493100
+  host_monotonic_ns: 1458120404567100
+  requested_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.00029141295817680657
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 0.0
+    dynamic_range_u8: 0.0
+    saturation_fraction: 0.0
+    dark_fraction: 1.0
+    focus_laplacian: 0.0027761023029003267
+    laser_coverage: null
+    laser_peak_saturation_fraction: null
+    laser_peak_near_saturation_fraction: null
+    laser_saturated_width_p95_px: null
+    laser_fwhm_p50_px: null
+    laser_fwhm_p95_px: null
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - image_too_dark
+    - dynamic_range_low
+    passed: false
+- task_id: laser_008
+  pose_id: 008
+  role: laser
+  tags: {}
+  index: 1
+  filename: laser 008.tif
+  sha256: 2f6807630e86205758ccdf314e2d88c5d67325ac24d04133d7cbc0afbfceff24
+  camera_frame_number: 114
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 911580030276
+  host_timestamp_ns: 1785814134267008100
+  host_monotonic_ns: 1458126602740900
+  requested_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 400.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.06947735697031021
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 0.0
+    dynamic_range_u8: 15.0
+    saturation_fraction: 4.388148488562091e-06
+    dark_fraction: 0.9982489292917688
+    focus_laplacian: 9.73826509356832
+    laser_coverage: 0.6858660130718954
+    laser_peak_saturation_fraction: 0.013103037522334724
+    laser_peak_near_saturation_fraction: 0.0136986301369863
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 4.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+quality_summary:
+  frames: 24
+  passed: 8
+  warnings: 16
+  warning_counts:
+    image_too_dark: 8
+    dynamic_range_low: 16

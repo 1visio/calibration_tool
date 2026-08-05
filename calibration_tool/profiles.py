@@ -15,6 +15,16 @@ CALIBRATION_FILE_KEYS = (
 )
 
 
+def extractors_compatible(actual: str | None, expected: str | None) -> bool:
+    """判断提取器是否等价；``shared_steger`` 是旧配置名兼容别名。"""
+
+    if actual is None or expected is None:
+        return actual == expected
+    if actual == expected:
+        return True
+    return {actual, expected} <= {"steger", "shared_steger"}
+
+
 def load_runtime_profile(
     config_path: str | Path,
     *,
@@ -31,6 +41,25 @@ def load_runtime_profile(
     options = extraction.get(method, {})
     if not isinstance(options, Mapping):
         raise ConfigError(f"extraction.{method} 必须是映射")
+    options = dict(options)
+    profile_value = extraction.get("profile")
+    if profile_value not in (None, ""):
+        profile_path = resolve_relative(path, _required_text(profile_value, "extraction.profile"))
+        profile_document = load_document(profile_path)
+        profile_options = profile_document.get("steger", profile_document.get("options", {}))
+        if not isinstance(profile_options, Mapping):
+            raise ConfigError(f"extraction.profile 缺少 steger 映射：{profile_path}")
+        merged_options = dict(profile_options)
+        if method == "shared_steger":
+            # 旧配置可继续写 sigma_px，但运行时统一转换为 realtime Steger
+            # 的字段；旧版背景/分段参数没有对应的实时 extractor 语义，忽略。
+            for key, value in options.items():
+                canonical = "sigma" if key == "sigma_px" else key
+                if canonical in profile_options:
+                    merged_options[canonical] = value
+        else:
+            merged_options.update(options)
+        options = merged_options
 
     files: dict[str, dict[str, Any]] = {}
     findings: list[dict[str, str]] = []
@@ -59,7 +88,7 @@ def load_runtime_profile(
         manifest_info = _inspect_manifest(manifest_path)
         findings.extend(manifest_info.pop("findings"))
         manifest_algorithm = manifest_info.get("algorithm")
-        if manifest_algorithm and method != manifest_algorithm:
+        if manifest_algorithm and not extractors_compatible(method, str(manifest_algorithm)):
             findings.append(
                 _finding(
                     "runtime_manifest_extractor_mismatch",
@@ -68,7 +97,7 @@ def load_runtime_profile(
                 )
             )
 
-    if expected_extractor and method != expected_extractor:
+    if expected_extractor and not extractors_compatible(method, expected_extractor):
         findings.append(
             _finding(
                 "expected_extractor_mismatch",
@@ -171,4 +200,3 @@ def _required_text(value: Any, name: str) -> str:
 
 def _finding(code: str, severity: str, message: str) -> dict[str, str]:
     return {"code": code, "severity": severity, "message": message}
-

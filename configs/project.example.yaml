@@ -15,12 +15,16 @@ exposures_us:
   laser_board: 400
   ground_runtime: 1200
 algorithm_profile:
-  extractor: shared_steger
+  extractor: steger
   settings:
-    sigma_px: 1.2
-    max_offset_px: 0.75
-    min_normal_y: 0.5
-    min_response_ratio: 0.0005
+    # 运行时从 calibration/config/realtime_steger.yaml 继承；
+    # 修改该 profile 即可同步标定和在线测量。
+    sigma: 1.5
+    threshold: 30.0
+    deriv_thresh: 0.5
+    roi_margin: 120
+    roi_max_height: 512
+    scan_axis: column
 datasets:
   intrinsics_fit: null
   intrinsics_validation: null
@@ -30,4 +34,3 @@ datasets:
   ground_validation: null
   compensation_build: null
   compensation_validation: null
-

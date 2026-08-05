@@ -1,12 +1,181 @@
 schema_version: 1
 workflow: D:\Docs\linelaserscan\calibration_tool\configs\workflow.example.yaml
-started_utc: '2026-08-03T10:43:59.567519+00:00'
-completed_utc: '2026-08-03T10:43:59.567519+00:00'
+started_utc: '2026-08-04T07:15:58.227666+00:00'
+completed_utc: '2026-08-04T07:16:43.870082+00:00'
 status: completed
-stages: []
-gates: []
+stages:
+- schema_version: 1
+  stage: intrinsics
+  module: calibrate_chessboard_opencv_reusable
+  started_utc: '2026-08-04T07:15:58.229667+00:00'
+  completed_utc: '2026-08-04T07:16:11.552461+00:00'
+  arguments:
+  - --fit-dir
+  - D:\Docs\linelaserscan\calibration_tool\data\laser_plane\fit
+  - --test-dir
+  - D:\Docs\linelaserscan\calibration_tool\data\laser_plane\validation
+  - --output
+  - D:\Docs\linelaserscan\calibration_tool\runs\0804\intrinsics
+  - --fit-pattern
+  - chess *.tif
+  - --test-pattern
+  - chess *.tif
+  - --pattern-cols
+  - '11'
+  - --pattern-rows
+  - '8'
+  - --square-size-mm
+  - '20'
+  output_dir: D:\Docs\linelaserscan\calibration_tool\runs\0804\intrinsics
+  result_file: D:\Docs\linelaserscan\calibration_tool\runs\0804\intrinsics\calibration_result.yaml
+  metrics:
+    fit_image_count: 14
+    test_image_count: 8
+    fit_rmse_px: 0.10189317911863327
+    test_rmse_px: 0.10303767770528793
+  quality_gates:
+  - id: intrinsics.fit_rmse
+    status: pass
+    actual: 0.10189317911863327
+    expected: <= 0.30 px
+  - id: intrinsics.independent_test
+    status: pass
+    actual: 8
+    expected: '>= 1 image'
+  - id: intrinsics.test_rmse
+    status: pass
+    actual: 0.10303767770528793
+    expected: <= 0.50 px
+  status: completed
+- schema_version: 1
+  stage: laser_plane_shared_steger
+  module: calibrate_laser_plane_core_v2
+  started_utc: '2026-08-04T07:16:11.556374+00:00'
+  completed_utc: '2026-08-04T07:16:35.178545+00:00'
+  arguments:
+  - --intrinsics
+  - D:\Docs\linelaserscan\calibration_tool\runs\0804\intrinsics\calibration_result.yaml
+  - --fit-dir
+  - D:\Docs\linelaserscan\calibration_tool\data\laser_plane\fit
+  - --test-dir
+  - D:\Docs\linelaserscan\calibration_tool\data\laser_plane\validation
+  - --test-ids
+  - 1-7
+  - --pattern-cols
+  - '11'
+  - --pattern-rows
+  - '8'
+  - --square-size-mm
+  - '20'
+  - --config
+  - D:\Docs\linelaserscan\calibration\config\laser_plane_core_config.yaml
+  - --output-dir
+  - D:\Docs\linelaserscan\calibration_tool\runs\0804\laser_plane
+  output_dir: D:\Docs\linelaserscan\calibration_tool\runs\0804\laser_plane
+  result_file: D:\Docs\linelaserscan\calibration_tool\runs\0804\laser_plane\laser_plane.yaml
+  metrics:
+    train_rmse_mm: 0.14892889949246754
+    validation_rmse_mm: 0.11112820579367316
+    validation_p95_mm: 0.18851144719562285
+    diagnostic_exists: true
+    unexcluded_moved_count: 0
+    unexcluded_unresolved_count: 15
+    unexcluded_tracking_unresolved_count: 0
+    unexcluded_not_assessed_count: 15
+  quality_gates:
+  - id: laser_plane.validation_rmse
+    status: pass
+    actual: 0.11112820579367316
+    expected: <= 0.25 mm
+  - id: laser_plane.validation_p95
+    status: pass
+    actual: 0.18851144719562285
+    expected: <= 0.50 mm
+  - id: laser_plane.pair_motion_diagnostics
+    status: pass
+    actual: true
+    expected: 'true'
+  - id: laser_plane.no_unexcluded_pair_motion
+    status: pass
+    actual: 0
+    expected: '0'
+  - id: laser_plane.motion_resolved_or_excluded
+    status: warn
+    actual: 15
+    expected: 0（纹理不足时需人工复核）
+  status: completed
+- schema_version: 1
+  stage: ground_extrinsics_board_only
+  module: calibrate_ground_extrinsics_board_only
+  started_utc: '2026-08-04T07:16:35.186553+00:00'
+  completed_utc: '2026-08-04T07:16:43.864082+00:00'
+  arguments:
+  - --intrinsics
+  - D:\Docs\linelaserscan\calibration_tool\runs\0804\intrinsics\calibration_result.yaml
+  - --fit-dir
+  - D:\Docs\linelaserscan\calibration_tool\data\extrinsics\fit
+  - --validation-dir
+  - D:\Docs\linelaserscan\calibration_tool\data\extrinsics\validation
+  - --pattern-cols
+  - '11'
+  - --pattern-rows
+  - '8'
+  - --square-size-mm
+  - '20'
+  - --output-dir
+  - D:\Docs\linelaserscan\calibration_tool\runs\0804\ground_extrinsics
+  output_dir: D:\Docs\linelaserscan\calibration_tool\runs\0804\ground_extrinsics
+  result_file: D:\Docs\linelaserscan\calibration_tool\runs\0804\ground_extrinsics\camera_ground_extrinsics.yaml
+  metrics:
+    ground_z_std_passed: null
+    ground_z_std_mm: null
+    validation_rmse_mm: 0.06277774272812121
+    validation_p95_mm: 0.12141111003682566
+  quality_gates:
+  - id: ground.board_validation_rmse
+    status: pass
+    actual: 0.06277774272812121
+    expected: <= 0.20 mm
+  status: completed
+gates:
+- id: intrinsics.fit_rmse
+  status: pass
+  actual: 0.10189317911863327
+  expected: <= 0.30 px
+- id: intrinsics.independent_test
+  status: pass
+  actual: 8
+  expected: '>= 1 image'
+- id: intrinsics.test_rmse
+  status: pass
+  actual: 0.10303767770528793
+  expected: <= 0.50 px
+- id: laser_plane_shared_steger.laser_plane.validation_rmse
+  status: pass
+  actual: 0.11112820579367316
+  expected: <= 0.25 mm
+- id: laser_plane_shared_steger.laser_plane.validation_p95
+  status: pass
+  actual: 0.18851144719562285
+  expected: <= 0.50 mm
+- id: laser_plane_shared_steger.laser_plane.pair_motion_diagnostics
+  status: pass
+  actual: true
+  expected: 'true'
+- id: laser_plane_shared_steger.laser_plane.no_unexcluded_pair_motion
+  status: pass
+  actual: 0
+  expected: '0'
+- id: laser_plane_shared_steger.laser_plane.motion_resolved_or_excluded
+  status: warn
+  actual: 15
+  expected: 0（纹理不足时需人工复核）
+- id: ground_extrinsics_board_only.ground.board_validation_rmse
+  status: pass
+  actual: 0.06277774272812121
+  expected: <= 0.20 mm
 counts:
-  pass: 0
-  warn: 0
+  pass: 8
+  warn: 1
   fail: 0
-overall: pass
+overall: warn

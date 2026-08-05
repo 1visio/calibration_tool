@@ -1,0 +1,713 @@
+#8.3测试
+schema_version: 1
+dataset_id: extrinsics_fit_capture_demo
+output_dir: ../data/extrinsics/test
+backend: mvs
+serial_number: ""
+
+
+camera:
+  exposure_us: 1200.0
+  gain_db: 0.0
+  pixel_format: Mono8
+  offset_x: 0
+  offset_y: 0
+  width: 2448
+  height: 2048
+  timeout_ms: 2000
+
+quality:
+  max_saturation_fraction: 0.05
+  max_dark_fraction: 0.95
+  min_dynamic_range_u8: 20.0
+  min_laser_coverage: 0.30
+  require_chessboard_detection: true
+
+board:
+  pattern_cols: 11
+  pattern_rows: 8
+
+# backend_options:
+#   target_fps: 30.0
+#   seed: 20260803
+
+tasks:
+  # =========================
+  # 姿态 001
+  # =========================
+  - task_id: chess_001
+    pose_id: "001"
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    frames: 2
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    filename_template: "chess {pose_id}{index_suffix}{suffix}"
+    camera:
+      exposure_us: 60000.0
+
+  - task_id: nolaser_001
+    pose_id: "001"
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    frames: 2
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    filename_template: "nolaser {pose_id}{index_suffix}{suffix}"
+    camera:
+      exposure_us: 600.0
+
+  - task_id: laser_001
+    pose_id: "001"
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    frames: 2
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    filename_template: "laser {pose_id}{index_suffix}{suffix}"
+    camera:
+      exposure_us: 600.0
+
+  # =========================
+  # 姿态 002
+  # =========================
+  - task_id: chess_002
+    pose_id: "002"
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    frames: 2
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    filename_template: "chess {pose_id}{index_suffix}{suffix}"
+    camera:
+      exposure_us: 60000.0
+  
+  - task_id: nolaser_002
+    pose_id: "002"
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    frames: 2
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    filename_template: "nolaser {pose_id}{index_suffix}{suffix}"
+    camera:
+      exposure_us: 600.0
+
+  - task_id: laser_002
+    pose_id: "002"
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    frames: 2
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    filename_template: "laser {pose_id}{index_suffix}{suffix}"
+    camera:
+      exposure_us: 600.0
+  # =========================
+  # 姿态 003
+  # =========================
+  - task_id: chess_003
+    pose_id: "003"
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    frames: 2
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    filename_template: "chess {pose_id}{index_suffix}{suffix}"
+    camera:
+      exposure_us: 60000.0
+  
+  - task_id: nolaser_003
+    pose_id: "003"
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    frames: 2
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    filename_template: "nolaser {pose_id}{index_suffix}{suffix}"
+    camera:
+      exposure_us: 600.0
+
+  - task_id: laser_003
+    pose_id: "003"
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    frames: 2
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    filename_template: "laser {pose_id}{index_suffix}{suffix}"
+    camera:
+      exposure_us: 600.0
+  # =========================
+  # 姿态 004
+  # =========================
+  - task_id: chess_004
+    pose_id: "004"
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    frames: 2
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    filename_template: "chess {pose_id}{index_suffix}{suffix}"
+    camera:
+      exposure_us: 60000.0
+
+  - task_id: nolaser_004
+    pose_id: "004"
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    frames: 2
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    filename_template: "nolaser {pose_id}{index_suffix}{suffix}"
+    camera:
+      exposure_us: 600.0
+
+  - task_id: laser_004
+    pose_id: "004"
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    frames: 2
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    filename_template: "laser {pose_id}{index_suffix}{suffix}"
+    camera:
+      exposure_us: 600.0
+  # =========================
+  # 姿态 005
+  # =========================
+  - task_id: chess_005
+    pose_id: "005"
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    frames: 2
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    filename_template: "chess {pose_id}{index_suffix}{suffix}"
+    camera:
+      exposure_us: 60000.0
+
+  - task_id: nolaser_005
+    pose_id: "005"
+    role: nolaser
+    instruction: 保持棋盘姿态不变，仅调整曝光。
+    frames: 2
+    settle_frames: 5
+    image_format: tif
+    quality_mode: generic
+    filename_template: "nolaser {pose_id}{index_suffix}{suffix}"
+    camera:
+      exposure_us: 600.0
+
+  - task_id: laser_005
+    pose_id: "005"
+    role: laser
+    instruction: 保持棋盘姿态不变，仅打开激光。
+    frames: 2
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    filename_template: "laser {pose_id}{index_suffix}{suffix}"
+    camera:
+      exposure_us: 600.0
+  # # =========================
+  # # 姿态 006
+  # # =========================
+  # - task_id: chess_006
+  #   pose_id: "006"
+  #   role: chessboard
+  #   instruction: 固定棋盘姿态并关闭线激光。
+  #   frames: 2
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: chessboard
+  #   filename_template: "chess {pose_id}{index_suffix}{suffix}"
+  #   camera:
+  #     exposure_us: 60000.0
+
+  # # =========================
+  # # 姿态 007
+  # # =========================
+  # - task_id: chess_007
+  #   pose_id: "007"
+  #   role: chessboard
+  #   instruction: 固定棋盘姿态并关闭线激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: chessboard
+  #   filename_template: "chess {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 60000.0
+
+  # # =========================
+  # # 姿态 008
+  # # =========================
+  # - task_id: chess_008
+  #   pose_id: "008"
+  #   role: chessboard
+  #   instruction: 固定棋盘姿态并关闭线激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: chessboard
+  #   filename_template: "chess {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 60000.0
+
+  # # =========================
+  # # 姿态 009
+  # # =========================
+  # - task_id: chess_009
+  #   pose_id: "009"
+  #   role: chessboard
+  #   instruction: 固定棋盘姿态并关闭线激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: chessboard
+  #   filename_template: "chess {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 60000.0
+
+  # # =========================
+  # # 姿态 010
+  # # =========================
+  # - task_id: chess_010
+  #   pose_id: "010"
+  #   role: chessboard
+  #   instruction: 固定棋盘姿态并关闭线激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: chessboard
+  #   filename_template: "chess {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 60000.0
+
+  # - task_id: nolaser_010
+  #   pose_id: "010"
+  #   role: nolaser
+  #   instruction: 保持棋盘姿态不变，仅调整曝光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: generic
+  #   filename_template: "nolaser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # - task_id: laser_010
+  #   pose_id: "010"
+  #   role: laser
+  #   instruction: 保持棋盘姿态不变，仅打开激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: laser
+  #   filename_template: "laser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # # =========================
+  # # 姿态 011
+  # # =========================
+  # - task_id: chess_011
+  #   pose_id: "011"
+  #   role: chessboard
+  #   instruction: 固定棋盘姿态并关闭线激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: chessboard
+  #   filename_template: "chess {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 60000.0
+
+  # - task_id: nolaser_011
+  #   pose_id: "011"
+  #   role: nolaser
+  #   instruction: 保持棋盘姿态不变，仅调整曝光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: generic
+  #   filename_template: "nolaser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # - task_id: laser_011
+  #   pose_id: "011"
+  #   role: laser
+  #   instruction: 保持棋盘姿态不变，仅打开激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: laser
+  #   filename_template: "laser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # # =========================
+  # # 姿态 012
+  # # =========================
+  # - task_id: chess_012
+  #   pose_id: "012"
+  #   role: chessboard
+  #   instruction: 固定棋盘姿态并关闭线激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: chessboard
+  #   filename_template: "chess {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 60000.0
+
+  # - task_id: nolaser_012
+  #   pose_id: "012"
+  #   role: nolaser
+  #   instruction: 保持棋盘姿态不变，仅调整曝光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: generic
+  #   filename_template: "nolaser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # - task_id: laser_012
+  #   pose_id: "012"
+  #   role: laser
+  #   instruction: 保持棋盘姿态不变，仅打开激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: laser
+  #   filename_template: "laser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # # =========================
+  # # 姿态 013
+  # # =========================
+  # - task_id: chess_013
+  #   pose_id: "013"
+  #   role: chessboard
+  #   instruction: 固定棋盘姿态并关闭线激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: chessboard
+  #   filename_template: "chess {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 60000.0
+
+  # - task_id: nolaser_013
+  #   pose_id: "013"
+  #   role: nolaser
+  #   instruction: 保持棋盘姿态不变，仅调整曝光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: generic
+  #   filename_template: "nolaser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # - task_id: laser_013
+  #   pose_id: "013"
+  #   role: laser
+  #   instruction: 保持棋盘姿态不变，仅打开激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: laser
+  #   filename_template: "laser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # # =========================
+  # # 姿态 014
+  # # =========================
+  # - task_id: chess_014
+  #   pose_id: "014"
+  #   role: chessboard
+  #   instruction: 固定棋盘姿态并关闭线激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: chessboard
+  #   filename_template: "chess {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 60000.0
+
+  # - task_id: nolaser_014
+  #   pose_id: "014"
+  #   role: nolaser
+  #   instruction: 保持棋盘姿态不变，仅调整曝光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: generic
+  #   filename_template: "nolaser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # - task_id: laser_014
+  #   pose_id: "014"
+  #   role: laser
+  #   instruction: 保持棋盘姿态不变，仅打开激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: laser
+  #   filename_template: "laser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0 
+
+  # # =========================
+  # # 姿态 015
+  # # =========================
+  # - task_id: chess_015
+  #   pose_id: "015"
+  #   role: chessboard
+  #   instruction: 固定棋盘姿态并关闭线激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: chessboard
+  #   filename_template: "chess {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 60000.0
+
+  # - task_id: nolaser_015
+  #   pose_id: "015"
+  #   role: nolaser
+  #   instruction: 保持棋盘姿态不变，仅调整曝光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: generic
+  #   filename_template: "nolaser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # - task_id: laser_015
+  #   pose_id: "015"
+  #   role: laser
+  #   instruction: 保持棋盘姿态不变，仅打开激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: laser
+  #   filename_template: "laser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # # =========================
+  # # 姿态 016
+  # # =========================
+  # - task_id: chess_016
+  #   pose_id: "016"
+  #   role: chessboard
+  #   instruction: 固定棋盘姿态并关闭线激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: laser
+  #   filename_template: "chess {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 60000.0
+
+  # - task_id: nolaser_016
+  #   pose_id: "016"
+  #   role: nolaser
+  #   instruction: 保持棋盘姿态不变，仅调整曝光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: generic
+  #   filename_template: "nolaser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # - task_id: laser_016
+  #   pose_id: "016"
+  #   role: laser
+  #   instruction: 保持棋盘姿态不变，仅打开激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: laser
+  #   filename_template: "laser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # # =========================
+  # # 姿态 017
+  # # =========================
+  # - task_id: chess_017
+  #   pose_id: "017"
+  #   role: chessboard
+  #   instruction: 固定棋盘姿态并关闭线激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: laser
+  #   filename_template: "chess {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 60000.0
+
+  # - task_id: nolaser_017
+  #   pose_id: "017"
+  #   role: nolaser
+  #   instruction: 保持棋盘姿态不变，仅调整曝光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: generic
+  #   filename_template: "nolaser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # - task_id: laser_017
+  #   pose_id: "017"
+  #   role: laser
+  #   instruction: 保持棋盘姿态不变，仅打开激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: laser
+  #   filename_template: "laser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # # =========================
+  # # 姿态 018
+  # # =========================
+  # - task_id: chess_018
+  #   pose_id: "018"
+  #   role: chessboard
+  #   instruction: 固定棋盘姿态并关闭线激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: laser
+  #   filename_template: "chess {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 60000.0
+
+  # - task_id: nolaser_018
+  #   pose_id: "018"
+  #   role: nolaser
+  #   instruction: 保持棋盘姿态不变，仅调整曝光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: generic
+  #   filename_template: "nolaser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # - task_id: laser_018
+  #   pose_id: "018"
+  #   role: laser
+  #   instruction: 保持棋盘姿态不变，仅打开激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: laser
+  #   filename_template: "laser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # # =========================
+  # # 姿态 019
+  # # =========================
+  # - task_id: chess_019
+  #   pose_id: "019"
+  #   role: chessboard
+  #   instruction: 固定棋盘姿态并关闭线激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: laser
+  #   filename_template: "chess {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 60000.0
+
+  # - task_id: nolaser_019
+  #   pose_id: "019"
+  #   role: nolaser
+  #   instruction: 保持棋盘姿态不变，仅调整曝光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: generic
+  #   filename_template: "nolaser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # - task_id: laser_019
+  #   pose_id: "019"
+  #   role: laser
+  #   instruction: 保持棋盘姿态不变，仅打开激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: laser
+  #   filename_template: "laser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # # =========================
+  # # 姿态 020
+  # # =========================
+  # - task_id: chess_020
+  #   pose_id: "020"
+  #   role: chessboard
+  #   instruction: 固定棋盘姿态并关闭线激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: laser
+  #   filename_template: "chess {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 60000.0
+
+  # - task_id: nolaser_020
+  #   pose_id: "020"
+  #   role: nolaser
+  #   instruction: 保持棋盘姿态不变，仅调整曝光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: generic
+  #   filename_template: "nolaser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0
+
+  # - task_id: laser_020
+  #   pose_id: "020"
+  #   role: laser
+  #   instruction: 保持棋盘姿态不变，仅打开激光。
+  #   frames: 1
+  #   settle_frames: 5
+  #   image_format: tif
+  #   quality_mode: laser
+  #   filename_template: "laser {pose_id}{suffix}"
+  #   camera:
+  #     exposure_us: 400.0

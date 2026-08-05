@@ -1,0 +1,108 @@
+#8.3测试
+schema_version: 1
+dataset_id: extrinsics_validation_capture_demo
+output_dir: ../data/extrinsics/validation
+backend: mvs
+serial_number: ""
+
+
+camera:
+  exposure_us: 1200.0
+  gain_db: 0.0
+  pixel_format: Mono8
+  offset_x: 0
+  offset_y: 0
+  width: 2448
+  height: 2048
+  timeout_ms: 2000
+
+quality:
+  max_saturation_fraction: 0.05
+  max_dark_fraction: 0.95
+  min_dynamic_range_u8: 20.0
+  min_laser_coverage: 0.30
+  require_chessboard_detection: true
+
+board:
+  pattern_cols: 11
+  pattern_rows: 8
+
+# backend_options:
+#   target_fps: 30.0
+#   seed: 20260803
+
+tasks:
+  # =========================
+  # 姿态 001
+  # =========================
+  - task_id: chess_001
+    pose_id: "001"
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    frames: 1
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    filename_template: "chess {pose_id}{suffix}"
+    camera:
+      exposure_us: 60000.0
+
+  # =========================
+  # 姿态 002
+  # =========================
+  - task_id: chess_002
+    pose_id: "002"
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    frames: 1
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    filename_template: "chess {pose_id}{suffix}"
+    camera:
+      exposure_us: 60000.0
+
+  # =========================
+  # 姿态 003
+  # =========================
+  - task_id: chess_003
+    pose_id: "003"
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    frames: 1
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    filename_template: "chess {pose_id}{suffix}"
+    camera:
+      exposure_us: 60000.0
+
+  # =========================
+  # 姿态 004
+  # =========================
+  - task_id: chess_004
+    pose_id: "004"
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    frames: 1
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    filename_template: "chess {pose_id}{suffix}"
+    camera:
+      exposure_us: 60000.0
+
+  # =========================
+  # 姿态 005
+  # =========================
+  - task_id: chess_005
+    pose_id: "005"
+    role: chessboard
+    instruction: 固定棋盘姿态并关闭线激光。
+    frames: 1
+    settle_frames: 5
+    image_format: tif
+    quality_mode: chessboard
+    filename_template: "chess {pose_id}{suffix}"
+    camera:
+      exposure_us: 60000.0

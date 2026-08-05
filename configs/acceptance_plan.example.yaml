@@ -10,7 +10,7 @@ inputs:
   quality_reports:
     - ../reports/golden_audit.yaml
   runtime_config: ../../0704line-laser-3d-scanner/laser_measurement_tool/configs/measure_tool.yaml
-  expected_extractor: shared_steger
+  expected_extractor: steger
   golden_baseline: ../golden/baseline.yaml
   compensation_metrics: ../../calibration/outputs/_analysis_v4_ground_bias_holdout_linear/compensation_metrics.json
   artifacts:
@@ -24,4 +24,3 @@ release:
   package_id: mv-cs050-60gm-accepted-v1
   runtime_config: ../../0704line-laser-3d-scanner/laser_measurement_tool/configs/measure_tool.yaml
   output_dir: ../releases/mv-cs050-60gm-accepted-v1
-

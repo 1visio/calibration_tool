@@ -1,16 +1,16 @@
 schema_version: 1
 
-# 路径相对于本文件。当前两套运行工具引用的是同一组几何标定值，
-# 但运行时提取器设置不同；baseline 会保留差异并由质量门禁报告。
+# 路径相对于本文件。当前两套运行工具引用同一组几何标定值和统一实时
+# Steger profile；baseline 同时记录配置与文件哈希。
 sources:
   offline_measurement_tool:
     role: offline
     config: ../../linelaser_tool/laser_measurement_tool/configs/measure_tool.yaml
-    expected_extractor: shared_steger
+    expected_extractor: steger
   online_measurement_tool:
     role: online
     config: ../../0704line-laser-3d-scanner/laser_measurement_tool/configs/measure_tool.yaml
-    expected_extractor: shared_steger
+    expected_extractor: steger
 
 regressions:
   intrinsics_current:
@@ -58,4 +58,3 @@ regressions:
       profile_before_rms_mm: metrics.profile_before_rms_mm
       profile_after_rms_mm: metrics.profile_after_rms_mm
       median_frame_after_rms_mm: metrics.median_frame_after_rms_mm
-

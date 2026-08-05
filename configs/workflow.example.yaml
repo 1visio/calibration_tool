@@ -7,45 +7,45 @@ report: ../reports/example_workflow_run.yaml
 # python -m calibration_tool workflow configs/workflow.example.yaml
 stages:
   - name: intrinsics
-    enabled: false
+    enabled: true
     options:
-      fit_dir: ../data/intrinsics/fit
-      test_dir: ../data/intrinsics/validation
-      output: ../runs/intrinsics
-      fit_pattern: "*.tif"
-      test_pattern: "*.tif"
+      fit_dir: ../data/laser_plane/fit
+      test_dir: ../data/laser_plane/validation
+      output: ../runs/0804/intrinsics
+      fit_pattern: "chess *.tif"
+      test_pattern: "chess *.tif"
       pattern_cols: 11
       pattern_rows: 8
       square_size_mm: 20
   - name: laser_plane_shared_steger
-    enabled: false
+    enabled: true
     options:
-      intrinsics: ../runs/intrinsics/calibration_result.yaml
-      fit_dir: ../data/laser_plane
-      test_dir: ../data/laser_plane
-      fit_ids: 1-18
-      test_ids: 19-22
+      intrinsics: ../runs/0804/intrinsics/calibration_result.yaml
+      fit_dir: ../data/laser_plane/fit
+      test_dir: ../data/laser_plane/validation
+      # fit_ids: 1-18
+      test_ids: 1-7
       pattern_cols: 11
       pattern_rows: 8
       square_size_mm: 20
       config: ../../calibration/config/laser_plane_core_config.yaml
-      output_dir: ../runs/laser_plane
+      output_dir: ../runs/0804/laser_plane
   - name: ground_extrinsics_board_only
-    enabled: false
+    enabled: true
     options:
-      intrinsics: ../runs/intrinsics/calibration_result.yaml
-      fit_dir: ../data/ground/fit
-      validation_dir: ../data/ground/validation
+      intrinsics: ../runs/0804/intrinsics/calibration_result.yaml
+      fit_dir: ../data/extrinsics/fit
+      validation_dir: ../data/extrinsics/validation
       pattern_cols: 11
       pattern_rows: 8
       square_size_mm: 20
-      output_dir: ../runs/ground_extrinsics
+      output_dir: ../runs/0804/ground_extrinsics
   - name: ground_bias
     enabled: false
     options:
-      input_dir: ../runs/ground_reference_pointcloud
+      input_dir: ../runs/0804/ground_reference_pointcloud
       glob: "*/points_ground.csv"
-      output_dir: ../runs/ground_bias
+      output_dir: ../runs/0804/ground_bias
       validation_count: 6
       trend: linear
       aggregate: median

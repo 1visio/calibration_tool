@@ -1,0 +1,12 @@
+# 标定与在线测量共同使用的实时 Steger extractor。
+# FWHM 约 2～3 px 时建议先从 sigma=1.5 px 开始，现场可改为 1.2～2.0 px 做对照。
+schema_version: 1
+algorithm: steger
+
+steger:
+  sigma: 1.5
+  threshold: 30.0
+  deriv_thresh: 0.5
+  roi_margin: 120
+  roi_max_height: 512
+  scan_axis: column

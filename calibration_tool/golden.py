@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import math
 import shutil
 from datetime import datetime, timezone
 from pathlib import Path
@@ -27,8 +28,9 @@ def build_golden_baseline(registry_path: str | Path, output_dir: str | Path) -> 
         profile = load_runtime_profile(config_path, expected_extractor=str(expected) if expected else None)
         snapshot_dir = target / "snapshots" / str(name)
         snapshot_dir.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(config_path, snapshot_dir / config_path.name)
-        copied: dict[str, str] = {"config": str((snapshot_dir / config_path.name).relative_to(target))}
+        snapshot_config = snapshot_dir / config_path.name
+        _copy_runtime_config_with_profile(config_path, snapshot_config)
+        copied: dict[str, str] = {"config": str(snapshot_config.relative_to(target))}
         calibration_dir = snapshot_dir / "calibration"
         manifest = profile.get("manifest")
         if isinstance(manifest, Mapping) and manifest.get("exists"):
@@ -68,6 +70,26 @@ def build_golden_baseline(registry_path: str | Path, output_dir: str | Path) -> 
     }
     dump_yaml(target / "baseline.yaml", baseline)
     return baseline
+
+
+def _copy_runtime_config_with_profile(source: Path, destination: Path) -> None:
+    """复制运行配置及其中央 extractor profile，保持快照可独立加载。"""
+
+    document = load_document(source)
+    extraction = document.get("extraction")
+    profile_value = extraction.get("profile") if isinstance(extraction, Mapping) else None
+    if not isinstance(profile_value, str) or not profile_value.strip():
+        shutil.copy2(source, destination)
+        return
+
+    profile_source = resolve_relative(source, profile_value)
+    profile_destination = destination.parent / profile_source.name
+    shutil.copy2(profile_source, profile_destination)
+    rewritten_extraction = dict(extraction)
+    rewritten_extraction["profile"] = profile_destination.name
+    rewritten_document = dict(document)
+    rewritten_document["extraction"] = rewritten_extraction
+    dump_yaml(destination, rewritten_document)
 
 
 def check_golden_baseline(baseline_path: str | Path) -> dict[str, Any]:
@@ -123,9 +145,22 @@ def _pair_motion_metrics(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8-sig", newline="") as stream:
         rows = list(csv.DictReader(stream))
     training = [row for row in rows if row.get("split") == "train"]
-    moved = [row for row in training if row.get("median_displacement_px") and float(row["median_displacement_px"]) > 1.0]
-    unresolved = [row for row in training if row.get("tracking_ok", "").lower() != "true"]
-    displacements = [float(row["median_displacement_px"]) for row in training if row.get("median_displacement_px")]
+    moved: list[dict[str, str]] = []
+    unresolved: list[dict[str, str]] = []
+    displacements: list[float] = []
+    for row in training:
+        tracking_ok = row.get("tracking_ok", "").lower() == "true"
+        method = row.get("movement_method", "unresolved")
+        try:
+            displacement = float(row.get("median_displacement_px", ""))
+        except (TypeError, ValueError):
+            displacement = math.nan
+        if math.isfinite(displacement):
+            displacements.append(displacement)
+        if tracking_ok and math.isfinite(displacement) and displacement > 1.0:
+            moved.append(row)
+        if method != "disabled" and not tracking_ok:
+            unresolved.append(row)
     return {
         "training_frame_count": len(training),
         "training_moved_count": len(moved),

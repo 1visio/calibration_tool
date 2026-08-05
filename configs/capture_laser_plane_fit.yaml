@@ -45,7 +45,7 @@ tasks:
     quality_mode: chessboard
     filename_template: "chess {pose_id}{suffix}"
     camera:
-      exposure_us: 350000.0
+      exposure_us: 60000.0
 
   - task_id: nolaser_001
     pose_id: "001"
@@ -57,7 +57,7 @@ tasks:
     quality_mode: generic
     filename_template: "nolaser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   - task_id: laser_001
     pose_id: "001"
@@ -69,7 +69,7 @@ tasks:
     quality_mode: laser
     filename_template: "laser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   # =========================
   # 姿态 002
@@ -84,7 +84,7 @@ tasks:
     quality_mode: chessboard
     filename_template: "chess {pose_id}{suffix}"
     camera:
-      exposure_us: 350000.0
+      exposure_us: 60000.0
 
   - task_id: nolaser_002
     pose_id: "002"
@@ -96,7 +96,7 @@ tasks:
     quality_mode: generic
     filename_template: "nolaser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   - task_id: laser_002
     pose_id: "002"
@@ -108,7 +108,7 @@ tasks:
     quality_mode: laser
     filename_template: "laser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   # =========================
   # 姿态 003
@@ -123,7 +123,7 @@ tasks:
     quality_mode: chessboard
     filename_template: "chess {pose_id}{suffix}"
     camera:
-      exposure_us: 350000.0
+      exposure_us: 60000.0
 
   - task_id: nolaser_003
     pose_id: "003"
@@ -135,7 +135,7 @@ tasks:
     quality_mode: generic
     filename_template: "nolaser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   - task_id: laser_003
     pose_id: "003"
@@ -147,7 +147,7 @@ tasks:
     quality_mode: laser
     filename_template: "laser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   # =========================
   # 姿态 004
@@ -162,7 +162,7 @@ tasks:
     quality_mode: chessboard
     filename_template: "chess {pose_id}{suffix}"
     camera:
-      exposure_us: 350000.0
+      exposure_us: 60000.0
 
   - task_id: nolaser_004
     pose_id: "004"
@@ -174,7 +174,7 @@ tasks:
     quality_mode: generic
     filename_template: "nolaser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   - task_id: laser_004
     pose_id: "004"
@@ -186,7 +186,7 @@ tasks:
     quality_mode: laser
     filename_template: "laser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0 
+      exposure_us: 400.0 
 
   # =========================
   # 姿态 005
@@ -201,7 +201,7 @@ tasks:
     quality_mode: chessboard
     filename_template: "chess {pose_id}{suffix}"
     camera:
-      exposure_us: 350000.0
+      exposure_us: 60000.0
 
   - task_id: nolaser_005
     pose_id: "005"
@@ -213,7 +213,7 @@ tasks:
     quality_mode: generic
     filename_template: "nolaser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   - task_id: laser_005
     pose_id: "005"
@@ -225,7 +225,7 @@ tasks:
     quality_mode: laser
     filename_template: "laser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   # =========================
   # 姿态 006
@@ -240,7 +240,7 @@ tasks:
     quality_mode: chessboard
     filename_template: "chess {pose_id}{suffix}"
     camera:
-      exposure_us: 350000.0
+      exposure_us: 60000.0
 
   - task_id: nolaser_006
     pose_id: "006"
@@ -252,7 +252,7 @@ tasks:
     quality_mode: generic
     filename_template: "nolaser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   - task_id: laser_006
     pose_id: "006"
@@ -264,7 +264,7 @@ tasks:
     quality_mode: laser
     filename_template: "laser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   # =========================
   # 姿态 007
@@ -279,7 +279,7 @@ tasks:
     quality_mode: chessboard
     filename_template: "chess {pose_id}{suffix}"
     camera:
-      exposure_us: 350000.0
+      exposure_us: 60000.0
 
   - task_id: nolaser_007
     pose_id: "007"
@@ -291,7 +291,7 @@ tasks:
     quality_mode: generic
     filename_template: "nolaser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   - task_id: laser_007
     pose_id: "007"
@@ -303,7 +303,7 @@ tasks:
     quality_mode: laser
     filename_template: "laser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   # =========================
   # 姿态 008
@@ -318,7 +318,7 @@ tasks:
     quality_mode: chessboard
     filename_template: "chess {pose_id}{suffix}"
     camera:
-      exposure_us: 350000.0
+      exposure_us: 60000.0
 
   - task_id: nolaser_008
     pose_id: "008"
@@ -330,7 +330,7 @@ tasks:
     quality_mode: generic
     filename_template: "nolaser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   - task_id: laser_008
     pose_id: "008"
@@ -342,7 +342,7 @@ tasks:
     quality_mode: laser
     filename_template: "laser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   # =========================
   # 姿态 009
@@ -357,7 +357,7 @@ tasks:
     quality_mode: chessboard
     filename_template: "chess {pose_id}{suffix}"
     camera:
-      exposure_us: 350000.0
+      exposure_us: 60000.0
 
   - task_id: nolaser_009
     pose_id: "009"
@@ -369,7 +369,7 @@ tasks:
     quality_mode: generic
     filename_template: "nolaser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   - task_id: laser_009
     pose_id: "009"
@@ -381,7 +381,7 @@ tasks:
     quality_mode: laser
     filename_template: "laser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   # =========================
   # 姿态 010
@@ -396,7 +396,7 @@ tasks:
     quality_mode: chessboard
     filename_template: "chess {pose_id}{suffix}"
     camera:
-      exposure_us: 350000.0
+      exposure_us: 60000.0
 
   - task_id: nolaser_010
     pose_id: "010"
@@ -408,7 +408,7 @@ tasks:
     quality_mode: generic
     filename_template: "nolaser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   - task_id: laser_010
     pose_id: "010"
@@ -420,7 +420,7 @@ tasks:
     quality_mode: laser
     filename_template: "laser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   # =========================
   # 姿态 011
@@ -435,7 +435,7 @@ tasks:
     quality_mode: chessboard
     filename_template: "chess {pose_id}{suffix}"
     camera:
-      exposure_us: 350000.0
+      exposure_us: 60000.0
 
   - task_id: nolaser_011
     pose_id: "011"
@@ -447,7 +447,7 @@ tasks:
     quality_mode: generic
     filename_template: "nolaser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   - task_id: laser_011
     pose_id: "011"
@@ -459,7 +459,7 @@ tasks:
     quality_mode: laser
     filename_template: "laser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   # =========================
   # 姿态 012
@@ -474,7 +474,7 @@ tasks:
     quality_mode: chessboard
     filename_template: "chess {pose_id}{suffix}"
     camera:
-      exposure_us: 350000.0
+      exposure_us: 60000.0
 
   - task_id: nolaser_012
     pose_id: "012"
@@ -486,7 +486,7 @@ tasks:
     quality_mode: generic
     filename_template: "nolaser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   - task_id: laser_012
     pose_id: "012"
@@ -498,7 +498,7 @@ tasks:
     quality_mode: laser
     filename_template: "laser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   # =========================
   # 姿态 013
@@ -513,7 +513,7 @@ tasks:
     quality_mode: chessboard
     filename_template: "chess {pose_id}{suffix}"
     camera:
-      exposure_us: 350000.0
+      exposure_us: 60000.0
 
   - task_id: nolaser_013
     pose_id: "013"
@@ -525,7 +525,7 @@ tasks:
     quality_mode: generic
     filename_template: "nolaser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   - task_id: laser_013
     pose_id: "013"
@@ -537,7 +537,7 @@ tasks:
     quality_mode: laser
     filename_template: "laser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   # =========================
   # 姿态 014
@@ -552,7 +552,7 @@ tasks:
     quality_mode: chessboard
     filename_template: "chess {pose_id}{suffix}"
     camera:
-      exposure_us: 350000.0
+      exposure_us: 60000.0
 
   - task_id: nolaser_014
     pose_id: "014"
@@ -564,7 +564,7 @@ tasks:
     quality_mode: generic
     filename_template: "nolaser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   - task_id: laser_014
     pose_id: "014"
@@ -576,7 +576,7 @@ tasks:
     quality_mode: laser
     filename_template: "laser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0 
+      exposure_us: 400.0 
 
   # =========================
   # 姿态 015
@@ -591,7 +591,7 @@ tasks:
     quality_mode: chessboard
     filename_template: "chess {pose_id}{suffix}"
     camera:
-      exposure_us: 350000.0
+      exposure_us: 60000.0
 
   - task_id: nolaser_015
     pose_id: "015"
@@ -603,7 +603,7 @@ tasks:
     quality_mode: generic
     filename_template: "nolaser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   - task_id: laser_015
     pose_id: "015"
@@ -615,7 +615,7 @@ tasks:
     quality_mode: laser
     filename_template: "laser {pose_id}{suffix}"
     camera:
-      exposure_us: 500.0
+      exposure_us: 400.0
 
   # # =========================
   # # 姿态 016
@@ -630,7 +630,7 @@ tasks:
   #   quality_mode: laser
   #   filename_template: "chess {pose_id}{suffix}"
   #   camera:
-  #     exposure_us: 350000.0
+  #     exposure_us: 60000.0
 
   # - task_id: nolaser_016
   #   pose_id: "016"
@@ -642,7 +642,7 @@ tasks:
   #   quality_mode: generic
   #   filename_template: "nolaser {pose_id}{suffix}"
   #   camera:
-  #     exposure_us: 500.0
+  #     exposure_us: 400.0
 
   # - task_id: laser_016
   #   pose_id: "016"
@@ -654,7 +654,7 @@ tasks:
   #   quality_mode: laser
   #   filename_template: "laser {pose_id}{suffix}"
   #   camera:
-  #     exposure_us: 500.0
+  #     exposure_us: 400.0
 
   # # =========================
   # # 姿态 017
@@ -669,7 +669,7 @@ tasks:
   #   quality_mode: laser
   #   filename_template: "chess {pose_id}{suffix}"
   #   camera:
-  #     exposure_us: 350000.0
+  #     exposure_us: 60000.0
 
   # - task_id: nolaser_017
   #   pose_id: "017"
@@ -681,7 +681,7 @@ tasks:
   #   quality_mode: generic
   #   filename_template: "nolaser {pose_id}{suffix}"
   #   camera:
-  #     exposure_us: 500.0
+  #     exposure_us: 400.0
 
   # - task_id: laser_017
   #   pose_id: "017"
@@ -693,7 +693,7 @@ tasks:
   #   quality_mode: laser
   #   filename_template: "laser {pose_id}{suffix}"
   #   camera:
-  #     exposure_us: 500.0
+  #     exposure_us: 400.0
 
   # # =========================
   # # 姿态 018
@@ -708,7 +708,7 @@ tasks:
   #   quality_mode: laser
   #   filename_template: "chess {pose_id}{suffix}"
   #   camera:
-  #     exposure_us: 350000.0
+  #     exposure_us: 60000.0
 
   # - task_id: nolaser_018
   #   pose_id: "018"
@@ -720,7 +720,7 @@ tasks:
   #   quality_mode: generic
   #   filename_template: "nolaser {pose_id}{suffix}"
   #   camera:
-  #     exposure_us: 500.0
+  #     exposure_us: 400.0
 
   # - task_id: laser_018
   #   pose_id: "018"
@@ -732,7 +732,7 @@ tasks:
   #   quality_mode: laser
   #   filename_template: "laser {pose_id}{suffix}"
   #   camera:
-  #     exposure_us: 500.0
+  #     exposure_us: 400.0
 
   # # =========================
   # # 姿态 019
@@ -747,7 +747,7 @@ tasks:
   #   quality_mode: laser
   #   filename_template: "chess {pose_id}{suffix}"
   #   camera:
-  #     exposure_us: 350000.0
+  #     exposure_us: 60000.0
 
   # - task_id: nolaser_019
   #   pose_id: "019"
@@ -759,7 +759,7 @@ tasks:
   #   quality_mode: generic
   #   filename_template: "nolaser {pose_id}{suffix}"
   #   camera:
-  #     exposure_us: 500.0
+  #     exposure_us: 400.0
 
   # - task_id: laser_019
   #   pose_id: "019"
@@ -771,7 +771,7 @@ tasks:
   #   quality_mode: laser
   #   filename_template: "laser {pose_id}{suffix}"
   #   camera:
-  #     exposure_us: 500.0
+  #     exposure_us: 400.0
 
   # # =========================
   # # 姿态 020
@@ -786,7 +786,7 @@ tasks:
   #   quality_mode: laser
   #   filename_template: "chess {pose_id}{suffix}"
   #   camera:
-  #     exposure_us: 350000.0
+  #     exposure_us: 60000.0
 
   # - task_id: nolaser_020
   #   pose_id: "020"
@@ -798,7 +798,7 @@ tasks:
   #   quality_mode: generic
   #   filename_template: "nolaser {pose_id}{suffix}"
   #   camera:
-  #     exposure_us: 500.0
+  #     exposure_us: 400.0
 
   # - task_id: laser_020
   #   pose_id: "020"
@@ -810,4 +810,4 @@ tasks:
   #   quality_mode: laser
   #   filename_template: "laser {pose_id}{suffix}"
   #   camera:
-  #     exposure_us: 500.0
+  #     exposure_us: 400.0

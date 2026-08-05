@@ -108,6 +108,8 @@ python -m calibration_tool capture-exposure-series `
 相机回读值、帧号连续性、相机/主机时间戳、SHA-256，以及过曝、欠曝、动态范围、清晰度、
 棋盘检测或激光覆盖率等质量信息。质量告警当前用于提示和记录，不会擅自丢弃原始图像。
 
+激光平面正式采集使用 `chess/nolaser/laser` 三联图：高曝光 `chess` 用于棋盘位姿和运动参考，低曝光 `nolaser` 只用于背景扣除，`laser` 用于激光中心提取。短曝光激光图没有棋盘纹理时，运动诊断会记录 `unresolved_low_texture` 并在 workflow 中给出人工复核警告；只有可测量的位移超过 1 px 才会触发失败。
+
 ## 阶段 3：PySide6 标定向导 MVP
 
 启动真实 MVS 相机模式：

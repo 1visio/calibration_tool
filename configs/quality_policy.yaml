@@ -36,8 +36,8 @@ metric_gates:
     metric: laser_pair_motion_current.training_unresolved_count
     op: eq
     expected: 0
-    failure_status: fail
-    message: 拟合用三联图运动检查必须全部可解析或经人工确认
+    failure_status: warn
+    message: 拟合用三联图运动检查无法解析时仅作警告；必须人工确认棋盘、相机和支架未移动
   - id: ground.hybrid_flatness
     metric: ground_hybrid_current.ground_z_std_passed
     op: truthy

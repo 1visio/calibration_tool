@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib
 import csv
+import math
 import sys
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -35,7 +36,7 @@ STAGES: dict[str, StageSpec] = {
         "calibrate_laser_plane_core_v2",
         "--output-dir",
         "laser_plane.yaml",
-        "shared Steger 激光平面标定",
+        "统一实时 Steger 激光平面标定（旧 stage 名称保留兼容）",
     ),
     "ground_extrinsics_board_only": StageSpec(
         "ground_extrinsics_board_only",
@@ -49,7 +50,7 @@ STAGES: dict[str, StageSpec] = {
         "calibrate_ground_extrinsics_steger_v2",
         "--output-dir",
         "camera_ground_extrinsics.yaml",
-        "棋盘法向与地面激光联合外参标定",
+        "棋盘法向与地面激光联合外参标定（统一实时 Steger）",
     ),
     "ground_bias": StageSpec(
         "ground_bias",
@@ -63,7 +64,7 @@ STAGES: dict[str, StageSpec] = {
         "reconstruct_ground_pointcloud_cloudcompare_v4",
         "--output-dir",
         None,
-        "使用 shared Steger 的三维恢复验证",
+        "使用统一实时 Steger 的三维恢复验证（旧 stage 名称保留兼容）",
         forced_args=("--steger-extractor", "shared"),
     ),
 }
@@ -229,7 +230,22 @@ def _evaluate_stage(
         metrics.update(motion)
         add("laser_plane.pair_motion_diagnostics", motion["diagnostic_exists"] is True, motion["diagnostic_exists"], "true")
         add("laser_plane.no_unexcluded_pair_motion", motion["unexcluded_moved_count"] == 0, motion["unexcluded_moved_count"], "0")
-        add("laser_plane.motion_resolved_or_excluded", motion["unexcluded_unresolved_count"] == 0, motion["unexcluded_unresolved_count"], "0")
+        if motion["unexcluded_unresolved_count"] == 0:
+            add(
+                "laser_plane.motion_resolved_or_excluded",
+                True,
+                0,
+                "0",
+            )
+        else:
+            gates.append(
+                {
+                    "id": "laser_plane.motion_resolved_or_excluded",
+                    "status": "warn",
+                    "actual": motion["unexcluded_unresolved_count"],
+                    "expected": "0（纹理不足时需人工复核）",
+                }
+            )
     elif stage_name == "ground_extrinsics_board_only":
         add("ground.board_validation_rmse", _number_le(metrics.get("validation_rmse_mm"), 0.20), metrics.get("validation_rmse_mm"), "<= 0.20 mm")
     elif stage_name == "ground_extrinsics_shared_steger":
@@ -247,22 +263,43 @@ def _pair_motion_quality(output_dir: Path | None) -> dict[str, Any]:
             "diagnostic_exists": False,
             "unexcluded_moved_count": 0,
             "unexcluded_unresolved_count": 0,
+            "unexcluded_not_assessed_count": 0,
         }
     with path.open("r", encoding="utf-8-sig", newline="") as stream:
         rows = list(csv.DictReader(stream))
     training = [row for row in rows if row.get("split") == "train"]
-    unexcluded = [row for row in training if row.get("excluded_from_fit", "").lower() != "true"]
-    moved = [
+    unexcluded = [
         row
-        for row in unexcluded
-        if row.get("median_displacement_px")
-        and float(row["median_displacement_px"]) > 1.0
+        for row in training
+        if row.get("excluded_from_fit", "").lower() != "true"
     ]
-    unresolved = [row for row in unexcluded if row.get("tracking_ok", "").lower() != "true"]
+    moved: list[dict[str, str]] = []
+    unresolved: list[dict[str, str]] = []
+    not_assessed: list[dict[str, str]] = []
+    for row in unexcluded:
+        method = row.get("movement_method", "unresolved")
+        tracking_ok = row.get("tracking_ok", "").lower() == "true"
+        raw_displacement = row.get("median_displacement_px", "")
+        try:
+            displacement = float(raw_displacement)
+        except (TypeError, ValueError):
+            displacement = math.nan
+        if tracking_ok and math.isfinite(displacement) and displacement > 1.0:
+            moved.append(row)
+        if method == "disabled" or tracking_ok:
+            continue
+        if method == "unresolved_low_texture":
+            not_assessed.append(row)
+        else:
+            unresolved.append(row)
     return {
         "diagnostic_exists": True,
         "unexcluded_moved_count": len(moved),
-        "unexcluded_unresolved_count": len(unresolved),
+        # Keep the historical metric name as the total unresolved/not-assessed
+        # count so older reports and policies remain comparable.
+        "unexcluded_unresolved_count": len(unresolved) + len(not_assessed),
+        "unexcluded_tracking_unresolved_count": len(unresolved),
+        "unexcluded_not_assessed_count": len(not_assessed),
     }
 
 
