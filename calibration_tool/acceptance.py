@@ -123,6 +123,7 @@ def build_acceptance_report(
             "workflow": None if workflow is None else workflow.get("status"),
             "quality_report_count": len(quality_reports),
             "runtime_extractor": None if runtime_profile is None else runtime_profile.get("selected_extractor", {}).get("method"),
+            "runtime_laser_model": None if runtime_profile is None else (runtime_profile.get("laser_model") or {}).get("model_type"),
             "golden_matches": None if golden is None else golden.get("matches"),
             "compensation_independent_validation": None if compensation is None else compensation.get("independent_validation"),
         },

@@ -1,8 +1,14 @@
 # 三联图激光表面三模型比较配置
 # Windows 路径请使用引号，或使用正斜杠。
 
-intrinsics: "D:/Docs/linelaserscan/calibration_tool/runs/0804/intrinsics/calibration_result.yaml"
-output_dir: "D:/Docs/linelaserscan/calibration_tool/scripts/outputs/02laser_model_comparison"
+intrinsics: "../runs/0804/intrinsics/calibration_result.yaml"
+output_dir: "../runs/0804/laser_model_comparison"
+
+# 标定工具默认输出圆锥模型；三种模型仍会全部拟合并写入 models/。
+# 可改为 global_plane 或 quadratic_graph，也接受旧别名 plane_abcd。
+default_model: circular_cone
+laser_model:
+  supported: [global_plane, quadratic_graph, circular_cone]
 
 board:
   # OpenCV 内角点数，不是方格数
@@ -19,10 +25,10 @@ patterns:
 
 datasets:
   train:
-    root: "D:/Docs/linelaserscan/calibration_tool/data/laser_plane/fit"
+    root: "../data/laser_plane/fit"
     ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
   validation:
-    root: "D:/Docs/linelaserscan/calibration_tool/data/laser_plane/validation"
+    root: "../data/laser_plane/validation"
     ids: [1, 2, 3, 4, 5, 6]
 
 extraction:

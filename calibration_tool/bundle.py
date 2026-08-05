@@ -68,6 +68,7 @@ def build_calibration_bundle(
         "source_config": str(Path(config_path).resolve()),
         "camera": profile["camera"],
         "algorithm_profile": profile["selected_extractor"],
+        "laser_model": profile.get("laser_model"),
         "expected_extractor": expected_extractor,
         "files": files,
         "quality": None if quality is None else {

@@ -192,13 +192,20 @@ python -m calibration_tool acceptance-report configs\acceptance_plan.example.yam
 | stage | 旧算法入口 | 用途 |
 |---|---|---|
 | `intrinsics` | `calibrate_chessboard_opencv_reusable.py` | 内参拟合和独立验证 |
-| `laser_plane_shared_steger` | `calibrate_laser_plane_core_v2.py` | shared Steger 激光平面 |
+| `laser_surface_models` | `calibrate_laser_surface_models.py` | `global_plane` / `quadratic_graph` / `circular_cone` 三模型，默认圆锥 |
+| `laser_plane_shared_steger` | `calibrate_laser_plane_core_v2.py` | 旧 global_plane/shared Steger（兼容 stage） |
 | `ground_extrinsics_board_only` | `calibrate_ground_extrinsics_board_only.py` | 棋盘基准面外参 |
 | `ground_extrinsics_shared_steger` | `calibrate_ground_extrinsics_steger_v2.py` | 混合式地面外参 |
 | `ground_bias` | `generate_ground_bias_compensation.py` | 偏差表和 holdout 验证 |
 | `reconstruct_shared_steger` | `reconstruct_ground_pointcloud_cloudcompare_v4.py` | 端到端三维验证 |
 
 三维重建 stage 强制 `--steger-extractor shared`，防止标定时和运行时混用中心提取器。
+
+`laser_surface_models` 会在 `models/` 下同时写出三套模型，并在输出根目录写出
+`laser_model.yaml`（正式选用模型）和历史兼容名 `laser_plane.yaml`。默认选用
+`circular_cone`，可在拟合配置中改为 `global_plane` 或 `quadratic_graph`，命令行
+也可用 `--model` 覆盖。没有 `model_type` 的旧 `plane_abcd`、`plane` 或四元
+`coefficients` 文件会自动按 `global_plane` 解析。
 
 ## 发布规则
 

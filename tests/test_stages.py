@@ -13,6 +13,7 @@ class StageTests(unittest.TestCase):
             {
                 "intrinsics",
                 "laser_plane_shared_steger",
+                "laser_surface_models",
                 "ground_extrinsics_board_only",
                 "ground_bias",
                 "reconstruct_shared_steger",

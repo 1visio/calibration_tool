@@ -5,6 +5,7 @@ from typing import Any, Mapping
 
 from .errors import ConfigError
 from .io_utils import canonical_mapping_hash, load_document, resolve_relative, sha256_file
+from .laser_models import LaserModelConfigError, load_laser_model
 
 
 CALIBRATION_FILE_KEYS = (
@@ -36,6 +37,22 @@ def load_runtime_profile(
         raise ConfigError(f"只支持 schema_version=1：{path}")
 
     calibration = _mapping(document.get("calibration"), "calibration")
+    laser_model_value = calibration.get("laser_model")
+    legacy_laser_plane_value = calibration.get("laser_plane")
+    if (
+        laser_model_value not in (None, "")
+        and legacy_laser_plane_value not in (None, "")
+        and str(laser_model_value).strip() != str(legacy_laser_plane_value).strip()
+    ):
+        raise ConfigError(
+            "calibration.laser_model 与 calibration.laser_plane 同时存在且不一致；"
+            "请只保留一个"
+        )
+    selected_laser_model = (
+        laser_model_value
+        if laser_model_value not in (None, "")
+        else legacy_laser_plane_value
+    )
     extraction = _mapping(document.get("extraction"), "extraction")
     method = _required_text(extraction.get("method"), "extraction.method")
     options = extraction.get(method, {})
@@ -64,7 +81,7 @@ def load_runtime_profile(
     files: dict[str, dict[str, Any]] = {}
     findings: list[dict[str, str]] = []
     for key in CALIBRATION_FILE_KEYS:
-        value = calibration.get(key)
+        value = selected_laser_model if key == "laser_plane" else calibration.get(key)
         if value in (None, ""):
             if key != "ground_u_compensation":
                 findings.append(_finding("missing_calibration_path", "fail", f"缺少 calibration.{key}"))
@@ -80,6 +97,18 @@ def load_runtime_profile(
         else:
             findings.append(_finding("missing_calibration_file", "fail", f"标定文件不存在：{target}"))
         files[key] = record
+
+    laser_model: dict[str, Any] | None = None
+    laser_record = files.get("laser_plane")
+    if laser_record and laser_record.get("exists"):
+        try:
+            parsed_model = load_laser_model(str(laser_record["path"]))
+        except LaserModelConfigError as exc:
+            raise ConfigError(f"激光面模型无效：{exc}") from exc
+        laser_model = {
+            "model_type": parsed_model["model_type"],
+            "path": laser_record["path"],
+        }
 
     manifest_info: dict[str, Any] | None = None
     manifest_value = calibration.get("manifest")
@@ -121,6 +150,8 @@ def load_runtime_profile(
         "expected_extractor": expected_extractor,
         "camera": camera,
         "calibration_files": files,
+        # 新名称；calibration_files.laser_plane 仍保留，避免旧验收包失效。
+        "laser_model": laser_model,
         "manifest": manifest_info,
         "findings": findings,
     }

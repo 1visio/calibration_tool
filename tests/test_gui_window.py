@@ -28,7 +28,7 @@ class GuiWindowTests(unittest.TestCase):
             self.assertEqual(window.camera_page.runtime["backend"], "synthetic")
             window.calibration_page.workflow.setText(str(ROOT / "configs" / "workflow.example.yaml"))
             self.assertTrue(window.calibration_page.refresh_plan())
-            self.assertEqual(window.calibration_page.stage_table.rowCount(), 4)
+            self.assertEqual(window.calibration_page.stage_table.rowCount(), 5)
             window.steps.setCurrentRow(4)
             self.assertEqual(window.stack.currentIndex(), 4)
         finally:

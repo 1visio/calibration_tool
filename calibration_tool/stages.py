@@ -36,7 +36,14 @@ STAGES: dict[str, StageSpec] = {
         "calibrate_laser_plane_core_v2",
         "--output-dir",
         "laser_plane.yaml",
-        "统一实时 Steger 激光平面标定（旧 stage 名称保留兼容）",
+        "旧 global_plane 激光平面标定（stage 名称和产物保留兼容）",
+    ),
+    "laser_surface_models": StageSpec(
+        "laser_surface_models",
+        "calibrate_laser_surface_models",
+        "--output-dir",
+        "laser_model.yaml",
+        "三模型激光面标定；默认 circular_cone，保留旧平面 stage 兼容",
     ),
     "ground_extrinsics_board_only": StageSpec(
         "ground_extrinsics_board_only",
@@ -183,6 +190,17 @@ def _inspect_result(stage_name: str, result_path: Path | None) -> dict[str, Any]
             "validation_rmse_mm": document.get("metrics", {}).get("validation", {}).get("rmse_mm"),
             "validation_p95_mm": document.get("metrics", {}).get("validation", {}).get("p95_mm"),
         }
+    if stage_name == "laser_surface_models":
+        validation = document.get("metrics", {}).get("validation", {})
+        train = document.get("metrics", {}).get("train", {})
+        return {
+            "model_type": document.get("model_type"),
+            "supported_models": document.get("model_selection", {}).get("supported_models"),
+            "train_rmse_mm": train.get("board_rmse_mm", train.get("surface_rmse_mm")),
+            "validation_rmse_mm": validation.get("board_rmse_mm", validation.get("surface_rmse_mm")),
+            "validation_p95_mm": validation.get("board_p95_abs_mm", validation.get("surface_p95_abs_mm")),
+            "validation_valid_rate": validation.get("valid_rate"),
+        }
     if stage_name.startswith("ground_extrinsics"):
         quality = document.get("quality_checks", {})
         validation = document.get("validation", {}).get("metrics", {})
@@ -246,6 +264,22 @@ def _evaluate_stage(
                     "expected": "0（纹理不足时需人工复核）",
                 }
             )
+    elif stage_name == "laser_surface_models":
+        supported = {"global_plane", "quadratic_graph", "circular_cone"}
+        model_type = metrics.get("model_type")
+        add("laser_model.supported", model_type in supported, model_type, "/".join(sorted(supported)))
+        add(
+            "laser_model.validation_rmse",
+            _number_le(metrics.get("validation_rmse_mm"), 0.25),
+            metrics.get("validation_rmse_mm"),
+            "<= 0.25 mm",
+        )
+        add(
+            "laser_model.validation_p95",
+            _number_le(metrics.get("validation_p95_mm"), 0.50),
+            metrics.get("validation_p95_mm"),
+            "<= 0.50 mm",
+        )
     elif stage_name == "ground_extrinsics_board_only":
         add("ground.board_validation_rmse", _number_le(metrics.get("validation_rmse_mm"), 0.20), metrics.get("validation_rmse_mm"), "<= 0.20 mm")
     elif stage_name == "ground_extrinsics_shared_steger":

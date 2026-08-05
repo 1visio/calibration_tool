@@ -25,9 +25,23 @@ import json
 import math
 import sys
 import traceback
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
+
+# The script is intentionally runnable directly from ``scripts/`` as well as
+# imported by the calibration-tool workflow.  Add the package root only for
+# the lightweight model-name/legacy-config compatibility layer.
+PACKAGE_ROOT = Path(__file__).resolve().parents[1]
+if str(PACKAGE_ROOT) not in sys.path:
+    sys.path.insert(0, str(PACKAGE_ROOT))
+from calibration_tool.laser_models import (  # noqa: E402
+    SUPPORTED_LASER_MODEL_TYPES,
+    LaserModelConfigError,
+    normalize_model_type,
+    select_default_model,
+)
 
 import cv2
 import matplotlib.pyplot as plt
@@ -488,6 +502,8 @@ class PlaneModel(LaserModel):
             "equation": "a*X + b*Y + c*Z + d = 0",
             "normal": self.normal.tolist(),
             "d_mm": float(self.d),
+            # Legacy consumers can still read a four-coefficient plane.
+            "plane_abcd": [*self.normal.tolist(), float(self.d)],
             "z_valid_range_mm": list(self.z_range),
         }
 
@@ -1026,6 +1042,7 @@ def generate_report(
     models: Sequence[LaserModel],
     train_count: int,
     val_count: int,
+    default_model: str,
 ) -> None:
     val = comparison[comparison["split"] == "validation"].copy()
     if not val.empty:
@@ -1035,6 +1052,8 @@ def generate_report(
         "",
         f"- 训练标定点：{train_count}",
         f"- 验证标定点：{val_count}",
+        f"- 默认选用模型：`{default_model}`",
+        f"- 支持模型：{', '.join(SUPPORTED_LASER_MODEL_TYPES)}",
         "- 核心评价量：使用模型从激光像素反算三维点，再计算该点到该幅棋盘格真实平面的有符号距离。",
         "- 数据划分：按完整图像姿态划分训练/验证，避免同一图像相邻点泄漏。",
         "",
@@ -1072,14 +1091,29 @@ def generate_report(
     output.write_text("\n".join(lines), encoding="utf-8")
 
 
-def main() -> int:
+def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="基于激光三联图拟合并比较三种激光表面模型")
     parser.add_argument("--config", required=True, help="YAML 配置文件")
-    args = parser.parse_args()
+    parser.add_argument(
+        "--model",
+        "--laser-model",
+        dest="model",
+        default=None,
+        help=(
+            "输出目录中的默认模型；支持 global_plane、quadratic_graph、"
+            "circular_cone，旧别名 plane_abcd 仍可用"
+        ),
+    )
+    parser.add_argument(
+        "--output-dir",
+        default=None,
+        help="覆盖配置中的输出目录（供统一 workflow stage 使用）",
+    )
+    args = parser.parse_args(argv)
 
     config_path = Path(args.config).resolve()
     cfg = safe_yaml_load(config_path)
-    output_dir = Path(cfg.get("output_dir", "outputs/laser_model_comparison"))
+    output_dir = Path(args.output_dir or cfg.get("output_dir", "outputs/laser_model_comparison"))
     if not output_dir.is_absolute():
         output_dir = (config_path.parent / output_dir).resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -1101,14 +1135,22 @@ def main() -> int:
     extraction_cfg = cfg.get("extraction", {})
     datasets_cfg = cfg["datasets"]
 
+    def resolve_dataset(dataset: Mapping[str, Any]) -> Dict[str, Any]:
+        resolved = dict(dataset)
+        root = Path(str(resolved["root"]))
+        if not root.is_absolute():
+            root = (config_path.parent / root).resolve()
+        resolved["root"] = str(root)
+        return resolved
+
     train_df = process_dataset(
-        "train", datasets_cfg["train"], patterns, k, dist, image_size,
+        "train", resolve_dataset(datasets_cfg["train"]), patterns, k, dist, image_size,
         board_cfg, extraction_cfg, preview_dir,
     )
     frames = [train_df]
     if "validation" in datasets_cfg and datasets_cfg["validation"].get("ids"):
         validation_df = process_dataset(
-            "validation", datasets_cfg["validation"], patterns, k, dist, image_size,
+            "validation", resolve_dataset(datasets_cfg["validation"]), patterns, k, dist, image_size,
             board_cfg, extraction_cfg, preview_dir,
         )
         frames.append(validation_df)
@@ -1119,6 +1161,10 @@ def main() -> int:
     all_df.to_csv(output_dir / "calibration_points.csv", index=False, encoding="utf-8-sig")
 
     train_points, _, train_frame_ids = dataframe_arrays(train_df)
+    try:
+        default_model = normalize_model_type(args.model or select_default_model(cfg))
+    except LaserModelConfigError as exc:
+        parser.error(str(exc))
     plane = PlaneModel()
     plane.fit(train_points, train_frame_ids)
 
@@ -1157,6 +1203,36 @@ def main() -> int:
     per_img = per_image_metrics(details)
     per_img.to_csv(output_dir / "per_image_metrics.csv", index=False, encoding="utf-8-sig")
 
+    selected = next(model for model in models if model.name == default_model)
+    selected_metrics: Dict[str, Any] = {}
+    for split in ("train", "validation"):
+        rows = comparison[
+            (comparison["model"] == default_model) & (comparison["split"] == split)
+        ]
+        if not rows.empty:
+            selected_metrics[split] = rows.iloc[0].to_dict()
+    selected_document = selected.to_dict()
+    selected_document["model_selection"] = {
+        "default_model": default_model,
+        "supported_models": list(SUPPORTED_LASER_MODEL_TYPES),
+        "source": str(config_path),
+    }
+    selected_document["metrics"] = selected_metrics
+    save_yaml(output_dir / "laser_model.yaml", selected_document)
+    # ``laser_plane.yaml`` is the historical artifact name.  Its contents are
+    # now the selected model document, while old plane_abcd files remain
+    # readable through the compatibility loader.
+    save_yaml(output_dir / "laser_plane.yaml", selected_document)
+    save_yaml(
+        output_dir / "laser_model_selection.yaml",
+        {
+            "model_type": default_model,
+            "supported_models": list(SUPPORTED_LASER_MODEL_TYPES),
+            "model_file": "laser_model.yaml",
+            "legacy_model_file": "laser_plane.yaml",
+        },
+    )
+
     validation_details = details[details["split"] == "validation"]
     if not validation_details.empty:
         plot_error_vs_variable(validation_details, "u_px", "图像横坐标 u / px", output_dir / "validation_error_vs_u.png")
@@ -1170,6 +1246,7 @@ def main() -> int:
         models,
         train_count=len(train_df),
         val_count=len(validation_df),
+        default_model=default_model,
     )
     print(f"\n完成。输出目录：{output_dir}")
     return 0

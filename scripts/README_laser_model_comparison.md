@@ -38,6 +38,10 @@ python -m pip install numpy opencv-python scipy pandas matplotlib pyyaml tabulat
 
 训练集和验证集必须按完整图像姿态分开，不能将同一幅图中的点随机拆分。
 
+配置中的 `default_model`（默认 `circular_cone`）决定正式选用哪一套参数；三种
+模型始终都会拟合。命令行可用 `--model global_plane|quadratic_graph|circular_cone`
+覆盖，旧别名 `plane_abcd` 等价于 `global_plane`。
+
 ## 4. 运行
 
 ```powershell
@@ -46,10 +50,10 @@ python fit_laser_models_from_triplets.py --config laser_model_fit_config.yaml
 
 ## 5. 主要输出
 
-输出目录默认是：
+当前示例配置的输出目录是：
 
 ```text
-outputs/laser_model_comparison/
+../runs/0804/laser_model_comparison/
 ```
 
 其中：
@@ -59,6 +63,9 @@ outputs/laser_model_comparison/
 - `per_image_metrics.csv`：每幅图像的误差；
 - `pointwise_model_errors.csv`：逐点误差；
 - `models/*.yaml`：三个模型参数；
+- `laser_model.yaml`：默认选用模型（当前默认是 `circular_cone`）；
+- `laser_plane.yaml`：历史文件名兼容副本，内容与 `laser_model.yaml` 相同；
+- `laser_model_selection.yaml`：模型选择和支持列表；
 - `validation_error_vs_u.png`：误差随横向像素的变化；
 - `validation_error_vs_v.png`：误差随纵向像素的变化；
 - `validation_error_vs_depth.png`：误差随真实深度的变化；

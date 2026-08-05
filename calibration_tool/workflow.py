@@ -18,6 +18,8 @@ PATH_OPTIONS = {
     "output_dir",
     "intrinsics",
     "laser_plane",
+    "laser_model",
+    "model_config",
     "extrinsics",
     "ground_bias_table",
     "config",
