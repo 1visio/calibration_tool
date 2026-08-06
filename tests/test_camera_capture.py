@@ -26,6 +26,17 @@ class _FailOnConfigureProvider(SyntheticCameraProvider):
         return _FailOnConfigureSession(super().open(serial_number, config))
 
 
+class _RecordingProvider(SyntheticCameraProvider):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.sessions = []
+
+    def open(self, serial_number, config):
+        session = super().open(serial_number, config)
+        self.sessions.append(session)
+        return session
+
+
 class CameraCaptureTests(unittest.TestCase):
     def _plan(self, output: Path) -> CapturePlan:
         base = CameraConfig(exposure_us=800, width=64, height=48, timeout_ms=100)
@@ -60,6 +71,23 @@ class CameraCaptureTests(unittest.TestCase):
                 self.assertEqual(len(frame["sha256"]), 64)
                 self.assertIn("applied_camera", frame)
                 self.assertIn("quality", frame)
+
+    def test_task_config_is_applied_before_before_task_gate(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            provider = _RecordingProvider(target_fps=1000)
+            seen = []
+
+            def before_task(task):
+                seen.append((task.task_id, provider.sessions[0].config.exposure_us))
+                return True
+
+            run_capture_plan(
+                self._plan(Path(temporary) / "dataset"),
+                provider,
+                before_task=before_task,
+            )
+
+            self.assertEqual(seen, [("exposure_01", 800.0), ("exposure_02", 1200.0)])
 
     def test_failed_plan_resumes_without_recapturing_completed_task(self):
         with tempfile.TemporaryDirectory() as temporary:

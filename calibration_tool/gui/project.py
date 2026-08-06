@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import shutil
 from dataclasses import dataclass, field
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -94,3 +96,23 @@ class WizardProject:
         self.source_path = target
         self.extra = document
         return target
+
+    def record_capture_artifacts(self, artifacts: dict[str, Any], *, persist: bool = True) -> Path | None:
+        """记录最近采集路径；旧项目字段保持不变，存在源文件时自动备份后保存。"""
+
+        self.extra = dict(self.extra)
+        self.extra["capture_artifacts"] = dict(artifacts)
+        if not persist or self.source_path is None:
+            return None
+        source = self.source_path.resolve()
+        backup = source.with_name(f"{source.name}.bak")
+        if backup.exists():
+            stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+            backup = source.with_name(f"{source.name}.bak-{stamp}")
+            suffix = 1
+            while backup.exists():
+                backup = source.with_name(f"{source.name}.bak-{stamp}-{suffix}")
+                suffix += 1
+        shutil.copy2(source, backup)
+        self.save(source)
+        return backup

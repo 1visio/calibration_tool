@@ -70,6 +70,14 @@ class ImagePreview(QLabel):
                 sensor_max_value=self._sensor_max_value,
             )
 
+    def clear_image(self, text: str = "尚未取流") -> None:
+        """清除上一张图，避免 QLabel resize 时恢复旧 pixmap。"""
+
+        self._pixmap = None
+        self._last_image = None
+        self.clear()
+        self.setText(text)
+
     def resizeEvent(self, event) -> None:  # noqa: N802
         super().resizeEvent(event)
         self._update_pixmap()

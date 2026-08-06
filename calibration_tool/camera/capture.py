@@ -4,6 +4,7 @@ import csv
 import io
 import os
 import shutil
+import threading
 from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -20,6 +21,7 @@ from .models import (
     CameraProvider,
     CapturePlan,
     CaptureResult,
+    CaptureTask,
     CapturedFrame,
     FrameQuality,
     ProgressCallback,
@@ -149,8 +151,22 @@ def run_capture_plan(
     interactive_preview: bool = False,
     progress: ProgressCallback | None = None,
     prompt: Callable[[str], str] = input,
+    before_task: Callable[[CaptureTask], bool | None] | None = None,
+    cancel_event: threading.Event | None = None,
 ) -> CaptureResult:
-    """执行采集计划；每个 task 完成后原子提交并更新可续采 manifest。"""
+    """执行采集计划；每个 task 完成后原子提交并更新可续采 manifest。
+
+    ``before_task`` 在工作线程中调用，可用于 GUI 的人工确认 gate；调用前会先
+    在已停止的 session 上应用当前 task 配置，返回 ``False`` 表示取消当前采集。
+    ``cancel_event`` 是可选的线程安全取消信号，不传入时保持旧调用行为。
+    """
+
+    def cancelled() -> bool:
+        return cancel_event is not None and cancel_event.is_set()
+
+    def ensure_not_cancelled() -> None:
+        if cancelled():
+            raise CaptureError("采集已取消")
     output_dir = plan.output_dir.expanduser().resolve()
     work_dir = output_dir.parent / f".{output_dir.name}.inprogress"
     manifest_path = work_dir / "dataset_manifest.yaml"
@@ -174,6 +190,7 @@ def run_capture_plan(
     session = None
     active_task_id: str | None = None
     try:
+        ensure_not_cancelled()
         if pending:
             session = provider.open(plan.serial_number, pending[0].config)
             manifest["device"] = asdict(session.device)
@@ -186,16 +203,44 @@ def run_capture_plan(
             task_state.update(status="capturing", frames_captured=0, error=None, started_at=_utc_now())
             manifest["frames"] = [item for item in manifest["frames"] if item["task_id"] != task.task_id]
             _save_state(work_dir, manifest)
-            if interactive and task.instruction and not interactive_preview:
-                prompt(f"{task.instruction}\n准备完成后按 Enter 开始采集 {task.task_id}：")
+            if progress:
+                progress({
+                    "event": "task_started",
+                    "task_id": task.task_id,
+                    "pose_id": task.pose_id,
+                    "role": task.role,
+                    "exposure_us": task.config.exposure_us,
+                    "laser_state": task.tags.get("laser_state", "unchanged"),
+                    "instruction": task.instruction,
+                    "relative_output_path": task.relative_path(1).as_posix(),
+                })
+            ensure_not_cancelled()
+            # The task configuration must be applied while the session is idle,
+            # before the GUI gate is released.  Otherwise the page can show the
+            # next task while the camera is still using the previous task's
+            # exposure/ROI until the user confirms it.  The session is stopped
+            # after every task, so this remains a single worker-owned session.
             assert session is not None
             if session.config != task.config:
                 session.configure(task.config)
+            if before_task is not None:
+                try:
+                    approved = before_task(task)
+                except CaptureError:
+                    raise
+                except Exception as exc:
+                    raise CaptureError(f"任务前确认失败：{exc}") from exc
+                if approved is False:
+                    raise CaptureError("采集已取消")
+            ensure_not_cancelled()
+            if interactive and task.instruction and not interactive_preview:
+                prompt(f"{task.instruction}\n准备完成后按 Enter 开始采集 {task.task_id}：")
             if interactive_preview:
                 _interactive_task_preview(session, task, plan)
             applied = session.config
             session.start()
             for _ in range(task.settle_frames):
+                ensure_not_cancelled()
                 session.get_frame(applied.timeout_ms)
 
             staging = work_dir / ".task_staging" / task.task_id
@@ -204,6 +249,7 @@ def run_capture_plan(
             task_records: list[dict[str, Any]] = []
             previous_frame_number: int | None = None
             for index in range(1, task.frames + 1):
+                ensure_not_cancelled()
                 frame = session.get_frame(applied.timeout_ms)
                 relative = task.relative_path(index)
                 staged_path = staging / relative
@@ -239,10 +285,23 @@ def run_capture_plan(
                     progress({
                         "event": "frame",
                         "task_id": task.task_id,
+                        "pose_id": task.pose_id,
+                        "role": task.role,
                         "index": index,
                         "frames": task.frames,
+                        "relative_output_path": relative.as_posix(),
+                        "exposure_us": task.config.exposure_us,
+                        "laser_state": task.tags.get("laser_state", "unchanged"),
                         "quality": quality_to_dict(quality),
                     })
+                    if task_records[-1]["quality"]["warnings"]:
+                        progress({
+                            "event": "quality_warning",
+                            "task_id": task.task_id,
+                            "index": index,
+                            "relative_output_path": relative.as_posix(),
+                            "warnings": task_records[-1]["quality"]["warnings"],
+                        })
             session.stop()
 
             for record in task_records:
@@ -260,7 +319,14 @@ def run_capture_plan(
             )
             _save_state(work_dir, manifest)
             if progress:
-                progress({"event": "task_completed", "task_id": task.task_id})
+                progress({
+                    "event": "task_completed",
+                    "task_id": task.task_id,
+                    "pose_id": task.pose_id,
+                    "role": task.role,
+                    "frames": task.frames,
+                    "relative_output_path": task.relative_path(task.frames).as_posix(),
+                })
             active_task_id = None
 
         manifest["status"] = "completed"

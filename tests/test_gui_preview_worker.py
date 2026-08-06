@@ -41,6 +41,29 @@ class PreviewWorkerTests(unittest.TestCase):
         self.assertEqual(applied[-1].gain_db, 1.5)
         self.assertIn("laser_coverage", frames[-1][1])
 
+    def test_settle_frames_are_visible_and_marked_until_stable(self):
+        thread = PreviewThread(
+            SyntheticCameraProvider(target_fps=500), "SIM-001",
+            CameraConfig(width=64, height=48, timeout_ms=100), "laser",
+            QualityThresholds(), None, initial_discard_frames=3,
+        )
+        loop = QEventLoop(); states = []; errors = []
+
+        def on_frame(_frame, quality):
+            states.append((bool(quality.get("settling")), quality.get("settle_frames_remaining")))
+            if len(states) >= 3:
+                thread.requestInterruption()
+
+        thread.frame_ready.connect(on_frame)
+        thread.failed.connect(errors.append)
+        thread.finished.connect(loop.quit)
+        QTimer.singleShot(3000, lambda: (thread.requestInterruption(), loop.quit()))
+        thread.start(); loop.exec(); thread.wait(3000)
+
+        self.assertFalse(thread.isRunning())
+        self.assertFalse(errors)
+        self.assertEqual(states[:3], [(True, 2), (True, 1), (False, 0)])
+
 
 if __name__ == "__main__":
     unittest.main()

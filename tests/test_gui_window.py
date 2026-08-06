@@ -21,6 +21,8 @@ class GuiWindowTests(unittest.TestCase):
         window = CalibrationWizardWindow(
             default_camera_config=ROOT / "configs" / "camera.example.yaml"
         )
+        default_plan = ROOT / "projects" / "default" / "plans" / "acceptance_plan.yaml"
+        had_default_plan = default_plan.is_file()
         try:
             self.assertEqual(window.stack.count(), 5)
             self.assertEqual(window.steps.count(), 5)
@@ -34,6 +36,8 @@ class GuiWindowTests(unittest.TestCase):
         finally:
             window.close()
             self.app.processEvents()
+            if not had_default_plan:
+                default_plan.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":

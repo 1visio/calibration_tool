@@ -76,9 +76,7 @@ class CalibrationWizardWindow(QMainWindow):
         self.previous_button.clicked.connect(lambda: self.steps.setCurrentRow(max(0, self.steps.currentRow() - 1)))
         self.next_button.clicked.connect(lambda: self.steps.setCurrentRow(min(len(self.STEP_NAMES) - 1, self.steps.currentRow() + 1)))
         self.project_page.project_changed.connect(self.set_project)
-        self.capture_page.capture_finished.connect(
-            lambda result: self.statusBar().showMessage(f"采集完成：{result.output_dir}", 10000)
-        )
+        self.capture_page.capture_finished.connect(self._capture_finished)
         self.capture_page.request_camera_page.connect(lambda: self.steps.setCurrentRow(1))
         self.calibration_page.workflow_finished.connect(self._workflow_finished)
 
@@ -86,6 +84,8 @@ class CalibrationWizardWindow(QMainWindow):
         if index < 0:
             return
         self.stack.setCurrentIndex(index)
+        if index == 4:
+            self.results_page.prepare_default_plan(announce=False)
         self.previous_button.setEnabled(index > 0); self.next_button.setEnabled(index < len(self.STEP_NAMES) - 1)
 
     def set_project(self, project: WizardProject) -> None:
@@ -96,6 +96,9 @@ class CalibrationWizardWindow(QMainWindow):
         self.capture_page.set_project(project)
         self.calibration_page.set_project(project)
         self.results_page.set_project(project)
+        # ResultsPage 会为未指定计划的项目准备默认验收计划；同步回项目页，
+        # 用户随后保存项目时也能保留该路径。
+        self.project_page.acceptance_plan.setText(str(project.acceptance_plan or ""))
         self.statusBar().showMessage("项目配置已应用", 5000)
 
     def load_project(self, path: Path) -> None:
@@ -104,11 +107,29 @@ class CalibrationWizardWindow(QMainWindow):
         self.project_page.apply()
 
     def _workflow_finished(self, result: dict) -> None:
+        self.results_page.update_acceptance_from_workflow(result)
         self.results_page.show_result(result)
         self.steps.setCurrentRow(4)
         self.statusBar().showMessage(f"标定 workflow：{result.get('status')}", 15000)
 
+    def _capture_finished(self, result: object) -> None:
+        artifacts = getattr(result, "capture_artifacts", None) or self.capture_page.last_capture_artifacts
+        if isinstance(artifacts, dict):
+            if self.project is not None:
+                try:
+                    backup = self.project.record_capture_artifacts(artifacts)
+                except Exception as exc:
+                    self.statusBar().showMessage(f"采集完成，但项目路径记录保存失败：{exc}", 15000)
+                else:
+                    suffix = f"；项目备份：{backup}" if backup else "；关闭前保存项目即可保留记录"
+                    self.statusBar().showMessage(f"采集完成：{artifacts.get('dataset_root')}{suffix}", 15000)
+            else:
+                self.statusBar().showMessage(f"采集完成：{artifacts.get('dataset_root')}", 10000)
+            self.calibration_page.set_capture_artifacts(artifacts)
+            self.results_page.set_capture_artifacts(artifacts)
+
     def closeEvent(self, event: QCloseEvent) -> None:  # noqa: N802
+        self.capture_page.cancel_capture()
         self.camera_page.stop_preview()
         self.thread_pool.waitForDone(5000)
         event.accept()
