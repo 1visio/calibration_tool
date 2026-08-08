@@ -17,17 +17,36 @@
 
 完整的现场操作步骤见：[线激光标定工具用户手册](docs/线激光标定工具用户手册.md)。
 
+## 当前支持范围与健康状态（2026-08-08）
+
+当前仓库可以正常启动 CLI、运行 synthetic 相机链路并执行测试；但现有历史标定快照尚未达到“全部验收通过”，不能把启动成功等同于可以发布生产标定包。
+
+| 检查项 | 当前结果 | 说明 |
+|---|---|---|
+| `python -m calibration_tool --help`、`list-stages` | 通过 | CLI 入口和 7 个统一 stage 可加载 |
+| `camera-list --config configs/camera.example.yaml` | 通过 | synthetic 设备 `SIMULATED-MV-CS050-60GM` 可枚举 |
+| `camera-preview`（synthetic） | 可运行但有告警 | 示例帧返回 `dynamic_range_low`，这是质量提示，不是采集异常 |
+| `python -m pytest -q` | 77 通过，1 失败 | 仅 `test_golden_snapshot.py` 因历史 baseline 漂移失败 |
+| `golden-check` | `matches: false` | 发现 9 项配置/标定哈希变化或文件缺失 |
+| `audit` | `overall: fail` | 当前历史数据仍缺少独立内参测试、补偿 holdout 等正式门禁 |
+
+因此，当前可确认的是“软件链路可启动、synthetic 演练可用、绝大多数单元测试通过”；真实 MVS 相机仍需在安装 SDK 和接入设备后单独验证，大恒相机后端尚未在 `main` 实现。
+
 ## 1. 快速开始
 
 ### 1.1 创建环境与安装依赖
 
-本目录当前没有单独的 `requirements.txt`，建议在标定工具目录创建虚拟环境并安装核心依赖：
+本目录当前没有单独的 `requirements.txt`，推荐直接按 `pyproject.toml` 安装本包。下面的 `scipy`、`matplotlib`、`pandas` 仅供 `scripts/` 下的模型比较脚本使用，不是 CLI/GUI 的最小运行依赖：
 
 ```powershell
 cd D:\Docs\linelaserscan\calibration_tool
 py -3.11 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install `
-  numpy scipy opencv-python PyYAML PySide6 matplotlib pandas
+.\.venv\Scripts\python.exe -m pip install --upgrade pip
+.\.venv\Scripts\python.exe -m pip install -e .
+# 运行测试时安装：
+.\.venv\Scripts\python.exe -m pip install pytest
+# 需要运行 scripts/ 下的模型比较脚本时再安装：
+.\.venv\Scripts\python.exe -m pip install scipy matplotlib pandas
 ```
 
 如果使用真实 MVS 相机，还需要安装海康 MVS SDK，并确保 SDK 的 Python/运行库位数与当前解释器一致。没有相机时可以使用 synthetic 后端完成界面和采集链路演练。
@@ -175,6 +194,16 @@ python -m calibration_tool capture-exposure-series `
 
 - `configs/camera.example.yaml`：默认 synthetic；
 - `configs/camera.mvs.example.yaml`：真实 MV-CS050-60GM 模板。
+
+当前相机后端状态：
+
+| backend | 状态 | 说明 |
+|---|---|---|
+| `synthetic` | 已验证 | 可用于 CLI、GUI 和采集计划的无硬件演练 |
+| `mvs` | 已实现，需现场验证 | 当前适配海康 MVS SDK；需要 `calibration/src`、SDK 和相机设备 |
+| `daheng` | 尚未实现 | `main` 的配置校验只接受 `mvs`/`synthetic`；大恒适配将在 `feature/daheng-camera-support` 分支完成 |
+
+大恒适配应保持现有 `CameraProvider`/`CameraSession` 接口不变，新增独立 SDK adapter 和配置模板，不要把大恒 SDK 调用混入 `camera/mvs.py`。在没有大恒 SDK 的开发机上，先用 fake provider/synthetic 测试枚举、曝光/增益回读、ROI/PixelFormat 重配、帧号/时间戳和 stop/close 生命周期；接入真实设备后再补充 GigE 取流、触发和像素格式回读验收。
 
 关键字段：
 
@@ -401,10 +430,14 @@ calibration:
 
 ```powershell
 cd D:\Docs\linelaserscan\calibration_tool
+python -m pytest -q
+# 也可使用标准库测试发现器：
 python -m unittest discover -s tests -v
 ```
 
-GUI 测试需要 PySide6 和可用的 Qt/offscreen 环境；真机测试还需要 SDK 和相机设备。
+当前快照的结果为 `77 passed, 1 failed`。唯一失败项是 `tests/test_golden_snapshot.py::test_generated_baseline_matches_sources`：它验证的是历史 golden baseline，失败原因是外部离线/在线配置和标定文件发生漂移或缺失，不是 Python 测试收集或 CLI 导入失败。处理方式是先确认漂移是否有意，再由项目负责人重新生成 baseline；不要为了让测试变绿而直接覆盖历史证据。
+
+GUI 测试需要 PySide6 和可用的 Qt/offscreen 环境；真机测试还需要 SDK 和相机设备。`camera-preview` 返回 `dynamic_range_low` 时应调曝光、光源或质量阈值，并保留原始告警，不要把它当成程序崩溃。
 
 ### 10.2 常见问题
 
@@ -412,6 +445,7 @@ GUI 测试需要 PySide6 和可用的 Qt/offscreen 环境；真机测试还需�
 |---|---|
 | `camera-list` 没有设备 | MVS SDK、相机占用、网络、序列号和 Python 位数 |
 | synthetic 正常、MVS 失败 | SDK 加载、网卡/USB、设备权限和 `backend: mvs` |
+| 大恒相机无法枚举 | 当前 `main` 尚未提供 `daheng` backend；先切换到适配分支，确认 Daheng SDK/Python wrapper 位数和设备访问权限 |
 | 棋盘检测失败 | 内角点数量、激光是否关闭、曝光/失焦/反光、棋盘是否完整入镜 |
 | 激光覆盖率低 | 激光方向、曝光、遮光、线宽和 `quality.min_laser_coverage` |
 | workflow 找不到输入 | 所有相对路径以 workflow YAML 所在目录解析；检查 fit/test/validation 目录 |
@@ -421,6 +455,8 @@ GUI 测试需要 PySide6 和可用的 Qt/offscreen 环境；真机测试还需�
 
 ## 11. GitHub 第一阶段提交清单
 
+- 当前标定工具仓库：`https://github.com/1visio/calibration_tool.git`；默认分支为 `main`。大恒适配分支约定为 `feature/daheng-camera-support`，先从本次文档和健康检查提交开始，再逐步加入 SDK adapter。
+- 大恒适配的最小验收范围：设备枚举、序列号/型号读取、Mono8/Mono12 与 ROI 回读、曝光/增益在线更新、帧号/时间戳、超时/断流、停止与关闭生命周期，以及 synthetic/fake provider 单元测试。
 - [ ] 清理 README、示例 YAML 和报告中的个人绝对路径，改为相对路径或占位符；
 - [ ] 确认 `calibration/config/realtime_steger.yaml` 的归属和提交位置；
 - [ ] 提交 `configs/`、`docs/`、向导截图、测试和必要的样例标定文件；
