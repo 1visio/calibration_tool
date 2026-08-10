@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 4,
   "config_id": "B12p5_A20",
   "task_id": "reference",
   "frame_count": 50,
@@ -20,35 +20,73 @@
     "scan_axis": "column"
   },
   "analysis_config": "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\configs\\analysis.yaml",
-  "analysis_config_sha256": "747c170c3d9b28c354b58fde446d1447c8a15c570007d9a813a88cb577d47417",
+  "analysis_config_sha256": "86e4982ba89a050101fec9bd5ee3c92f2825a4d1865d959f5ec52e48b6f30cb3",
+  "reference_surface_x_range": [
+    935,
+    2236
+  ],
+  "segment_edge_trim_px": 2,
   "valid_frame_fraction_min": 0.8,
   "max_interp_gap_px": 8,
   "source_counts": {
-    "observed": 1170,
-    "interpolated": 181,
-    "invalid": 1097
+    "observed": 737,
+    "short_gap_interpolated": 0,
+    "smooth_model_filled": 539,
+    "segment_edge_excluded": 26,
+    "outside_reference_surface": 1146,
+    "invalid": 0
   },
-  "source_fractions": {
-    "observed": 0.47794117647058826,
-    "interpolated": 0.07393790849673203,
-    "invalid": 0.44812091503267976
+  "statistics": {
+    "reference_surface_width_px": 1302,
+    "observed_fraction_inside_surface": 0.5660522273425499,
+    "model_filled_fraction": 0.41397849462365593,
+    "sigma_ref_p50_px": 0.007425538477353919,
+    "sigma_ref_p95_px": 0.010450799204571676,
+    "reference_model_residual_rmse_px": 0.10147851963641653,
+    "reference_model_residual_p95_px": 0.1961415764817047,
+    "reference_cv_rmse_px": 0.8914437241629156,
+    "reference_cv_mae_px": 0.5869862806768988,
+    "reference_cv_p95_px": 2.1311192887053023,
+    "reference_cv_max_px": 3.052513521794026,
+    "reference_cv_interior_rmse_px": 0.19955275075981957,
+    "reference_cv_interior_mae_px": 0.15956145499116114,
+    "reference_cv_interior_p95_px": 0.3935157187250182,
+    "reference_cv_interior_max_px": 0.5543376721839195,
+    "reference_cv_boundary_rmse_px": 1.348041969933943,
+    "reference_cv_boundary_max_px": 3.052513521794026
   },
-  "observed_statistics": {
-    "column_fraction": 0.47794117647058826,
-    "valid_fraction_p50": 1.0,
-    "valid_fraction_min": 0.84,
-    "sigma_ref_p50_px": 0.007632465259279945,
-    "sigma_ref_p95_px": 0.013723210222055183,
-    "sigma_ref_max_px": 0.3940668454106208,
-    "fwhm_p50_of_columns_px": 2.0
+  "smooth_model": {
+    "model": "robust_penalized_cubic_bspline",
+    "degree": 3,
+    "basis_count": 12,
+    "penalty": 1.0,
+    "huber_delta": 1.5,
+    "iterations": 14
   },
+  "cross_validation": {
+    "method": "leave_one_observed_segment_out",
+    "observed_segment_count": 6,
+    "eligible_segment_count": 6,
+    "interior_segment_count": 4,
+    "boundary_segment_count": 2,
+    "minimum_segment_width_px": 5,
+    "formal_metrics_scope": "interior_segments_only",
+    "boundary_cv_diagnostic_only": true,
+    "used_for_final_model_fit": false
+  },
+  "per_frame_steger_output_preserved": true,
   "global_line_fit_applied": false,
+  "model_extrapolated_outside_reference_surface": false,
   "multiheight_analyzed": false,
   "outputs": [
     "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_frame_columns.csv",
     "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_by_column.csv",
-    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_centerline.png",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_cv_by_segment.csv",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_centerline_raw.png",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_centerline_smooth.png",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_model_residual.png",
     "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_valid_fraction.png",
-    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_repeatability.png"
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_repeatability.png",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_cv_residual.png"
   ]
 }

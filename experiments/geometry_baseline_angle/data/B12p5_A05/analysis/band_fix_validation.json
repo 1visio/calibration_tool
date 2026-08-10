@@ -1,0 +1,162 @@
+{
+  "method": "shared_steger_additional_band_union_with_frozen_reference_band",
+  "bottom_semantics": "exclusive",
+  "original_band_top": 546,
+  "original_band_bottom": 696,
+  "reference_band_top": 625,
+  "reference_band_bottom": 668,
+  "reference_envelope_top": 625,
+  "reference_envelope_bottom": 668,
+  "final_band_top": 546,
+  "final_band_bottom": 696,
+  "original_band_height": 150,
+  "final_band_height": 150,
+  "steger_time_ms_before": 1895.691099925898,
+  "steger_time_ms_after": 1832.2129999287426,
+  "runtime_change_percent": -3.348546606545587,
+  "band_bounds_identical_across_frames": true,
+  "reference_band_margin_px": 15,
+  "h1_peak_y_median_px": 642.5222390592098,
+  "h1_peak_inside_original_band": true,
+  "h1_peak_inside_final_band": true,
+  "rois": {
+    "h001": {
+      "selected_x_range": [
+        1786,
+        1813
+      ],
+      "original": {
+        "frame_count": 50,
+        "roi_width_px": 28,
+        "detected_event_count": 1400,
+        "per_frame_detection_rate_mean": 1.0,
+        "per_frame_detection_rate_p05": 1.0,
+        "per_frame_detection_rate_p50": 1.0,
+        "per_frame_detection_rate_p95": 1.0,
+        "valid_column_fraction_at_0_8": 1.0,
+        "valid_column_fraction_at_0_6": 1.0,
+        "valid_column_fraction_at_0_5": 1.0,
+        "sigma_pixel_column_count": 28,
+        "sigma_pixel_p50_px": 0.015194912668914946,
+        "sigma_pixel_p95_px": 0.020146153001659804,
+        "median_center_position_px": 642.5222390592098
+      },
+      "final": {
+        "frame_count": 50,
+        "roi_width_px": 28,
+        "detected_event_count": 1400,
+        "per_frame_detection_rate_mean": 1.0,
+        "per_frame_detection_rate_p05": 1.0,
+        "per_frame_detection_rate_p50": 1.0,
+        "per_frame_detection_rate_p95": 1.0,
+        "valid_column_fraction_at_0_8": 1.0,
+        "valid_column_fraction_at_0_6": 1.0,
+        "valid_column_fraction_at_0_5": 1.0,
+        "sigma_pixel_column_count": 28,
+        "sigma_pixel_p50_px": 0.015194912668914946,
+        "sigma_pixel_p95_px": 0.020146153001659804,
+        "median_center_position_px": 642.5222390592098
+      },
+      "center_shift_px": 0.0,
+      "sigma_pixel_p95_ratio": 1.0
+    },
+    "h010": {
+      "selected_x_range": [
+        1839,
+        1861
+      ],
+      "original": {
+        "frame_count": 50,
+        "roi_width_px": 23,
+        "detected_event_count": 1150,
+        "per_frame_detection_rate_mean": 1.0,
+        "per_frame_detection_rate_p05": 1.0,
+        "per_frame_detection_rate_p50": 1.0,
+        "per_frame_detection_rate_p95": 1.0,
+        "valid_column_fraction_at_0_8": 1.0,
+        "valid_column_fraction_at_0_6": 1.0,
+        "valid_column_fraction_at_0_5": 1.0,
+        "sigma_pixel_column_count": 23,
+        "sigma_pixel_p50_px": 0.015788255753741976,
+        "sigma_pixel_p95_px": 0.019753938360935443,
+        "median_center_position_px": 633.7190254032612
+      },
+      "final": {
+        "frame_count": 50,
+        "roi_width_px": 23,
+        "detected_event_count": 1150,
+        "per_frame_detection_rate_mean": 1.0,
+        "per_frame_detection_rate_p05": 1.0,
+        "per_frame_detection_rate_p50": 1.0,
+        "per_frame_detection_rate_p95": 1.0,
+        "valid_column_fraction_at_0_8": 1.0,
+        "valid_column_fraction_at_0_6": 1.0,
+        "valid_column_fraction_at_0_5": 1.0,
+        "sigma_pixel_column_count": 23,
+        "sigma_pixel_p50_px": 0.015788255753741976,
+        "sigma_pixel_p95_px": 0.019753938360935443,
+        "median_center_position_px": 633.7190254032612
+      },
+      "center_shift_px": 0.0,
+      "sigma_pixel_p95_ratio": 1.0
+    },
+    "h030": {
+      "selected_x_range": [
+        1910,
+        1935
+      ],
+      "original": {
+        "frame_count": 50,
+        "roi_width_px": 26,
+        "detected_event_count": 1300,
+        "per_frame_detection_rate_mean": 1.0,
+        "per_frame_detection_rate_p05": 1.0,
+        "per_frame_detection_rate_p50": 1.0,
+        "per_frame_detection_rate_p95": 1.0,
+        "valid_column_fraction_at_0_8": 1.0,
+        "valid_column_fraction_at_0_6": 1.0,
+        "valid_column_fraction_at_0_5": 1.0,
+        "sigma_pixel_column_count": 26,
+        "sigma_pixel_p50_px": 0.01635564388252674,
+        "sigma_pixel_p95_px": 0.022567383378940667,
+        "median_center_position_px": 614.2210284098983
+      },
+      "final": {
+        "frame_count": 50,
+        "roi_width_px": 26,
+        "detected_event_count": 1300,
+        "per_frame_detection_rate_mean": 1.0,
+        "per_frame_detection_rate_p05": 1.0,
+        "per_frame_detection_rate_p50": 1.0,
+        "per_frame_detection_rate_p95": 1.0,
+        "valid_column_fraction_at_0_8": 1.0,
+        "valid_column_fraction_at_0_6": 1.0,
+        "valid_column_fraction_at_0_5": 1.0,
+        "sigma_pixel_column_count": 26,
+        "sigma_pixel_p50_px": 0.01635564388252674,
+        "sigma_pixel_p95_px": 0.022567383378940667,
+        "median_center_position_px": 614.2210284098983
+      },
+      "center_shift_px": 0.0,
+      "sigma_pixel_p95_ratio": 1.0
+    }
+  },
+  "background_roi_xyxy": null,
+  "background_false_detection_rate": null,
+  "acceptance_thresholds": {
+    "h1_valid_column_fraction_min": 0.8,
+    "background_false_detection_rate_max_exclusive": 0.02,
+    "primary_abs_center_shift_max_px_exclusive": 0.05,
+    "primary_sigma_pixel_p95_ratio_max": 1.25
+  },
+  "acceptance": {
+    "h1_valid_column_fraction_pass": true,
+    "background_false_detection_pass": false,
+    "h10_center_shift_pass": true,
+    "h30_center_shift_pass": true,
+    "h10_sigma_pixel_p95_pass": true,
+    "h30_sigma_pixel_p95_pass": true
+  },
+  "band_fix_validated": false,
+  "reference_union_band_validated": false
+}

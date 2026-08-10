@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "config_id": "B12p5_A20",
+  "task_id": "multiheight",
+  "frame_count": 50,
+  "image_shape": [
+    2048,
+    2448
+  ],
+  "centre_extractor": "realtime_steger.extract_steger_columns",
+  "steger_config": "D:\\Docs\\linelaserscan\\calibration\\config\\realtime_steger.yaml",
+  "steger_config_sha256": "4ffe544c002bfcdcfee494dbe2fa9c8dbfb75bef292ccc5f0156e6e0e2acbf96",
+  "reference_surface_x_range": [
+    935,
+    2236
+  ],
+  "valid_frame_fraction_min": 0.8,
+  "rois": {
+    "h001": {
+      "height_mm": 1.0,
+      "x_range": [
+        1711,
+        1744
+      ],
+      "width_px": 34,
+      "steger_valid_column_fraction": 1.0,
+      "fully_inside_reference_surface": true
+    },
+    "h010": {
+      "height_mm": 10.0,
+      "x_range": [
+        1771,
+        1807
+      ],
+      "width_px": 37,
+      "steger_valid_column_fraction": 1.0,
+      "fully_inside_reference_surface": true
+    },
+    "h030": {
+      "height_mm": 30.0,
+      "x_range": [
+        1836,
+        1862
+      ],
+      "width_px": 27,
+      "steger_valid_column_fraction": 1.0,
+      "fully_inside_reference_surface": true
+    }
+  },
+  "delta_y_computed": false,
+  "sensitivity_px_per_mm_computed": false,
+  "sigma_z_pred_computed": false,
+  "laser_plane_used": false,
+  "reconstruction_3d_performed": false,
+  "pnp_used": false,
+  "reference_model_modified": false,
+  "outputs": {
+    "median_image": "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\multiheight_median.png",
+    "preview": "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\multiheight_roi_preview.png"
+  }
+}

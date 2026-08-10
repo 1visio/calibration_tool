@@ -1,0 +1,4 @@
+roi_id,representative_columns,profile_sample_count,y_top,y_bottom,expected_center_y_px,peak_intensity,peak_intensity_p05,peak_intensity_p95,local_background,local_background_p05,local_background_p95,peak_minus_background,peak_minus_background_p05,peak_minus_background_p95,fwhm_px,fwhm_px_p05,fwhm_px_p95
+h001,"[1835, 1836, 1837, 1838, 1839]",250,1331,1381,1356.0336136203243,41.0,36.0,44.0,2.0,2.0,3.0,39.0,34.0,42.0,5.0,3.0,6.0
+h010,"[1899, 1900, 1901, 1902, 1903]",250,1319,1369,1343.5893339514732,52.0,45.0,56.0,5.0,4.0,5.0,47.0,40.0,51.0,5.0,4.0,6.0
+h030,"[1964, 1965, 1966, 1967, 1968]",250,1294,1344,1318.968796318397,47.0,45.0,54.0,6.0,6.0,6.0,41.0,39.0,48.0,6.0,5.0,7.0
