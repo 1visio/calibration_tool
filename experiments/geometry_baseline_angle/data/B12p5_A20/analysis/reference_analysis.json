@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "config_id": "B12p5_A20",
+  "task_id": "reference",
+  "frame_count": 50,
+  "image_shape": [
+    2048,
+    2448
+  ],
+  "centre_extractor": "realtime_steger.extract_steger_columns",
+  "steger_module": "D:\\Docs\\linelaserscan\\calibration\\src\\realtime_steger.py",
+  "steger_config": "D:\\Docs\\linelaserscan\\calibration\\config\\realtime_steger.yaml",
+  "steger_config_sha256": "4ffe544c002bfcdcfee494dbe2fa9c8dbfb75bef292ccc5f0156e6e0e2acbf96",
+  "steger_options": {
+    "sigma": 1.5,
+    "threshold": 30.0,
+    "deriv_thresh": 0.5,
+    "roi_margin": 48,
+    "roi_max_height": 512,
+    "scan_axis": "column"
+  },
+  "analysis_config": "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\configs\\analysis.yaml",
+  "analysis_config_sha256": "747c170c3d9b28c354b58fde446d1447c8a15c570007d9a813a88cb577d47417",
+  "valid_frame_fraction_min": 0.8,
+  "max_interp_gap_px": 8,
+  "source_counts": {
+    "observed": 1170,
+    "interpolated": 181,
+    "invalid": 1097
+  },
+  "source_fractions": {
+    "observed": 0.47794117647058826,
+    "interpolated": 0.07393790849673203,
+    "invalid": 0.44812091503267976
+  },
+  "observed_statistics": {
+    "column_fraction": 0.47794117647058826,
+    "valid_fraction_p50": 1.0,
+    "valid_fraction_min": 0.84,
+    "sigma_ref_p50_px": 0.007632465259279945,
+    "sigma_ref_p95_px": 0.013723210222055183,
+    "sigma_ref_max_px": 0.3940668454106208,
+    "fwhm_p50_of_columns_px": 2.0
+  },
+  "global_line_fit_applied": false,
+  "multiheight_analyzed": false,
+  "outputs": [
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_frame_columns.csv",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_by_column.csv",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_centerline.png",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_valid_fraction.png",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_repeatability.png"
+  ]
+}

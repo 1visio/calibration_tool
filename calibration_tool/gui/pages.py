@@ -562,16 +562,16 @@ class CapturePage(QWidget):
         self.plan_status.setWordWrap(True)
         plan_buttons = QHBoxLayout()
         self.preview_task_button = QPushButton("预览选中任务")
-        self.capture_task_button = QPushButton("稳定后保存当前帧")
+        self.capture_task_button = QPushButton("采集当前任务全部帧")
         self.next_task_button = QPushButton("下一任务")
         plan_buttons.addWidget(self.preview_task_button); plan_buttons.addWidget(self.capture_task_button); plan_buttons.addWidget(self.next_task_button)
         self.start_button = QPushButton("开始采集")
         self.resume_button = QPushButton("续采")
         self.cancel_button = QPushButton("取消")
-        # 引导采集期间同一个入口负责“稳定后保存当前帧并切换下一任务”。
+        # 引导采集期间同一个入口负责采满当前任务并切换下一任务。
         # 旧的后台 run_capture_plan API 仍保留，但不再让实时画面承担 gate 等待。
         self.capture_task_button.setToolTip(
-            "稳定后保存当前任务帧；保存成功后自动切换到下一任务。"
+            "点击后先丢弃当前任务的稳定帧，再一次采满全部剩余帧；完成后自动切换下一任务。"
         )
         # 兼容旧测试/插件属性，但不再创建第二个可见按钮。
         self.ready_button = self.capture_task_button
@@ -835,7 +835,7 @@ class CapturePage(QWidget):
         self._capture_in_progress = False
         self._set_guided_running(True)
         self.progress.clear()
-        self.progress.append("开始引导采集；实时画面稳定后点击“稳定后保存当前帧”。")
+        self.progress.append("开始引导采集；实时画面稳定后点击“采集当前任务全部帧”。")
         self.plan_tasks.setCurrentRow(row)
         self.plan_table.selectRow(row)
         self.guided_preview_index = None
@@ -873,7 +873,7 @@ class CapturePage(QWidget):
         self._capture_gate = gate
         self._capture_cancel_event = cancel_event
         self._last_completed_pose = None
-        self.progress.clear(); self.progress.append("开始采集；每个任务准备好后点击“稳定后保存当前帧”继续…")
+        self.progress.clear(); self.progress.append("开始采集；每个任务准备好后点击“采集当前任务全部帧”继续…")
         self._set_capture_running(True)
         worker = FunctionWorker(
             lambda report: run_capture_plan(
@@ -942,7 +942,7 @@ class CapturePage(QWidget):
         move_hint = ""
         if self._last_completed_pose and self._last_completed_pose != task.pose_id:
             move_hint = f"上一姿态 {self._last_completed_pose} 已完成，请移动到 {task.pose_id}。\n"
-        self.plan_status.setText(move_hint + "请完成当前姿态准备后点击“稳定后保存当前帧”。")
+        self.plan_status.setText(move_hint + "请完成当前姿态准备后点击“采集当前任务全部帧”。")
         self.capture_task_button.setEnabled(True)
 
     def _select_batch_task(self, task: CaptureTask) -> None:
@@ -1152,7 +1152,7 @@ class CapturePage(QWidget):
             self.capture_task_button.setEnabled(False)
 
         if self.camera_page.request_preview_task(
-            task.config, task.quality_mode, task.settle_frames
+            task.config, task.quality_mode, 0
         ):
             callback = self._pending_preview_callback
             self._pending_preview_callback = None
@@ -1163,7 +1163,7 @@ class CapturePage(QWidget):
         QTimer.singleShot(
             350,
             lambda: self._start_guided_preview(
-                token, row, task.task_id, task.instruction, task.settle_frames
+                token, row, task.task_id, task.instruction
             ),
         )
 
@@ -1173,13 +1173,12 @@ class CapturePage(QWidget):
         row: int,
         task_id: str,
         instruction: str,
-        settle_frames: int,
     ) -> None:
         if token != self._preview_request_token:
             return
         if self.loaded_plan is None or row < 0 or row >= len(self.loaded_plan.tasks):
             return
-        self.camera_page.start_preview(initial_discard_frames=settle_frames)
+        self.camera_page.start_preview(initial_discard_frames=0)
         self.guided_preview_index = row
         self.plan_status.setText(f"正在预览 {task_id}：{instruction}")
         if self._guided_capture_active:
@@ -1191,7 +1190,7 @@ class CapturePage(QWidget):
 
     def capture_current_task_frame(self) -> None:
         if self._capture_in_progress:
-            self.plan_status.setText("正在等待稳定帧，请稍候…")
+            self.plan_status.setText("正在自动采集当前任务的剩余帧，请稍候…")
             return
         selected = self._selected_plan_task()
         if selected is None:
@@ -1203,42 +1202,59 @@ class CapturePage(QWidget):
         self.next_task_button.setEnabled(False)
 
         def save_after_settle(frame, _quality) -> None:
-            self._capture_in_progress = False
-            self.capture_task_button.setEnabled(not self._guided_capture_active)
-            self.preview_task_button.setEnabled(not self._guided_capture_active)
-            self.next_task_button.setEnabled(not self._guided_capture_active)
             try:
                 completed = self._save_guided_frame(task, frame)
             except Exception as exc:
+                self._capture_in_progress = False
+                self.capture_task_button.setEnabled(True)
+                self.preview_task_button.setEnabled(not self._guided_capture_active)
+                self.next_task_button.setEnabled(not self._guided_capture_active)
                 QMessageBox.critical(self, "保存任务失败", str(exc))
                 return
             if completed:
+                self._capture_in_progress = False
                 self._mark_task_row(row)
                 if self._guided_capture_active:
                     self.capture_task_button.setEnabled(False)
+                else:
+                    self.capture_task_button.setEnabled(True)
+                    self.preview_task_button.setEnabled(True)
+                    self.next_task_button.setEnabled(True)
                 self.select_next_task()
             else:
-                self.capture_task_button.setEnabled(True)
                 self.plan_status.setText(
-                    f"{task.task_id} 尚未采满 {task.frames} 帧；继续点击保存完成该任务。"
+                    f"{task.task_id}：正在连续采集，完成后自动进入下一任务…"
                 )
+                self._schedule_guided_capture(task, save_after_settle)
 
         if self.guided_preview_index != row or self.camera_page.preview_thread is None:
             self.preview_selected_task(
-                on_started=lambda: self._schedule_guided_capture(task, save_after_settle)
+                on_started=lambda: self._schedule_guided_capture(
+                    task, save_after_settle, discard_frames=task.settle_frames
+                )
             )
             return
-        self._schedule_guided_capture(task, save_after_settle)
+        self._schedule_guided_capture(
+            task, save_after_settle, discard_frames=task.settle_frames
+        )
 
     def _schedule_guided_capture(
         self,
         task: CaptureTask,
         callback: Callable[[Any, dict[str, Any]], None],
+        *,
+        discard_frames: int = 0,
     ) -> None:
-        if self.camera_page.capture_after_settle(task.settle_frames, callback):
-            self.plan_status.setText(
-                f"{task.task_id}：已应用曝光，丢弃 {task.settle_frames} 帧后保存下一帧…"
-            )
+        # 点击采集时为当前 task 执行一次 settle_frames；递归保存后续帧时
+        # discard_frames 保持为 0，同一 task 内不重复丢弃预热帧。
+        discard_frames = max(0, int(discard_frames))
+        if self.camera_page.capture_after_settle(discard_frames, callback):
+            if discard_frames:
+                self.plan_status.setText(
+                    f"{task.task_id}：先丢弃 {discard_frames} 帧，再自动采集全部剩余帧…"
+                )
+            else:
+                self.plan_status.setText(f"{task.task_id}：正在自动采集全部剩余帧…")
             return
         self._capture_in_progress = False
         self.capture_task_button.setEnabled(True)
@@ -1324,7 +1340,9 @@ class CapturePage(QWidget):
             )
             return task_completed
         else:
-            _save_state(work_dir, manifest)
+            # manifest 是续采的事实来源，每帧持久化；frames.csv 是派生索引，
+            # 只在 task 完成时刷新，避免 Windows 下连续替换同一 CSV 触发共享冲突。
+            _save_state(work_dir, manifest, write_frames_csv=task_completed)
             self.progress.append(
                 f"{task.task_id}  {index}/{task.frames}  {','.join(quality['warnings']) or '通过'}  → {relative.as_posix()}"
             )

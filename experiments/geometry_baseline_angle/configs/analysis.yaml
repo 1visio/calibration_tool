@@ -1,0 +1,20 @@
+schema_version: 1
+experiment_type: geometry_baseline_angle
+experiment_phase: phase_A_screening
+
+# 直接引用正式标定与在线测量共同使用的 Steger 参数，不在实验代码中复制参数。
+steger_config: ../../../../calibration/config/realtime_steger.yaml
+
+reference:
+  valid_frame_fraction_min: 0.80
+  max_interp_gap_px: 8
+
+# 先用 preview-reference-roi 人工确认棋盘格基准面的左右边界，再填写 [x_left, x_right]。
+# 坐标为包含端点的图像列索引；null 时 analyze-reference 会拒绝构建参考曲线。
+reference_surface:
+  x_range: null
+  segment_edge_trim_px: 2
+  smooth_spline_basis_count: 12
+  smooth_spline_penalty: 1.0
+  robust_huber_delta: 1.5
+  robust_max_iterations: 15

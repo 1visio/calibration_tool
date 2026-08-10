@@ -1,0 +1,99 @@
+schema_version: 1
+dataset_id: geometry_baseline_angle_B12p5_A15
+output_dir: D:\Docs\linelaserscan\calibration_tool\experiments\geometry_baseline_angle\data\B12p5_A15
+backend: mvs
+serial_number: ''
+camera:
+  exposure_us: 1500.0
+  gain_db: 0.0
+  pixel_format: Mono8
+  offset_x: 0
+  offset_y: 0
+  width: 2448
+  height: 2048
+  timeout_ms: 2000
+quality:
+  max_saturation_fraction: 0.05
+  max_dark_fraction: 0.95
+  min_dynamic_range_u8: 20.0
+  min_laser_coverage: 0.3
+  require_chessboard_detection: true
+  max_chessboard_saturation_fraction: 0.005
+  max_chessboard_highlight_fraction: 0.2
+  max_chessboard_p995_u8: 245.0
+  max_laser_saturation_fraction: 0.001
+  max_laser_peak_saturation_fraction: 0.02
+  max_laser_peak_near_saturation_fraction: 0.1
+  max_laser_saturated_width_px: 1.0
+metadata:
+  experiment_type: geometry_baseline_angle
+  experiment_phase: phase_A_screening
+  config_id: B12p5_A15
+  baseline_scale_reading: 12.5
+  baseline_actual_mm: null
+  laser_angle_deg: 15
+  working_distance_nominal_mm: 1000
+  working_distance_calibrated: false
+  baseline_scale_reading_note: 机械支架刻度，不是实际相机-激光光学基线
+backend_options: {}
+tasks:
+- task_id: reference
+  frames: 50
+  filename_template: images/reference/{index04}{suffix}
+  camera:
+    exposure_us: 1500.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  pose_id: reference
+  role: reference
+  instruction: 保持激光开启；将棋盘格沿固定导向移动到参考位置；激光只投射在裸露棋盘格参考面；1/10/30 mm 测量件保持固定在棋盘格上，不拆卸。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    experiment_type: geometry_baseline_angle
+    experiment_phase: phase_A_screening
+    config_id: B12p5_A15
+    laser_state: 'on'
+    measurement_pieces_fixed: true
+    measurement_piece_heights_mm:
+    - 1
+    - 10
+    - 30
+    board_position: reference
+    laser_target: bare_chessboard_reference_surface
+- task_id: multiheight
+  frames: 50
+  filename_template: images/multiheight/{index04}{suffix}
+  camera:
+    exposure_us: 1500.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 2448
+    height: 2048
+    timeout_ms: 2000
+  pose_id: measurement
+  role: multiheight
+  instruction: 保持激光开启；将同一块棋盘格沿固定导向移动到 measurement 定位位置；激光线同时穿过 1 mm、10 mm、30 mm 测量件；测量件在整个12组实验中保持固定。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    experiment_type: geometry_baseline_angle
+    experiment_phase: phase_A_screening
+    config_id: B12p5_A15
+    laser_state: 'on'
+    measurement_pieces_fixed: true
+    measurement_piece_heights_mm:
+    - 1
+    - 10
+    - 30
+    board_position: measurement
+    laser_target: multiheight_measurement_pieces

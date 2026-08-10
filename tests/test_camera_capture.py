@@ -1,9 +1,11 @@
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import yaml
 
+from calibration_tool.camera import capture as capture_module
 from calibration_tool.camera.capture import run_capture_plan
 from calibration_tool.camera.models import CameraConfig, CapturePlan, CaptureTask
 from calibration_tool.camera.synthetic import SyntheticCameraProvider
@@ -109,6 +111,44 @@ class CameraCaptureTests(unittest.TestCase):
             completed = yaml.safe_load((output / "dataset_manifest.yaml").read_text(encoding="utf-8"))
             self.assertEqual(completed["status"], "completed")
             self.assertEqual(len([x for x in completed["frames"] if x["task_id"] == "exposure_01"]), 2)
+
+    def test_atomic_text_retries_transient_windows_permission_error(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            target = Path(temporary) / "frames.csv"
+            real_replace = capture_module.os.replace
+            attempts = []
+
+            def flaky_replace(source, destination):
+                attempts.append((source, destination))
+                if len(attempts) < 3:
+                    raise PermissionError(13, "temporarily locked", str(destination))
+                return real_replace(source, destination)
+
+            with (
+                patch.object(capture_module.os, "replace", side_effect=flaky_replace),
+                patch.object(capture_module.time, "sleep"),
+            ):
+                capture_module._atomic_text(target, "header\nvalue\n")
+
+            self.assertEqual(len(attempts), 3)
+            self.assertEqual(target.read_text(encoding="utf-8"), "header\nvalue\n")
+            self.assertEqual(list(target.parent.glob(".frames.csv.*.tmp")), [])
+
+    def test_save_state_can_defer_derived_frames_csv(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            work_dir = Path(temporary)
+            manifest = capture_module._new_manifest(self._plan(work_dir / "dataset"))
+            with (
+                patch.object(capture_module, "_atomic_yaml") as write_manifest,
+                patch.object(capture_module, "_write_frames_csv") as write_csv,
+            ):
+                capture_module._save_state(work_dir, manifest, write_frames_csv=False)
+                write_manifest.assert_called_once()
+                write_csv.assert_not_called()
+
+                capture_module._save_state(work_dir, manifest)
+                self.assertEqual(write_manifest.call_count, 2)
+                write_csv.assert_called_once()
 
 
 if __name__ == "__main__":
