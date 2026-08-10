@@ -48,8 +48,8 @@ def load_camera_config(path: str | Path) -> dict[str, Any]:
     source = Path(path).expanduser().resolve()
     document = load_document(source)
     backend = str(document.get("backend", "mvs"))
-    if backend not in {"mvs", "synthetic"}:
-        raise ConfigError("backend 必须是 mvs 或 synthetic")
+    if backend not in {"mvs", "daheng", "synthetic"}:
+        raise ConfigError("backend 必须是 mvs、daheng 或 synthetic")
     calibration_src = document.get("calibration_src", "../../calibration/src")
     return {
         "source": source,

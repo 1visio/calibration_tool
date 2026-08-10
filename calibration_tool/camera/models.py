@@ -220,8 +220,8 @@ class CapturePlan:
     def __post_init__(self) -> None:
         if not self.dataset_id:
             raise ValueError("dataset_id 不能为空")
-        if self.backend not in {"mvs", "synthetic"}:
-            raise ValueError("backend 必须是 mvs 或 synthetic")
+        if self.backend not in {"mvs", "daheng", "synthetic"}:
+            raise ValueError("backend 必须是 mvs、daheng 或 synthetic")
         if not self.tasks:
             raise ValueError("采集计划至少需要一个 task")
         if self.board_pattern is not None and min(self.board_pattern) <= 0:
