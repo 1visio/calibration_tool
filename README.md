@@ -26,11 +26,11 @@
 | `python -m calibration_tool --help`、`list-stages` | 通过 | CLI 入口和 7 个统一 stage 可加载 |
 | `camera-list --config configs/camera.example.yaml` | 通过 | synthetic 设备 `SIMULATED-MV-CS050-60GM` 可枚举 |
 | `camera-preview`（synthetic） | 可运行但有告警 | 示例帧返回 `dynamic_range_low`，这是质量提示，不是采集异常 |
-| `python -m pytest -q` | 77 通过，1 失败 | 仅 `test_golden_snapshot.py` 因历史 baseline 漂移失败 |
+| `python -m pytest -q` | 83 通过，1 失败 | 仅 `test_golden_snapshot.py` 因历史 baseline 漂移失败 |
 | `golden-check` | `matches: false` | 发现 9 项配置/标定哈希变化或文件缺失 |
 | `audit` | `overall: fail` | 当前历史数据仍缺少独立内参测试、补偿 holdout 等正式门禁 |
 
-因此，当前可确认的是“软件链路可启动、synthetic 演练可用、绝大多数单元测试通过”；真实 MVS 相机仍需在安装 SDK 和接入设备后单独验证，大恒相机后端尚未在 `main` 实现。
+因此，当前可确认的是“软件链路可启动、synthetic 演练可用、绝大多数单元测试通过”；海康 MVS 与大恒 Galaxy 后端均需在安装对应 SDK、接入设备后完成真机验证。
 
 ## 1. 快速开始
 
@@ -193,7 +193,8 @@ python -m calibration_tool capture-exposure-series `
 复制以下模板后再填写现场值：
 
 - `configs/camera.example.yaml`：默认 synthetic；
-- `configs/camera.mvs.example.yaml`：真实 MV-CS050-60GM 模板。
+- `configs/camera.mvs.example.yaml`：海康 MV-CS050-60GM 模板；
+- `configs/camera.daheng.example.yaml`：大恒 Galaxy USB3 模板。
 
 当前相机后端状态：
 
@@ -201,9 +202,14 @@ python -m calibration_tool capture-exposure-series `
 |---|---|---|
 | `synthetic` | 已验证 | 可用于 CLI、GUI 和采集计划的无硬件演练 |
 | `mvs` | 已实现，需现场验证 | 当前适配海康 MVS SDK；需要 `calibration/src`、SDK 和相机设备 |
-| `daheng` | 尚未实现 | `main` 的配置校验只接受 `mvs`/`synthetic`；大恒适配将在 `feature/daheng-camera-support` 分支完成 |
+| `daheng` | 已实现，需真机验证 | 使用 Galaxy SDK 随附的 `gxipy`，当前枚举 USB3 Vision 设备 |
 
-大恒适配应保持现有 `CameraProvider`/`CameraSession` 接口不变，新增独立 SDK adapter 和配置模板，不要把大恒 SDK 调用混入 `camera/mvs.py`。在没有大恒 SDK 的开发机上，先用 fake provider/synthetic 测试枚举、曝光/增益回读、ROI/PixelFormat 重配、帧号/时间戳和 stop/close 生命周期；接入真实设备后再补充 GigE 取流、触发和像素格式回读验收。
+大恒后端保持现有 `CameraProvider`/`CameraSession` 接口不变，SDK 调用集中在 `camera/daheng.py`。`gxipy` 随 Galaxy SDK 安装，默认从 `C:\Program Files\Daheng Imaging\GalaxySDK` 加载；非默认路径可设置 `DAHENG_GALAXY_ROOT`，或用 `DAHENG_GALAXY_PYTHON_PATH` 指向包含 `gxipy` 的目录。
+
+```powershell
+python -m calibration_tool camera-list --config configs\camera.daheng.example.yaml
+python -m calibration_tool camera-preview --config configs\camera.daheng.example.yaml
+```
 
 关键字段：
 
@@ -435,7 +441,7 @@ python -m pytest -q
 python -m unittest discover -s tests -v
 ```
 
-当前快照的结果为 `77 passed, 1 failed`。唯一失败项是 `tests/test_golden_snapshot.py::test_generated_baseline_matches_sources`：它验证的是历史 golden baseline，失败原因是外部离线/在线配置和标定文件发生漂移或缺失，不是 Python 测试收集或 CLI 导入失败。处理方式是先确认漂移是否有意，再由项目负责人重新生成 baseline；不要为了让测试变绿而直接覆盖历史证据。
+当前快照的结果为 `83 passed, 1 failed`。唯一失败项是 `tests/test_golden_snapshot.py::test_generated_baseline_matches_sources`：它验证的是历史 golden baseline，失败原因是外部离线/在线配置和标定文件发生漂移或缺失，不是 Python 测试收集或 CLI 导入失败。处理方式是先确认漂移是否有意，再由项目负责人重新生成 baseline；不要为了让测试变绿而直接覆盖历史证据。
 
 GUI 测试需要 PySide6 和可用的 Qt/offscreen 环境；真机测试还需要 SDK 和相机设备。`camera-preview` 返回 `dynamic_range_low` 时应调曝光、光源或质量阈值，并保留原始告警，不要把它当成程序崩溃。
 
@@ -445,7 +451,7 @@ GUI 测试需要 PySide6 和可用的 Qt/offscreen 环境；真机测试还需�
 |---|---|
 | `camera-list` 没有设备 | MVS SDK、相机占用、网络、序列号和 Python 位数 |
 | synthetic 正常、MVS 失败 | SDK 加载、网卡/USB、设备权限和 `backend: mvs` |
-| 大恒相机无法枚举 | 当前 `main` 尚未提供 `daheng` backend；先切换到适配分支，确认 Daheng SDK/Python wrapper 位数和设备访问权限 |
+| 大恒相机无法枚举 | 确认完整 Galaxy SDK、Python/SDK 位数、`DAHENG_GALAXY_ROOT`、USB3 连接和设备是否被其他程序占用 |
 | 棋盘检测失败 | 内角点数量、激光是否关闭、曝光/失焦/反光、棋盘是否完整入镜 |
 | 激光覆盖率低 | 激光方向、曝光、遮光、线宽和 `quality.min_laser_coverage` |
 | workflow 找不到输入 | 所有相对路径以 workflow YAML 所在目录解析；检查 fit/test/validation 目录 |

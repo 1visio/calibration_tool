@@ -76,7 +76,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     camera_list = sub.add_parser("camera-list", help="枚举可用相机")
     camera_list.add_argument("--config", type=Path)
-    camera_list.add_argument("--backend", choices=("mvs", "synthetic"), default="mvs")
+    camera_list.add_argument("--backend", choices=("mvs", "daheng", "synthetic"), default="mvs")
     camera_list.add_argument("--calibration-src", type=Path, default=DEFAULT_CALIBRATION_SRC)
 
     preview = sub.add_parser("camera-preview", help="取流并输出曝光/清晰度/激光覆盖等质量指标")
