@@ -18,6 +18,7 @@ from typing import Any
 
 from ..errors import ConfigError
 from ..io_utils import dump_yaml
+from ..laser import LaserConfig, parse_laser_config
 from .config import load_capture_plan
 from .models import CameraConfig, CapturePlan, CaptureTask, QualityThresholds
 
@@ -100,6 +101,7 @@ class CaptureRecipe:
     quality_thresholds: QualityThresholds | Mapping[str, Any] = field(
         default_factory=QualityThresholds
     )
+    laser: LaserConfig | Mapping[str, Any] = field(default_factory=LaserConfig)
 
     def __post_init__(self) -> None:
         if not isinstance(self.dataset_id, str) or not self.dataset_id.strip():
@@ -137,6 +139,7 @@ class CaptureRecipe:
         converted = tuple(_coerce_recipe_item(item) for item in self.items)
         object.__setattr__(self, "items", converted)
         object.__setattr__(self, "board_pattern", _normalize_board_pattern(self.board_pattern))
+        object.__setattr__(self, "laser", _coerce_laser_config(self.laser))
 
 
 @dataclass(frozen=True, slots=True)
@@ -285,6 +288,7 @@ def build_capture_plan_from_recipe(
             board_pattern=board_pattern,
             metadata=dict(recipe.metadata),
             backend_options=dict(recipe.backend_options),
+            laser=recipe.laser,
         )
     except (TypeError, ValueError) as exc:
         raise ValueError(f"采集配方无法生成计划：{exc}") from exc
@@ -307,6 +311,7 @@ def capture_plan_to_document(
         "quality": asdict(plan.quality_thresholds),
         "metadata": dict(plan.metadata),
         "backend_options": dict(plan.backend_options),
+        "laser": asdict(plan.laser),
         "tasks": [],
     }
     if plan.board_pattern is not None:
@@ -485,6 +490,15 @@ def _coerce_quality_thresholds(
     raise ValueError("quality_thresholds 必须是 QualityThresholds 或映射")
 
 
+def _coerce_laser_config(value: LaserConfig | Mapping[str, Any]) -> LaserConfig:
+    if isinstance(value, LaserConfig):
+        return value
+    try:
+        return parse_laser_config(value)
+    except ConfigError as exc:
+        raise ValueError(str(exc)) from exc
+
+
 def _normalize_quality_mode(value: str) -> str:
     return _QUALITY_ALIASES.get(value, value)
 
@@ -599,6 +613,7 @@ def _assert_round_trip(expected: CapturePlan, actual: CapturePlan) -> None:
         or expected.base_config != actual.base_config
         or expected.quality_thresholds != actual.quality_thresholds
         or expected.board_pattern != actual.board_pattern
+        or expected.laser != actual.laser
         or _yaml_compare_value(expected.metadata) != _yaml_compare_value(actual.metadata)
         or _yaml_compare_value(expected.backend_options) != _yaml_compare_value(actual.backend_options)
         or len(expected.tasks) != len(actual.tasks)

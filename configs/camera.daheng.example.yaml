@@ -2,6 +2,9 @@ schema_version: 1
 backend: daheng
 serial_number: ""  # 只有一台大恒 USB3 相机时可留空；多台时必须填写
 
+laser:
+  orientation: vertical
+
 # Galaxy SDK 默认从 C:\Program Files\Daheng Imaging\GalaxySDK 加载。
 # 非默认安装位置可设置环境变量 DAHENG_GALAXY_ROOT。
 camera:
@@ -10,8 +13,8 @@ camera:
   pixel_format: Mono8
   offset_x: 0
   offset_y: 0
-  width: 2448
-  height: 2048
+  width: 4096
+  height: 3000
   timeout_ms: 2000
 
 quality:

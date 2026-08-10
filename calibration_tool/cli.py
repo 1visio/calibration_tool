@@ -65,6 +65,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     workflow = sub.add_parser("workflow", help="按一个 YAML 计划顺序运行多个阶段")
     workflow.add_argument("plan", type=Path)
+    workflow.add_argument("--project", type=Path, help="读取项目中的 laser.orientation")
 
     bundle = sub.add_parser("bundle-build", help="发布不可拆分的标定包")
     bundle.add_argument("--config", type=Path, required=True)
@@ -146,7 +147,13 @@ def main(argv: Sequence[str] | None = None) -> int:
                 allow_quality_failure=args.allow_quality_failure,
             )
         elif args.command == "workflow":
-            result = run_workflow(args.plan)
+            if args.project is not None:
+                from .gui.project import WizardProject
+
+                orientation = WizardProject.load(args.project).laser.orientation
+            else:
+                orientation = "horizontal"
+            result = run_workflow(args.plan, laser_orientation=orientation)
         elif args.command == "bundle-build":
             result = build_calibration_bundle(
                 args.config,
@@ -189,6 +196,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 quality_mode=args.quality_mode,
                 quality_thresholds=camera_runtime["quality_thresholds"],
                 board_pattern=camera_runtime["board_pattern"],
+                laser_orientation=camera_runtime["laser"].orientation,
                 snapshot=args.snapshot,
             )
         elif args.command == "capture-plan":
@@ -238,6 +246,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 board_pattern=camera_runtime["board_pattern"],
                 metadata={"kind": "exposure_series", "camera_config": str(args.config.resolve())},
                 backend_options=camera_runtime["backend_options"],
+                laser=camera_runtime["laser"],
             )
             provider = build_camera_provider(
                 plan.backend,

@@ -9,6 +9,27 @@ from calibration_tool.workflow import run_workflow
 
 
 class WorkflowReportTests(unittest.TestCase):
+    def test_laser_surface_stage_receives_project_orientation(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            plan = root / "workflow.yaml"
+            plan.write_text(yaml.safe_dump({
+                "schema_version": 1,
+                "calibration_src": ".",
+                "stages": [{"name": "laser_surface_models", "options": {"config": "fit.yaml"}}],
+            }), encoding="utf-8")
+            record = {"stage": "laser_surface_models", "status": "completed", "quality_gates": []}
+            with patch("calibration_tool.workflow.ComputationService") as service:
+                service.return_value.run.return_value = record
+                report = run_workflow(plan, laser_orientation="vertical")
+
+            arguments = service.return_value.run.call_args.args[1]
+            self.assertEqual(
+                arguments[arguments.index("--laser-orientation") + 1],
+                "vertical",
+            )
+            self.assertEqual(report["laser"], {"orientation": "vertical"})
+
     def test_report_aggregates_stage_gates_for_acceptance(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

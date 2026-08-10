@@ -6,6 +6,7 @@ from typing import Any, Mapping
 
 from ..errors import ConfigError
 from ..io_utils import canonical_mapping_hash, load_document, resolve_relative
+from ..laser import parse_laser_config
 from .models import CameraConfig, CapturePlan, CaptureTask, QualityThresholds
 
 
@@ -60,6 +61,7 @@ def load_camera_config(path: str | Path) -> dict[str, Any]:
         "board_pattern": _board_pattern(document.get("board")),
         "backend_options": _mapping(document.get("backend_options"), "backend_options"),
         "calibration_src": resolve_relative(source, calibration_src),
+        "laser": parse_laser_config(document.get("laser")),
     }
 
 
@@ -90,6 +92,7 @@ def load_capture_plan(path: str | Path) -> CapturePlan:
             board_pattern=_board_pattern(document.get("board")),
             metadata=_mapping(document.get("metadata"), "metadata"),
             backend_options=_mapping(document.get("backend_options"), "backend_options"),
+            laser=parse_laser_config(document.get("laser")),
         )
     except ConfigError:
         raise
@@ -111,6 +114,7 @@ def capture_plan_payload(plan: CapturePlan) -> dict[str, Any]:
         "board_pattern": list(plan.board_pattern) if plan.board_pattern else None,
         "metadata": plan.metadata,
         "backend_options": plan.backend_options,
+        "laser": asdict(plan.laser),
         "tasks": [
             {
                 "task_id": task.task_id,

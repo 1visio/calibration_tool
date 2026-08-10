@@ -54,6 +54,7 @@ class PreviewThread(QThread):
         quality_mode: str,
         thresholds: QualityThresholds,
         board_pattern: tuple[int, int] | None,
+        laser_orientation: str = "horizontal",
         initial_discard_frames: int = 3,
         parent: QObject | None = None,
     ) -> None:
@@ -64,6 +65,7 @@ class PreviewThread(QThread):
         self.quality_mode = quality_mode
         self.thresholds = thresholds
         self.board_pattern = board_pattern
+        self.laser_orientation = laser_orientation
         self.initial_discard_frames = max(0, int(initial_discard_frames))
         self._parameter_lock = threading.Lock()
         self._pending_exposure_gain: tuple[float, float] | None = None
@@ -130,6 +132,7 @@ class PreviewThread(QThread):
             mode=self.quality_mode,
             thresholds=self.thresholds,
             board_pattern=self.board_pattern,
+            laser_orientation=self.laser_orientation,
         )
         payload = quality_to_dict(quality)
         payload["settling"] = bool(settling)

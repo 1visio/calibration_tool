@@ -7,6 +7,8 @@ from typing import Any, Callable, Mapping, Protocol
 
 import numpy as np
 
+from ..laser import LaserConfig
+
 
 PIXEL_FORMATS = {"Mono8", "Mono12"}
 IMAGE_FORMATS = {"tif", "png"}
@@ -216,6 +218,7 @@ class CapturePlan:
     board_pattern: tuple[int, int] | None = None
     metadata: dict[str, Any] = field(default_factory=dict)
     backend_options: dict[str, Any] = field(default_factory=dict)
+    laser: LaserConfig = LaserConfig()
 
     def __post_init__(self) -> None:
         if not self.dataset_id:

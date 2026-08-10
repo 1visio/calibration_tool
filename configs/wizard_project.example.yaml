@@ -3,6 +3,8 @@ project_id: mv-cs050-60gm-calibration
 laser_model: circular_cone
 workspace: ../projects/mv-cs050-60gm-calibration
 camera_config: camera.mvs.example.yaml
+laser:
+  orientation: horizontal
 workflow_plan: workflow.example.yaml
 acceptance_plan: acceptance_plan.example.yaml
 capture_output: ../projects/mv-cs050-60gm-calibration/data

@@ -42,6 +42,10 @@ from calibration_tool.laser_models import (  # noqa: E402
     normalize_model_type,
     select_default_model,
 )
+from calibration_tool.laser import (  # noqa: E402
+    normalize_laser_orientation,
+    parse_laser_config,
+)
 
 import cv2
 import matplotlib.pyplot as plt
@@ -328,31 +332,43 @@ def steger_candidates(
     return xx.astype(np.float64) + dx[valid], yy.astype(np.float64) + dy[valid], response[valid]
 
 
-def select_one_per_column(
+def select_one_per_scanline(
     x: np.ndarray,
     y: np.ndarray,
     response: np.ndarray,
     poly_degree: int,
     outlier_threshold_px: float,
     max_points: int,
+    orientation: str,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """按激光延伸方向每条扫描线保留最强候选，并沿该方向做连续性过滤。"""
+    orientation = normalize_laser_orientation(orientation)
     if x.size == 0:
         return x, y, response
-    col = np.round(x).astype(int)
-    order = np.lexsort((-response, col))
-    col_o = col[order]
-    first = np.r_[True, col_o[1:] != col_o[:-1]]
+    scan_coordinate = x if orientation == "horizontal" else y
+    scanline = np.round(scan_coordinate).astype(int)
+    order = np.lexsort((-response, scanline))
+    scanline_o = scanline[order]
+    first = np.r_[True, scanline_o[1:] != scanline_o[:-1]]
     keep = order[first]
     x, y, response = x[keep], y[keep], response[keep]
 
-    order = np.argsort(x)
+    scan_coordinate = x if orientation == "horizontal" else y
+    dependent_coordinate = y if orientation == "horizontal" else x
+    order = np.argsort(scan_coordinate)
     x, y, response = x[order], y[order], response[order]
+    scan_coordinate = scan_coordinate[order]
+    dependent_coordinate = dependent_coordinate[order]
     if x.size >= max(poly_degree + 2, 12):
         # 两轮稳健多项式连续性过滤，只用于剔除二次反射和棋盘格边缘假响应。
         active = np.ones(x.size, dtype=bool)
         for _ in range(2):
-            coef = np.polyfit(x[active], y[active], deg=poly_degree)
-            residual = y - np.polyval(coef, x)
+            coef = np.polyfit(
+                scan_coordinate[active],
+                dependent_coordinate[active],
+                deg=poly_degree,
+            )
+            residual = dependent_coordinate - np.polyval(coef, scan_coordinate)
             scale = robust_scale(residual[active])
             threshold = max(float(outlier_threshold_px), 3.5 * scale)
             active = np.abs(residual) <= threshold
@@ -364,11 +380,33 @@ def select_one_per_column(
     return x[idx], y[idx], response[idx]
 
 
+def select_one_per_column(
+    x: np.ndarray,
+    y: np.ndarray,
+    response: np.ndarray,
+    poly_degree: int,
+    outlier_threshold_px: float,
+    max_points: int,
+    orientation: str = "horizontal",
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """旧函数名保留兼容；orientation 可切换为按 row 处理 vertical 激光线。"""
+    return select_one_per_scanline(
+        x,
+        y,
+        response,
+        poly_degree,
+        outlier_threshold_px,
+        max_points,
+        orientation=orientation,
+    )
+
+
 def extract_laser_centers(
     laser: np.ndarray,
     background: np.ndarray,
     board_mask: np.ndarray,
     cfg: Dict[str, Any],
+    orientation: str,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     diff = positive_difference(laser, background)
     method = str(cfg.get("method", "steger")).lower()
@@ -382,13 +420,14 @@ def extract_laser_centers(
         min_response=float(cfg.get("min_response", 0.8)),
         max_subpixel_offset=float(cfg.get("max_subpixel_offset", 0.6)),
     )
-    x, y, response = select_one_per_column(
+    x, y, response = select_one_per_scanline(
         x,
         y,
         response,
         poly_degree=int(cfg.get("continuity_poly_degree", 2)),
         outlier_threshold_px=float(cfg.get("continuity_threshold_px", 2.0)),
         max_points=int(cfg.get("max_points_per_image", 900)),
+        orientation=orientation,
     )
     return x, y, response, diff
 
@@ -866,6 +905,7 @@ def process_dataset(
     image_size: Optional[Tuple[int, int]],
     board_cfg: Dict[str, Any],
     extraction_cfg: Dict[str, Any],
+    laser_orientation: str,
     preview_dir: Path,
 ) -> pd.DataFrame:
     root = Path(dataset_cfg["root"])
@@ -900,7 +940,13 @@ def process_dataset(
                 pose.corners,
                 margin_px=int(extraction_cfg.get("board_mask_margin_px", -2)),
             )
-            u, v, response, diff = extract_laser_centers(laser, background, mask, extraction_cfg)
+            u, v, response, diff = extract_laser_centers(
+                laser,
+                background,
+                mask,
+                extraction_cfg,
+                laser_orientation,
+            )
             min_points = int(extraction_cfg.get("min_points_per_image", 80))
             if u.size < min_points:
                 raise RuntimeError(f"有效激光中心点仅 {u.size}，小于 {min_points}")
@@ -1109,10 +1155,20 @@ def main(argv: Sequence[str] | None = None) -> int:
         default=None,
         help="覆盖配置中的输出目录（供统一 workflow stage 使用）",
     )
+    parser.add_argument(
+        "--laser-orientation",
+        choices=("horizontal", "vertical"),
+        default=None,
+        help="覆盖配置中的 laser.orientation（workflow 从项目配置显式传入）",
+    )
     args = parser.parse_args(argv)
 
     config_path = Path(args.config).resolve()
     cfg = safe_yaml_load(config_path)
+    laser_cfg = parse_laser_config(cfg.get("laser"))
+    laser_orientation = normalize_laser_orientation(
+        args.laser_orientation or laser_cfg.orientation
+    )
     output_dir = Path(args.output_dir or cfg.get("output_dir", "outputs/laser_model_comparison"))
     if not output_dir.is_absolute():
         output_dir = (config_path.parent / output_dir).resolve()
@@ -1145,13 +1201,13 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     train_df = process_dataset(
         "train", resolve_dataset(datasets_cfg["train"]), patterns, k, dist, image_size,
-        board_cfg, extraction_cfg, preview_dir,
+        board_cfg, extraction_cfg, laser_orientation, preview_dir,
     )
     frames = [train_df]
     if "validation" in datasets_cfg and datasets_cfg["validation"].get("ids"):
         validation_df = process_dataset(
             "validation", resolve_dataset(datasets_cfg["validation"]), patterns, k, dist, image_size,
-            board_cfg, extraction_cfg, preview_dir,
+            board_cfg, extraction_cfg, laser_orientation, preview_dir,
         )
         frames.append(validation_df)
     else:
@@ -1212,6 +1268,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         if not rows.empty:
             selected_metrics[split] = rows.iloc[0].to_dict()
     selected_document = selected.to_dict()
+    selected_document["laser"] = {"orientation": laser_orientation}
     selected_document["model_selection"] = {
         "default_model": default_model,
         "supported_models": list(SUPPORTED_LASER_MODEL_TYPES),
@@ -1230,6 +1287,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             "supported_models": list(SUPPORTED_LASER_MODEL_TYPES),
             "model_file": "laser_model.yaml",
             "legacy_model_file": "laser_plane.yaml",
+            "laser": {"orientation": laser_orientation},
         },
     )
 

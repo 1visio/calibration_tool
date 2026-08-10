@@ -3,9 +3,32 @@ import unittest
 from pathlib import Path
 
 from calibration_tool.gui.project import WizardProject
+from calibration_tool.errors import ConfigError
 
 
 class WizardProjectTests(unittest.TestCase):
+    def test_missing_laser_orientation_defaults_to_horizontal(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "camera.yaml").write_text("backend: synthetic\n", encoding="utf-8")
+            (root / "project.yaml").write_text(
+                "schema_version: 1\nproject_id: old\nworkspace: .\ncamera_config: camera.yaml\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(WizardProject.load(root / "project.yaml").laser.orientation, "horizontal")
+
+    def test_invalid_project_laser_orientation_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "camera.yaml").write_text("backend: synthetic\n", encoding="utf-8")
+            (root / "project.yaml").write_text(
+                "schema_version: 1\nproject_id: bad\nworkspace: .\ncamera_config: camera.yaml\n"
+                "laser:\n  orientation: diagonal\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ConfigError, "wizard project.laser.orientation"):
+                WizardProject.load(root / "project.yaml")
+
     def test_round_trip_preserves_unknown_project_fields(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -19,6 +42,7 @@ class WizardProjectTests(unittest.TestCase):
             loaded = WizardProject.load(path)
             self.assertEqual(loaded.project_id, "test")
             self.assertEqual(loaded.camera_config, camera.resolve())
+            self.assertEqual(loaded.laser.orientation, "horizontal")
             self.assertEqual(loaded.extra["custom_metadata"]["owner"], "test")
 
     def test_example_project_links_acceptance_plan(self):

@@ -119,6 +119,7 @@ def _new_manifest(plan: CapturePlan) -> dict[str, Any]:
         "completed_at": None,
         "plan_sha256": capture_plan_hash(plan),
         "plan": capture_plan_payload(plan),
+        "laser": {"orientation": plan.laser.orientation},
         "device": None,
         "network_packet_size": None,
         "tasks": {
@@ -260,6 +261,7 @@ def run_capture_plan(
                     mode=task.quality_mode,
                     thresholds=plan.quality_thresholds,
                     board_pattern=plan.board_pattern,
+                    laser_orientation=plan.laser.orientation,
                 )
                 gap = None if previous_frame_number is None else frame.camera_frame_number - previous_frame_number
                 previous_frame_number = frame.camera_frame_number
@@ -384,6 +386,7 @@ def _interactive_task_preview(
                 mode=task.quality_mode,
                 thresholds=plan.quality_thresholds,
                 board_pattern=plan.board_pattern,
+                laser_orientation=plan.laser.orientation,
             )
             display = cv2.convertScaleAbs(
                 frame.image,
@@ -459,6 +462,7 @@ def preview_camera(
     quality_mode: str = "generic",
     quality_thresholds: QualityThresholds = QualityThresholds(),
     board_pattern: tuple[int, int] | None = None,
+    laser_orientation: str = "horizontal",
     snapshot: Path | None = None,
     progress: ProgressCallback | None = None,
 ) -> dict[str, Any]:
@@ -479,6 +483,7 @@ def preview_camera(
                 mode=quality_mode,
                 thresholds=quality_thresholds,
                 board_pattern=board_pattern,
+                laser_orientation=laser_orientation,
             )
             qualities.append(quality)
             if progress:

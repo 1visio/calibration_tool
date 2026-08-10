@@ -6,6 +6,7 @@ from typing import Iterable
 import cv2
 import numpy as np
 
+from ..laser import normalize_laser_orientation
 from .models import FrameQuality, QualityThresholds
 
 
@@ -16,6 +17,7 @@ def analyze_frame(
     mode: str = "generic",
     thresholds: QualityThresholds = QualityThresholds(),
     board_pattern: tuple[int, int] | None = None,
+    laser_orientation: str = "horizontal",
 ) -> FrameQuality:
     """计算可用于实时提示和采集清单的轻量质量指标。"""
     if image.ndim != 2 or image.dtype not in (np.uint8, np.uint16):
@@ -24,6 +26,7 @@ def analyze_frame(
         raise ValueError("sensor_max_value 必须为正数")
     if mode not in {"generic", "chessboard", "laser"}:
         raise ValueError(f"未知质量模式：{mode}")
+    orientation = normalize_laser_orientation(laser_orientation)
 
     values = image.astype(np.float32, copy=False)
     p01, p50, p99 = (float(value) for value in np.percentile(values, (1, 50, 99)))
@@ -60,19 +63,22 @@ def analyze_frame(
         warnings.append("dynamic_range_low")
 
     if mode == "laser":
-        background = np.percentile(values, 50, axis=0)
-        peak = np.max(values, axis=0)
+        # profile 的列始终对应激光线的延伸方向，行对应线宽方向：横向直接
+        # 使用原图，纵向转置后复用完全相同的 peak/coverage/FWHM 算法。
+        profiles = values if orientation == "horizontal" else values.T
+        background = np.percentile(profiles, 50, axis=0)
+        peak = np.max(profiles, axis=0)
         minimum_contrast = max(sensor_max_value * 0.05, (p99 - p01) * 0.20)
-        active_columns = (peak - background) >= minimum_contrast
-        laser_coverage = float(np.mean(active_columns))
+        active_profiles = (peak - background) >= minimum_contrast
+        laser_coverage = float(np.mean(active_profiles))
         if laser_coverage < thresholds.min_laser_coverage:
             warnings.append("laser_coverage_low")
         if saturation_fraction > thresholds.max_laser_saturation_fraction:
             warnings.append("laser_saturation_high")
-        if np.any(active_columns):
-            active_peak = peak[active_columns]
-            active_background = background[active_columns]
-            active_values = values[:, active_columns]
+        if np.any(active_profiles):
+            active_peak = peak[active_profiles]
+            active_background = background[active_profiles]
+            active_values = profiles[:, active_profiles]
             laser_peak_saturation_fraction = float(
                 np.mean(active_peak >= sensor_max_value * 0.995)
             )

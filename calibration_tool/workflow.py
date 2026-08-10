@@ -6,6 +6,7 @@ from typing import Any, Callable, Mapping
 
 from .errors import ConfigError, StageExecutionError
 from .io_utils import dump_yaml, load_document, resolve_relative
+from .laser import normalize_laser_orientation
 from .stages import ComputationService, options_to_argv
 
 
@@ -32,6 +33,7 @@ def run_workflow(
     plan_path: str | Path,
     *,
     progress: Callable[[dict[str, Any]], None] | None = None,
+    laser_orientation: str = "horizontal",
 ) -> dict[str, Any]:
     path = Path(plan_path).expanduser().resolve()
     plan = load_document(path)
@@ -41,6 +43,7 @@ def run_workflow(
     if not isinstance(calibration_src_value, str):
         raise ConfigError("workflow.calibration_src 必须是路径")
     service = ComputationService(resolve_relative(path, calibration_src_value))
+    orientation = normalize_laser_orientation(laser_orientation)
     records: list[dict[str, Any]] = []
     started = datetime.now(timezone.utc)
     for index, raw in enumerate(plan.get("stages", []), start=1):
@@ -56,6 +59,14 @@ def run_workflow(
             if progress:
                 progress({"event": "stage_started", "stage": name, "index": index})
             resolved_options = _resolve_stage_options(path, dict(options))
+            if name == "laser_surface_models":
+                configured = resolved_options.get("laser_orientation")
+                if configured is not None and configured != orientation:
+                    raise ConfigError(
+                        "laser_surface_models.laser_orientation 与项目 laser.orientation 不一致："
+                        f"{configured!r} != {orientation!r}"
+                    )
+                resolved_options["laser_orientation"] = orientation
             record = service.run(
                 name,
                 options_to_argv(resolved_options),
@@ -77,6 +88,7 @@ def run_workflow(
         "started_utc": started.isoformat(),
         "completed_utc": datetime.now(timezone.utc).isoformat(),
         "status": "completed" if all(item.get("status") == "completed" for item in records) else "failed",
+        "laser": {"orientation": orientation},
         "stages": records,
     }
     gates: list[dict[str, Any]] = []
