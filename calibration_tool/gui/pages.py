@@ -49,6 +49,7 @@ from ..camera.plan_builder import (
 from ..acceptance import build_acceptance_report
 from ..camera.models import CameraConfig, CapturePlan, CaptureTask
 from ..camera.quality import analyze_frame, quality_to_dict
+from ..camera.steger_quality import RealtimeStegerQualityAnalyzer
 from ..io_utils import load_document, resolve_relative
 from ..io_utils import sha256_file
 from ..laser import LaserConfig
@@ -253,6 +254,9 @@ class CameraPage(QWidget):
         form.addRow(action_row)
         self.status = QLabel("尚未加载相机配置"); self.status.setWordWrap(True); form.addRow("状态", self.status)
         self.quality = QLabel("--"); self.quality.setWordWrap(True); form.addRow("质量", self.quality)
+        self.search_region_quality = QLabel("Search region: --")
+        self.search_region_quality.setWordWrap(True)
+        form.addRow("Search Region Quality", self.search_region_quality)
         splitter.addWidget(controls)
         self.preview = ImagePreview(); splitter.addWidget(self.preview); splitter.setStretchFactor(1, 1)
         layout.addWidget(splitter, 1)
@@ -325,10 +329,15 @@ class CameraPage(QWidget):
             provider = build_camera_provider(
                 self.runtime["backend"], calibration_src=self.runtime["calibration_src"], backend_options=self.runtime["backend_options"]
             )
+            steger_quality_analyzer = RealtimeStegerQualityAnalyzer(
+                self.runtime["calibration_src"],
+                self.runtime["laser"].orientation,
+            )
             thread = PreviewThread(
                 provider, self.selected_serial(), self.current_config(), str(self.quality_mode.currentData()),
                 self.runtime["quality_thresholds"], self.runtime["board_pattern"],
                 laser_orientation=self.runtime["laser"].orientation,
+                steger_quality_analyzer=steger_quality_analyzer,
                 initial_discard_frames=initial_discard_frames, parent=self,
             )
         except Exception as exc:
@@ -368,6 +377,7 @@ class CameraPage(QWidget):
             f"{warnings} · 动态范围 {quality['dynamic_range_u8']:.1f} DN8 · "
             f"清晰度 {quality['focus_laplacian']:.1f}{coverage_text}{chess_text}{settling_text}"
         )
+        self.search_region_quality.setText(_search_region_quality_text(quality))
         self.frame_ready.emit(frame, quality)
         pending = self._pending_capture
         if pending is not None:
@@ -596,12 +606,15 @@ class CapturePage(QWidget):
         self.live_auto_stretch = QCheckBox("自动拉伸预览（仅改变显示）")
         self.live_quality = QLabel("尚未取流")
         self.live_quality.setWordWrap(True)
+        self.live_search_region_quality = QLabel("Search region: --")
+        self.live_search_region_quality.setWordWrap(True)
         self.live_camera = QLabel("当前任务：--")
         self.live_camera.setWordWrap(True)
         live_layout.addWidget(self.live_preview, 1)
         live_layout.addWidget(self.live_auto_stretch)
         live_layout.addWidget(self.live_camera)
         live_layout.addWidget(self.live_quality)
+        live_layout.addWidget(self.live_search_region_quality)
 
         left = QWidget()
         left_layout = QVBoxLayout(left)
@@ -1057,6 +1070,7 @@ class CapturePage(QWidget):
             f"{warnings} · 动态范围 {quality['dynamic_range_u8']:.1f} DN8 · "
             f"清晰度 {quality['focus_laplacian']:.1f}{coverage_text}{chess_text}{settling_text}"
         )
+        self.live_search_region_quality.setText(_search_region_quality_text(quality))
         task_text = "当前任务：--"
         selected = self._selected_plan_task(silent=True)
         if selected is not None:
@@ -1212,13 +1226,13 @@ class CapturePage(QWidget):
         self.preview_task_button.setEnabled(False)
         self.next_task_button.setEnabled(False)
 
-        def save_after_settle(frame, _quality) -> None:
+        def save_after_settle(frame, quality) -> None:
             self._capture_in_progress = False
             self.capture_task_button.setEnabled(not self._guided_capture_active)
             self.preview_task_button.setEnabled(not self._guided_capture_active)
             self.next_task_button.setEnabled(not self._guided_capture_active)
             try:
-                completed = self._save_guided_frame(task, frame)
+                completed = self._save_guided_frame(task, frame, quality)
             except Exception as exc:
                 QMessageBox.critical(self, "保存任务失败", str(exc))
                 return
@@ -1256,7 +1270,12 @@ class CapturePage(QWidget):
         self.next_task_button.setEnabled(not self._guided_capture_active)
         QMessageBox.warning(self, "尚未取流", "任务预览尚未建立，请等待实时画面出现后重试。")
 
-    def _save_guided_frame(self, task: CaptureTask, frame: Any) -> bool:
+    def _save_guided_frame(
+        self,
+        task: CaptureTask,
+        frame: Any,
+        preview_quality: Mapping[str, Any] | None = None,
+    ) -> bool:
         assert self.loaded_plan is not None
         output_dir = self.loaded_plan.output_dir.expanduser().resolve()
         work_dir = output_dir.parent / f".{output_dir.name}.inprogress"
@@ -1280,14 +1299,26 @@ class CapturePage(QWidget):
         relative = task.relative_path(index)
         destination = work_dir / relative
         _write_image(destination, frame)
-        quality = quality_to_dict(analyze_frame(
-            frame.image,
-            sensor_max_value=task.config.sensor_max_value,
-            mode=task.quality_mode,
-            thresholds=self.loaded_plan.quality_thresholds,
-            board_pattern=self.loaded_plan.board_pattern,
-            laser_orientation=self.loaded_plan.laser.orientation,
-        ))
+        quality = (
+            {
+                key: value
+                for key, value in preview_quality.items()
+                if key not in {
+                    "settling",
+                    "settle_frames_remaining",
+                    "preview_quality_processing_ms",
+                }
+            }
+            if preview_quality is not None
+            else quality_to_dict(analyze_frame(
+                frame.image,
+                sensor_max_value=task.config.sensor_max_value,
+                mode=task.quality_mode,
+                thresholds=self.loaded_plan.quality_thresholds,
+                board_pattern=self.loaded_plan.board_pattern,
+                laser_orientation=self.loaded_plan.laser.orientation,
+            ))
+        )
         record = {
             "task_id": task.task_id,
             "pose_id": task.pose_id,
@@ -2090,6 +2121,31 @@ def _laser_quality_metrics_text(quality: dict[str, Any], thresholds: Any | None)
     if fwhm_p50 is not None and fwhm_p95 is not None:
         parts.append(f"FWHM P50/P95 {fwhm_p50:.1f}/{fwhm_p95:.1f}px")
     return " · 激光" + "，".join(parts)
+
+
+def _search_region_quality_text(quality: Mapping[str, Any]) -> str:
+    health = quality.get("search_region_health")
+    if not isinstance(health, Mapping):
+        return "Search region: --"
+    status = str(health.get("status", "WARNING"))
+    p05 = health.get("boundary_clearance_p05_px")
+    support = health.get("kernel_support_px")
+    outside = health.get("outside_search_region_peak_fraction")
+    p05_text = f"{float(p05):.1f} px" if isinstance(p05, (int, float)) else "--"
+    support_text = f"{int(support)} px" if isinstance(support, (int, float)) else "--"
+    outside_text = f"{float(outside):.1%}" if isinstance(outside, (int, float)) else "--"
+    lines = [
+        f"Search region: {status}",
+        f"Boundary P05: {p05_text} · Kernel support: {support_text} · "
+        f"Outside-band risk: {outside_text}",
+    ]
+    reasons = health.get("warning_reasons")
+    if isinstance(reasons, (list, tuple)) and reasons:
+        lines.append("Reasons: " + ", ".join(str(item) for item in reasons))
+    error = health.get("error")
+    if error:
+        lines.append(f"Detail: {error}")
+    return "\n".join(lines)
 
 
 def _utc_now_text() -> str:

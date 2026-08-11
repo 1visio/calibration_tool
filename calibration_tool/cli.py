@@ -87,6 +87,18 @@ def build_parser() -> argparse.ArgumentParser:
     preview.add_argument("--quality-mode", choices=("generic", "chessboard", "laser"), default="generic")
     preview.add_argument("--snapshot", type=Path)
 
+    replay = sub.add_parser(
+        "search-region-replay",
+        help="只读回放单张激光图并输出 Steger search-region health",
+    )
+    replay.add_argument("image", type=Path)
+    replay.add_argument("--calibration-src", type=Path, default=DEFAULT_CALIBRATION_SRC)
+    replay.add_argument(
+        "--laser-orientation",
+        choices=("horizontal", "vertical"),
+        default="horizontal",
+    )
+
     capture = sub.add_parser("capture-plan", help="执行 YAML 批量采集计划")
     capture.add_argument("plan", type=Path)
     capture.add_argument("--resume", action="store_true")
@@ -199,6 +211,22 @@ def main(argv: Sequence[str] | None = None) -> int:
                 laser_orientation=camera_runtime["laser"].orientation,
                 snapshot=args.snapshot,
             )
+        elif args.command == "search-region-replay":
+            import cv2
+
+            from .camera.steger_quality import RealtimeStegerQualityAnalyzer
+
+            image_path = args.image.expanduser().resolve()
+            image = cv2.imread(str(image_path), cv2.IMREAD_UNCHANGED)
+            if image is None:
+                raise CameraError(f"无法读取回放图像：{image_path}")
+            result = {
+                "image": str(image_path),
+                "search_region_health": RealtimeStegerQualityAnalyzer(
+                    args.calibration_src,
+                    args.laser_orientation,
+                ).analyze(image),
+            }
         elif args.command == "capture-plan":
             plan = load_capture_plan(args.plan)
             provider = build_camera_provider(

@@ -1,9 +1,9 @@
 schema_version: 1
 calibration:
-  intrinsics: calibration/camera_intrinsics.yaml
+  intrinsics: calibration/calibration_result.yaml
   laser_plane: calibration/laser_plane.yaml
   extrinsics: calibration/camera_ground_extrinsics.yaml
-  ground_u_compensation: calibration/ground_u_compensation.csv
+  ground_u_compensation: null
 extraction:
   method: steger
   profile: realtime_steger.yaml

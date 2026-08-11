@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import threading
+import time
 from dataclasses import replace
 from typing import Any, Callable
 
@@ -55,6 +56,7 @@ class PreviewThread(QThread):
         thresholds: QualityThresholds,
         board_pattern: tuple[int, int] | None,
         laser_orientation: str = "horizontal",
+        steger_quality_analyzer: Any | None = None,
         initial_discard_frames: int = 3,
         parent: QObject | None = None,
     ) -> None:
@@ -66,6 +68,7 @@ class PreviewThread(QThread):
         self.thresholds = thresholds
         self.board_pattern = board_pattern
         self.laser_orientation = laser_orientation
+        self.steger_quality_analyzer = steger_quality_analyzer
         self.initial_discard_frames = max(0, int(initial_discard_frames))
         self._parameter_lock = threading.Lock()
         self._pending_exposure_gain: tuple[float, float] | None = None
@@ -126,6 +129,7 @@ class PreviewThread(QThread):
         """
 
         frame = session.get_frame(session.config.timeout_ms)
+        processing_started = time.perf_counter()
         quality = analyze_frame(
             frame.image,
             sensor_max_value=session.config.sensor_max_value,
@@ -135,6 +139,22 @@ class PreviewThread(QThread):
             laser_orientation=self.laser_orientation,
         )
         payload = quality_to_dict(quality)
+        if self.quality_mode == "laser" and self.steger_quality_analyzer is not None:
+            try:
+                payload["search_region_health"] = self.steger_quality_analyzer.analyze(
+                    frame.image
+                )
+            except Exception as exc:
+                # search-region health 是旁路辅助显示，失败不得中断预览或改变
+                # FrameQuality.warnings/passed 与保存门禁。
+                payload["search_region_health"] = {
+                    "status": "WARNING",
+                    "warning_reasons": ["search_region_health_unavailable"],
+                    "error": str(exc),
+                }
+        payload["preview_quality_processing_ms"] = (
+            time.perf_counter() - processing_started
+        ) * 1000.0
         payload["settling"] = bool(settling)
         payload["settle_frames_remaining"] = max(0, int(settle_frames_remaining))
         self.frame_ready.emit(frame, payload)

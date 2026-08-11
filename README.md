@@ -441,7 +441,7 @@ python -m pytest -q
 python -m unittest discover -s tests -v
 ```
 
-当前快照的结果为 `83 passed, 1 failed`。唯一失败项是 `tests/test_golden_snapshot.py::test_generated_baseline_matches_sources`：它验证的是历史 golden baseline，失败原因是外部离线/在线配置和标定文件发生漂移或缺失，不是 Python 测试收集或 CLI 导入失败。处理方式是先确认漂移是否有意，再由项目负责人重新生成 baseline；不要为了让测试变绿而直接覆盖历史证据。
+当前快照的结果为 `101 passed, 21 subtests passed`。`tests/test_golden_snapshot.py::test_generated_baseline_matches_sources` 会校验当前 offline/online 配置和标定产物是否仍与已确认的 golden baseline 一致；若失败，应先确认漂移是否有意，再由项目负责人通过 `golden-build` 正式刷新 baseline，不要仅为让测试变绿而手工覆盖哈希。
 
 GUI 测试需要 PySide6 和可用的 Qt/offscreen 环境；真机测试还需要 SDK 和相机设备。`camera-preview` 返回 `dynamic_range_low` 时应调曝光、光源或质量阈值，并保留原始告警，不要把它当成程序崩溃。
 
