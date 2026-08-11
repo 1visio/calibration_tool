@@ -4,6 +4,9 @@
 intrinsics: "../runs/0804/intrinsics/calibration_result.yaml"
 output_dir: "../runs/0804/laser_model_comparison"
 
+laser:
+  orientation: horizontal
+
 # 标定工具默认输出圆锥模型；三种模型仍会全部拟合并写入 models/。
 # 可改为 global_plane 或 quadratic_graph，也接受旧别名 plane_abcd。
 default_model: circular_cone

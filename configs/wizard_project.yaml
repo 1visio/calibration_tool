@@ -2,6 +2,8 @@ schema_version: 1
 project_id: line-laser-calibration
 workspace: D:\Docs\linelaserscan\calibration_tool\projects\default
 camera_config: camera.mvs.example.yaml
+laser:
+  orientation: horizontal
 workflow_plan: capture_laser_plane_fit.yaml
 acceptance_plan: null
 capture_output: D:\Docs\linelaserscan\calibration_tool\projects\default\data

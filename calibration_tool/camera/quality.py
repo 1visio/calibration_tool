@@ -6,6 +6,7 @@ from typing import Iterable
 import cv2
 import numpy as np
 
+from ..laser import normalize_laser_orientation
 from .models import FrameQuality, QualityThresholds
 
 
@@ -55,6 +56,7 @@ def analyze_frame(
     mode: str = "generic",
     thresholds: QualityThresholds = QualityThresholds(),
     board_pattern: tuple[int, int] | None = None,
+    laser_orientation: str = "horizontal",
 ) -> FrameQuality:
     """计算可用于实时提示和采集清单的轻量质量指标。"""
     if image.ndim != 2 or image.dtype not in (np.uint8, np.uint16):
@@ -63,6 +65,7 @@ def analyze_frame(
         raise ValueError("sensor_max_value 必须为正数")
     if mode not in {"generic", "chessboard", "laser"}:
         raise ValueError(f"未知质量模式：{mode}")
+    orientation = normalize_laser_orientation(laser_orientation)
 
     values = image.astype(np.float32, copy=False)
     p01, p50, p99 = (float(value) for value in np.percentile(values, (1, 50, 99)))
@@ -99,7 +102,13 @@ def analyze_frame(
         warnings.append("dynamic_range_low")
 
     if mode == "laser":
-        column_metrics = laser_column_metrics(image, sensor_max_value=sensor_max_value)
+        # column_metrics 的列始终对应激光线的延伸方向，行对应线宽方向：
+        # 横向直接使用原图，纵向转置后复用相同的覆盖率、饱和与 FWHM 算法。
+        oriented_image = image if orientation == "horizontal" else image.T
+        column_metrics = laser_column_metrics(
+            oriented_image,
+            sensor_max_value=sensor_max_value,
+        )
         active_columns = np.asarray(column_metrics["active"], dtype=bool)
         laser_coverage = float(np.mean(active_columns))
         if laser_coverage < thresholds.min_laser_coverage:

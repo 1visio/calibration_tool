@@ -93,6 +93,8 @@ class CalibrationWizardWindow(QMainWindow):
         self.project_label.setText(f"{project.project_id}  ·  {project.workspace}")
         self.camera_page.stop_preview()
         self.camera_page.load_config(project.camera_config)
+        if self.camera_page.runtime is not None:
+            self.camera_page.runtime["laser"] = project.laser
         self.capture_page.set_project(project)
         self.calibration_page.set_project(project)
         self.results_page.set_project(project)

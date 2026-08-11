@@ -49,8 +49,10 @@ from ..camera.plan_builder import (
 from ..acceptance import build_acceptance_report
 from ..camera.models import CameraConfig, CapturePlan, CaptureTask
 from ..camera.quality import analyze_frame, quality_to_dict
+from ..camera.steger_quality import RealtimeStegerQualityAnalyzer
 from ..io_utils import load_document, resolve_relative
 from ..io_utils import sha256_file
+from ..laser import LaserConfig
 from ..workflow import run_workflow
 from .project import WizardProject
 from .result_artifacts import (
@@ -96,6 +98,7 @@ class ProjectPage(QWidget):
         self.project_id = QLineEdit("line-laser-calibration")
         self.workspace = QLineEdit(str(default_camera_config.parent.parent / "projects" / "default"))
         self.camera_config = QLineEdit(str(default_camera_config))
+        self.laser_orientation = QComboBox(); self.laser_orientation.addItems(["horizontal", "vertical"])
         self.workflow_plan = QLineEdit("")
         self.acceptance_plan = QLineEdit("")
         self.pattern_cols = QSpinBox(); self.pattern_cols.setRange(2, 50); self.pattern_cols.setValue(11)
@@ -104,6 +107,7 @@ class ProjectPage(QWidget):
         form.addRow("项目 ID", self.project_id)
         form.addRow("项目工作目录", _path_row(self.workspace, self, directory=True))
         form.addRow("相机配置", _path_row(self.camera_config, self, file_filter="YAML (*.yaml *.yml)"))
+        form.addRow("激光线方向", self.laser_orientation)
         form.addRow("标定 workflow", _path_row(self.workflow_plan, self, file_filter="YAML (*.yaml *.yml)"))
         form.addRow("验收计划", _path_row(self.acceptance_plan, self, file_filter="YAML (*.yaml *.yml)"))
         form.addRow("棋盘内角点列数", self.pattern_cols)
@@ -146,6 +150,7 @@ class ProjectPage(QWidget):
             project_id=self.project_id.text().strip(),
             workspace=workspace,
             camera_config=Path(self.camera_config.text()),
+            laser=LaserConfig(self.laser_orientation.currentText()),
             workflow_plan=Path(workflow) if workflow else None,
             acceptance_plan=Path(self.acceptance_plan.text().strip()) if self.acceptance_plan.text().strip() else None,
             capture_output=capture_output,
@@ -184,6 +189,7 @@ class ProjectPage(QWidget):
         self.project_id.setText(project.project_id)
         self.workspace.setText(str(project.workspace))
         self.camera_config.setText(str(project.camera_config))
+        self.laser_orientation.setCurrentText(project.laser.orientation)
         self.workflow_plan.setText(str(project.workflow_plan or ""))
         self.acceptance_plan.setText(str(project.acceptance_plan or ""))
         self.pattern_cols.setValue(project.pattern_cols)
@@ -248,6 +254,9 @@ class CameraPage(QWidget):
         form.addRow(action_row)
         self.status = QLabel("尚未加载相机配置"); self.status.setWordWrap(True); form.addRow("状态", self.status)
         self.quality = QLabel("--"); self.quality.setWordWrap(True); form.addRow("质量", self.quality)
+        self.search_region_quality = QLabel("Search region: --")
+        self.search_region_quality.setWordWrap(True)
+        form.addRow("Search Region Quality", self.search_region_quality)
         splitter.addWidget(controls)
         self.preview = ImagePreview(); splitter.addWidget(self.preview); splitter.setStretchFactor(1, 1)
         layout.addWidget(splitter, 1)
@@ -320,9 +329,15 @@ class CameraPage(QWidget):
             provider = build_camera_provider(
                 self.runtime["backend"], calibration_src=self.runtime["calibration_src"], backend_options=self.runtime["backend_options"]
             )
+            steger_quality_analyzer = RealtimeStegerQualityAnalyzer(
+                self.runtime["calibration_src"],
+                self.runtime["laser"].orientation,
+            )
             thread = PreviewThread(
                 provider, self.selected_serial(), self.current_config(), str(self.quality_mode.currentData()),
                 self.runtime["quality_thresholds"], self.runtime["board_pattern"],
+                laser_orientation=self.runtime["laser"].orientation,
+                steger_quality_analyzer=steger_quality_analyzer,
                 initial_discard_frames=initial_discard_frames, parent=self,
             )
         except Exception as exc:
@@ -362,6 +377,7 @@ class CameraPage(QWidget):
             f"{warnings} · 动态范围 {quality['dynamic_range_u8']:.1f} DN8 · "
             f"清晰度 {quality['focus_laplacian']:.1f}{coverage_text}{chess_text}{settling_text}"
         )
+        self.search_region_quality.setText(_search_region_quality_text(quality))
         self.frame_ready.emit(frame, quality)
         pending = self._pending_capture
         if pending is not None:
@@ -375,7 +391,7 @@ class CameraPage(QWidget):
     def _update_quality_help(self) -> None:
         descriptions = {
             "generic": "检查过曝、欠曝、全局动态范围；清晰度只显示数值，暂不设统一阈值。",
-            "laser": "允许暗背景，检查激光线对比度、横向覆盖率、过曝和动态范围。",
+            "laser": "允许暗背景，按配置方向检查激光线覆盖率、过曝和动态范围。",
             "chessboard": "检查曝光、动态范围和完整内角点检测。内参棋盘图应关闭激光。",
         }
         self.quality_help.setText(descriptions[str(self.quality_mode.currentData())])
@@ -497,6 +513,7 @@ class CapturePage(QWidget):
         self._preview_request_token = 0
         self._pending_preview_callback: Callable[[], None] | None = None
         self._capture_in_progress = False
+        self.laser = LaserConfig()
         page_layout = QVBoxLayout(self)
         page_layout.setContentsMargins(0, 0, 0, 0)
         self.scroll_area = QScrollArea(self)
@@ -589,12 +606,15 @@ class CapturePage(QWidget):
         self.live_auto_stretch = QCheckBox("自动拉伸预览（仅改变显示）")
         self.live_quality = QLabel("尚未取流")
         self.live_quality.setWordWrap(True)
+        self.live_search_region_quality = QLabel("Search region: --")
+        self.live_search_region_quality.setWordWrap(True)
         self.live_camera = QLabel("当前任务：--")
         self.live_camera.setWordWrap(True)
         live_layout.addWidget(self.live_preview, 1)
         live_layout.addWidget(self.live_auto_stretch)
         live_layout.addWidget(self.live_camera)
         live_layout.addWidget(self.live_quality)
+        live_layout.addWidget(self.live_search_region_quality)
 
         left = QWidget()
         left_layout = QVBoxLayout(left)
@@ -642,6 +662,7 @@ class CapturePage(QWidget):
         self.recipe_table.changed.connect(self._mark_plan_dirty)
 
     def set_project(self, project: WizardProject) -> None:
+        self.laser = project.laser
         self.output.setText(str((project.capture_output or project.workspace / "data") / self.dataset_id.text()))
         stored_artifacts = project.extra.get("capture_artifacts") if isinstance(project.extra, dict) else None
         self.last_capture_artifacts = dict(stored_artifacts) if isinstance(stored_artifacts, dict) else None
@@ -682,6 +703,7 @@ class CapturePage(QWidget):
             items=self.recipe_table.recipe_items(image_format),
             board_pattern=runtime.get("board_pattern") or (11, 8),
             quality_thresholds=runtime["quality_thresholds"],
+            laser=self.laser,
         )
 
     def generate_plan(self) -> bool:
@@ -1048,6 +1070,7 @@ class CapturePage(QWidget):
             f"{warnings} · 动态范围 {quality['dynamic_range_u8']:.1f} DN8 · "
             f"清晰度 {quality['focus_laplacian']:.1f}{coverage_text}{chess_text}{settling_text}"
         )
+        self.live_search_region_quality.setText(_search_region_quality_text(quality))
         task_text = "当前任务：--"
         selected = self._selected_plan_task(silent=True)
         if selected is not None:
@@ -1103,6 +1126,7 @@ class CapturePage(QWidget):
             quality_thresholds=self.loaded_plan.quality_thresholds,
             board_pattern=self.loaded_plan.board_pattern,
             backend_options=self.loaded_plan.backend_options,
+            laser=self.loaded_plan.laser,
         )
         self._preview_request_token += 1
         token = self._preview_request_token
@@ -1201,9 +1225,9 @@ class CapturePage(QWidget):
         self.preview_task_button.setEnabled(False)
         self.next_task_button.setEnabled(False)
 
-        def save_after_settle(frame, _quality) -> None:
+        def save_after_settle(frame, quality) -> None:
             try:
-                completed = self._save_guided_frame(task, frame)
+                completed = self._save_guided_frame(task, frame, quality)
             except Exception as exc:
                 self._capture_in_progress = False
                 self.capture_task_button.setEnabled(True)
@@ -1262,7 +1286,12 @@ class CapturePage(QWidget):
         self.next_task_button.setEnabled(not self._guided_capture_active)
         QMessageBox.warning(self, "尚未取流", "任务预览尚未建立，请等待实时画面出现后重试。")
 
-    def _save_guided_frame(self, task: CaptureTask, frame: Any) -> bool:
+    def _save_guided_frame(
+        self,
+        task: CaptureTask,
+        frame: Any,
+        preview_quality: Mapping[str, Any] | None = None,
+    ) -> bool:
         assert self.loaded_plan is not None
         output_dir = self.loaded_plan.output_dir.expanduser().resolve()
         work_dir = output_dir.parent / f".{output_dir.name}.inprogress"
@@ -1286,13 +1315,26 @@ class CapturePage(QWidget):
         relative = task.relative_path(index)
         destination = work_dir / relative
         _write_image(destination, frame)
-        quality = quality_to_dict(analyze_frame(
-            frame.image,
-            sensor_max_value=task.config.sensor_max_value,
-            mode=task.quality_mode,
-            thresholds=self.loaded_plan.quality_thresholds,
-            board_pattern=self.loaded_plan.board_pattern,
-        ))
+        quality = (
+            {
+                key: value
+                for key, value in preview_quality.items()
+                if key not in {
+                    "settling",
+                    "settle_frames_remaining",
+                    "preview_quality_processing_ms",
+                }
+            }
+            if preview_quality is not None
+            else quality_to_dict(analyze_frame(
+                frame.image,
+                sensor_max_value=task.config.sensor_max_value,
+                mode=task.quality_mode,
+                thresholds=self.loaded_plan.quality_thresholds,
+                board_pattern=self.loaded_plan.board_pattern,
+                laser_orientation=self.loaded_plan.laser.orientation,
+            ))
+        )
         record = {
             "task_id": task.task_id,
             "pose_id": task.pose_id,
@@ -1448,6 +1490,7 @@ class CalibrationPage(QWidget):
         super().__init__(parent)
         self.thread_pool = thread_pool; self._workers: set[FunctionWorker] = set()
         self.capture_artifacts: dict[str, Any] | None = None
+        self.project: WizardProject | None = None
         layout = QVBoxLayout(self)
         title = QLabel("4. 一键执行标定 workflow"); title.setObjectName("pageTitle"); layout.addWidget(title)
         self.workflow = QLineEdit(); layout.addWidget(_labeled_path("Workflow YAML", self.workflow, self, "YAML (*.yaml *.yml)"))
@@ -1479,6 +1522,7 @@ class CalibrationPage(QWidget):
         )
 
     def set_project(self, project: WizardProject) -> None:
+        self.project = project
         self.workflow.setText(str(project.workflow_plan or ""))
         stored = project.extra.get("capture_artifacts") if isinstance(project.extra, dict) else None
         self.set_capture_artifacts(stored if isinstance(stored, dict) else None)
@@ -1566,7 +1610,14 @@ class CalibrationPage(QWidget):
         if not self.refresh_plan():
             return
         self.run_button.setEnabled(False); self.log.clear(); self.log.append(f"开始：{path.resolve()}")
-        worker = FunctionWorker(lambda progress: run_workflow(path, progress=progress))
+        orientation = self.project.laser.orientation if self.project is not None else "horizontal"
+        worker = FunctionWorker(
+            lambda progress: run_workflow(
+                path,
+                progress=progress,
+                laser_orientation=orientation,
+            )
+        )
         worker.signals.progress.connect(self._progress)
         worker.signals.result.connect(self._done)
         worker.signals.error.connect(self._error)
@@ -2056,7 +2107,7 @@ def _quality_warning_text(code: str) -> str:
         "laser_saturated_line_wide": "激光饱和线宽过大",
         "image_too_dark": "图像整体过暗",
         "dynamic_range_low": "动态范围不足",
-        "laser_coverage_low": "激光横向覆盖不足",
+        "laser_coverage_low": "激光方向覆盖不足",
         "chessboard_not_found": "未找到完整棋盘",
         "chessboard_pattern_mismatch": "棋盘内角点配置不匹配",
         "chessboard_obscured_by_laser": "激光线遮挡棋盘",
@@ -2088,6 +2139,31 @@ def _laser_quality_metrics_text(quality: dict[str, Any], thresholds: Any | None)
     if fwhm_p50 is not None and fwhm_p95 is not None:
         parts.append(f"FWHM P50/P95 {fwhm_p50:.1f}/{fwhm_p95:.1f}px")
     return " · 激光" + "，".join(parts)
+
+
+def _search_region_quality_text(quality: Mapping[str, Any]) -> str:
+    health = quality.get("search_region_health")
+    if not isinstance(health, Mapping):
+        return "Search region: --"
+    status = str(health.get("status", "WARNING"))
+    p05 = health.get("boundary_clearance_p05_px")
+    support = health.get("kernel_support_px")
+    outside = health.get("outside_search_region_peak_fraction")
+    p05_text = f"{float(p05):.1f} px" if isinstance(p05, (int, float)) else "--"
+    support_text = f"{int(support)} px" if isinstance(support, (int, float)) else "--"
+    outside_text = f"{float(outside):.1%}" if isinstance(outside, (int, float)) else "--"
+    lines = [
+        f"Search region: {status}",
+        f"Boundary P05: {p05_text} · Kernel support: {support_text} · "
+        f"Outside-band risk: {outside_text}",
+    ]
+    reasons = health.get("warning_reasons")
+    if isinstance(reasons, (list, tuple)) and reasons:
+        lines.append("Reasons: " + ", ".join(str(item) for item in reasons))
+    error = health.get("error")
+    if error:
+        lines.append(f"Detail: {error}")
+    return "\n".join(lines)
 
 
 def _utc_now_text() -> str:

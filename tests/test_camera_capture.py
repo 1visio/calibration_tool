@@ -7,9 +7,11 @@ import yaml
 
 from calibration_tool.camera import capture as capture_module
 from calibration_tool.camera.capture import run_capture_plan
+from calibration_tool.camera.capture import _new_manifest
 from calibration_tool.camera.models import CameraConfig, CapturePlan, CaptureTask
 from calibration_tool.camera.synthetic import SyntheticCameraProvider
 from calibration_tool.errors import CaptureError
+from calibration_tool.laser import LaserConfig
 
 
 class _FailOnConfigureSession:
@@ -40,6 +42,23 @@ class _RecordingProvider(SyntheticCameraProvider):
 
 
 class CameraCaptureTests(unittest.TestCase):
+    def test_manifest_records_actual_laser_orientation(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            plan = self._plan(Path(temporary) / "dataset")
+            plan = CapturePlan(
+                dataset_id=plan.dataset_id,
+                output_dir=plan.output_dir,
+                backend=plan.backend,
+                serial_number=plan.serial_number,
+                base_config=plan.base_config,
+                tasks=plan.tasks,
+                quality_thresholds=plan.quality_thresholds,
+                laser=LaserConfig("vertical"),
+            )
+            manifest = _new_manifest(plan)
+            self.assertEqual(manifest["laser"], {"orientation": "vertical"})
+            self.assertEqual(manifest["plan"]["laser"], {"orientation": "vertical"})
+
     def _plan(self, output: Path) -> CapturePlan:
         base = CameraConfig(exposure_us=800, width=64, height=48, timeout_ms=100)
         tasks = (
@@ -65,6 +84,7 @@ class CameraCaptureTests(unittest.TestCase):
             self.assertEqual(result.frame_count, 3)
             manifest = yaml.safe_load((output / "dataset_manifest.yaml").read_text(encoding="utf-8"))
             self.assertEqual(manifest["status"], "completed")
+            self.assertEqual(manifest["laser"], {"orientation": "horizontal"})
             self.assertEqual(len(manifest["frames"]), 3)
             self.assertTrue((output / "frames.csv").is_file())
             self.assertFalse((output / ".task_staging").exists())

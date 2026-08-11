@@ -3,6 +3,8 @@ project_id: example-mv-cs050-60gm
 # 激光面模型默认使用圆锥；支持 global_plane、quadratic_graph、circular_cone。
 # 旧的 plane_abcd/laser_plane 文件仍会按 global_plane 读取。
 laser_model: circular_cone
+laser:
+  orientation: horizontal
 camera:
   model: MV-CS050-60GM
   serial_number: DA7711077

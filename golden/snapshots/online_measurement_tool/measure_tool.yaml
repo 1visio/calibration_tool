@@ -1,10 +1,10 @@
 schema_version: 1
 calibration:
   manifest: calibration/manifest.yaml
-  intrinsics: calibration/camera_intrinsics.yaml
-  laser_plane: calibration/laser_plane.yaml
+  intrinsics: calibration/calibration_result.yaml
+  laser_model: calibration/circular_cone.yaml
   extrinsics: calibration/camera_ground_extrinsics.yaml
-  ground_u_compensation: calibration/ground_u_compensation.csv
+  ground_u_compensation: null
 extraction:
   method: steger
   profile: realtime_steger.yaml
@@ -22,8 +22,11 @@ extraction:
   shared_steger: {}
 reconstruction:
   parallel_epsilon: 1.0e-09
-  min_camera_depth_mm: 100.0
-  max_camera_depth_mm: 1500.0
+  quadratic_epsilon: 1.0e-12
+  min_camera_depth_mm: 600.0
+  max_camera_depth_mm: 725.0
+  model_range_margin_mm: 10.0
+  image_roi_polygon: null
 measurement:
   outlier_sigma_multiplier: 2.0
   outlier_max_iterations: 5

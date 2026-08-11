@@ -5,6 +5,7 @@ from pathlib import Path
 import yaml
 
 from calibration_tool.camera.config import load_camera_config, load_capture_plan
+from calibration_tool.errors import ConfigError
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -12,6 +13,28 @@ TOOL_ROOT = ROOT / "calibration_tool"
 
 
 class CameraConfigTests(unittest.TestCase):
+    def test_laser_orientation_defaults_to_horizontal_and_accepts_vertical(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "camera.yaml"
+            path.write_text("backend: synthetic\n", encoding="utf-8")
+            self.assertEqual(load_camera_config(path)["laser"].orientation, "horizontal")
+
+            path.write_text(
+                "backend: synthetic\nlaser:\n  orientation: vertical\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(load_camera_config(path)["laser"].orientation, "vertical")
+
+    def test_invalid_laser_orientation_has_clear_error(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "camera.yaml"
+            path.write_text(
+                "backend: synthetic\nlaser:\n  orientation: diagonal\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ConfigError, r"laser\.orientation.*horizontal.*vertical"):
+                load_camera_config(path)
+
     def test_camera_geometry_matches_both_golden_runtime_configs(self):
         runtime = load_camera_config(TOOL_ROOT / "configs" / "camera.example.yaml")
         expected = (runtime["camera"].width, runtime["camera"].height)

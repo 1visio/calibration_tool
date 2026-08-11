@@ -7,6 +7,58 @@ from calibration_tool.camera.quality import analyze_frame, laser_column_metrics,
 
 
 class CameraQualityTests(unittest.TestCase):
+    def test_horizontal_default_matches_explicit_orientation(self):
+        image = np.full((48, 64), 10, dtype=np.uint8)
+        image[23:26, :] = 220
+        implicit = analyze_frame(image, sensor_max_value=255, mode="laser")
+        explicit = analyze_frame(
+            image,
+            sensor_max_value=255,
+            mode="laser",
+            laser_orientation="horizontal",
+        )
+        self.assertEqual(implicit, explicit)
+
+    def test_vertical_synthetic_laser_uses_rows_for_coverage_and_x_for_fwhm(self):
+        image = np.full((48, 64), 10, dtype=np.uint8)
+        image[:, 30:33] = 220
+        quality = analyze_frame(
+            image,
+            sensor_max_value=255,
+            mode="laser",
+            laser_orientation="vertical",
+            thresholds=QualityThresholds(min_laser_coverage=0.8),
+        )
+        self.assertGreaterEqual(quality.laser_coverage, 0.99)
+        self.assertEqual(quality.laser_fwhm_p50_px, 3.0)
+        self.assertEqual(quality.laser_fwhm_p95_px, 3.0)
+        self.assertNotIn("laser_coverage_low", quality.warnings)
+
+    def test_vertical_transpose_matches_horizontal_laser_metrics(self):
+        horizontal = np.full((48, 64), 10, dtype=np.uint8)
+        horizontal[22:26, :] = 220
+        horizontal_quality = analyze_frame(
+            horizontal,
+            sensor_max_value=255,
+            mode="laser",
+            laser_orientation="horizontal",
+        )
+        vertical_quality = analyze_frame(
+            horizontal.T.copy(),
+            sensor_max_value=255,
+            mode="laser",
+            laser_orientation="vertical",
+        )
+        for name in (
+            "laser_coverage",
+            "laser_peak_saturation_fraction",
+            "laser_peak_near_saturation_fraction",
+            "laser_saturated_width_p95_px",
+            "laser_fwhm_p50_px",
+            "laser_fwhm_p95_px",
+        ):
+            self.assertEqual(getattr(horizontal_quality, name), getattr(vertical_quality, name))
+
     def test_laser_coverage_detects_full_width_stripe(self):
         image = np.full((48, 64), 10, dtype=np.uint8)
         image[23:26, :] = 220

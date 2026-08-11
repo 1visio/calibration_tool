@@ -65,6 +65,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     workflow = sub.add_parser("workflow", help="按一个 YAML 计划顺序运行多个阶段")
     workflow.add_argument("plan", type=Path)
+    workflow.add_argument("--project", type=Path, help="读取项目中的 laser.orientation")
 
     bundle = sub.add_parser("bundle-build", help="发布不可拆分的标定包")
     bundle.add_argument("--config", type=Path, required=True)
@@ -85,6 +86,18 @@ def build_parser() -> argparse.ArgumentParser:
     preview.add_argument("--warmup-frames", type=int, default=5)
     preview.add_argument("--quality-mode", choices=("generic", "chessboard", "laser"), default="generic")
     preview.add_argument("--snapshot", type=Path)
+
+    replay = sub.add_parser(
+        "search-region-replay",
+        help="只读回放单张激光图并输出 Steger search-region health",
+    )
+    replay.add_argument("image", type=Path)
+    replay.add_argument("--calibration-src", type=Path, default=DEFAULT_CALIBRATION_SRC)
+    replay.add_argument(
+        "--laser-orientation",
+        choices=("horizontal", "vertical"),
+        default="horizontal",
+    )
 
     capture = sub.add_parser("capture-plan", help="执行 YAML 批量采集计划")
     capture.add_argument("plan", type=Path)
@@ -146,7 +159,13 @@ def main(argv: Sequence[str] | None = None) -> int:
                 allow_quality_failure=args.allow_quality_failure,
             )
         elif args.command == "workflow":
-            result = run_workflow(args.plan)
+            if args.project is not None:
+                from .gui.project import WizardProject
+
+                orientation = WizardProject.load(args.project).laser.orientation
+            else:
+                orientation = "horizontal"
+            result = run_workflow(args.plan, laser_orientation=orientation)
         elif args.command == "bundle-build":
             result = build_calibration_bundle(
                 args.config,
@@ -189,8 +208,25 @@ def main(argv: Sequence[str] | None = None) -> int:
                 quality_mode=args.quality_mode,
                 quality_thresholds=camera_runtime["quality_thresholds"],
                 board_pattern=camera_runtime["board_pattern"],
+                laser_orientation=camera_runtime["laser"].orientation,
                 snapshot=args.snapshot,
             )
+        elif args.command == "search-region-replay":
+            import cv2
+
+            from .camera.steger_quality import RealtimeStegerQualityAnalyzer
+
+            image_path = args.image.expanduser().resolve()
+            image = cv2.imread(str(image_path), cv2.IMREAD_UNCHANGED)
+            if image is None:
+                raise CameraError(f"无法读取回放图像：{image_path}")
+            result = {
+                "image": str(image_path),
+                "search_region_health": RealtimeStegerQualityAnalyzer(
+                    args.calibration_src,
+                    args.laser_orientation,
+                ).analyze(image),
+            }
         elif args.command == "capture-plan":
             plan = load_capture_plan(args.plan)
             provider = build_camera_provider(
@@ -238,6 +274,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 board_pattern=camera_runtime["board_pattern"],
                 metadata={"kind": "exposure_series", "camera_config": str(args.config.resolve())},
                 backend_options=camera_runtime["backend_options"],
+                laser=camera_runtime["laser"],
             )
             provider = build_camera_provider(
                 plan.backend,

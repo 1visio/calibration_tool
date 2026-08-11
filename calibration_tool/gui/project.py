@@ -8,6 +8,7 @@ from typing import Any
 
 from ..errors import ConfigError
 from ..io_utils import dump_yaml, load_document, resolve_relative
+from ..laser import LaserConfig, parse_laser_config
 
 
 @dataclass(slots=True)
@@ -23,6 +24,7 @@ class WizardProject:
     square_size_mm: float = 20.0
     source_path: Path | None = None
     extra: dict[str, Any] = field(default_factory=dict)
+    laser: LaserConfig = field(default_factory=LaserConfig)
 
     def __post_init__(self) -> None:
         if not self.project_id.strip():
@@ -56,6 +58,7 @@ class WizardProject:
             project_id=str(document.get("project_id", "")),
             workspace=resolve_relative(source, workspace_value),
             camera_config=resolve_relative(source, camera_value),
+            laser=parse_laser_config(document.get("laser"), field_name="wizard project.laser"),
             workflow_plan=resolve_relative(source, workflow_value) if workflow_value else None,
             acceptance_plan=resolve_relative(source, acceptance_value) if acceptance_value else None,
             capture_output=resolve_relative(source, capture_value) if capture_value else None,
@@ -83,6 +86,7 @@ class WizardProject:
             "project_id": self.project_id,
             "workspace": relative_or_absolute(self.workspace),
             "camera_config": relative_or_absolute(self.camera_config),
+            "laser": {"orientation": self.laser.orientation},
             "workflow_plan": relative_or_absolute(self.workflow_plan),
             "acceptance_plan": relative_or_absolute(self.acceptance_plan),
             "capture_output": relative_or_absolute(self.capture_output),
