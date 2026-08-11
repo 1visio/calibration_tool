@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "config_id": "B12p5_A20",
+  "frame_count": 50,
+  "image_shape": [
+    2048,
+    2448
+  ],
+  "centre_extractor": "realtime_steger.extract_steger_columns",
+  "steger_config": "D:\\Docs\\linelaserscan\\calibration\\config\\realtime_steger.yaml",
+  "steger_config_sha256": "4ffe544c002bfcdcfee494dbe2fa9c8dbfb75bef292ccc5f0156e6e0e2acbf96",
+  "reference_surface_x_range": null,
+  "reference_model_built": false,
+  "multiheight_analyzed": false,
+  "output": "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B12p5_A20\\analysis\\reference_roi_preview.png"
+}

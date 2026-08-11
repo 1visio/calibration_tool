@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "config_id": "B05_A15",
+  "task_id": "multiheight",
+  "diagnostic_only": true,
+  "frame_count": 50,
+  "image_shape": [
+    2048,
+    2448
+  ],
+  "centre_extractor": "realtime_steger.extract_steger_columns",
+  "formal_steger_config": "D:\\Docs\\linelaserscan\\calibration\\config\\realtime_steger.yaml",
+  "formal_steger_config_sha256": "4ffe544c002bfcdcfee494dbe2fa9c8dbfb75bef292ccc5f0156e6e0e2acbf96",
+  "formal_options": {
+    "sigma": 1.5,
+    "threshold": 30.0,
+    "deriv_thresh": 0.5,
+    "roi_margin": 48,
+    "roi_max_height": 512,
+    "scan_axis": "column"
+  },
+  "scan": {
+    "sigma": [
+      1.5
+    ],
+    "threshold": [
+      30.0,
+      25.0,
+      20.0,
+      15.0
+    ],
+    "deriv_thresh": [
+      0.5,
+      0.4,
+      0.3
+    ],
+    "valid_column_fraction_gates": [
+      0.8,
+      0.6,
+      0.5
+    ]
+  },
+  "measurement_rois": {
+    "h001": [
+      1823,
+      1851
+    ],
+    "h010": [
+      1879,
+      1923
+    ],
+    "h030": [
+      1949,
+      1983
+    ]
+  },
+  "background_roi_xyxy": [
+    1823,
+    1851,
+    1180,
+    1280
+  ],
+  "background_roi_selection_method": "manual_from_multiheight_median_preview",
+  "sigma_pixel_scope": "per-column std over every parameter-valid detection; columns require >=2 detections",
+  "median_center_scope": "median over all parameter-valid frame-column detections inside ROI",
+  "verdict": {
+    "verdict": "C. optical_or_signal_quality_issue",
+    "rationale": "扫描范围内即使使用0.5跨帧门槛也无法稳定恢复H1",
+    "formal_parameter_id": "T30_D0.5",
+    "formal_h1_per_frame_detection_rate": 0.0,
+    "formal_h1_valid_column_fraction_at_0_8": 0.0,
+    "formal_h1_valid_column_fraction_at_0_5": 0.0,
+    "background_false_detection_rate_limit": 0.02,
+    "candidate_parameter_id": null,
+    "candidate_metrics": null,
+    "candidate_acceptance_criteria": {
+      "h1_valid_column_fraction_at_0_8_min": 0.5,
+      "background_false_detection_rate_max": 0.02,
+      "h10_h30_max_abs_center_shift_px": 0.1,
+      "h10_h30_sigma_p95_ratio_max": 1.25
+    }
+  },
+  "protected_artifacts_sha256": {
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\configs\\roi_registry.yaml": "935a6449877b7064aec46cffa68ca6c13dd21660cf83980106d9a9864eead12d",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\configs\\analysis.yaml": "6f937018f54bea96f46d0646ec8d59f070bf8c85fd49ebb06ffb3ff9c082fd0c",
+    "D:\\Docs\\linelaserscan\\calibration\\config\\realtime_steger.yaml": "4ffe544c002bfcdcfee494dbe2fa9c8dbfb75bef292ccc5f0156e6e0e2acbf96",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B05_A15\\analysis\\reference_analysis.json": "029c618da5912c2ea4fb668ec9484b4b23cb8c7dadcebed21f5058611dd88d09",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B05_A15\\analysis\\reference_by_column.csv": "f5be2560bf7c32f46f00e907ee8623d7b13924b18041effba25793c2daf726ca",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B05_A15\\analysis\\multiheight_analysis.json": "b669c3761786c822c67eb1471e61e7591c0d2cf6f051d8a89e0b76c602227ebd",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\results\\geometry_master_summary.csv": "070a118c94c0f389628a0565feeca068ade183e15259b425d8f40a8dad734827"
+  },
+  "ranking_generated": false,
+  "formal_reference_modified": false,
+  "formal_multiheight_analysis_modified": false,
+  "geometry_master_summary_modified": false,
+  "outputs": [
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B05_A15\\analysis\\steger_h1_diagnostic\\steger_detection_by_column.csv",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B05_A15\\analysis\\steger_h1_diagnostic\\detected_frame_fraction_by_column.png",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B05_A15\\analysis\\steger_h1_diagnostic\\steger_threshold_sweep.csv",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B05_A15\\analysis\\steger_h1_diagnostic\\steger_threshold_sweep.png",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B05_A15\\analysis\\steger_h1_diagnostic\\steger_threshold_sweep.json"
+  ]
+}

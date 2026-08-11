@@ -10,6 +10,45 @@ from ..laser import normalize_laser_orientation
 from .models import FrameQuality, QualityThresholds
 
 
+def laser_column_metrics(
+    image: np.ndarray,
+    *,
+    sensor_max_value: float,
+) -> dict[str, np.ndarray | float]:
+    """Return the per-column laser diagnostics used by ``analyze_frame``.
+
+    These values describe contrast, width and saturation only; they are not a
+    centre extractor and must not replace the shared Steger implementation.
+    """
+    if image.ndim != 2 or image.dtype not in (np.uint8, np.uint16):
+        raise ValueError("激光逐列质量分析仅支持二维 uint8/uint16 灰度图")
+    if sensor_max_value <= 0:
+        raise ValueError("sensor_max_value 必须为正数")
+    values = image.astype(np.float32, copy=False)
+    p01, p99 = (float(value) for value in np.percentile(values, (1, 99)))
+    background = np.percentile(values, 50, axis=0)
+    peak = np.max(values, axis=0)
+    minimum_contrast = max(sensor_max_value * 0.05, (p99 - p01) * 0.20)
+    active = (peak - background) >= minimum_contrast
+    saturated = values >= sensor_max_value * 0.995
+    near_saturated = peak >= sensor_max_value * 0.98
+    saturated_width = np.sum(saturated, axis=0)
+    half_max = background + (peak - background) * 0.5
+    fwhm = np.sum(values >= half_max[None, :], axis=0)
+    return {
+        "background_dn": background,
+        "peak_dn": peak,
+        "peak_contrast_dn": peak - background,
+        "minimum_contrast_dn": float(minimum_contrast),
+        "active": active,
+        "peak_saturated": peak >= sensor_max_value * 0.995,
+        "peak_near_saturated": near_saturated,
+        "saturated_width_px": saturated_width,
+        "column_saturation_fraction": np.mean(saturated, axis=0),
+        "fwhm_px": fwhm,
+    }
+
+
 def analyze_frame(
     image: np.ndarray,
     *,
@@ -63,35 +102,35 @@ def analyze_frame(
         warnings.append("dynamic_range_low")
 
     if mode == "laser":
-        # profile 的列始终对应激光线的延伸方向，行对应线宽方向：横向直接
-        # 使用原图，纵向转置后复用完全相同的 peak/coverage/FWHM 算法。
-        profiles = values if orientation == "horizontal" else values.T
-        background = np.percentile(profiles, 50, axis=0)
-        peak = np.max(profiles, axis=0)
-        minimum_contrast = max(sensor_max_value * 0.05, (p99 - p01) * 0.20)
-        active_profiles = (peak - background) >= minimum_contrast
-        laser_coverage = float(np.mean(active_profiles))
+        # column_metrics 的列始终对应激光线的延伸方向，行对应线宽方向：
+        # 横向直接使用原图，纵向转置后复用相同的覆盖率、饱和与 FWHM 算法。
+        oriented_image = image if orientation == "horizontal" else image.T
+        column_metrics = laser_column_metrics(
+            oriented_image,
+            sensor_max_value=sensor_max_value,
+        )
+        active_columns = np.asarray(column_metrics["active"], dtype=bool)
+        laser_coverage = float(np.mean(active_columns))
         if laser_coverage < thresholds.min_laser_coverage:
             warnings.append("laser_coverage_low")
         if saturation_fraction > thresholds.max_laser_saturation_fraction:
             warnings.append("laser_saturation_high")
-        if np.any(active_profiles):
-            active_peak = peak[active_profiles]
-            active_background = background[active_profiles]
-            active_values = profiles[:, active_profiles]
+        if np.any(active_columns):
+            active_peak_saturated = np.asarray(
+                column_metrics["peak_saturated"], dtype=bool
+            )[active_columns]
+            active_peak_near_saturated = np.asarray(
+                column_metrics["peak_near_saturated"], dtype=bool
+            )[active_columns]
             laser_peak_saturation_fraction = float(
-                np.mean(active_peak >= sensor_max_value * 0.995)
+                np.mean(active_peak_saturated)
             )
             laser_peak_near_saturation_fraction = float(
-                np.mean(active_peak >= sensor_max_value * 0.98)
+                np.mean(active_peak_near_saturated)
             )
-            saturated_widths = np.sum(
-                active_values >= sensor_max_value * 0.995,
-                axis=0,
-            )
+            saturated_widths = np.asarray(column_metrics["saturated_width_px"])[active_columns]
             laser_saturated_width_p95_px = float(np.percentile(saturated_widths, 95))
-            half_max_levels = active_background + (active_peak - active_background) * 0.5
-            fwhm_widths = np.sum(active_values >= half_max_levels[None, :], axis=0)
+            fwhm_widths = np.asarray(column_metrics["fwhm_px"])[active_columns]
             laser_fwhm_p50_px = float(np.percentile(fwhm_widths, 50))
             laser_fwhm_p95_px = float(np.percentile(fwhm_widths, 95))
             if laser_peak_saturation_fraction > thresholds.max_laser_peak_saturation_fraction:

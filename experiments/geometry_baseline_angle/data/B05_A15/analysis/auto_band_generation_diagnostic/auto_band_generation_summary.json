@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "config_id": "B05_A15",
+  "diagnostic_only": true,
+  "auto_band_implementation": {
+    "file": "D:\\Docs\\linelaserscan\\calibration\\src\\realtime_steger.py",
+    "function": "_detect_steger_band",
+    "caller": "_extract_columnwise"
+  },
+  "projection": {
+    "row_peak": "max(gray, axis=1)",
+    "seed": "argmax(sum(gray, axis=1))",
+    "adaptive_threshold": "max(threshold, 0.3 * row_peak[seed])"
+  },
+  "bottom_semantics": "exclusive",
+  "effective_steger_options": {
+    "sigma": 1.5,
+    "threshold": 30.0,
+    "deriv_thresh": 0.5,
+    "roi_margin": 48,
+    "roi_max_height": 512,
+    "scan_axis": "column"
+  },
+  "task_summaries": {
+    "reference": {
+      "frame_count": 50,
+      "all_frames_same_trace": true,
+      "unique_trace_count": 1,
+      "dominant_trace_frame_count": 50,
+      "dominant_trace": {
+        "raw_candidate_top": 1350,
+        "raw_candidate_bottom": 1369,
+        "margin_before_clip": [
+          1302,
+          1417
+        ],
+        "margin_after_clip": [
+          1302,
+          1417
+        ],
+        "roi_max_height_applied": false,
+        "final_band_top": 1302,
+        "final_band_bottom": 1417
+      }
+    },
+    "multiheight": {
+      "frame_count": 50,
+      "all_frames_same_trace": true,
+      "unique_trace_count": 1,
+      "dominant_trace_frame_count": 50,
+      "dominant_trace": {
+        "raw_candidate_top": 1294,
+        "raw_candidate_bottom": 1301,
+        "margin_before_clip": [
+          1246,
+          1349
+        ],
+        "margin_after_clip": [
+          1246,
+          1349
+        ],
+        "roi_max_height_applied": false,
+        "final_band_top": 1246,
+        "final_band_bottom": 1349
+      }
+    }
+  },
+  "reference_and_multiheight_share_same_band_function": true,
+  "steger_derivatives_run_on_cropped_band": true,
+  "protected_artifacts_sha256": {
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\configs\\analysis.yaml": "1501da4eb5e386d9e361e170a337f3be2f7eafd9c89d0a20b4166dbcaf1a6719",
+    "D:\\Docs\\linelaserscan\\calibration\\config\\realtime_steger.yaml": "4ffe544c002bfcdcfee494dbe2fa9c8dbfb75bef292ccc5f0156e6e0e2acbf96",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B05_A15\\analysis\\reference_analysis.json": "029c618da5912c2ea4fb668ec9484b4b23cb8c7dadcebed21f5058611dd88d09",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B05_A15\\analysis\\reference_by_column.csv": "f5be2560bf7c32f46f00e907ee8623d7b13924b18041effba25793c2daf726ca",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B05_A15\\analysis\\multiheight_analysis.json": "74ae2ef367cbc92cb026cf0567145c6410af844376334083f4c1fe7cf0af24bd",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\results\\geometry_master_summary.csv": "070a118c94c0f389628a0565feeca068ade183e15259b425d8f40a8dad734827"
+  },
+  "formal_results_modified": false,
+  "outputs": [
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B05_A15\\analysis\\auto_band_generation_diagnostic\\auto_band_generation_by_frame.csv",
+    "D:\\Docs\\linelaserscan\\calibration_tool\\experiments\\geometry_baseline_angle\\data\\B05_A15\\analysis\\auto_band_generation_diagnostic\\auto_band_generation_summary.json"
+  ]
+}

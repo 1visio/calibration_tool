@@ -242,7 +242,7 @@ class GuiCapturePageTests(unittest.TestCase):
                 page.cancel_capture()
                 window.close(); self.app.processEvents()
 
-    def test_guided_capture_keeps_live_frames_during_settle(self):
+    def test_guided_preview_does_not_discard_before_capture_click(self):
         with tempfile.TemporaryDirectory() as temporary:
             window, page = self._window_page(Path(temporary))
             try:
@@ -262,8 +262,48 @@ class GuiCapturePageTests(unittest.TestCase):
                     self.app.processEvents()
                     time.sleep(0.02)
 
-                self.assertTrue(any(states))
+                self.assertFalse(any(states))
                 self.assertTrue(page.capture_task_button.isEnabled())
+            finally:
+                page.cancel_capture()
+                window.close(); self.app.processEvents()
+
+    def test_one_guided_click_captures_all_task_frames_without_resettling(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            window, page = self._window_page(root)
+            try:
+                page.include_validation.setChecked(False)
+                page.fit_groups.setValue(1)
+                for row in (1, 2):
+                    page.recipe_table.table.cellWidget(row, 0).setChecked(False)
+                page.recipe_table.table.cellWidget(0, 6).setValue(4)
+                page.recipe_table.table.cellWidget(0, 7).setValue(3)
+                self.assertTrue(page.generate_plan())
+                page.start_button.click()
+                deadline = time.monotonic() + 8.0
+                while not page.capture_task_button.isEnabled() and time.monotonic() < deadline:
+                    self.app.processEvents(); time.sleep(0.02)
+                self.assertTrue(page.capture_task_button.isEnabled())
+                frame_before_click = page.camera_page.last_frame.camera_frame_number
+
+                page.capture_task_button.click()
+                deadline = time.monotonic() + 8.0
+                while page._guided_capture_active and time.monotonic() < deadline:
+                    self.app.processEvents(); time.sleep(0.02)
+
+                self.assertFalse(page._guided_capture_active)
+                manifest = load_document(root / "dataset" / "dataset_manifest.yaml")
+                task_id = page.loaded_plan.tasks[0].task_id
+                self.assertEqual(len(manifest["frames"]), 4)
+                self.assertEqual(manifest["tasks"][task_id]["frames_captured"], 4)
+                self.assertEqual(manifest["tasks"][task_id]["status"], "completed")
+                frame_numbers = [int(frame["camera_frame_number"]) for frame in manifest["frames"]]
+                self.assertGreaterEqual(frame_numbers[0] - int(frame_before_click), 4)
+                self.assertEqual(
+                    [right - left for left, right in zip(frame_numbers, frame_numbers[1:])],
+                    [1, 1, 1],
+                )
             finally:
                 page.cancel_capture()
                 window.close(); self.app.processEvents()
