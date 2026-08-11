@@ -1,0 +1,37 @@
+schema_version: 1
+experiment_type: geometry_baseline_angle
+experiment_phase: phase_A_screening
+
+# 直接引用正式标定与在线测量共同使用的 Steger 参数，不在实验代码中复制参数。
+steger_config: ../../../../calibration/config/realtime_steger.yaml
+
+reference:
+  valid_frame_fraction_min: 0.80
+  max_interp_gap_px: 8
+
+# 坐标为包含端点的图像列索引；由 B12p5_A20 的真实中位数预览人工确认。
+reference_surface:
+  x_range: [935, 2236]
+  segment_edge_trim_px: 2
+  smooth_spline_basis_count: 12
+  smooth_spline_penalty: 1.0
+  robust_huber_delta: 1.5
+  robust_max_iterations: 15
+  cv_min_segment_width_px: 5
+
+multiheight:
+  valid_frame_fraction_min: 0.80
+  # Phase-A 全配置统一使用：冻结 reference 曲线的纵向包络与原 auto band 取并集。
+  reference_band_margin_px: 15
+  formal_roi_trim_px: 3
+  plateau_detection:
+    median_smoothing_window_px: 5
+    max_abs_gradient_px_per_column: 0.08
+    max_abs_step_px: 0.25
+    sigma_mad_scale: 4.0
+    sigma_floor_limit_px: 0.03
+    plateau_erosion_px: 2
+    min_stable_width_px: 12
+  roi_trim_sensitivity:
+    trim_px: [0, 2, 3, 4]
+    max_relative_change: 0.02

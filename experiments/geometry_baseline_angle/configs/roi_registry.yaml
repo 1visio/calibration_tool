@@ -1,0 +1,494 @@
+schema_version: 1
+experiment_type: geometry_baseline_angle
+template_config: B12p5_A20
+configs:
+  B12p5_A20:
+    reference_surface:
+      x_range:
+      - 935
+      - 2236
+      method: manual_confirmed
+    multiheight:
+      h001:
+        height_mm: 1.0
+        selected_x_range:
+        - 1711
+        - 1744
+        auto_stable_x_range:
+        - 1729
+        - 1744
+        analysis_x_range:
+        - 1714
+        - 1741
+        selection_method: manual_candidate
+        analysis_method: selected_roi_symmetric_trim_median
+        stable_width_px: 16
+        valid_column_fraction: 1.0
+        roi_stable: true
+        status: ok
+        stable_plateau_analysis_x_range:
+        - 1731
+        - 1742
+        formal_roi_trim_px: 3
+        warnings: []
+      h010:
+        height_mm: 10.0
+        selected_x_range:
+        - 1771
+        - 1807
+        auto_stable_x_range:
+        - 1771
+        - 1780
+        analysis_x_range:
+        - 1774
+        - 1804
+        selection_method: manual_candidate
+        analysis_method: selected_roi_symmetric_trim_median
+        stable_width_px: 10
+        valid_column_fraction: 1.0
+        roi_stable: true
+        status: ok
+        stable_plateau_analysis_x_range: null
+        formal_roi_trim_px: 3
+        warnings:
+        - stable_plateau_width_below_min
+      h030:
+        height_mm: 30.0
+        selected_x_range:
+        - 1836
+        - 1862
+        auto_stable_x_range:
+        - 1853
+        - 1862
+        analysis_x_range:
+        - 1839
+        - 1859
+        selection_method: manual_candidate
+        analysis_method: selected_roi_symmetric_trim_median
+        stable_width_px: 10
+        valid_column_fraction: 1.0
+        roi_stable: true
+        status: ok
+        stable_plateau_analysis_x_range: null
+        formal_roi_trim_px: 3
+        warnings:
+        - stable_plateau_width_below_min
+    status: confirmed
+    manual_confirmed: true
+    updated_at: '2026-08-10T04:04:26+00:00'
+  B00_A05:
+    status: invalid_fov
+    manual_confirmed: false
+    updated_at: '2026-08-10T04:04:26+00:00'
+    reference_surface:
+      x_range: null
+      method: null
+    multiheight:
+      h001:
+        height_mm: 1.0
+        selected_x_range: null
+      h010:
+        height_mm: 10.0
+        selected_x_range: null
+      h030:
+        height_mm: 30.0
+        selected_x_range: null
+  B00_A10:
+    status: confirmed
+    manual_confirmed: true
+    updated_at: '2026-08-10T05:14:37+00:00'
+    reference_surface:
+      x_range:
+      - 1047
+      - 2251
+      method: manual_confirmed
+    multiheight:
+      h001:
+        height_mm: 1.0
+        selected_x_range:
+        - 1846
+        - 1887
+      h010:
+        height_mm: 10.0
+        selected_x_range:
+        - 1909
+        - 1940
+      h030:
+        height_mm: 30.0
+        selected_x_range:
+        - 1974
+        - 2021
+  B00_A15:
+    status: confirmed
+    manual_confirmed: true
+    updated_at: '2026-08-10T05:15:30+00:00'
+    reference_surface:
+      x_range:
+      - 1057
+      - 2255
+      method: manual_confirmed
+    multiheight:
+      h001:
+        height_mm: 1.0
+        selected_x_range:
+        - 1855
+        - 1888
+      h010:
+        height_mm: 10.0
+        selected_x_range:
+        - 1913
+        - 1951
+      h030:
+        height_mm: 30.0
+        selected_x_range:
+        - 1973
+        - 2018
+  B00_A20:
+    status: confirmed
+    manual_confirmed: true
+    updated_at: '2026-08-10T05:16:14+00:00'
+    reference_surface:
+      x_range:
+      - 1063
+      - 2254
+      method: manual_confirmed
+    multiheight:
+      h001:
+        height_mm: 1.0
+        selected_x_range:
+        - 1858
+        - 1895
+      h010:
+        height_mm: 10.0
+        selected_x_range:
+        - 1911
+        - 1954
+      h030:
+        height_mm: 30.0
+        selected_x_range:
+        - 1980
+        - 2020
+  B05_A05:
+    status: confirmed
+    manual_confirmed: true
+    updated_at: '2026-08-10T05:16:57+00:00'
+    reference_surface:
+      x_range:
+      - 984
+      - 2161
+      method: manual_confirmed
+    multiheight:
+      h001:
+        height_mm: 1.0
+        selected_x_range:
+        - 1788
+        - 1820
+      h010:
+        height_mm: 10.0
+        selected_x_range:
+        - 1851
+        - 1876
+      h030:
+        height_mm: 30.0
+        selected_x_range:
+        - 1913
+        - 1949
+  B05_A10:
+    status: confirmed
+    manual_confirmed: true
+    updated_at: '2026-08-10T05:17:39+00:00'
+    reference_surface:
+      x_range:
+      - 1010
+      - 2189
+      method: manual_confirmed
+    multiheight:
+      h001:
+        height_mm: 1.0
+        selected_x_range:
+        - 1800
+        - 1833
+      h010:
+        height_mm: 10.0
+        selected_x_range:
+        - 1857
+        - 1899
+      h030:
+        height_mm: 30.0
+        selected_x_range:
+        - 1923
+        - 1957
+  B05_A15:
+    status: confirmed
+    manual_confirmed: true
+    updated_at: '2026-08-10T05:18:17+00:00'
+    reference_surface:
+      x_range:
+      - 1049
+      - 2208
+      method: manual_confirmed
+    multiheight:
+      h001:
+        height_mm: 1.0
+        selected_x_range:
+        - 1823
+        - 1851
+      h010:
+        height_mm: 10.0
+        selected_x_range:
+        - 1879
+        - 1923
+      h030:
+        height_mm: 30.0
+        selected_x_range:
+        - 1949
+        - 1983
+  B05_A20:
+    status: confirmed
+    manual_confirmed: true
+    updated_at: '2026-08-10T05:19:03+00:00'
+    reference_surface:
+      x_range:
+      - 1078
+      - 2251
+      method: manual_confirmed
+    multiheight:
+      h001:
+        height_mm: 1.0
+        selected_x_range:
+        - 1863
+        - 1901
+      h010:
+        height_mm: 10.0
+        selected_x_range:
+        - 1926
+        - 1961
+      h030:
+        height_mm: 30.0
+        selected_x_range:
+        - 1989
+        - 2023
+  B12p5_A05:
+    status: confirmed
+    manual_confirmed: true
+    updated_at: '2026-08-10T05:19:53+00:00'
+    reference_surface:
+      x_range:
+      - 1002
+      - 2176
+      method: manual_confirmed
+    multiheight:
+      h001:
+        height_mm: 1.0
+        selected_x_range:
+        - 1786
+        - 1813
+        auto_stable_x_range:
+        - 1786
+        - 1813
+        stable_plateau_analysis_x_range:
+        - 1788
+        - 1811
+        analysis_x_range:
+        - 1789
+        - 1810
+        selection_method: manual_candidate
+        analysis_method: selected_roi_symmetric_trim_median
+        formal_roi_trim_px: 3
+        stable_width_px: 28
+        valid_column_fraction: 1.0
+        roi_stable: true
+        warnings: []
+        status: ok
+      h010:
+        height_mm: 10.0
+        selected_x_range:
+        - 1839
+        - 1861
+        auto_stable_x_range:
+        - 1855
+        - 1861
+        stable_plateau_analysis_x_range: null
+        analysis_x_range:
+        - 1842
+        - 1858
+        selection_method: manual_candidate
+        analysis_method: selected_roi_symmetric_trim_median
+        formal_roi_trim_px: 3
+        stable_width_px: 7
+        valid_column_fraction: 1.0
+        roi_stable: true
+        warnings:
+        - stable_plateau_width_below_min
+        status: ok
+      h030:
+        height_mm: 30.0
+        selected_x_range:
+        - 1910
+        - 1935
+        auto_stable_x_range:
+        - 1915
+        - 1935
+        stable_plateau_analysis_x_range:
+        - 1917
+        - 1933
+        analysis_x_range:
+        - 1913
+        - 1932
+        selection_method: manual_candidate
+        analysis_method: selected_roi_symmetric_trim_median
+        formal_roi_trim_px: 3
+        stable_width_px: 21
+        valid_column_fraction: 1.0
+        roi_stable: true
+        warnings: []
+        status: ok
+  B12p5_A10:
+    status: confirmed
+    manual_confirmed: true
+    updated_at: '2026-08-10T05:20:32+00:00'
+    reference_surface:
+      x_range:
+      - 1013
+      - 2171
+      method: manual_confirmed
+    multiheight:
+      h001:
+        height_mm: 1.0
+        selected_x_range:
+        - 1769
+        - 1802
+        auto_stable_x_range:
+        - 1791
+        - 1802
+        stable_plateau_analysis_x_range: null
+        analysis_x_range:
+        - 1772
+        - 1799
+        selection_method: manual_candidate
+        analysis_method: selected_roi_symmetric_trim_median
+        formal_roi_trim_px: 3
+        stable_width_px: 12
+        valid_column_fraction: 1.0
+        roi_stable: true
+        warnings:
+        - stable_plateau_width_below_min
+        status: ok
+      h010:
+        height_mm: 10.0
+        selected_x_range:
+        - 1829
+        - 1861
+        auto_stable_x_range:
+        - 1843
+        - 1853
+        stable_plateau_analysis_x_range: null
+        analysis_x_range:
+        - 1832
+        - 1858
+        selection_method: manual_candidate
+        analysis_method: selected_roi_symmetric_trim_median
+        formal_roi_trim_px: 3
+        stable_width_px: 11
+        valid_column_fraction: 1.0
+        roi_stable: true
+        warnings:
+        - stable_plateau_width_below_min
+        status: ok
+      h030:
+        height_mm: 30.0
+        selected_x_range:
+        - 1894
+        - 1923
+        auto_stable_x_range:
+        - 1894
+        - 1911
+        stable_plateau_analysis_x_range:
+        - 1896
+        - 1909
+        analysis_x_range:
+        - 1897
+        - 1920
+        selection_method: manual_candidate
+        analysis_method: selected_roi_symmetric_trim_median
+        formal_roi_trim_px: 3
+        stable_width_px: 18
+        valid_column_fraction: 1.0
+        roi_stable: true
+        warnings: []
+        status: ok
+  B12p5_A15:
+    status: confirmed
+    manual_confirmed: true
+    updated_at: '2026-08-10T05:21:11+00:00'
+    reference_surface:
+      x_range:
+      - 993
+      - 2142
+      method: manual_confirmed
+    multiheight:
+      h001:
+        height_mm: 1.0
+        selected_x_range:
+        - 1760
+        - 1794
+        auto_stable_x_range:
+        - 1781
+        - 1794
+        stable_plateau_analysis_x_range: null
+        analysis_x_range:
+        - 1763
+        - 1791
+        selection_method: manual_candidate
+        analysis_method: selected_roi_symmetric_trim_median
+        formal_roi_trim_px: 3
+        stable_width_px: 14
+        valid_column_fraction: 0.9655172413793104
+        roi_stable: false
+        warnings:
+        - stable_plateau_width_below_min
+        - formal_roi_trim_sensitive
+        status: needs_manual_review
+      h010:
+        height_mm: 10.0
+        selected_x_range:
+        - 1823
+        - 1858
+        auto_stable_x_range:
+        - 1823
+        - 1834
+        stable_plateau_analysis_x_range: null
+        analysis_x_range:
+        - 1826
+        - 1855
+        selection_method: manual_candidate
+        analysis_method: selected_roi_symmetric_trim_median
+        formal_roi_trim_px: 3
+        stable_width_px: 12
+        valid_column_fraction: 1.0
+        roi_stable: true
+        warnings:
+        - stable_plateau_width_below_min
+        status: ok
+      h030:
+        height_mm: 30.0
+        selected_x_range:
+        - 1889
+        - 1921
+        auto_stable_x_range:
+        - 1896
+        - 1912
+        stable_plateau_analysis_x_range:
+        - 1898
+        - 1910
+        analysis_x_range:
+        - 1892
+        - 1918
+        selection_method: manual_candidate
+        analysis_method: selected_roi_symmetric_trim_median
+        formal_roi_trim_px: 3
+        stable_width_px: 17
+        valid_column_fraction: 1.0
+        roi_stable: true
+        warnings: []
+        status: ok

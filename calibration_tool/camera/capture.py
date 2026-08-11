@@ -4,7 +4,9 @@ import csv
 import io
 import os
 import shutil
+import tempfile
 import threading
+import time
 from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -36,9 +38,24 @@ def _utc_now() -> str:
 
 def _atomic_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name(f".{path.name}.tmp")
-    temporary.write_text(text, encoding="utf-8")
-    os.replace(temporary, path)
+    descriptor, temporary_name = tempfile.mkstemp(
+        prefix=f".{path.name}.", suffix=".tmp", dir=str(path.parent)
+    )
+    os.close(descriptor)
+    temporary = Path(temporary_name)
+    try:
+        temporary.write_text(text, encoding="utf-8")
+        for attempt in range(8):
+            try:
+                os.replace(temporary, path)
+                return
+            except PermissionError:
+                if attempt == 7:
+                    raise
+                # Windows Defender、索引器或实时 CSV 读取可能短暂占用目标文件。
+                time.sleep(min(0.02 * (2**attempt), 0.2))
+    finally:
+        temporary.unlink(missing_ok=True)
 
 
 def _atomic_yaml(path: Path, value: Any) -> None:
@@ -135,11 +152,17 @@ def _new_manifest(plan: CapturePlan) -> dict[str, Any]:
     }
 
 
-def _save_state(work_dir: Path, manifest: dict[str, Any]) -> None:
+def _save_state(
+    work_dir: Path,
+    manifest: dict[str, Any],
+    *,
+    write_frames_csv: bool = True,
+) -> None:
     manifest["updated_at"] = _utc_now()
     manifest["quality_summary"] = _quality_summary_from_records(manifest["frames"])
     _atomic_yaml(work_dir / "dataset_manifest.yaml", manifest)
-    _write_frames_csv(work_dir / "frames.csv", manifest["frames"])
+    if write_frames_csv:
+        _write_frames_csv(work_dir / "frames.csv", manifest["frames"])
 
 
 def run_capture_plan(

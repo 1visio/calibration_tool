@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 
 from calibration_tool.camera.models import QualityThresholds
-from calibration_tool.camera.quality import analyze_frame, summarize_quality
+from calibration_tool.camera.quality import analyze_frame, laser_column_metrics, summarize_quality
 
 
 class CameraQualityTests(unittest.TestCase):
@@ -18,6 +18,16 @@ class CameraQualityTests(unittest.TestCase):
         )
         self.assertGreaterEqual(quality.laser_coverage, 0.99)
         self.assertNotIn("laser_coverage_low", quality.warnings)
+
+    def test_laser_column_metrics_exposes_existing_width_and_saturation_formula(self):
+        image = np.full((20, 8), 10, dtype=np.uint8)
+        image[8:11, :] = 200
+        image[9, 3] = 255
+        metrics = laser_column_metrics(image, sensor_max_value=255)
+        self.assertTrue(np.all(metrics["active"]))
+        self.assertEqual(metrics["fwhm_px"].tolist(), [3] * 8)
+        self.assertTrue(metrics["peak_saturated"][3])
+        self.assertEqual(int(metrics["saturated_width_px"][3]), 1)
 
     def test_flat_dark_frame_is_reported(self):
         image = np.zeros((24, 32), dtype=np.uint8)

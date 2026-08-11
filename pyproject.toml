@@ -7,7 +7,7 @@ name = "line-laser-calibration-tool"
 version = "0.1.0"
 description = "Unified orchestration and provenance layer for the line-laser calibration scripts"
 requires-python = ">=3.10"
-dependencies = ["PyYAML>=6.0", "numpy>=1.24", "opencv-python>=4.8", "PySide6>=6.5"]
+dependencies = ["PyYAML>=6.0", "numpy>=1.24", "opencv-python>=4.8", "PySide6>=6.5", "scipy>=1.10"]
 
 [project.scripts]
 line-laser-calibration = "calibration_tool.cli:main"
