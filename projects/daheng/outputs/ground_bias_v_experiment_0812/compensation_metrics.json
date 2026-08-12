@@ -1,0 +1,392 @@
+{
+  "input_dir": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input",
+  "output_dir": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812",
+  "loaded_frame_count": 31,
+  "build_frame_count": 25,
+  "evaluation_frame_count": 6,
+  "skipped_files": [],
+  "table_metadata": {
+    "version": 1,
+    "compensation_axis": "v",
+    "trend_coordinate": "yg_mm",
+    "trend_mode": "linear",
+    "aggregate": "median",
+    "column_bin_width_px": 1.0,
+    "min_samples_per_column": 5,
+    "mad_threshold": 3.5,
+    "smooth_window": 1,
+    "build_frame_count": 25,
+    "source_files": [
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 001.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 002.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 003.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 004.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 005.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 006.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 007.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 008.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 009.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 010.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 011.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 012.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 013.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 014.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 015.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 016.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 017.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 018.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 019.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 020.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 021.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 022.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 023.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 024.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input\\laser 025.csv"
+    ]
+  },
+  "metrics": {
+    "evaluation_frame_count": 6,
+    "profile_before_pv_mm": 0.7686526190407909,
+    "profile_after_pv_mm": 0.9253615703798024,
+    "profile_before_rms_mm": 0.11482724520781797,
+    "profile_after_rms_mm": 0.11296632912954852,
+    "median_frame_before_pv_mm": 0.7329641670023856,
+    "median_frame_after_pv_mm": 0.7422617764296655,
+    "median_frame_before_rms_mm": 0.1458683323038783,
+    "median_frame_after_rms_mm": 0.12923989491984256
+  },
+  "repeatability_sigma_median_mm": 0.05204770428888857,
+  "experiment_status": "exploratory_only",
+  "source_dataset": {
+    "root": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812",
+    "manifest": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\dataset_manifest.yaml",
+    "frames_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\frames.csv",
+    "quality_warning": "31/31 frames were marked dynamic_range_low by acquisition quality checks"
+  },
+  "frozen_reconstruction": {
+    "provenance_file": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\provenance.json",
+    "calibration": {
+      "intrinsics": {
+        "path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0811\\intrinsics\\calibration_result.yaml",
+        "sha256": "b12df5363e202752e819b3108403ece59688373beed21a7de028568c8d05b476"
+      },
+      "laser_model": {
+        "path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0811\\laser_model\\models\\circular_cone.yaml",
+        "sha256": "a7f35369cb41e1f197b9a21fe9cd11d1e1ee2cfcf6895cbee5055286af94f793",
+        "model_type": "circular_cone"
+      },
+      "ground_extrinsics": {
+        "path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0811\\ground_extrinsics\\camera_ground_extrinsics.yaml",
+        "sha256": "b1db2130c78be0161c4bb81c9254004c3909d184f194a29f4a964507e2168720"
+      }
+    },
+    "steger": {
+      "app_config": "D:\\Docs\\linelaserscan\\0704line-laser-3d-scanner\\laser_measurement_tool\\configs\\measure_tool_daheng_0811.yaml",
+      "method": "steger",
+      "options": {
+        "sigma": 1.5,
+        "threshold": 30.0,
+        "deriv_thresh": 0.5,
+        "roi_margin": 48,
+        "roi_max_height": 512,
+        "scan_axis": "row",
+        "search_roi": {
+          "offset_x": 1760,
+          "offset_y": 0,
+          "width": 480,
+          "height": 3000
+        }
+      }
+    },
+    "ground_u_compensation": null
+  },
+  "strict_split": {
+    "build_files": [
+      "laser 001.csv",
+      "laser 002.csv",
+      "laser 003.csv",
+      "laser 004.csv",
+      "laser 005.csv",
+      "laser 006.csv",
+      "laser 007.csv",
+      "laser 008.csv",
+      "laser 009.csv",
+      "laser 010.csv",
+      "laser 011.csv",
+      "laser 012.csv",
+      "laser 013.csv",
+      "laser 014.csv",
+      "laser 015.csv",
+      "laser 016.csv",
+      "laser 017.csv",
+      "laser 018.csv",
+      "laser 019.csv",
+      "laser 020.csv",
+      "laser 021.csv",
+      "laser 022.csv",
+      "laser 023.csv",
+      "laser 024.csv",
+      "laser 025.csv"
+    ],
+    "holdout_files": [
+      "laser 026.csv",
+      "laser 027.csv",
+      "laser 028.csv",
+      "laser 029.csv",
+      "laser 030.csv",
+      "laser 031.csv"
+    ],
+    "independent": true,
+    "split_source": "extrinsics0812 dataset manifest: fit=001..025, validation=026..031"
+  },
+  "holdout_residual_v_comparison": {
+    "definition": "metrics over the independent holdout mean residual(v) curve after removing the configured linear Yg trend",
+    "before": {
+      "bias_mm": 1.1974093962927203e-17,
+      "mae_mm": 0.08608027690484311,
+      "rmse_mm": 0.11482724520781797,
+      "p95_abs_mm": 0.2199882298928673,
+      "peak_to_valley_mm": 0.7686526190407909,
+      "sample_count": 2967
+    },
+    "after": {
+      "bias_mm": 2.993523490731801e-17,
+      "mae_mm": 0.07576859144897366,
+      "rmse_mm": 0.11296632912954852,
+      "p95_abs_mm": 0.2554597414112418,
+      "peak_to_valley_mm": 0.9253615703798024,
+      "sample_count": 2967
+    },
+    "improvement": {
+      "mae_reduction_percent": 11.97914995936693,
+      "rmse_reduction_percent": 1.6206224184003637,
+      "p95_abs_reduction_percent": -16.124276983204446,
+      "peak_to_valley_reduction_percent": -20.387486812257283
+    },
+    "per_frame": [
+      {
+        "file": "laser 026.csv",
+        "before": {
+          "bias_mm": -7.955532869994724e-18,
+          "mae_mm": 0.10957318046865015,
+          "rmse_mm": 0.15392364700270467,
+          "p95_abs_mm": 0.3755689354615125,
+          "peak_to_valley_mm": 0.751159106252889,
+          "sample_count": 1563
+        },
+        "after": {
+          "bias_mm": 2.273009391427064e-18,
+          "mae_mm": 0.09832300448266228,
+          "rmse_mm": 0.15168099076298291,
+          "p95_abs_mm": 0.39983323708349927,
+          "peak_to_valley_mm": 0.7897431428018353,
+          "sample_count": 1563
+        },
+        "improvement": {
+          "mae_reduction_percent": 10.267271551186418,
+          "rmse_reduction_percent": 1.456992660576928,
+          "p95_abs_reduction_percent": -6.460678541522591,
+          "peak_to_valley_reduction_percent": -5.136599720054047
+        }
+      },
+      {
+        "file": "laser 027.csv",
+        "before": {
+          "bias_mm": -6.911894316732492e-18,
+          "mae_mm": 0.10070224890137029,
+          "rmse_mm": 0.13781016214199127,
+          "p95_abs_mm": 0.38044921709730206,
+          "peak_to_valley_mm": 0.7213537980758908,
+          "sample_count": 1285
+        },
+        "after": {
+          "bias_mm": -2.626519840358347e-17,
+          "mae_mm": 0.10221879820974879,
+          "rmse_mm": 0.13926520808194745,
+          "p95_abs_mm": 0.35110234401295426,
+          "peak_to_valley_mm": 0.8405210815555727,
+          "sample_count": 1285
+        },
+        "improvement": {
+          "mae_reduction_percent": -1.5059736251410216,
+          "rmse_reduction_percent": -1.05583355925305,
+          "p95_abs_reduction_percent": 7.713742535273028,
+          "peak_to_valley_reduction_percent": -16.519949544529155
+        }
+      },
+      {
+        "file": "laser 028.csv",
+        "before": {
+          "bias_mm": 0.0,
+          "mae_mm": 0.10468569125298356,
+          "rmse_mm": 0.1295186924065698,
+          "p95_abs_mm": 0.2584388050183577,
+          "peak_to_valley_mm": 0.6174918453582532,
+          "sample_count": 806
+        },
+        "after": {
+          "bias_mm": 0.0,
+          "mae_mm": 0.10785124454140739,
+          "rmse_mm": 0.13359008884674597,
+          "p95_abs_mm": 0.26999950377004805,
+          "peak_to_valley_mm": 0.6485879295889039,
+          "sample_count": 806
+        },
+        "improvement": {
+          "mae_reduction_percent": -3.0238643414733257,
+          "rmse_reduction_percent": -3.143481735744924,
+          "p95_abs_reduction_percent": -4.473282853505367,
+          "peak_to_valley_reduction_percent": -5.035869617453748
+        }
+      },
+      {
+        "file": "laser 029.csv",
+        "before": {
+          "bias_mm": 1.0851294070862862e-17,
+          "mae_mm": 0.1192676023386734,
+          "rmse_mm": 0.16160437330604635,
+          "p95_abs_mm": 0.39049110923942554,
+          "peak_to_valley_mm": 0.7446592786984397,
+          "sample_count": 1637
+        },
+        "after": {
+          "bias_mm": 1.6276941106294292e-17,
+          "mae_mm": 0.08030691934180963,
+          "rmse_mm": 0.12490105435386258,
+          "p95_abs_mm": 0.3388275477178503,
+          "peak_to_valley_mm": 0.6948508066882502,
+          "sample_count": 1637
+        },
+        "improvement": {
+          "mae_reduction_percent": 32.66661040626159,
+          "rmse_reduction_percent": 22.711835206758312,
+          "p95_abs_reduction_percent": 13.230406608284206,
+          "peak_to_valley_reduction_percent": 6.6887600054145295
+        }
+      },
+      {
+        "file": "laser 030.csv",
+        "before": {
+          "bias_mm": -1.467197389475133e-17,
+          "mae_mm": 0.10781539113569596,
+          "rmse_mm": 0.15447071712632185,
+          "p95_abs_mm": 0.4296643820897873,
+          "peak_to_valley_mm": 0.8976977231181071,
+          "sample_count": 1695
+        },
+        "after": {
+          "bias_mm": -3.772793287221771e-17,
+          "mae_mm": 0.07846829251983811,
+          "rmse_mm": 0.1228296625809819,
+          "p95_abs_mm": 0.3485893780390949,
+          "peak_to_valley_mm": 0.9166224934225357,
+          "sample_count": 1695
+        },
+        "improvement": {
+          "mae_reduction_percent": 27.219767332589583,
+          "rmse_reduction_percent": 20.4835292630025,
+          "p95_abs_reduction_percent": 18.86937978343992,
+          "peak_to_valley_reduction_percent": -2.1081450712266747
+        }
+      },
+      {
+        "file": "laser 031.csv",
+        "before": {
+          "bias_mm": 1.8476222698070955e-17,
+          "mae_mm": 0.07266069472919551,
+          "rmse_mm": 0.1040050798359067,
+          "p95_abs_mm": 0.262201974942398,
+          "peak_to_valley_mm": 0.6011668629953743,
+          "sample_count": 1346
+        },
+        "after": {
+          "bias_mm": 2.837419914346611e-17,
+          "mae_mm": 0.0767906512314227,
+          "rmse_mm": 0.12080728627108152,
+          "p95_abs_mm": 0.3481327475662999,
+          "peak_to_valley_mm": 0.6810177646268959,
+          "sample_count": 1346
+        },
+        "improvement": {
+          "mae_reduction_percent": -5.683893496503756,
+          "rmse_reduction_percent": -16.155178633278666,
+          "p95_abs_reduction_percent": -32.772740419968116,
+          "peak_to_valley_reduction_percent": -13.282651880320962
+        }
+      }
+    ],
+    "table_coverage": {
+      "table_min_v_px": 18.0,
+      "table_max_v_px": 2999.0,
+      "frames": [
+        {
+          "file": "laser 026.csv",
+          "point_count": 1565,
+          "outside_table_range_count": 0,
+          "outside_table_range_percent": 0.0,
+          "coordinate_min_px": 412.0,
+          "coordinate_max_px": 2793.0
+        },
+        {
+          "file": "laser 027.csv",
+          "point_count": 1318,
+          "outside_table_range_count": 18,
+          "outside_table_range_percent": 1.3657056145675266,
+          "coordinate_min_px": 0.0,
+          "coordinate_max_px": 2131.0
+        },
+        {
+          "file": "laser 028.csv",
+          "point_count": 808,
+          "outside_table_range_count": 0,
+          "outside_table_range_percent": 0.0,
+          "coordinate_min_px": 1577.0,
+          "coordinate_max_px": 2999.0
+        },
+        {
+          "file": "laser 029.csv",
+          "point_count": 1639,
+          "outside_table_range_count": 0,
+          "outside_table_range_percent": 0.0,
+          "coordinate_min_px": 352.0,
+          "coordinate_max_px": 2927.0
+        },
+        {
+          "file": "laser 030.csv",
+          "point_count": 1697,
+          "outside_table_range_count": 0,
+          "outside_table_range_percent": 0.0,
+          "coordinate_min_px": 149.0,
+          "coordinate_max_px": 2999.0
+        },
+        {
+          "file": "laser 031.csv",
+          "point_count": 1348,
+          "outside_table_range_count": 0,
+          "outside_table_range_percent": 0.0,
+          "coordinate_min_px": 925.0,
+          "coordinate_max_px": 2931.0
+        }
+      ]
+    }
+  },
+  "bias_table_summary": {
+    "definition": "distribution of learned b(v) values",
+    "mean_mm": -4.310673826653793e-17,
+    "median_mm": 0.018768483982748843,
+    "mae_mm": 0.07143691908149738,
+    "min_mm": -0.24994802039900993,
+    "max_mm": 0.5244850880733647,
+    "p95_abs_mm": 0.20956623264240437,
+    "peak_to_valley_mm": 0.7744331084723746,
+    "sample_count": 2967
+  },
+  "data_sufficiency": {
+    "formal_protocol_frame_count_satisfied": true,
+    "build_frame_count": 25,
+    "holdout_frame_count": 6,
+    "formal_result": false,
+    "reason": "The independent holdout metrics regress overall, and every acquisition frame carries dynamic_range_low.",
+    "additional_frames_needed_for_count": 0
+  }
+}

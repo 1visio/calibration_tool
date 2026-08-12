@@ -1,0 +1,82 @@
+{
+  "test": "90_degree_rotation_equivalence",
+  "image": {
+    "path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\obs\\test_350\\fit\\laser 003.tif",
+    "width": 4096,
+    "height": 3000,
+    "dtype": "uint8"
+  },
+  "pipeline": {
+    "module": "D:\\Docs\\linelaserscan\\calibration\\src\\realtime_steger.py",
+    "native_scan_axis": "row",
+    "rotated_scan_axis": "column",
+    "options": {
+      "sigma": 1.5,
+      "threshold": 30.0,
+      "deriv_thresh": 0.5,
+      "roi_margin": 48,
+      "roi_max_height": 512,
+      "scan_axis": "column"
+    },
+    "native_search_region_px": [
+      2069.0,
+      2181.0
+    ]
+  },
+  "thresholds": {
+    "point_tolerance_px": 0.02,
+    "low_frequency_warning_px": 0.05,
+    "low_frequency_bin_width_px": 100
+  },
+  "rotations": {
+    "clockwise": {
+      "native_point_count": 2242,
+      "rotated_point_count": 2242,
+      "common_scanline_count": 2242,
+      "only_native_count": 0,
+      "only_rotated_count": 0,
+      "only_native_v": [],
+      "only_rotated_v": [],
+      "mean_delta_u_px": 0.0,
+      "median_delta_u_px": 0.0,
+      "rms_delta_p_px": 0.0,
+      "p95_abs_delta_p_px": 0.0,
+      "p99_abs_delta_p_px": 0.0,
+      "max_abs_delta_p_px": 0.0,
+      "low_frequency_max_abs_bin_mean_px": 0.0,
+      "low_frequency_bin_mean_peak_to_peak_px": 0.0,
+      "coordinate_equivalence_pass": true,
+      "low_frequency_warning": false,
+      "verdict": "PASS",
+      "rotated_search_region_px": [
+        2069.0,
+        2181.0
+      ]
+    },
+    "counterclockwise": {
+      "native_point_count": 2242,
+      "rotated_point_count": 2242,
+      "common_scanline_count": 2242,
+      "only_native_count": 0,
+      "only_rotated_count": 0,
+      "only_native_v": [],
+      "only_rotated_v": [],
+      "mean_delta_u_px": 0.0,
+      "median_delta_u_px": 0.0,
+      "rms_delta_p_px": 0.0,
+      "p95_abs_delta_p_px": 0.0,
+      "p99_abs_delta_p_px": 0.0,
+      "max_abs_delta_p_px": 0.0,
+      "low_frequency_max_abs_bin_mean_px": 0.0,
+      "low_frequency_bin_mean_peak_to_peak_px": 0.0,
+      "coordinate_equivalence_pass": true,
+      "low_frequency_warning": false,
+      "verdict": "PASS",
+      "rotated_search_region_px": [
+        1915.0,
+        2027.0
+      ]
+    }
+  },
+  "verdict": "PASS"
+}

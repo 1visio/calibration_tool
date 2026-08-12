@@ -1,0 +1,180 @@
+{
+  "input_dir": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment\\input",
+  "output_dir": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment",
+  "loaded_frame_count": 5,
+  "build_frame_count": 3,
+  "evaluation_frame_count": 2,
+  "skipped_files": [],
+  "table_metadata": {
+    "version": 1,
+    "compensation_axis": "v",
+    "trend_coordinate": "yg_mm",
+    "trend_mode": "linear",
+    "aggregate": "median",
+    "column_bin_width_px": 1.0,
+    "min_samples_per_column": 2,
+    "mad_threshold": 3.5,
+    "smooth_window": 1,
+    "build_frame_count": 3,
+    "source_files": [
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment\\input\\001_build_laser_003.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment\\input\\002_build_laser_004.csv",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment\\input\\003_build_laser_006.csv"
+    ]
+  },
+  "metrics": {
+    "evaluation_frame_count": 2,
+    "profile_before_pv_mm": 0.3938604960998026,
+    "profile_after_pv_mm": 0.3216954389796247,
+    "profile_before_rms_mm": 0.08577904776431663,
+    "profile_after_rms_mm": 0.03743802293619542,
+    "median_frame_before_pv_mm": 0.37916288554576866,
+    "median_frame_after_pv_mm": 0.3078676367305664,
+    "median_frame_before_rms_mm": 0.0750972260562363,
+    "median_frame_after_rms_mm": 0.03339670552924151
+  },
+  "repeatability_sigma_median_mm": 0.020969251596087066,
+  "experiment_status": "exploratory_only",
+  "frozen_calibration": {
+    "intrinsics": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0811\\intrinsics\\calibration_result.yaml",
+    "laser_model": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0811\\laser_model\\models\\circular_cone.yaml",
+    "ground_extrinsics": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0811\\ground_extrinsics\\camera_ground_extrinsics.yaml",
+    "steger": "frozen; reused pre-reconstructed height_points.csv, no reconstruction rerun"
+  },
+  "strict_split": {
+    "build_files": [
+      "001_build_laser_003.csv",
+      "002_build_laser_004.csv",
+      "003_build_laser_006.csv"
+    ],
+    "holdout_files": [
+      "004_holdout_laser_002.csv",
+      "005_holdout_laser_005.csv"
+    ],
+    "independent": true,
+    "source_mapping": {
+      "001_build_laser_003.csv": "output_daheng_0811/laser 003_measure/height_points.csv",
+      "002_build_laser_004.csv": "output_daheng_0811/laser 004_measure/height_points.csv",
+      "003_build_laser_006.csv": "output_daheng_0811/laser 006_measure/height_points.csv",
+      "004_holdout_laser_002.csv": "output_daheng_0811/laser 002_measure/height_points.csv",
+      "005_holdout_laser_005.csv": "output_daheng_0811/laser 005_measure/height_points.csv"
+    }
+  },
+  "holdout_residual_v_comparison": {
+    "definition": "metrics over the holdout mean residual(v) curve after removing the configured linear Yg trend",
+    "before": {
+      "bias_mm": 1.544658121217609e-17,
+      "mae_mm": 0.07000281587946129,
+      "rmse_mm": 0.08577904776431663,
+      "p95_abs_mm": 0.15349215506922076,
+      "peak_to_valley_mm": 0.3938604960998026,
+      "sample_count": 1150
+    },
+    "after": {
+      "bias_mm": 1.6218910272784897e-17,
+      "mae_mm": 0.02919358290270147,
+      "rmse_mm": 0.03743802293619542,
+      "p95_abs_mm": 0.071403271357083,
+      "peak_to_valley_mm": 0.3216954389796247,
+      "sample_count": 1150
+    },
+    "improvement": {
+      "mae_reduction_percent": 58.2965591656052,
+      "rmse_reduction_percent": 56.35528265706707,
+      "p95_abs_reduction_percent": 53.48083338534006,
+      "peak_to_valley_reduction_percent": 18.322491804786534
+    },
+    "per_frame": [
+      {
+        "file": "004_holdout_laser_002.csv",
+        "before": {
+          "bias_mm": 3.605595749797531e-18,
+          "mae_mm": 0.05972395065645685,
+          "rmse_mm": 0.07355830898096268,
+          "p95_abs_mm": 0.13491975723873972,
+          "peak_to_valley_mm": 0.3850440141091769,
+          "sample_count": 739
+        },
+        "after": {
+          "bias_mm": -4.807460999730042e-18,
+          "mae_mm": 0.027703286990758417,
+          "rmse_mm": 0.03661984743531683,
+          "p95_abs_mm": 0.06552917432192411,
+          "peak_to_valley_mm": 0.4090914125885923,
+          "sample_count": 739
+        },
+        "improvement": {
+          "mae_reduction_percent": 53.61444330748846,
+          "rmse_reduction_percent": 50.21657248157477,
+          "p95_abs_reduction_percent": 51.43100190584347,
+          "peak_to_valley_reduction_percent": -6.245363542412297
+        }
+      },
+      {
+        "file": "005_holdout_laser_005.csv",
+        "before": {
+          "bias_mm": 1.7654922715751725e-17,
+          "mae_mm": 0.06557435168403182,
+          "rmse_mm": 0.07663594589933322,
+          "p95_abs_mm": 0.12963774714381954,
+          "peak_to_valley_mm": 0.373282775858085,
+          "sample_count": 654
+        },
+        "after": {
+          "bias_mm": 1.256215654774642e-17,
+          "mae_mm": 0.023848026284785894,
+          "rmse_mm": 0.030173985423872757,
+          "p95_abs_mm": 0.06048106299384911,
+          "peak_to_valley_mm": 0.2066477634891712,
+          "sample_count": 654
+        },
+        "improvement": {
+          "mae_reduction_percent": 63.63208225115676,
+          "rmse_reduction_percent": 60.62685066416687,
+          "p95_abs_reduction_percent": 53.34610148172993,
+          "peak_to_valley_reduction_percent": 44.640423600007004
+        }
+      }
+    ],
+    "table_coverage": {
+      "table_min_v_px": 9.0,
+      "table_max_v_px": 2134.0,
+      "frames": [
+        {
+          "file": "004_holdout_laser_002.csv",
+          "point_count": 1100,
+          "outside_table_range_count": 12,
+          "outside_table_range_percent": 1.090909090909091,
+          "coordinate_min_px": 23.0,
+          "coordinate_max_px": 2146.0
+        },
+        {
+          "file": "005_holdout_laser_005.csv",
+          "point_count": 1271,
+          "outside_table_range_count": 0,
+          "outside_table_range_percent": 0.0,
+          "coordinate_min_px": 18.0,
+          "coordinate_max_px": 2106.0
+        }
+      ]
+    }
+  },
+  "bias_table_summary": {
+    "definition": "distribution of learned b(v) values",
+    "mean_mm": 1.8297237830732194e-17,
+    "median_mm": -0.0020425661539149043,
+    "mae_mm": 0.07331479735652495,
+    "min_mm": -0.16608531523821402,
+    "max_mm": 0.16151478201118497,
+    "p95_abs_mm": 0.13736461651533086,
+    "peak_to_valley_mm": 0.327600097249399,
+    "sample_count": 1165
+  },
+  "data_sufficiency": {
+    "formal_result": false,
+    "reason": "Only five independent plane frames were available: three build and two holdout; min_samples_per_column was reduced to 2.",
+    "requested_experiment_minimum_satisfied": true,
+    "recommended_additional_frames_for_existing_31_frame_protocol": 26,
+    "recommended_target": "25 build frames plus 6 independent holdout frames, all with full v coverage."
+  }
+}

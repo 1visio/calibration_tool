@@ -1,0 +1,818 @@
+{
+  "status": "exploratory_reconstruction",
+  "data_root": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812",
+  "frozen_calibration": {
+    "intrinsics": {
+      "path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0811\\intrinsics\\calibration_result.yaml",
+      "sha256": "b12df5363e202752e819b3108403ece59688373beed21a7de028568c8d05b476"
+    },
+    "laser_model": {
+      "path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0811\\laser_model\\models\\circular_cone.yaml",
+      "sha256": "a7f35369cb41e1f197b9a21fe9cd11d1e1ee2cfcf6895cbee5055286af94f793",
+      "model_type": "circular_cone"
+    },
+    "ground_extrinsics": {
+      "path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0811\\ground_extrinsics\\camera_ground_extrinsics.yaml",
+      "sha256": "b1db2130c78be0161c4bb81c9254004c3909d184f194a29f4a964507e2168720"
+    }
+  },
+  "frozen_steger_config": {
+    "app_config": "D:\\Docs\\linelaserscan\\0704line-laser-3d-scanner\\laser_measurement_tool\\configs\\measure_tool_daheng_0811.yaml",
+    "method": "steger",
+    "options": {
+      "sigma": 1.5,
+      "threshold": 30.0,
+      "deriv_thresh": 0.5,
+      "roi_margin": 48,
+      "roi_max_height": 512,
+      "scan_axis": "row",
+      "search_roi": {
+        "offset_x": 1760,
+        "offset_y": 0,
+        "width": 480,
+        "height": 3000
+      }
+    }
+  },
+  "ground_u_compensation": null,
+  "frame_count": 31,
+  "fit_count": 25,
+  "validation_count": 6,
+  "frames": [
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 001.tif",
+      "image_sha256": "852a836c36cbd569f2c7fc33828080bbc84f268a470a4b6b584950d39009f35e",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1267,
+      "reconstructed_count": 1090,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 177,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2108.0971848368645,
+      "u_max_px": 2134.780922219157,
+      "v_min_px": 98.0,
+      "v_max_px": 1800.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 001\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 002.tif",
+      "image_sha256": "6fc10558d0f481be00c266617d874180b29be552f8d3082cb569b3c3dba8cd4b",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1155,
+      "reconstructed_count": 982,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 173,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2108.144918784499,
+      "u_max_px": 2136.2754586935043,
+      "v_min_px": 0.0,
+      "v_max_px": 1788.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 002\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 003.tif",
+      "image_sha256": "9a96a1d91781505c43785fa9f7271377ca86f8871ce908fb7bb1a226dc9a75b4",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1272,
+      "reconstructed_count": 1090,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 182,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2109.1976370215416,
+      "u_max_px": 2135.834906488657,
+      "v_min_px": 27.0,
+      "v_max_px": 1728.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 003\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 004.tif",
+      "image_sha256": "b86850f171a931a86fd670dbbfda309ceba2992bcae0a39a3fa67a9ef7b9ba59",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1508,
+      "reconstructed_count": 1455,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 53,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2096.6999354958534,
+      "u_max_px": 2130.403915822506,
+      "v_min_px": 269.0,
+      "v_max_px": 2999.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 004\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 005.tif",
+      "image_sha256": "e4f56dee31b0987dc51fe7184de18329d53f0429c6d77ca7ae404f52d958b917",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1892,
+      "reconstructed_count": 1815,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 77,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2098.580211132765,
+      "u_max_px": 2129.520538121462,
+      "v_min_px": 319.0,
+      "v_max_px": 2999.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 005\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 006.tif",
+      "image_sha256": "f34a06d080e83ff23c140900414fe6c07bfa4508427d63ed366e6a72afb6c66f",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1698,
+      "reconstructed_count": 1696,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 2,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2096.6489630639553,
+      "u_max_px": 2134.2945501208305,
+      "v_min_px": 74.0,
+      "v_max_px": 2999.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 006\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 007.tif",
+      "image_sha256": "dea22024bdf7a2bf1907307b54fdb4ee37748601ec3d3a4dadd4864e29eb04b4",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1730,
+      "reconstructed_count": 1729,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 1,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2096.9452629052103,
+      "u_max_px": 2134.544632345438,
+      "v_min_px": 40.0,
+      "v_max_px": 2999.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 007\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 008.tif",
+      "image_sha256": "7634e2cbd8611cd1941ef4dcbfeb1c88dfc9fdb5123cbd61b672230161f0b04a",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1493,
+      "reconstructed_count": 1359,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 134,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2097.078351818025,
+      "u_max_px": 2126.073872730136,
+      "v_min_px": 571.0,
+      "v_max_px": 2956.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 008\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 009.tif",
+      "image_sha256": "051a11923054dc147b82e800c7082d56d1d56a5f813b6301b00ebf92b33a8057",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1184,
+      "reconstructed_count": 987,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 197,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2098.7092116475105,
+      "u_max_px": 2115.0822153538465,
+      "v_min_px": 1316.0,
+      "v_max_px": 2999.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 009\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 010.tif",
+      "image_sha256": "a1b67477f885804975711addc723270fbf725604011186c5825ecdc6211b2f10",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1185,
+      "reconstructed_count": 1008,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 177,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2098.9089065417647,
+      "u_max_px": 2116.3169721663,
+      "v_min_px": 1176.0,
+      "v_max_px": 2999.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 010\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 011.tif",
+      "image_sha256": "ce59600de09b64566bd5a2d36ec008753cbfd9909a2db96ca5c92c385080c72b",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1508,
+      "reconstructed_count": 1374,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 134,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2097.47203040123,
+      "u_max_px": 2126.065501950681,
+      "v_min_px": 562.0,
+      "v_max_px": 2968.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 011\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 012.tif",
+      "image_sha256": "2856682cc4ed1446147a42a52f6a6481222a5b5fd0d1f679e449f66d0f36eeb5",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1757,
+      "reconstructed_count": 1757,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 0,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2097.191847458482,
+      "u_max_px": 2134.132498949766,
+      "v_min_px": 18.0,
+      "v_max_px": 2999.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 012\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 013.tif",
+      "image_sha256": "2d487dc2643b1fe7d9a6fde65d59eca3587baacb7a2a7dc6ace8a8888979d45b",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1756,
+      "reconstructed_count": 1756,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 0,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2097.215579777956,
+      "u_max_px": 2134.1698676496744,
+      "v_min_px": 18.0,
+      "v_max_px": 2999.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 013\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 014.tif",
+      "image_sha256": "324df1cebfd63480305f4d94477e2994e03b15c0a183512b77dfbdba75f5f84e",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1756,
+      "reconstructed_count": 1756,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 0,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2097.2061973661184,
+      "u_max_px": 2134.1619209498167,
+      "v_min_px": 18.0,
+      "v_max_px": 2999.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 014\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 015.tif",
+      "image_sha256": "7604e0f247bbeace96bb799471bd754c7fe3a866dfb661645366821db78fef03",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 2804,
+      "reconstructed_count": 2804,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 0,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2097.9344294294715,
+      "u_max_px": 2136.4270338714123,
+      "v_min_px": 0.0,
+      "v_max_px": 2885.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 015\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 016.tif",
+      "image_sha256": "116a550064c1f1cd912ece0cea6da0439f17a11c7244eb63ea0d7169293a4e7e",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1370,
+      "reconstructed_count": 1370,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 0,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2097.019209103659,
+      "u_max_px": 2136.3154342472553,
+      "v_min_px": 0.0,
+      "v_max_px": 2984.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 016\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 017.tif",
+      "image_sha256": "018ef13e3f6f11b9344bfb5010b4977c64e57765444f9cbab7e3ede5068ccb79",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1621,
+      "reconstructed_count": 1605,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 16,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2099.0405896380544,
+      "u_max_px": 2132.9841845184565,
+      "v_min_px": 141.0,
+      "v_max_px": 2731.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 017\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 018.tif",
+      "image_sha256": "2c007303b95bad697eaca98ee5f1b8ed35d7a20113c676a35e0112cf2979e450",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1145,
+      "reconstructed_count": 887,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 258,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2112.6613580584526,
+      "u_max_px": 2133.3511122465134,
+      "v_min_px": 155.0,
+      "v_max_px": 1448.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 018\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 019.tif",
+      "image_sha256": "064c39c1e358806f7976ec5ea50d2b019f5b788077cfb4b2390cedb59c48d233",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 2020,
+      "reconstructed_count": 1843,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 177,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2105.1779252439737,
+      "u_max_px": 2136.079434096813,
+      "v_min_px": 0.0,
+      "v_max_px": 2035.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 019\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 020.tif",
+      "image_sha256": "b994cc8698111d4b0359245ba5c054ec732dd2ffda4b532a7a6a0110be44fc09",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1618,
+      "reconstructed_count": 1608,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 10,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2098.1375543922186,
+      "u_max_px": 2133.1480088979006,
+      "v_min_px": 177.0,
+      "v_max_px": 2760.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 020\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 021.tif",
+      "image_sha256": "b6503c3baf3bb1cc164f205ac48feddc2d6feda8a4bceadf8fe227b183f38555",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1616,
+      "reconstructed_count": 1496,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 120,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2098.5602898299694,
+      "u_max_px": 2128.391064584255,
+      "v_min_px": 422.0,
+      "v_max_px": 2999.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 021\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 022.tif",
+      "image_sha256": "0208136e5c8bbd71c6d5e28cf9959c6b8aad8ebac9712b83dea98aefe5560868",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1289,
+      "reconstructed_count": 1118,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 171,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2098.5130130648613,
+      "u_max_px": 2116.913420803845,
+      "v_min_px": 1162.0,
+      "v_max_px": 2999.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 022\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 023.tif",
+      "image_sha256": "791f8b7a94da159931cb9e70a3551952aa05f3bc1a04b2556a1972e3bf91894f",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1068,
+      "reconstructed_count": 883,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 185,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2098.4674236774445,
+      "u_max_px": 2115.9904771428555,
+      "v_min_px": 1263.0,
+      "v_max_px": 2999.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 023\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 024.tif",
+      "image_sha256": "104fa2392cb3f5e875523fb1eb9cfb40cb315bc819cdc273f15a77379d614fef",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1651,
+      "reconstructed_count": 1519,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 132,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2098.55371260643,
+      "u_max_px": 2128.0811265408993,
+      "v_min_px": 471.0,
+      "v_max_px": 2999.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 024\\points_ground.csv"
+    },
+    {
+      "split": "fit",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\fit\\laser 025.tif",
+      "image_sha256": "1655aa476f4fac32db6f2ac9c76f652aaeb5b18cc6e9d84a31f30aa32d4d51b9",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1446,
+      "reconstructed_count": 1394,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 52,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2099.078983902931,
+      "u_max_px": 2131.3008363842964,
+      "v_min_px": 226.0,
+      "v_max_px": 2671.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\fit\\laser 025\\points_ground.csv"
+    },
+    {
+      "split": "validation",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\validation\\laser 026.tif",
+      "image_sha256": "66f744999a2d29c0665e2cdc7a80f27e8f6ee37955042cefa9d7169a6e8935a0",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1674,
+      "reconstructed_count": 1565,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 109,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2098.5645011365414,
+      "u_max_px": 2128.146206125617,
+      "v_min_px": 412.0,
+      "v_max_px": 2793.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\validation\\laser 026\\points_ground.csv"
+    },
+    {
+      "split": "validation",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\validation\\laser 027.tif",
+      "image_sha256": "3c38d7f05d005213d750c1544e2b27b9e5f6f2004d40e382e503ff1a97b1cfdf",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1488,
+      "reconstructed_count": 1318,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 170,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2104.335540831089,
+      "u_max_px": 2136.2805614471436,
+      "v_min_px": 0.0,
+      "v_max_px": 2131.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\validation\\laser 027\\points_ground.csv"
+    },
+    {
+      "split": "validation",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\validation\\laser 028.tif",
+      "image_sha256": "2e1f66da1cd404ebd57dba30376c0779fea3b30b452294766b462a17bb40be8d",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1155,
+      "reconstructed_count": 808,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 347,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2098.6739185750484,
+      "u_max_px": 2111.3222827613354,
+      "v_min_px": 1577.0,
+      "v_max_px": 2999.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\validation\\laser 028\\points_ground.csv"
+    },
+    {
+      "split": "validation",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\validation\\laser 029.tif",
+      "image_sha256": "8347cd0cd3bfa4a58a354c431f309ccfcca46f550dbf4c33c2fe2f7092691f7a",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1729,
+      "reconstructed_count": 1639,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 90,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2098.9039667099714,
+      "u_max_px": 2128.951778538525,
+      "v_min_px": 352.0,
+      "v_max_px": 2927.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\validation\\laser 029\\points_ground.csv"
+    },
+    {
+      "split": "validation",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\validation\\laser 030.tif",
+      "image_sha256": "1ed41abe373f016fc3c269c91ba2c48231416c5ff5b615f6b500ed1ace033c5d",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1701,
+      "reconstructed_count": 1697,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 4,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2098.8291788846254,
+      "u_max_px": 2132.5400389432907,
+      "v_min_px": 149.0,
+      "v_max_px": 2999.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\validation\\laser 030\\points_ground.csv"
+    },
+    {
+      "split": "validation",
+      "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0812\\validation\\laser 031.tif",
+      "image_sha256": "9463c1948ad44f5b804b4d28704eff48967a72cc7ed65ab8d1e182de156aa0aa",
+      "image_shape": [
+        3000,
+        4096
+      ],
+      "image_dtype": "uint8",
+      "extracted_count": 1506,
+      "reconstructed_count": 1348,
+      "filtered": {
+        "near_parallel": 0,
+        "negative_depth": 0,
+        "outside_working_distance": 0,
+        "non_finite": 0,
+        "no_valid_intersection": 158,
+        "outside_image_roi": 0
+      },
+      "u_min_px": 2099.086640186608,
+      "u_max_px": 2120.381919950247,
+      "v_min_px": 925.0,
+      "v_max_px": 2931.0,
+      "points_ground_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\reconstruction\\validation\\laser 031\\points_ground.csv"
+    }
+  ]
+}

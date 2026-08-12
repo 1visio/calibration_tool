@@ -1,6 +1,6 @@
 schema_version: 1
-dataset_id: obs
-output_dir: D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\obs\test_350
+dataset_id: extrinsics0812
+output_dir: D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\extrinsics0812
 backend: daheng
 serial_number: GCB26060793
 camera:
@@ -30,13 +30,13 @@ metadata:
 backend_options:
   discovery_timeout_ms: 1000
 laser:
-  orientation: horizontal
+  orientation: vertical
 tasks:
 - task_id: fit_001_03_laser
-  frames: 2
+  frames: 1
   filename_template: fit/laser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 350.0
+    exposure_us: 200.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -58,10 +58,10 @@ tasks:
     filename_prefix: laser
     quality_mode_requested: laser
 - task_id: fit_002_03_laser
-  frames: 2
+  frames: 1
   filename_template: fit/laser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 350.0
+    exposure_us: 200.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -83,10 +83,10 @@ tasks:
     filename_prefix: laser
     quality_mode_requested: laser
 - task_id: fit_003_03_laser
-  frames: 2
+  frames: 1
   filename_template: fit/laser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 350.0
+    exposure_us: 200.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -108,10 +108,10 @@ tasks:
     filename_prefix: laser
     quality_mode_requested: laser
 - task_id: fit_004_03_laser
-  frames: 2
+  frames: 1
   filename_template: fit/laser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 350.0
+    exposure_us: 200.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -133,10 +133,10 @@ tasks:
     filename_prefix: laser
     quality_mode_requested: laser
 - task_id: fit_005_03_laser
-  frames: 2
+  frames: 1
   filename_template: fit/laser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 350.0
+    exposure_us: 200.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -158,10 +158,10 @@ tasks:
     filename_prefix: laser
     quality_mode_requested: laser
 - task_id: fit_006_03_laser
-  frames: 2
+  frames: 1
   filename_template: fit/laser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 350.0
+    exposure_us: 200.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -178,6 +178,631 @@ tasks:
   tags:
     split: fit
     group_index: 6
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_007_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '007'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 007。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 7
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_008_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: 008
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 008。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 8
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_009_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: 009
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 009。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 9
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_010_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '010'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 010。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 10
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_011_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '011'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 011。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 11
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_012_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '012'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 012。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 12
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_013_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '013'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 013。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 13
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_014_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '014'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 014。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 14
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_015_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '015'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 015。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 15
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_016_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '016'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 016。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 16
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_017_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '017'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 017。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 17
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_018_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: 018
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 018。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 18
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_019_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: 019
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 019。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 19
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_020_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '020'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 020。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 20
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_021_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '021'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 021。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 21
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_022_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '022'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 022。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 22
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_023_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '023'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 023。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 23
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_024_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '024'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 024。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 24
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_025_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '025'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 025。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 25
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: validation_026_03_laser
+  frames: 1
+  filename_template: validation/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '026'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 026。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: validation
+    group_index: 26
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: validation_027_03_laser
+  frames: 1
+  filename_template: validation/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '027'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 027。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: validation
+    group_index: 27
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: validation_028_03_laser
+  frames: 1
+  filename_template: validation/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: 028
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 028。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: validation
+    group_index: 28
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: validation_029_03_laser
+  frames: 1
+  filename_template: validation/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: 029
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 029。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: validation
+    group_index: 29
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: validation_030_03_laser
+  frames: 1
+  filename_template: validation/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '030'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 030。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: validation
+    group_index: 30
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: validation_031_03_laser
+  frames: 1
+  filename_template: validation/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 200.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '031'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 031。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: validation
+    group_index: 31
     laser_state: 'on'
     recipe_role: laser
     filename_prefix: laser

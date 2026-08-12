@@ -59,6 +59,7 @@ stages:
       input_dir: D:/Docs/linelaserscan/calibration_tool/projects/daheng/outputs/0812/ground_reference_pointcloud
       glob: "*/points_ground.csv"
       output_dir: D:/Docs/linelaserscan/calibration_tool/projects/daheng/outputs/0812/ground_bias
+      compensation_axis: v
       validation_count: 6
       trend: linear
       aggregate: median
