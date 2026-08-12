@@ -2,9 +2,9 @@ schema_version: 1
 dataset_id: laser_plane
 status: completed
 created_at: '2026-08-11T08:21:13.314+00:00'
-updated_at: '2026-08-12T03:04:03.121+00:00'
+updated_at: '2026-08-11T08:37:32.159+00:00'
 completed_at: '2026-08-11T08:37:32.159+00:00'
-plan_sha256: 8d8812b7600d74884f0a9f9e78966cde4da2856f9d57fa1a90161ed43ae0b741
+plan_sha256: 421ea93f5a63e90301f1740d2fe42654bfdb589e7db5d1c8f4e9706d84503bdf
 plan:
   dataset_id: laser_plane
   output_dir: D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\laser_plane
@@ -1843,7 +1843,7 @@ plan:
       filename_prefix: laser
       quality_mode_requested: laser
 laser:
-  orientation: vertical
+  orientation: horizontal
 device: null
 network_packet_size: null
 tasks:
@@ -2444,12 +2444,12 @@ frames:
     saturation_fraction: 2.44140625e-07
     dark_fraction: 0.9988219401041667
     focus_laplacian: 3.979140055292923
-    laser_coverage: 0.6973333333333334
-    laser_peak_saturation_fraction: 0.0014340344168260039
-    laser_peak_near_saturation_fraction: 0.002390057361376673
+    laser_coverage: 0.065185546875
+    laser_peak_saturation_fraction: 0.011235955056179775
+    laser_peak_near_saturation_fraction: 0.011235955056179775
     laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 3.0
-    laser_fwhm_p95_px: 5.0
+    laser_fwhm_p50_px: 10.0
+    laser_fwhm_p95_px: 56.69999999999999
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -2458,6 +2458,7 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
     passed: false
 - task_id: fit_002_01_chess
   pose_id: '002'
@@ -2629,12 +2630,12 @@ frames:
     saturation_fraction: 2.44140625e-07
     dark_fraction: 0.99900927734375
     focus_laplacian: 5.873223714192173
-    laser_coverage: 0.7043333333333334
-    laser_peak_saturation_fraction: 0.001419782300047326
-    laser_peak_near_saturation_fraction: 0.001419782300047326
+    laser_coverage: 0.007568359375
+    laser_peak_saturation_fraction: 0.03225806451612903
+    laser_peak_near_saturation_fraction: 0.03225806451612903
     laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 2.0
-    laser_fwhm_p95_px: 5.0
+    laser_fwhm_p50_px: 91.0
+    laser_fwhm_p95_px: 176.0
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -2643,6 +2644,8 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
     passed: false
 - task_id: fit_003_01_chess
   pose_id: '003'
@@ -2814,12 +2817,12 @@ frames:
     saturation_fraction: 8.138020833333333e-08
     dark_fraction: 0.998861572265625
     focus_laplacian: 4.557309326171551
-    laser_coverage: 0.6166666666666667
-    laser_peak_saturation_fraction: 0.0005405405405405405
-    laser_peak_near_saturation_fraction: 0.0005405405405405405
+    laser_coverage: 0.06201171875
+    laser_peak_saturation_fraction: 0.003937007874015748
+    laser_peak_near_saturation_fraction: 0.003937007874015748
     laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 3.0
-    laser_fwhm_p95_px: 5.0
+    laser_fwhm_p50_px: 12.0
+    laser_fwhm_p95_px: 30.0
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -2828,6 +2831,7 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
     passed: false
 - task_id: fit_004_01_chess
   pose_id: '004'
@@ -2999,12 +3003,12 @@ frames:
     saturation_fraction: 1.1393229166666668e-06
     dark_fraction: 0.9985826822916667
     focus_laplacian: 6.066139404295854
-    laser_coverage: 0.737
-    laser_peak_saturation_fraction: 0.006331976481230212
-    laser_peak_near_saturation_fraction: 0.007236544549977386
+    laser_coverage: 0.015380859375
+    laser_peak_saturation_fraction: 0.047619047619047616
+    laser_peak_near_saturation_fraction: 0.047619047619047616
     laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 3.0
-    laser_fwhm_p95_px: 5.0
+    laser_fwhm_p50_px: 38.0
+    laser_fwhm_p95_px: 246.09999999999988
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -3013,6 +3017,8 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
     passed: false
 - task_id: fit_005_01_chess
   pose_id: '005'
@@ -3184,12 +3190,12 @@ frames:
     saturation_fraction: 4.069010416666667e-07
     dark_fraction: 0.9986673177083333
     focus_laplacian: 6.258874023003469
-    laser_coverage: 0.632
-    laser_peak_saturation_fraction: 0.0026371308016877636
-    laser_peak_near_saturation_fraction: 0.0026371308016877636
+    laser_coverage: 0.02587890625
+    laser_peak_saturation_fraction: 0.04716981132075472
+    laser_peak_near_saturation_fraction: 0.04716981132075472
     laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 3.0
-    laser_fwhm_p95_px: 4.0
+    laser_fwhm_p50_px: 20.5
+    laser_fwhm_p95_px: 57.0
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -3198,6 +3204,8 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
     passed: false
 - task_id: fit_006_01_chess
   pose_id: '006'
@@ -3369,12 +3377,12 @@ frames:
     saturation_fraction: 1.46484375e-06
     dark_fraction: 0.998806640625
     focus_laplacian: 7.2507609049475
-    laser_coverage: 0.7676666666666667
-    laser_peak_saturation_fraction: 0.007381676074685193
-    laser_peak_near_saturation_fraction: 0.008684324793747287
-    laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 2.0
-    laser_fwhm_p95_px: 5.0
+    laser_coverage: 0.013916015625
+    laser_peak_saturation_fraction: 0.07017543859649122
+    laser_peak_near_saturation_fraction: 0.08771929824561403
+    laser_saturated_width_p95_px: 1.1999999999999957
+    laser_fwhm_p50_px: 50.0
+    laser_fwhm_p95_px: 168.2
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -3383,6 +3391,9 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
+    - laser_saturated_line_wide
     passed: false
 - task_id: fit_007_01_chess
   pose_id: '007'
@@ -3554,12 +3565,12 @@ frames:
     saturation_fraction: 8.138020833333334e-07
     dark_fraction: 0.9986063639322916
     focus_laplacian: 6.892609863281034
-    laser_coverage: 0.7933333333333333
-    laser_peak_saturation_fraction: 0.004201680672268907
-    laser_peak_near_saturation_fraction: 0.0054621848739495795
-    laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 2.0
-    laser_fwhm_p95_px: 5.0
+    laser_coverage: 0.02197265625
+    laser_peak_saturation_fraction: 0.07777777777777778
+    laser_peak_near_saturation_fraction: 0.1
+    laser_saturated_width_p95_px: 1.0
+    laser_fwhm_p50_px: 21.5
+    laser_fwhm_p95_px: 204.7499999999999
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -3568,6 +3579,8 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
     passed: false
 - task_id: fit_008_01_chess
   pose_id: 008
@@ -3739,12 +3752,12 @@ frames:
     saturation_fraction: 4.069010416666667e-07
     dark_fraction: 0.998917236328125
     focus_laplacian: 7.065159912109209
-    laser_coverage: 0.688
-    laser_peak_saturation_fraction: 0.0024224806201550387
-    laser_peak_near_saturation_fraction: 0.0029069767441860465
-    laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 2.0
-    laser_fwhm_p95_px: 3.0
+    laser_coverage: 0.017822265625
+    laser_peak_saturation_fraction: 0.0684931506849315
+    laser_peak_near_saturation_fraction: 0.0821917808219178
+    laser_saturated_width_p95_px: 1.0
+    laser_fwhm_p50_px: 29.0
+    laser_fwhm_p95_px: 59.0
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -3753,6 +3766,8 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
     passed: false
 - task_id: fit_009_01_chess
   pose_id: 009
@@ -3924,12 +3939,12 @@ frames:
     saturation_fraction: 8.951822916666667e-07
     dark_fraction: 0.9987874348958333
     focus_laplacian: 5.939994140509596
-    laser_coverage: 0.726
-    laser_peak_saturation_fraction: 0.005050505050505051
-    laser_peak_near_saturation_fraction: 0.005968778696051423
-    laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 2.0
-    laser_fwhm_p95_px: 5.0
+    laser_coverage: 0.0068359375
+    laser_peak_saturation_fraction: 0.07142857142857142
+    laser_peak_near_saturation_fraction: 0.07142857142857142
+    laser_saturated_width_p95_px: 1.2999999999999972
+    laser_fwhm_p50_px: 75.5
+    laser_fwhm_p95_px: 284.3
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -3938,6 +3953,9 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
+    - laser_saturated_line_wide
     passed: false
 - task_id: fit_010_01_chess
   pose_id: '010'
@@ -4109,12 +4127,12 @@ frames:
     saturation_fraction: 1.3916015625e-05
     dark_fraction: 0.9984788411458333
     focus_laplacian: 14.451425536533044
-    laser_coverage: 0.933
-    laser_peak_saturation_fraction: 0.057520543051089675
-    laser_peak_near_saturation_fraction: 0.06073597713469096
-    laser_saturated_width_p95_px: 1.0
-    laser_fwhm_p50_px: 2.0
-    laser_fwhm_p95_px: 5.0
+    laser_coverage: 0.02490234375
+    laser_peak_saturation_fraction: 0.23529411764705882
+    laser_peak_near_saturation_fraction: 0.23529411764705882
+    laser_saturated_width_p95_px: 7.949999999999989
+    laser_fwhm_p50_px: 17.5
+    laser_fwhm_p95_px: 136.54999999999967
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -4123,7 +4141,10 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
     - laser_peak_saturated
+    - laser_peak_near_saturation
+    - laser_saturated_line_wide
     passed: false
 - task_id: fit_011_01_chess
   pose_id: '011'
@@ -4295,12 +4316,12 @@ frames:
     saturation_fraction: 1.0579427083333333e-06
     dark_fraction: 0.9986512858072917
     focus_laplacian: 7.368651936758312
-    laser_coverage: 0.79
-    laser_peak_saturation_fraction: 0.005063291139240506
-    laser_peak_near_saturation_fraction: 0.005063291139240506
-    laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 2.0
-    laser_fwhm_p95_px: 5.0
+    laser_coverage: 0.0419921875
+    laser_peak_saturation_fraction: 0.06976744186046512
+    laser_peak_near_saturation_fraction: 0.06976744186046512
+    laser_saturated_width_p95_px: 1.0
+    laser_fwhm_p50_px: 16.0
+    laser_fwhm_p95_px: 98.14999999999992
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -4309,6 +4330,8 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
     passed: false
 - task_id: fit_012_01_chess
   pose_id: '012'
@@ -4480,12 +4503,12 @@ frames:
     saturation_fraction: 2.44140625e-07
     dark_fraction: 0.998864501953125
     focus_laplacian: 4.673494221997089
-    laser_coverage: 0.7196666666666667
-    laser_peak_saturation_fraction: 0.0013895321908290875
-    laser_peak_near_saturation_fraction: 0.0013895321908290875
+    laser_coverage: 0.020751953125
+    laser_peak_saturation_fraction: 0.023529411764705882
+    laser_peak_near_saturation_fraction: 0.023529411764705882
     laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 3.0
-    laser_fwhm_p95_px: 5.0
+    laser_fwhm_p50_px: 30.0
+    laser_fwhm_p95_px: 180.39999999999998
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -4494,6 +4517,8 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
     passed: false
 - task_id: fit_013_01_chess
   pose_id: '013'
@@ -4665,12 +4690,12 @@ frames:
     saturation_fraction: 1.3020833333333333e-06
     dark_fraction: 0.9989064127604167
     focus_laplacian: 5.434557861327584
-    laser_coverage: 0.6583333333333333
-    laser_peak_saturation_fraction: 0.007088607594936709
-    laser_peak_near_saturation_fraction: 0.007594936708860759
-    laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 2.0
-    laser_fwhm_p95_px: 4.0
+    laser_coverage: 0.01220703125
+    laser_peak_saturation_fraction: 0.08
+    laser_peak_near_saturation_fraction: 0.08
+    laser_saturated_width_p95_px: 1.0
+    laser_fwhm_p50_px: 38.5
+    laser_fwhm_p95_px: 99.74999999999993
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -4679,6 +4704,8 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
     passed: false
 - task_id: fit_014_01_chess
   pose_id: '014'
@@ -4850,12 +4877,12 @@ frames:
     saturation_fraction: 5.696614583333334e-07
     dark_fraction: 0.9987898763020834
     focus_laplacian: 4.636134846991796
-    laser_coverage: 0.7176666666666667
-    laser_peak_saturation_fraction: 0.003251277287505806
-    laser_peak_near_saturation_fraction: 0.0037157454714352067
-    laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 3.0
-    laser_fwhm_p95_px: 5.0
+    laser_coverage: 0.00927734375
+    laser_peak_saturation_fraction: 0.10526315789473684
+    laser_peak_near_saturation_fraction: 0.13157894736842105
+    laser_saturated_width_p95_px: 1.1499999999999986
+    laser_fwhm_p50_px: 29.0
+    laser_fwhm_p95_px: 79.84999999999997
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -4864,6 +4891,10 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
+    - laser_peak_near_saturation
+    - laser_saturated_line_wide
     passed: false
 - task_id: fit_015_01_chess
   pose_id: '015'
@@ -5035,12 +5066,12 @@ frames:
     saturation_fraction: 6.510416666666666e-07
     dark_fraction: 0.9989994303385417
     focus_laplacian: 5.365849934876523
-    laser_coverage: 0.619
-    laser_peak_saturation_fraction: 0.004308023694130318
-    laser_peak_near_saturation_fraction: 0.004308023694130318
-    laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 2.0
-    laser_fwhm_p95_px: 5.0
+    laser_coverage: 0.03076171875
+    laser_peak_saturation_fraction: 0.06349206349206349
+    laser_peak_near_saturation_fraction: 0.06349206349206349
+    laser_saturated_width_p95_px: 1.0
+    laser_fwhm_p50_px: 13.5
+    laser_fwhm_p95_px: 140.0
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -5049,6 +5080,8 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
     passed: false
 - task_id: fit_016_01_chess
   pose_id: '016'
@@ -5220,12 +5253,12 @@ frames:
     saturation_fraction: 2.44140625e-07
     dark_fraction: 0.99896728515625
     focus_laplacian: 6.222634195706533
-    laser_coverage: 0.6376666666666667
-    laser_peak_saturation_fraction: 0.0015682174594877157
-    laser_peak_near_saturation_fraction: 0.0020909566126502874
+    laser_coverage: 0.06884765625
+    laser_peak_saturation_fraction: 0.010638297872340425
+    laser_peak_near_saturation_fraction: 0.014184397163120567
     laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 2.0
-    laser_fwhm_p95_px: 5.0
+    laser_fwhm_p50_px: 11.0
+    laser_fwhm_p95_px: 25.94999999999999
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -5234,6 +5267,7 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
     passed: false
 - task_id: fit_017_01_chess
   pose_id: '017'
@@ -5405,12 +5439,12 @@ frames:
     saturation_fraction: 4.8828125e-07
     dark_fraction: 0.9987356770833333
     focus_laplacian: 6.468520100900319
-    laser_coverage: 0.6756666666666666
-    laser_peak_saturation_fraction: 0.0029600394671928957
-    laser_peak_near_saturation_fraction: 0.003453379378391712
+    laser_coverage: 0.06298828125
+    laser_peak_saturation_fraction: 0.023255813953488372
+    laser_peak_near_saturation_fraction: 0.027131782945736434
     laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 3.0
-    laser_fwhm_p95_px: 5.0
+    laser_fwhm_p50_px: 11.0
+    laser_fwhm_p95_px: 25.149999999999977
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -5419,6 +5453,8 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
     passed: false
 - task_id: fit_018_01_chess
   pose_id: 018
@@ -5590,12 +5626,12 @@ frames:
     saturation_fraction: 4.069010416666667e-07
     dark_fraction: 0.9988626302083333
     focus_laplacian: 7.019245686811684
-    laser_coverage: 0.726
-    laser_peak_saturation_fraction: 0.002295684113865932
-    laser_peak_near_saturation_fraction: 0.002295684113865932
-    laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 2.0
-    laser_fwhm_p95_px: 4.0
+    laser_coverage: 0.004638671875
+    laser_peak_saturation_fraction: 0.21052631578947367
+    laser_peak_near_saturation_fraction: 0.21052631578947367
+    laser_saturated_width_p95_px: 1.0999999999999979
+    laser_fwhm_p50_px: 133.0
+    laser_fwhm_p95_px: 157.69999999999993
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -5604,6 +5640,10 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
+    - laser_peak_near_saturation
+    - laser_saturated_line_wide
     passed: false
 - task_id: validation_019_01_chess
   pose_id: 019
@@ -5775,12 +5815,12 @@ frames:
     saturation_fraction: 1.0579427083333333e-06
     dark_fraction: 0.9986806640625
     focus_laplacian: 6.774841796836761
-    laser_coverage: 0.796
-    laser_peak_saturation_fraction: 0.005443886097152429
-    laser_peak_near_saturation_fraction: 0.00628140703517588
-    laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 2.0
-    laser_fwhm_p95_px: 5.0
+    laser_coverage: 0.00830078125
+    laser_peak_saturation_fraction: 0.058823529411764705
+    laser_peak_near_saturation_fraction: 0.08823529411764706
+    laser_saturated_width_p95_px: 0.6999999999999957
+    laser_fwhm_p50_px: 94.5
+    laser_fwhm_p95_px: 292.7
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -5789,6 +5829,8 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
     passed: false
 - task_id: validation_020_01_chess
   pose_id: '020'
@@ -5960,12 +6002,12 @@ frames:
     saturation_fraction: 4.069010416666667e-07
     dark_fraction: 0.9990044759114584
     focus_laplacian: 4.894038411439016
-    laser_coverage: 0.603
-    laser_peak_saturation_fraction: 0.002763957987838585
-    laser_peak_near_saturation_fraction: 0.002763957987838585
-    laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 2.0
-    laser_fwhm_p95_px: 4.0
+    laser_coverage: 0.01220703125
+    laser_peak_saturation_fraction: 0.06
+    laser_peak_near_saturation_fraction: 0.06
+    laser_saturated_width_p95_px: 0.5499999999999972
+    laser_fwhm_p50_px: 39.0
+    laser_fwhm_p95_px: 101.24999999999996
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -5974,6 +6016,8 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
     passed: false
 - task_id: validation_021_01_chess
   pose_id: '021'
@@ -6145,12 +6189,12 @@ frames:
     saturation_fraction: 1.7252604166666667e-05
     dark_fraction: 0.998651611328125
     focus_laplacian: 16.40986645507797
-    laser_coverage: 0.89
-    laser_peak_saturation_fraction: 0.07378277153558052
-    laser_peak_near_saturation_fraction: 0.07865168539325842
-    laser_saturated_width_p95_px: 1.0
-    laser_fwhm_p50_px: 2.0
-    laser_fwhm_p95_px: 5.0
+    laser_coverage: 0.01416015625
+    laser_peak_saturation_fraction: 0.3620689655172414
+    laser_peak_near_saturation_fraction: 0.3793103448275862
+    laser_saturated_width_p95_px: 18.15
+    laser_fwhm_p50_px: 58.0
+    laser_fwhm_p95_px: 175.15
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -6159,7 +6203,10 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
     - laser_peak_saturated
+    - laser_peak_near_saturation
+    - laser_saturated_line_wide
     passed: false
 - task_id: validation_022_01_chess
   pose_id: '022'
@@ -6331,12 +6378,12 @@ frames:
     saturation_fraction: 8.138020833333333e-08
     dark_fraction: 0.9991612955729167
     focus_laplacian: 6.24167195636909
-    laser_coverage: 0.5796666666666667
-    laser_peak_saturation_fraction: 0.0005750431282346176
-    laser_peak_near_saturation_fraction: 0.0017251293847038527
+    laser_coverage: 0.014404296875
+    laser_peak_saturation_fraction: 0.01694915254237288
+    laser_peak_near_saturation_fraction: 0.05084745762711865
     laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 2.0
-    laser_fwhm_p95_px: 3.0
+    laser_fwhm_p50_px: 23.0
+    laser_fwhm_p95_px: 61.099999999999994
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -6345,6 +6392,7 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
     passed: false
 - task_id: validation_023_01_chess
   pose_id: '023'
@@ -6516,12 +6564,12 @@ frames:
     saturation_fraction: 4.8828125e-07
     dark_fraction: 0.9986676432291667
     focus_laplacian: 5.3497075195280495
-    laser_coverage: 0.7843333333333333
-    laser_peak_saturation_fraction: 0.0025499362515937103
-    laser_peak_near_saturation_fraction: 0.0029749256268593286
-    laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 3.0
-    laser_fwhm_p95_px: 5.0
+    laser_coverage: 0.009765625
+    laser_peak_saturation_fraction: 0.075
+    laser_peak_near_saturation_fraction: 0.075
+    laser_saturated_width_p95_px: 1.0499999999999972
+    laser_fwhm_p50_px: 32.0
+    laser_fwhm_p95_px: 90.79999999999995
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -6530,6 +6578,9 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
+    - laser_peak_saturated
+    - laser_saturated_line_wide
     passed: false
 - task_id: validation_024_01_chess
   pose_id: '024'
@@ -6701,12 +6752,12 @@ frames:
     saturation_fraction: 3.90625e-06
     dark_fraction: 0.9987589518229166
     focus_laplacian: 11.52381542967579
-    laser_coverage: 0.7386666666666667
-    laser_peak_saturation_fraction: 0.021209386281588447
-    laser_peak_near_saturation_fraction: 0.024819494584837544
-    laser_saturated_width_p95_px: 0.0
-    laser_fwhm_p50_px: 2.0
-    laser_fwhm_p95_px: 4.0
+    laser_coverage: 0.01318359375
+    laser_peak_saturation_fraction: 0.3148148148148148
+    laser_peak_near_saturation_fraction: 0.3333333333333333
+    laser_saturated_width_p95_px: 5.0
+    laser_fwhm_p50_px: 48.0
+    laser_fwhm_p95_px: 124.89999999999992
     chessboard_highlight_fraction: null
     chessboard_p995_u8: null
     chessboard_detected: null
@@ -6715,7 +6766,10 @@ frames:
     chessboard_hint: null
     warnings:
     - dynamic_range_low
+    - laser_coverage_low
     - laser_peak_saturated
+    - laser_peak_near_saturation
+    - laser_saturated_line_wide
     passed: false
 quality_summary:
   frames: 72
@@ -6724,4 +6778,7 @@ quality_summary:
   warning_counts:
     image_too_dark: 24
     dynamic_range_low: 48
-    laser_peak_saturated: 3
+    laser_coverage_low: 24
+    laser_peak_saturated: 20
+    laser_saturated_line_wide: 8
+    laser_peak_near_saturation: 5

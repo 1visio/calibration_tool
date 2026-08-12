@@ -1,0 +1,19 @@
+﻿image,status,detection_method,used_for_intrinsics,mean_euclidean_reprojection_error,per_image_rmse,error_stage
+chess 001.tif,excluded,,false,,,
+chess 002.tif,used,SB,true,0.13000406324863434,0.14938665926456451,final_fit
+chess 003.tif,used,SB,true,0.12931738793849945,0.15161646902561188,final_fit
+chess 004.tif,used,SB,true,0.090940885245800018,0.10514341294765472,final_fit
+chess 005.tif,used,SB,true,0.087973199784755707,0.1017482727766037,final_fit
+chess 006.tif,used,SB,true,0.076643742620944977,0.091897979378700256,final_fit
+chess 007.tif,used,SB,true,0.099135033786296844,0.11204038560390472,final_fit
+chess 008.tif,used,SB,true,0.076209709048271179,0.089399948716163635,final_fit
+chess 009.tif,used,SB,true,0.094379357993602753,0.11036699265241623,final_fit
+chess 010.tif,excluded,,false,,,
+chess 011.tif,excluded,,false,,,
+chess 012.tif,used,SB,true,0.07516925036907196,0.087266005575656891,final_fit
+chess 013.tif,used,SB,true,0.087628617882728577,0.10156999528408051,final_fit
+chess 014.tif,used,SB,true,0.085245296359062195,0.093963257968425751,final_fit
+chess 015.tif,excluded,,false,,,
+chess 016.tif,used,SB,true,0.11701693385839462,0.13181053102016449,final_fit
+chess 017.tif,used,SB,true,0.11261426657438278,0.12908379733562469,final_fit
+chess 018.tif,used,SB,true,0.10121987015008926,0.12349677085876465,final_fit

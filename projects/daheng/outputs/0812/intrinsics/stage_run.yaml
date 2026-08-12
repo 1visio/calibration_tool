@@ -1,0 +1,48 @@
+schema_version: 1
+stage: intrinsics
+module: calibrate_chessboard_opencv_reusable
+started_utc: '2026-08-12T06:16:03.607577+00:00'
+completed_utc: '2026-08-12T06:16:31.059848+00:00'
+arguments:
+- --fit-dir
+- D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\laser_plane\fit
+- --test-dir
+- D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\laser_plane\validation
+- --output
+- D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0812\intrinsics
+- --fit-pattern
+- chess *.tif
+- --test-pattern
+- chess *.tif
+- --pattern-cols
+- '11'
+- --pattern-rows
+- '8'
+- --square-size-mm
+- '20'
+- --exclude-fit
+- chess 001.tif
+- chess 010.tif
+- chess 011.tif
+- chess 015.tif
+output_dir: D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0812\intrinsics
+result_file: D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0812\intrinsics\calibration_result.yaml
+metrics:
+  fit_image_count: 14
+  test_image_count: 6
+  fit_rmse_px: 0.11462120711803436
+  test_rmse_px: 0.1231488287448883
+quality_gates:
+- id: intrinsics.fit_rmse
+  status: pass
+  actual: 0.11462120711803436
+  expected: <= 0.30 px
+- id: intrinsics.independent_test
+  status: pass
+  actual: 6
+  expected: '>= 1 image'
+- id: intrinsics.test_rmse
+  status: pass
+  actual: 0.1231488287448883
+  expected: <= 0.50 px
+status: completed

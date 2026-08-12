@@ -1,0 +1,7 @@
+﻿image,status,detection_method,used_for_intrinsics,mean_euclidean_reprojection_error,per_image_rmse,error_stage
+chess 019.tif,evaluated,SB,false,0.093474008142948151,0.10801246762275696,frozen_intrinsics
+chess 020.tif,evaluated,SB,false,0.093151070177555084,0.106829933822155,frozen_intrinsics
+chess 021.tif,evaluated,SB,false,0.13116936385631561,0.14857590198516846,frozen_intrinsics
+chess 022.tif,evaluated,SB,false,0.13636688888072968,0.15493039786815643,frozen_intrinsics
+chess 023.tif,evaluated,SB,false,0.084622159600257874,0.097350813448429108,frozen_intrinsics
+chess 024.tif,evaluated,SB,false,0.090452671051025391,0.11117133498191833,frozen_intrinsics

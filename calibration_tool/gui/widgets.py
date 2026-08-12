@@ -9,6 +9,44 @@ from PySide6.QtGui import QColor, QImage, QPainter, QPainterPath, QPen, QPixmap
 from PySide6.QtWidgets import QLabel, QSizePolicy, QWidget
 
 
+_AUTO_STRETCH_PERCENTILE_SAMPLE_LIMIT = 65_536
+
+
+def _percentile_sample(image: np.ndarray) -> np.ndarray:
+    """为空间均匀采样，避免预览线程对整张高分辨率图做 percentile。"""
+
+    if image.size <= _AUTO_STRETCH_PERCENTILE_SAMPLE_LIMIT:
+        return image
+
+    height, width = image.shape
+    aspect_ratio = height / width
+    target_height = max(
+        1,
+        min(height, int(math.sqrt(_AUTO_STRETCH_PERCENTILE_SAMPLE_LIMIT * aspect_ratio))),
+    )
+    target_width = max(
+        1,
+        min(width, _AUTO_STRETCH_PERCENTILE_SAMPLE_LIMIT // target_height),
+    )
+    row_step = math.ceil(height / target_height)
+    column_step = math.ceil(width / target_width)
+    sample = image[::row_step, ::column_step]
+    if sample.size > _AUTO_STRETCH_PERCENTILE_SAMPLE_LIMIT:
+        flat_sample = sample.ravel()
+        return flat_sample[::math.ceil(flat_sample.size / _AUTO_STRETCH_PERCENTILE_SAMPLE_LIMIT)]
+    return sample
+
+
+def _linear_map_to_u8(image: np.ndarray, low: float, high: float) -> np.ndarray:
+    """线性映射到 uint8，并原地复用唯一的 float32 工作缓冲区。"""
+
+    values = image.astype(np.float32, copy=True)
+    values -= low
+    values *= 255.0 / (high - low)
+    np.clip(values, 0, 255, out=values)
+    return values.astype(np.uint8)
+
+
 def to_display_u8(
     image: np.ndarray,
     *,
@@ -20,14 +58,12 @@ def to_display_u8(
         if image.dtype == np.uint8:
             return np.ascontiguousarray(image)
         maximum = float(sensor_max_value or np.iinfo(image.dtype).max)
-        return np.ascontiguousarray(
-            np.clip(image.astype(np.float32) * 255.0 / maximum, 0, 255).astype(np.uint8)
-        )
-    values = image.astype(np.float32, copy=False)
-    low, high = (float(value) for value in np.percentile(values, (0.5, 99.8)))
+        return np.ascontiguousarray(_linear_map_to_u8(image, 0.0, maximum))
+    sample = _percentile_sample(image)
+    low, high = (float(value) for value in np.percentile(sample, (0.5, 99.8)))
     if not math.isfinite(low + high) or high <= low:
         return np.zeros(image.shape, dtype=np.uint8)
-    return np.ascontiguousarray(np.clip((values - low) * 255.0 / (high - low), 0, 255).astype(np.uint8))
+    return np.ascontiguousarray(_linear_map_to_u8(image, low, high))
 
 
 class ImagePreview(QLabel):

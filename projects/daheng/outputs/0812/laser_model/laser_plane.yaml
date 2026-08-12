@@ -1,0 +1,80 @@
+model_type: circular_cone
+description: general circular cone equivalent to a standard cone after rigid transform
+axis_unit_camera:
+- 0.9663640495868545
+- 0.009274580885092734
+- -0.2570107114800881
+apex_camera_mm:
+- -288.4684992823823
+- 7.957258166819326
+- -229.6621017245971
+half_apex_angle_deg: 87.65181808382668
+fit_success: true
+optimizer_cost: 0.7362621319994169
+z_valid_range_mm:
+- 631.6729798037555
+- 713.8267147854896
+laser:
+  orientation: vertical
+model_selection:
+  default_model: circular_cone
+  supported_models:
+  - global_plane
+  - quadratic_graph
+  - circular_cone
+  source: D:\Docs\linelaserscan\calibration_tool\configs\laser_model_fit_config.daheng-0812.yaml
+metrics:
+  train:
+    model: circular_cone
+    split: train
+    total_points: 12580
+    valid_intersections: 12580
+    valid_rate: 1.0
+    surface_count: 12580
+    surface_mean_signed_mm: 9.092808103971637e-05
+    surface_mae_mm: 0.017688195349666102
+    surface_rmse_mm: 0.022416984026365095
+    surface_median_abs_mm: 0.015285732475673936
+    surface_p95_abs_mm: 0.042197542646995816
+    surface_max_abs_mm: 0.1652220041634789
+    board_count: 12580
+    board_mean_signed_mm: -0.0005449260328823992
+    board_mae_mm: 0.05771516235354711
+    board_rmse_mm: 0.07304522419441582
+    board_median_abs_mm: 0.049678064782085585
+    board_p95_abs_mm: 0.1367449114180317
+    board_max_abs_mm: 0.5609761058117329
+    ray_count: 12580
+    ray_mean_signed_mm: 0.0003422411972941947
+    ray_mae_mm: 0.05884690154227306
+    ray_rmse_mm: 0.07440744214793195
+    ray_median_abs_mm: 0.05097773726137723
+    ray_p95_abs_mm: 0.13883851411032794
+    ray_max_abs_mm: 0.5649707725290988
+  validation:
+    model: circular_cone
+    split: validation
+    total_points: 5400
+    valid_intersections: 5400
+    valid_rate: 1.0
+    surface_count: 5400
+    surface_mean_signed_mm: 0.004394828085807265
+    surface_mae_mm: 0.021769382708637344
+    surface_rmse_mm: 0.02611571867353094
+    surface_median_abs_mm: 0.02052335563858608
+    surface_p95_abs_mm: 0.04716267292296062
+    surface_max_abs_mm: 0.08704685169491147
+    board_count: 5400
+    board_mean_signed_mm: -0.017129763419574756
+    board_mae_mm: 0.07063971472698669
+    board_rmse_mm: 0.08443894116726403
+    board_median_abs_mm: 0.0676640992924149
+    board_p95_abs_mm: 0.1521941958970274
+    board_max_abs_mm: 0.25830419362421253
+    ray_count: 5400
+    ray_mean_signed_mm: 0.015820208246100337
+    ray_mae_mm: 0.07276250945471688
+    ray_rmse_mm: 0.08726553015102186
+    ray_median_abs_mm: 0.06873941255126274
+    ray_p95_abs_mm: 0.15737917591670864
+    ray_max_abs_mm: 0.2817903095983068

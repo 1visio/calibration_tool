@@ -1,0 +1,16 @@
+model_type: circular_cone
+description: general circular cone equivalent to a standard cone after rigid transform
+axis_unit_camera:
+- 0.9663640495868545
+- 0.009274580885092734
+- -0.2570107114800881
+apex_camera_mm:
+- -288.4684992823823
+- 7.957258166819326
+- -229.6621017245971
+half_apex_angle_deg: 87.65181808382668
+fit_success: true
+optimizer_cost: 0.7362621319994169
+z_valid_range_mm:
+- 631.6729798037555
+- 713.8267147854896

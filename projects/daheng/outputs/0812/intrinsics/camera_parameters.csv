@@ -1,0 +1,20 @@
+﻿parameter,value,unit,description
+image_width,4096,px,图像宽度
+image_height,3000,px,图像高度
+fx,7349.0954868200824,px,x方向焦距
+fy,7350.2867607348162,px,y方向焦距
+cx,2071.0445029132025,px,主点x
+cy,1510.1180599848726,px,主点y
+k1,-0.050439977276248799,,径向畸变
+k2,0.22959489210022485,,径向畸变
+p1,-0.00058840653724833607,,切向畸变
+p2,-0.00055041097018372945,,切向畸变
+k3,0,,径向畸变；默认固定为0
+k3_fixed,true,,是否固定k3
+opencv_calibrate_rms,0.11462317434928784,px,OpenCV calibrateCamera返回值
+fit_mean_euclidean_reprojection_error,0.09739268571138382,px,mean_euclidean_reprojection_error
+fit_overall_reprojection_rmse,0.11462120711803436,px,overall_reprojection_rmse
+fit_mean_per_image_rmse,0.11277074845773834,px,mean_per_image_rmse
+test_mean_euclidean_reprojection_error,0.1048726886510849,px,mean_euclidean_reprojection_error
+test_overall_reprojection_rmse,0.12314882874488831,px,overall_reprojection_rmse
+test_mean_per_image_rmse,0.12114514162143071,px,mean_per_image_rmse

@@ -1,0 +1,9 @@
+model_type: circular_cone
+supported_models:
+- global_plane
+- quadratic_graph
+- circular_cone
+model_file: laser_model.yaml
+legacy_model_file: laser_plane.yaml
+laser:
+  orientation: vertical

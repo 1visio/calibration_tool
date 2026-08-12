@@ -1,0 +1,33 @@
+schema_version: 1
+stage: ground_extrinsics_board_only
+module: calibrate_ground_extrinsics_board_only
+started_utc: '2026-08-12T06:18:23.893652+00:00'
+completed_utc: '2026-08-12T06:18:37.477959+00:00'
+arguments:
+- --intrinsics
+- D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0812\intrinsics\calibration_result.yaml
+- --fit-dir
+- D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\extrinsics\fit
+- --validation-dir
+- D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\extrinsics\validation
+- --pattern-cols
+- '11'
+- --pattern-rows
+- '8'
+- --square-size-mm
+- '20'
+- --output-dir
+- D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0812\ground_extrinsics
+output_dir: D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0812\ground_extrinsics
+result_file: D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0812\ground_extrinsics\camera_ground_extrinsics.yaml
+metrics:
+  ground_z_std_passed: null
+  ground_z_std_mm: null
+  validation_rmse_mm: 0.054991507824723784
+  validation_p95_mm: 0.10225160942471802
+quality_gates:
+- id: ground.board_validation_rmse
+  status: pass
+  actual: 0.054991507824723784
+  expected: <= 0.20 mm
+status: completed
