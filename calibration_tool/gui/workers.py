@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from concurrent.futures import Future, ThreadPoolExecutor
 import threading
 import time
 from dataclasses import replace
@@ -59,6 +60,7 @@ class PreviewThread(QThread):
         steger_quality_analyzer: Any | None = None,
         initial_discard_frames: int = 3,
         parent: QObject | None = None,
+        quality_refresh_interval_s: float = 0.25,
     ) -> None:
         super().__init__(parent)
         self.provider = provider
@@ -70,9 +72,16 @@ class PreviewThread(QThread):
         self.laser_orientation = laser_orientation
         self.steger_quality_analyzer = steger_quality_analyzer
         self.initial_discard_frames = max(0, int(initial_discard_frames))
+        self.quality_refresh_interval_s = max(0.0, float(quality_refresh_interval_s))
         self._parameter_lock = threading.Lock()
         self._pending_exposure_gain: tuple[float, float] | None = None
         self._pending_task: tuple[CameraConfig, str, int] | None = None
+        self._fresh_quality_after_frames: int | None = None
+        self._quality_executor: ThreadPoolExecutor | None = None
+        self._quality_future: Future[tuple[int, int, dict[str, Any]]] | None = None
+        self._quality_generation = 0
+        self._quality_payload: dict[str, Any] | None = None
+        self._next_quality_submission_at = 0.0
 
     def request_exposure_gain(self, exposure_us: float, gain_db: float) -> None:
         with self._parameter_lock:
@@ -96,6 +105,20 @@ class PreviewThread(QThread):
             self._pending_task = (config, str(quality_mode), max(0, int(settle_frames)))
         return True
 
+    def request_fresh_quality_after_frames(self, discard_frames: int = 0) -> None:
+        """要求丢弃指定帧后，对下一帧同步计算完整质量。
+
+        GUI 普通预览可以复用最近一次质量结果；真正保存帧通过此请求取得与
+        当前 camera_frame_number 对应的完整结果，不把限频结果写入数据集。
+        """
+
+        with self._parameter_lock:
+            self._fresh_quality_after_frames = max(0, int(discard_frames))
+
+    def cancel_fresh_quality_request(self) -> None:
+        with self._parameter_lock:
+            self._fresh_quality_after_frames = None
+
     def _take_pending_exposure_gain(self) -> tuple[float, float] | None:
         with self._parameter_lock:
             pending = self._pending_exposure_gain
@@ -107,6 +130,17 @@ class PreviewThread(QThread):
             pending = self._pending_task
             self._pending_task = None
             return pending
+
+    def _take_fresh_quality_due(self) -> bool:
+        with self._parameter_lock:
+            remaining = self._fresh_quality_after_frames
+            if remaining is None:
+                return False
+            if remaining > 0:
+                self._fresh_quality_after_frames = remaining - 1
+                return False
+            self._fresh_quality_after_frames = None
+            return True
 
     @staticmethod
     def _requires_restart(current: CameraConfig, target: CameraConfig) -> bool:
@@ -129,20 +163,38 @@ class PreviewThread(QThread):
         """
 
         frame = session.get_frame(session.config.timeout_ms)
+        payload = self._quality_for_frame(
+            frame,
+            sensor_max_value=session.config.sensor_max_value,
+            force_fresh=self._take_fresh_quality_due(),
+        )
+        payload["settling"] = bool(settling)
+        payload["settle_frames_remaining"] = max(0, int(settle_frames_remaining))
+        self.frame_ready.emit(frame, payload)
+
+    def _compute_quality_payload(
+        self,
+        image: Any,
+        *,
+        sensor_max_value: float,
+        quality_mode: str,
+        generation: int,
+        camera_frame_number: int,
+    ) -> tuple[int, int, dict[str, Any]]:
         processing_started = time.perf_counter()
         quality = analyze_frame(
-            frame.image,
-            sensor_max_value=session.config.sensor_max_value,
-            mode=self.quality_mode,
+            image,
+            sensor_max_value=sensor_max_value,
+            mode=quality_mode,
             thresholds=self.thresholds,
             board_pattern=self.board_pattern,
             laser_orientation=self.laser_orientation,
         )
         payload = quality_to_dict(quality)
-        if self.quality_mode == "laser" and self.steger_quality_analyzer is not None:
+        if quality_mode == "laser" and self.steger_quality_analyzer is not None:
             try:
                 payload["search_region_health"] = self.steger_quality_analyzer.analyze(
-                    frame.image
+                    image
                 )
             except Exception as exc:
                 # search-region health 是旁路辅助显示，失败不得中断预览或改变
@@ -155,13 +207,110 @@ class PreviewThread(QThread):
         payload["preview_quality_processing_ms"] = (
             time.perf_counter() - processing_started
         ) * 1000.0
-        payload["settling"] = bool(settling)
-        payload["settle_frames_remaining"] = max(0, int(settle_frames_remaining))
-        self.frame_ready.emit(frame, payload)
+        payload["preview_quality_source_frame_number"] = int(camera_frame_number)
+        return generation, int(camera_frame_number), payload
+
+    def _collect_quality_future(self, *, wait: bool = False) -> None:
+        future = self._quality_future
+        if future is None or (not wait and not future.done()):
+            return
+        generation, _frame_number, payload = future.result()
+        self._quality_future = None
+        if generation == self._quality_generation:
+            self._quality_payload = payload
+            self._next_quality_submission_at = (
+                time.perf_counter() + self.quality_refresh_interval_s
+            )
+
+    def _store_quality_result(
+        self,
+        result: tuple[int, int, dict[str, Any]],
+    ) -> None:
+        generation, _frame_number, payload = result
+        if generation == self._quality_generation:
+            self._quality_payload = payload
+            self._next_quality_submission_at = (
+                time.perf_counter() + self.quality_refresh_interval_s
+            )
+
+    def _quality_for_frame(
+        self,
+        frame: Any,
+        *,
+        sensor_max_value: float,
+        force_fresh: bool,
+    ) -> dict[str, Any]:
+        self._collect_quality_future()
+        generation = self._quality_generation
+        frame_number = int(frame.camera_frame_number)
+        mode = self.quality_mode
+
+        if force_fresh:
+            # 同一个 analyzer 不并发执行；保存帧宁可等待旧的 preview 分析完成，
+            # 也必须对当前像素执行一次完整质量计算。
+            self._collect_quality_future(wait=True)
+            self._store_quality_result(self._compute_quality_payload(
+                frame.image,
+                sensor_max_value=sensor_max_value,
+                quality_mode=mode,
+                generation=generation,
+                camera_frame_number=frame_number,
+            ))
+        elif self._quality_payload is None:
+            # 首帧同步建立完整 payload，避免 GUI 在后台分析完成前显示伪造值。
+            self._collect_quality_future(wait=True)
+            if self._quality_payload is None:
+                self._store_quality_result(self._compute_quality_payload(
+                    frame.image,
+                    sensor_max_value=sensor_max_value,
+                    quality_mode=mode,
+                    generation=generation,
+                    camera_frame_number=frame_number,
+                ))
+        elif (
+            self._quality_executor is not None
+            and self._quality_future is None
+            and time.perf_counter() >= self._next_quality_submission_at
+        ):
+            # 最多保留一个正在运行的分析；不排队旧帧。下一次提交总是使用
+            # 当时最新的相机帧，并复制像素以隔离相机 SDK buffer 生命周期。
+            image_snapshot = frame.image.copy()
+            self._quality_future = self._quality_executor.submit(
+                self._compute_quality_payload,
+                image_snapshot,
+                sensor_max_value=sensor_max_value,
+                quality_mode=mode,
+                generation=generation,
+                camera_frame_number=frame_number,
+            )
+
+        assert self._quality_payload is not None
+        payload = dict(self._quality_payload)
+        source_frame = int(payload["preview_quality_source_frame_number"])
+        payload["preview_quality_fresh"] = source_frame == frame_number
+        payload["preview_quality_reused"] = source_frame != frame_number
+        payload["preview_quality_age_frames"] = max(0, frame_number - source_frame)
+        return payload
+
+    def _invalidate_quality_cache(self) -> None:
+        self._quality_generation += 1
+        self._quality_payload = None
+        self._next_quality_submission_at = 0.0
+
+    def _shutdown_quality_executor(self) -> None:
+        executor = self._quality_executor
+        self._quality_executor = None
+        if executor is not None:
+            executor.shutdown(wait=True, cancel_futures=True)
+        self._quality_future = None
 
     def run(self) -> None:
         session = None
         try:
+            self._quality_executor = ThreadPoolExecutor(
+                max_workers=1,
+                thread_name_prefix="calibration-preview-quality",
+            )
             session = self.provider.open(self.serial_number, self.config)
             self.opened.emit(session.device, session.config)
             session.start()
@@ -202,6 +351,7 @@ class PreviewThread(QThread):
                             )
                         self.config = applied
                         self.quality_mode = quality_mode
+                        self._invalidate_quality_cache()
                         self.settings_applied.emit(self.config)
                         for remaining in range(settle_frames, 0, -1):
                             self._emit_frame(
@@ -219,6 +369,7 @@ class PreviewThread(QThread):
                     except Exception as exc:
                         self.parameter_update_failed.emit(str(exc))
                     else:
+                        self._invalidate_quality_cache()
                         self.settings_applied.emit(self.config)
                         # 旧曝光仍可能滞留在传输队列中，但这些帧也继续显示。
                         for remaining in range(2, 0, -1):
@@ -232,6 +383,7 @@ class PreviewThread(QThread):
             if not self.isInterruptionRequested():
                 self.failed.emit(str(exc))
         finally:
+            self._shutdown_quality_executor()
             if session is not None:
                 try:
                     session.stop()

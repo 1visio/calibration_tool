@@ -1,0 +1,20 @@
+schema_version: 1
+project_id: daheng
+laser_model: circular_cone
+
+# 本文件位于项目目录内，因此工作区和采集输出均使用项目内相对路径。
+workspace: .
+capture_output: data
+
+# 相对于本文件：projects/daheng -> calibration_tool/configs。
+camera_config: ../../configs/camera.daheng.example.yaml
+workflow_plan: ../../configs/workflow_daheng.yaml
+
+# 当前大恒相机图像中的激光条纹沿竖直方向延伸。
+laser:
+  orientation: vertical
+
+board:
+  pattern_cols: 11
+  pattern_rows: 8
+  square_size_mm: 20.0

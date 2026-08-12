@@ -1,0 +1,158 @@
+schema_version: 1
+workflow: D:\Docs\linelaserscan\calibration_tool\configs\workflow_daheng.yaml
+started_utc: '2026-08-11T11:24:38.865269+00:00'
+completed_utc: '2026-08-11T11:27:18.411300+00:00'
+status: completed
+laser:
+  orientation: vertical
+stages:
+- schema_version: 1
+  stage: intrinsics
+  module: calibrate_chessboard_opencv_reusable
+  started_utc: '2026-08-11T11:24:38.866262+00:00'
+  completed_utc: '2026-08-11T11:25:10.953749+00:00'
+  arguments:
+  - --fit-dir
+  - D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\laser_plane\fit
+  - --test-dir
+  - D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\laser_plane\validation
+  - --output
+  - D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0811\intrinsics
+  - --fit-pattern
+  - chess *.tif
+  - --test-pattern
+  - chess *.tif
+  - --pattern-cols
+  - '11'
+  - --pattern-rows
+  - '8'
+  - --square-size-mm
+  - '20'
+  output_dir: D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0811\intrinsics
+  result_file: D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0811\intrinsics\calibration_result.yaml
+  metrics:
+    fit_image_count: 18
+    test_image_count: 6
+    fit_rmse_px: 0.11873996257781982
+    test_rmse_px: 0.12215102463960648
+  quality_gates:
+  - id: intrinsics.fit_rmse
+    status: pass
+    actual: 0.11873996257781982
+    expected: <= 0.30 px
+  - id: intrinsics.independent_test
+    status: pass
+    actual: 6
+    expected: '>= 1 image'
+  - id: intrinsics.test_rmse
+    status: pass
+    actual: 0.12215102463960648
+    expected: <= 0.50 px
+  status: completed
+- schema_version: 1
+  stage: laser_surface_models
+  module: calibrate_laser_surface_models
+  started_utc: '2026-08-11T11:25:10.956743+00:00'
+  completed_utc: '2026-08-11T11:27:05.703531+00:00'
+  arguments:
+  - --config
+  - D:\Docs\linelaserscan\calibration_tool\configs\laser_model_fit_config.daheng.yaml
+  - --output-dir
+  - D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0811\laser_model
+  - --model
+  - circular_cone
+  - --laser-orientation
+  - vertical
+  output_dir: D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0811\laser_model
+  result_file: D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0811\laser_model\laser_model.yaml
+  metrics:
+    model_type: circular_cone
+    supported_models:
+    - global_plane
+    - quadratic_graph
+    - circular_cone
+    train_rmse_mm: 0.0740966193426796
+    validation_rmse_mm: 0.08321982635298517
+    validation_p95_mm: 0.14954585010671056
+    validation_valid_rate: 1.0
+  quality_gates:
+  - id: laser_model.supported
+    status: pass
+    actual: circular_cone
+    expected: circular_cone/global_plane/quadratic_graph
+  - id: laser_model.validation_rmse
+    status: pass
+    actual: 0.08321982635298517
+    expected: <= 0.25 mm
+  - id: laser_model.validation_p95
+    status: pass
+    actual: 0.14954585010671056
+    expected: <= 0.50 mm
+  status: completed
+- schema_version: 1
+  stage: ground_extrinsics_board_only
+  module: calibrate_ground_extrinsics_board_only
+  started_utc: '2026-08-11T11:27:05.706427+00:00'
+  completed_utc: '2026-08-11T11:27:18.409319+00:00'
+  arguments:
+  - --intrinsics
+  - D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0811\intrinsics\calibration_result.yaml
+  - --fit-dir
+  - D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\extrinsics\fit
+  - --validation-dir
+  - D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\extrinsics\validation
+  - --pattern-cols
+  - '11'
+  - --pattern-rows
+  - '8'
+  - --square-size-mm
+  - '20'
+  - --output-dir
+  - D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0811\ground_extrinsics
+  output_dir: D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0811\ground_extrinsics
+  result_file: D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0811\ground_extrinsics\camera_ground_extrinsics.yaml
+  metrics:
+    ground_z_std_passed: null
+    ground_z_std_mm: null
+    validation_rmse_mm: 0.05364483488648976
+    validation_p95_mm: 0.0970038529483645
+  quality_gates:
+  - id: ground.board_validation_rmse
+    status: pass
+    actual: 0.05364483488648976
+    expected: <= 0.20 mm
+  status: completed
+gates:
+- id: intrinsics.fit_rmse
+  status: pass
+  actual: 0.11873996257781982
+  expected: <= 0.30 px
+- id: intrinsics.independent_test
+  status: pass
+  actual: 6
+  expected: '>= 1 image'
+- id: intrinsics.test_rmse
+  status: pass
+  actual: 0.12215102463960648
+  expected: <= 0.50 px
+- id: laser_surface_models.laser_model.supported
+  status: pass
+  actual: circular_cone
+  expected: circular_cone/global_plane/quadratic_graph
+- id: laser_surface_models.laser_model.validation_rmse
+  status: pass
+  actual: 0.08321982635298517
+  expected: <= 0.25 mm
+- id: laser_surface_models.laser_model.validation_p95
+  status: pass
+  actual: 0.14954585010671056
+  expected: <= 0.50 mm
+- id: ground_extrinsics_board_only.ground.board_validation_rmse
+  status: pass
+  actual: 0.05364483488648976
+  expected: <= 0.20 mm
+counts:
+  pass: 7
+  warn: 0
+  fail: 0
+overall: pass

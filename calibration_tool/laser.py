@@ -9,6 +9,12 @@ from .errors import ConfigError
 LASER_ORIENTATIONS = frozenset({"horizontal", "vertical"})
 
 
+def default_laser_orientation(backend: str) -> str:
+    """返回相机后端的默认激光条纹方向。"""
+
+    return "vertical" if backend == "daheng" else "horizontal"
+
+
 def normalize_laser_orientation(
     value: Any,
     *,
@@ -28,9 +34,18 @@ class LaserConfig:
         object.__setattr__(self, "orientation", normalize_laser_orientation(self.orientation))
 
 
-def parse_laser_config(value: Any, *, field_name: str = "laser") -> LaserConfig:
+def parse_laser_config(
+    value: Any,
+    *,
+    field_name: str = "laser",
+    default_orientation: str = "horizontal",
+) -> LaserConfig:
+    default_orientation = normalize_laser_orientation(
+        default_orientation,
+        field_name=f"{field_name}.orientation default",
+    )
     if value is None:
-        return LaserConfig()
+        return LaserConfig(default_orientation)
     if not isinstance(value, Mapping):
         raise ConfigError(f"{field_name} 必须是映射")
     unknown = set(value) - {"orientation"}
@@ -38,7 +53,7 @@ def parse_laser_config(value: Any, *, field_name: str = "laser") -> LaserConfig:
         raise ConfigError(f"{field_name} 包含未知字段：{sorted(unknown)}")
     return LaserConfig(
         orientation=normalize_laser_orientation(
-            value.get("orientation", "horizontal"),
+            value.get("orientation", default_orientation),
             field_name=f"{field_name}.orientation",
         )
     )
@@ -47,6 +62,7 @@ def parse_laser_config(value: Any, *, field_name: str = "laser") -> LaserConfig:
 __all__ = [
     "LASER_ORIENTATIONS",
     "LaserConfig",
+    "default_laser_orientation",
     "normalize_laser_orientation",
     "parse_laser_config",
 ]

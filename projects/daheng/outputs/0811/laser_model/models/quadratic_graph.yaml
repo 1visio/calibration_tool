@@ -1,0 +1,23 @@
+model_type: quadratic_graph
+dependent_axis: X
+independent_axes:
+- Y
+- Z
+equation: D = beta0 + beta1*p + beta2*q + beta3*p^2 + beta4*p*q + beta5*q^2
+normalization:
+  independent_center_mm:
+  - -13.736787952907086
+  - 687.0364527104527
+  independent_scale_mm:
+  - 53.1618730126563
+  - 22.807402764991206
+coefficients:
+- -3.639552759764341
+- -0.5723541284607708
+- 7.080488800080753
+- 0.06299543932125319
+- 0.0011275985333074755
+- 0.0037450786167706595
+z_valid_range_mm:
+- 631.5503788651798
+- 713.6828851676036

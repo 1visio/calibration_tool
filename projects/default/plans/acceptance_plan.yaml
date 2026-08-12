@@ -1,0 +1,15 @@
+schema_version: 1
+report_id: line-laser-calibration-acceptance
+title: line-laser-calibration标定验收报告
+output_dir: ../reports/acceptance
+policy: ../../../configs/acceptance_policy.yaml
+inputs:
+  workflow_report: null
+  quality_reports: []
+  runtime_config: null
+  expected_extractor: null
+  golden_baseline: ../../../golden/baseline.yaml
+  compensation_metrics: null
+  artifacts: []
+release:
+  enabled: false

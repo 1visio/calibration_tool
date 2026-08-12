@@ -20,21 +20,47 @@ def laser_column_metrics(
     These values describe contrast, width and saturation only; they are not a
     centre extractor and must not replace the shared Steger implementation.
     """
+    return laser_scanline_metrics(
+        image,
+        sensor_max_value=sensor_max_value,
+        scan_axis="column",
+    )
+
+
+def laser_scanline_metrics(
+    image: np.ndarray,
+    *,
+    sensor_max_value: float,
+    scan_axis: str,
+) -> dict[str, np.ndarray | float]:
+    """按原图 row/column 计算完全相同的激光强度质量指标。
+
+    ``scan_axis=column`` 沿原图每列搜索 peak，法向为 row/v；
+    ``scan_axis=row`` 沿原图每行搜索 peak，法向为 column/u。row 路径直接
+    在原图 axis=1 上归约，避免 ``image.T`` 非连续视图的高额内存访问开销。
+    """
+
     if image.ndim != 2 or image.dtype not in (np.uint8, np.uint16):
-        raise ValueError("激光逐列质量分析仅支持二维 uint8/uint16 灰度图")
+        raise ValueError("激光逐扫描线质量分析仅支持二维 uint8/uint16 灰度图")
     if sensor_max_value <= 0:
         raise ValueError("sensor_max_value 必须为正数")
+    if scan_axis not in {"column", "row"}:
+        raise ValueError("scan_axis 必须是 column 或 row")
     values = image.astype(np.float32, copy=False)
     p01, p99 = (float(value) for value in np.percentile(values, (1, 99)))
-    background = np.percentile(values, 50, axis=0)
-    peak = np.max(values, axis=0)
+    reduction_axis = 0 if scan_axis == "column" else 1
+    background = np.percentile(values, 50, axis=reduction_axis)
+    peak = np.max(values, axis=reduction_axis)
     minimum_contrast = max(sensor_max_value * 0.05, (p99 - p01) * 0.20)
     active = (peak - background) >= minimum_contrast
     saturated = values >= sensor_max_value * 0.995
     near_saturated = peak >= sensor_max_value * 0.98
-    saturated_width = np.sum(saturated, axis=0)
+    saturated_width = np.sum(saturated, axis=reduction_axis)
     half_max = background + (peak - background) * 0.5
-    fwhm = np.sum(values >= half_max[None, :], axis=0)
+    if scan_axis == "column":
+        fwhm = np.sum(values >= half_max[None, :], axis=0)
+    else:
+        fwhm = np.sum(values >= half_max[:, None], axis=1)
     return {
         "background_dn": background,
         "peak_dn": peak,
@@ -44,7 +70,8 @@ def laser_column_metrics(
         "peak_saturated": peak >= sensor_max_value * 0.995,
         "peak_near_saturated": near_saturated,
         "saturated_width_px": saturated_width,
-        "column_saturation_fraction": np.mean(saturated, axis=0),
+        # 保留旧 key，避免影响已有调用方；其含义在 row 模式下是逐 row。
+        "column_saturation_fraction": np.mean(saturated, axis=reduction_axis),
         "fwhm_px": fwhm,
     }
 
@@ -102,12 +129,12 @@ def analyze_frame(
         warnings.append("dynamic_range_low")
 
     if mode == "laser":
-        # column_metrics 的列始终对应激光线的延伸方向，行对应线宽方向：
-        # 横向直接使用原图，纵向转置后复用相同的覆盖率、饱和与 FWHM 算法。
-        oriented_image = image if orientation == "horizontal" else image.T
-        column_metrics = laser_column_metrics(
-            oriented_image,
+        # 横向逐 column、纵向逐 row。两者公式相同；纵向直接沿原图 axis=1
+        # 归约，避免非连续 transpose，但不改变 coverage/FWHM 的数值定义。
+        column_metrics = laser_scanline_metrics(
+            image,
             sensor_max_value=sensor_max_value,
+            scan_axis="column" if orientation == "horizontal" else "row",
         )
         active_columns = np.asarray(column_metrics["active"], dtype=bool)
         laser_coverage = float(np.mean(active_columns))

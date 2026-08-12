@@ -72,6 +72,11 @@ from .capture_controller import CaptureTaskGate
 from .capture_recipe_widget import CaptureRecipeTable
 
 
+# 临时关闭 Stage 2A 的 GUI 旁路：保留 analyzer/replay 实现，便于后续在质量
+# 显示完整且预览性能问题解决后恢复。关闭时既不显示控件，也不逐帧运行 Steger。
+_SEARCH_REGION_QUALITY_ENABLED = False
+
+
 def _preview_settling_info(quality: Mapping[str, Any]) -> tuple[bool, int]:
     """读取 PreviewThread 的稳定帧元数据，兼容旧的质量字典。"""
 
@@ -99,6 +104,13 @@ class ProjectPage(QWidget):
         self.workspace = QLineEdit(str(default_camera_config.parent.parent / "projects" / "default"))
         self.camera_config = QLineEdit(str(default_camera_config))
         self.laser_orientation = QComboBox(); self.laser_orientation.addItems(["horizontal", "vertical"])
+        try:
+            self.laser_orientation.setCurrentText(
+                load_camera_config(default_camera_config)["laser"].orientation
+            )
+        except Exception:
+            # 配置错误仍由“应用到向导”统一报告；页面初始化保持可用。
+            pass
         self.workflow_plan = QLineEdit("")
         self.acceptance_plan = QLineEdit("")
         self.pattern_cols = QSpinBox(); self.pattern_cols.setRange(2, 50); self.pattern_cols.setValue(11)
@@ -125,6 +137,7 @@ class ProjectPage(QWidget):
         self.open_button.clicked.connect(self._open)
         self.save_button.clicked.connect(self._save)
         self.apply_button.clicked.connect(self.apply)
+        self.camera_config.textChanged.connect(self._sync_laser_orientation_from_camera_config)
 
     def apply(self) -> WizardProject | None:
         try:
@@ -160,6 +173,19 @@ class ProjectPage(QWidget):
             source_path=self.project.source_path if self.project else None,
             extra=self.project.extra if self.project else {},
         )
+
+    def _sync_laser_orientation_from_camera_config(self, path_text: str) -> None:
+        """切换相机配置时采用其中显式方向或后端默认方向。"""
+
+        try:
+            path = Path(path_text).expanduser()
+            if path.is_file():
+                self.laser_orientation.setCurrentText(
+                    load_camera_config(path)["laser"].orientation
+                )
+        except Exception:
+            # 输入路径过程中可能暂时无效；最终校验仍由 apply() 负责。
+            pass
 
     def _open(self) -> None:
         path, _ = QFileDialog.getOpenFileName(self, "打开标定项目", "", "YAML (*.yaml *.yml)")
@@ -254,9 +280,12 @@ class CameraPage(QWidget):
         form.addRow(action_row)
         self.status = QLabel("尚未加载相机配置"); self.status.setWordWrap(True); form.addRow("状态", self.status)
         self.quality = QLabel("--"); self.quality.setWordWrap(True); form.addRow("质量", self.quality)
-        self.search_region_quality = QLabel("Search region: --")
+        self.search_region_quality = QLabel("Search region: --", controls)
         self.search_region_quality.setWordWrap(True)
-        form.addRow("Search Region Quality", self.search_region_quality)
+        if _SEARCH_REGION_QUALITY_ENABLED:
+            form.addRow("Search Region Quality", self.search_region_quality)
+        else:
+            self.search_region_quality.hide()
         splitter.addWidget(controls)
         self.preview = ImagePreview(); splitter.addWidget(self.preview); splitter.setStretchFactor(1, 1)
         layout.addWidget(splitter, 1)
@@ -329,9 +358,13 @@ class CameraPage(QWidget):
             provider = build_camera_provider(
                 self.runtime["backend"], calibration_src=self.runtime["calibration_src"], backend_options=self.runtime["backend_options"]
             )
-            steger_quality_analyzer = RealtimeStegerQualityAnalyzer(
-                self.runtime["calibration_src"],
-                self.runtime["laser"].orientation,
+            steger_quality_analyzer = (
+                RealtimeStegerQualityAnalyzer(
+                    self.runtime["calibration_src"],
+                    self.runtime["laser"].orientation,
+                )
+                if _SEARCH_REGION_QUALITY_ENABLED
+                else None
             )
             thread = PreviewThread(
                 provider, self.selected_serial(), self.current_config(), str(self.quality_mode.currentData()),
@@ -361,11 +394,14 @@ class CameraPage(QWidget):
         self.last_frame = frame
         self.last_quality = quality
         sensor_max = self.preview_thread.config.sensor_max_value if self.preview_thread else self.current_config().sensor_max_value
-        self.preview.set_array(
-            frame.image,
-            auto_stretch=self.auto_stretch.isChecked(),
-            sensor_max_value=sensor_max,
-        )
+        # CameraPage 与 CapturePage 都订阅同一帧。只绘制当前可见页面，避免
+        # 每帧为隐藏的 QPixmap 再做一次全分辨率拷贝和 smooth scaling。
+        if self.preview.isVisible():
+            self.preview.set_array(
+                frame.image,
+                auto_stretch=self.auto_stretch.isChecked(),
+                sensor_max_value=sensor_max,
+            )
         warnings = "、".join(_quality_warning_text(item) for item in quality["warnings"]) or "通过"
         thresholds = self.runtime["quality_thresholds"] if self.runtime else None
         coverage_text = _laser_quality_metrics_text(quality, thresholds)
@@ -416,6 +452,7 @@ class CameraPage(QWidget):
         if thread is None or thread.isFinished() or self._pending_capture is not None:
             return False
         self._pending_capture = (max(0, int(discard_frames)), callback)
+        thread.request_fresh_quality_after_frames(discard_frames)
         return True
 
     def request_preview_task(
@@ -433,6 +470,9 @@ class CameraPage(QWidget):
 
     def cancel_pending_capture(self) -> None:
         self._pending_capture = None
+        thread = self.preview_thread
+        if thread is not None:
+            thread.cancel_fresh_quality_request()
 
     def apply_live_parameters(self) -> None:
         thread = self.preview_thread
@@ -606,7 +646,7 @@ class CapturePage(QWidget):
         self.live_auto_stretch = QCheckBox("自动拉伸预览（仅改变显示）")
         self.live_quality = QLabel("尚未取流")
         self.live_quality.setWordWrap(True)
-        self.live_search_region_quality = QLabel("Search region: --")
+        self.live_search_region_quality = QLabel("Search region: --", live_panel)
         self.live_search_region_quality.setWordWrap(True)
         self.live_camera = QLabel("当前任务：--")
         self.live_camera.setWordWrap(True)
@@ -614,7 +654,10 @@ class CapturePage(QWidget):
         live_layout.addWidget(self.live_auto_stretch)
         live_layout.addWidget(self.live_camera)
         live_layout.addWidget(self.live_quality)
-        live_layout.addWidget(self.live_search_region_quality)
+        if _SEARCH_REGION_QUALITY_ENABLED:
+            live_layout.addWidget(self.live_search_region_quality)
+        else:
+            self.live_search_region_quality.hide()
 
         left = QWidget()
         left_layout = QVBoxLayout(left)
@@ -1046,15 +1089,16 @@ class CapturePage(QWidget):
         return row, self.loaded_plan.tasks[row]
 
     def _on_camera_frame(self, frame, quality: dict[str, Any]) -> None:
-        self.live_preview.set_array(
-            frame.image,
-            auto_stretch=self.live_auto_stretch.isChecked(),
-            sensor_max_value=(
-                self.camera_page.preview_thread.config.sensor_max_value
-                if self.camera_page.preview_thread is not None
-                else None
-            ),
-        )
+        if self.live_preview.isVisible():
+            self.live_preview.set_array(
+                frame.image,
+                auto_stretch=self.live_auto_stretch.isChecked(),
+                sensor_max_value=(
+                    self.camera_page.preview_thread.config.sensor_max_value
+                    if self.camera_page.preview_thread is not None
+                    else None
+                ),
+            )
         warnings = "、".join(_quality_warning_text(item) for item in quality["warnings"]) or "通过"
         thresholds = (
             self.loaded_plan.quality_thresholds
@@ -1315,6 +1359,18 @@ class CapturePage(QWidget):
         relative = task.relative_path(index)
         destination = work_dir / relative
         _write_image(destination, frame)
+        quality_source_frame = (
+            preview_quality.get("preview_quality_source_frame_number")
+            if preview_quality is not None
+            else None
+        )
+        preview_quality_is_exact = (
+            preview_quality is not None
+            and (
+                quality_source_frame is None
+                or int(quality_source_frame) == int(frame.camera_frame_number)
+            )
+        )
         quality = (
             {
                 key: value
@@ -1323,9 +1379,13 @@ class CapturePage(QWidget):
                     "settling",
                     "settle_frames_remaining",
                     "preview_quality_processing_ms",
+                    "preview_quality_source_frame_number",
+                    "preview_quality_fresh",
+                    "preview_quality_reused",
+                    "preview_quality_age_frames",
                 }
             }
-            if preview_quality is not None
+            if preview_quality_is_exact
             else quality_to_dict(analyze_frame(
                 frame.image,
                 sensor_max_value=task.config.sensor_max_value,

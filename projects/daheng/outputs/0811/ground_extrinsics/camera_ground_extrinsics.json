@@ -1,0 +1,403 @@
+{
+  "schema_version": 2,
+  "generated_utc": "2026-08-11T11:27:18.373303+00:00",
+  "method": "checkerboard_plane_only",
+  "units": "mm",
+  "coordinate_convention": {
+    "Xg": "camera +X projected onto checkerboard reference plane; approximately image right",
+    "Yg": "Zg cross Xg; approximately image up",
+    "Zg": "checkerboard reference-plane normal toward camera; positive for protrusions",
+    "origin": "intersection of camera principal axis and checkerboard pattern plane",
+    "zero_surface": "checkerboard pattern surface"
+  },
+  "T_ground_from_camera": [
+    [
+      0.9989971277915087,
+      0.0003664569910963127,
+      0.0447728084174941,
+      -31.89361181346621
+    ],
+    [
+      5.421010862427523e-20,
+      -0.9999665061143105,
+      0.008184537222028755,
+      -5.830200567232144
+    ],
+    [
+      0.044774308083050864,
+      -0.00817632917710942,
+      -0.9989636674959064,
+      711.6051137507399
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "T_camera_from_ground": [
+    [
+      0.9989971277915087,
+      0.0,
+      0.044774308083050864,
+      -3.556605990197792e-15
+    ],
+    [
+      0.0003664569910963129,
+      -0.9999665061143105,
+      -0.00817632917710942,
+      8.882081692430144e-16
+    ],
+    [
+      0.044772808417494106,
+      0.008184537222028755,
+      -0.9989636674959063,
+      712.3433383063013
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "ground_plane_in_camera": {
+    "equation": "n_x*Xc + n_y*Yc + n_z*Zc + D = 0",
+    "coefficients": [
+      0.044774308083050864,
+      -0.00817632917710942,
+      -0.9989636674959064,
+      711.6051137507399
+    ],
+    "normal": [
+      0.044774308083050864,
+      -0.00817632917710942,
+      -0.9989636674959064
+    ],
+    "D_mm": 711.6051137507399
+  },
+  "ground_origin_in_camera_mm": [
+    -3.556605990197792e-15,
+    8.882081692430144e-16,
+    712.3433383063013
+  ],
+  "ground_axes_in_camera": {
+    "Xg": [
+      0.9989971277915087,
+      0.0003664569910963127,
+      0.0447728084174941
+    ],
+    "Yg": [
+      5.421010862427523e-20,
+      -0.9999665061143105,
+      0.008184537222028755
+    ],
+    "Zg": [
+      0.044774308083050864,
+      -0.00817632917710942,
+      -0.9989636674959064
+    ]
+  },
+  "camera_installation": {
+    "optical_axis_to_ground_normal_deg": 2.608703395086723,
+    "optical_axis_to_ground_plane_deg": 87.39129660491328,
+    "camera_perpendicular_distance_to_pattern_plane_mm": 711.6051137507399,
+    "principal_axis_intersection_zc_mm": 712.3433383063013
+  },
+  "quality_checks": {
+    "rotation_orthogonality_frobenius": 3.14101938867263e-16,
+    "rotation_determinant": 1.0,
+    "transform_inverse_frobenius": 1.136870551991202e-13,
+    "fit_zg": {
+      "point_count": 792,
+      "mean_mm": -3.61730847296051e-14,
+      "median_mm": 0.0010951080442396233,
+      "std_mm": 0.03855218096603738,
+      "rmse_mm": 0.038552180966037373,
+      "p95_abs_mm": 0.07282007893636545,
+      "max_abs_mm": 0.11478418020203662,
+      "min_mm": -0.11478418020203662,
+      "max_mm": 0.09385504010742807
+    },
+    "validation_zg": {
+      "point_count": 440,
+      "mean_mm": 0.024208479487167395,
+      "median_mm": 0.026377362879713928,
+      "std_mm": 0.04787188977801215,
+      "rmse_mm": 0.05364483488648976,
+      "p95_abs_mm": 0.0970038529483645,
+      "max_abs_mm": 0.1573296739422858,
+      "min_mm": -0.08631839536906227,
+      "max_mm": 0.1573296739422858
+    }
+  },
+  "fit_selection": {
+    "detected_frame_count": 10,
+    "accepted_frame_count": 9,
+    "normal_outlier_threshold_deg": 0.0790141342213994,
+    "plane_distance_median_mm": 711.6154104150185,
+    "plane_distance_outlier_threshold_mm": 0.11970817140351617,
+    "frames": [
+      {
+        "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics\\fit\\chess 001.tif",
+        "detection_method": "SB",
+        "reprojection_rmse_px": 0.1045183315873146,
+        "normal_camera": [
+          0.04512421567498699,
+          -0.008373628064902633,
+          -0.9989462886025194
+        ],
+        "plane_d_mm": 711.6351658748151,
+        "normal_angular_error_deg": 0.023497532538329553,
+        "plane_distance_error_mm": 0.01975545979667004,
+        "accepted": true
+      },
+      {
+        "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics\\fit\\chess 002.tif",
+        "detection_method": "SB",
+        "reprojection_rmse_px": 0.10942621529102325,
+        "normal_camera": [
+          0.04546595406574228,
+          -0.00799628680550169,
+          -0.9989338849084137
+        ],
+        "plane_d_mm": 711.6700443102916,
+        "normal_angular_error_deg": 0.03648870705162522,
+        "plane_distance_error_mm": 0.054633895273127564,
+        "accepted": true
+      },
+      {
+        "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics\\fit\\chess 003.tif",
+        "detection_method": "classic+cornerSubPix",
+        "reprojection_rmse_px": 0.09525437653064728,
+        "normal_camera": [
+          0.045067409844149676,
+          -0.008068078797258857,
+          -0.9989513675221936
+        ],
+        "plane_d_mm": 711.58919677847,
+        "normal_angular_error_deg": 0.013320873815196893,
+        "plane_distance_error_mm": 0.026213636548504837,
+        "accepted": true
+      },
+      {
+        "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics\\fit\\chess 004.tif",
+        "detection_method": "SB",
+        "reprojection_rmse_px": 0.11351553350687027,
+        "normal_camera": [
+          0.0448946902258716,
+          -0.007280014860556275,
+          -0.9989651986796904
+        ],
+        "plane_d_mm": 711.4708122287926,
+        "normal_angular_error_deg": 0.046113661836880565,
+        "plane_distance_error_mm": 0.14459818622583498,
+        "accepted": false
+      },
+      {
+        "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics\\fit\\chess 005.tif",
+        "detection_method": "SB",
+        "reprojection_rmse_px": 0.11749732494354248,
+        "normal_camera": [
+          0.044441333687124905,
+          -0.00781322863579329,
+          -0.9989814419289251
+        ],
+        "plane_d_mm": 711.6517857002049,
+        "normal_angular_error_deg": 0.0273846775559597,
+        "plane_distance_error_mm": 0.0363752851864092,
+        "accepted": true
+      },
+      {
+        "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics\\fit\\chess 006.tif",
+        "detection_method": "SB",
+        "reprojection_rmse_px": 0.101390540599823,
+        "normal_camera": [
+          0.045022733099661684,
+          -0.007790973033740326,
+          -0.9989555817169371
+        ],
+        "plane_d_mm": 711.586976810545,
+        "normal_angular_error_deg": 0.019859563991950883,
+        "plane_distance_error_mm": 0.02843360447343457,
+        "accepted": true
+      },
+      {
+        "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics\\fit\\chess 007.tif",
+        "detection_method": "SB",
+        "reprojection_rmse_px": 0.11674343049526215,
+        "normal_camera": [
+          0.044450522936112326,
+          -0.007549385378160374,
+          -0.9989830618139219
+        ],
+        "plane_d_mm": 711.5954857341695,
+        "normal_angular_error_deg": 0.0377081980691453,
+        "plane_distance_error_mm": 0.01992468084893062,
+        "accepted": true
+      },
+      {
+        "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics\\fit\\chess 008.tif",
+        "detection_method": "SB",
+        "reprojection_rmse_px": 0.09971039742231369,
+        "normal_camera": [
+          0.045175134501674076,
+          -0.008296215237438792,
+          -0.9989446331181172
+        ],
+        "plane_d_mm": 711.6298218953874,
+        "normal_angular_error_deg": 0.02300214210627363,
+        "plane_distance_error_mm": 0.014411480368949015,
+        "accepted": true
+      },
+      {
+        "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics\\fit\\chess 009.tif",
+        "detection_method": "SB",
+        "reprojection_rmse_px": 0.10165027529001236,
+        "normal_camera": [
+          0.044198045269045055,
+          -0.008045439497198627,
+          -0.9989903921948861
+        ],
+        "plane_d_mm": 711.6292926523366,
+        "normal_angular_error_deg": 0.0366286395754276,
+        "plane_distance_error_mm": 0.013882237318171065,
+        "accepted": true
+      },
+      {
+        "image": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics\\fit\\chess 010.tif",
+        "detection_method": "SB",
+        "reprojection_rmse_px": 0.08701855689287186,
+        "normal_camera": [
+          0.044575032660288706,
+          -0.00881078931597965,
+          -0.9989671848739395
+        ],
+        "plane_d_mm": 711.6015281777004,
+        "normal_angular_error_deg": 0.04431023313711713,
+        "plane_distance_error_mm": 0.013882237318057378,
+        "accepted": true
+      }
+    ],
+    "failures": []
+  },
+  "validation": {
+    "detected_frame_count": 5,
+    "metrics": {
+      "point_count": 440,
+      "mean_mm": 0.024208479487167395,
+      "median_mm": 0.026377362879713928,
+      "std_mm": 0.04787188977801215,
+      "rmse_mm": 0.05364483488648976,
+      "p95_abs_mm": 0.0970038529483645,
+      "max_abs_mm": 0.1573296739422858,
+      "min_mm": -0.08631839536906227,
+      "max_mm": 0.1573296739422858
+    },
+    "frames": [
+      {
+        "image": "chess 011.tif",
+        "detection_method": "SB",
+        "pnp_rmse_px": 0.09790991991758347,
+        "normal_x": 0.043895938656599666,
+        "normal_y": -0.008580070847779392,
+        "normal_z": -0.9989992637403208,
+        "plane_d_mm": 711.6448326941597,
+        "zg_point_count": 88,
+        "zg_mean_mm": 0.040637237246289454,
+        "zg_median_mm": 0.04063723724624424,
+        "zg_std_mm": 0.058282552658184335,
+        "zg_rmse_mm": 0.0710509746264275,
+        "zg_p95_abs_mm": 0.13161284098023315,
+        "zg_max_abs_mm": 0.1573296739422858,
+        "zg_min_mm": -0.07605519944968364,
+        "zg_max_mm": 0.1573296739422858
+      },
+      {
+        "image": "chess 012.tif",
+        "detection_method": "SB",
+        "pnp_rmse_px": 0.11395404487848282,
+        "normal_x": 0.04522235764468233,
+        "normal_y": -0.008659314244515182,
+        "normal_z": -0.9989394149025611,
+        "plane_d_mm": 711.6092503705031,
+        "zg_point_count": 88,
+        "zg_mean_mm": 0.01595392830221504,
+        "zg_median_mm": 0.01595392830228093,
+        "zg_std_mm": 0.03674223177798319,
+        "zg_rmse_mm": 0.04005645296702213,
+        "zg_p95_abs_mm": 0.07674897769580866,
+        "zg_max_abs_mm": 0.09558037196006808,
+        "zg_min_mm": -0.06367251535561991,
+        "zg_max_mm": 0.09558037196006808
+      },
+      {
+        "image": "chess 013.tif",
+        "detection_method": "SB",
+        "pnp_rmse_px": 0.08839002996683121,
+        "normal_x": 0.04509709160198805,
+        "normal_y": -0.008913030678605327,
+        "normal_z": -0.9989428463196302,
+        "plane_d_mm": 711.561758882867,
+        "zg_point_count": 88,
+        "zg_mean_mm": 0.01321595452604382,
+        "zg_median_mm": 0.013215954526060614,
+        "zg_std_mm": 0.048933869250375184,
+        "zg_rmse_mm": 0.050687128680240626,
+        "zg_p95_abs_mm": 0.08954499950195893,
+        "zg_max_abs_mm": 0.1094438774473474,
+        "zg_min_mm": -0.08301196839522618,
+        "zg_max_mm": 0.1094438774473474
+      },
+      {
+        "image": "chess 014.tif",
+        "detection_method": "SB",
+        "pnp_rmse_px": 0.10711978375911713,
+        "normal_x": 0.04469821028975981,
+        "normal_y": -0.008603064524777907,
+        "normal_z": -0.9989634914638648,
+        "plane_d_mm": 711.5557198657806,
+        "zg_point_count": 88,
+        "zg_mean_mm": 0.050714119288175846,
+        "zg_median_mm": 0.0507141192882159,
+        "zg_std_mm": 0.027172161789669493,
+        "zg_rmse_mm": 0.05753475707343609,
+        "zg_p95_abs_mm": 0.09182926167645176,
+        "zg_max_abs_mm": 0.09909435436418335,
+        "zg_min_mm": 0.0023338842121347625,
+        "zg_max_mm": 0.09909435436418335
+      },
+      {
+        "image": "chess 015.tif",
+        "detection_method": "SB",
+        "pnp_rmse_px": 0.10493398457765579,
+        "normal_x": 0.045074950230267655,
+        "normal_y": -0.008828020372639463,
+        "normal_z": -0.9989446005249937,
+        "plane_d_mm": 711.6002275330698,
+        "zg_point_count": 88,
+        "zg_mean_mm": 0.0005211580731128151,
+        "zg_median_mm": 0.0005211580730701826,
+        "zg_std_mm": 0.04308568485292414,
+        "zg_rmse_mm": 0.04308883666313895,
+        "zg_p95_abs_mm": 0.07446037812810573,
+        "zg_max_abs_mm": 0.08736071151520264,
+        "zg_min_mm": -0.08631839536906227,
+        "zg_max_mm": 0.08736071151520264
+      }
+    ],
+    "failures": []
+  },
+  "inputs": {
+    "intrinsics": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0811\\intrinsics\\calibration_result.yaml",
+    "fit_dir": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics\\fit",
+    "validation_dir": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics\\validation",
+    "fit_glob": "*.tif",
+    "validation_glob": "*.tif",
+    "pattern_cols": 11,
+    "pattern_rows": 8,
+    "square_size_mm": 20.0,
+    "zero_surface": "checkerboard pattern surface"
+  }
+}

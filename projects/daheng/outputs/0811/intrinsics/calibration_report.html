@@ -1,0 +1,11 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>相机标定报告</title><style>body{font-family:Arial,'Microsoft YaHei',sans-serif;max-width:1050px;margin:32px auto;color:#1f2937;line-height:1.6}table{border-collapse:collapse;width:100%}th,td{border:1px solid #d1d5db;padding:8px;text-align:right}th:first-child,td:first-child{text-align:left}.flow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.box{padding:10px 14px;background:#eff6ff;border:1px solid #93c5fd;border-radius:8px}pre{background:#f3f4f6;padding:14px;overflow:auto}</style></head><body>
+<h1>相机标定报告</h1><div class="flow"><div class="box">拟合集角点</div>→<div class="box">异常剔除与标定</div>→<div class="box">冻结内参</div>→<div class="box">独立测试</div>→<div class="box">三种误差</div></div>
+<p>最终拟合18张，测试6张；k3 固定为0。</p>
+<table><tr><th>数据集</th><th>平均欧氏距离</th><th>总体RMSE</th><th>逐图RMSE平均</th></tr><tr><td>拟合集</td><td>0.100910</td><td>0.118740</td><td>0.117002</td></tr><tr><td>独立测试集</td><td>0.103882</td><td>0.122151</td><td>0.120592</td></tr></table>
+<p>OpenCV calibrateCamera RMS：<strong>0.118739172 px</strong></p>
+<h2>内参</h2><pre>[[7.347865114440e+03, 0.000000000000e+00, 2.070216530148e+03],
+ [0.000000000000e+00, 7.348841146644e+03, 1.512436454105e+03],
+ [0.000000000000e+00, 0.000000000000e+00, 1.000000000000e+00]]
+dist_coeffs = [-0.049137165151413566, 0.2272759720228212, -0.0005131542263022916, -0.00047837789954461685, 0.0]</pre>
+<h2>图例</h2><p>重投影图：绿色十字=实测角点，红色圆点=重投影点；残差向量从重投影点指向实测点并放大50倍。</p></body></html>

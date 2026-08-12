@@ -1,0 +1,42 @@
+image_width: 4096
+image_height: 3000
+pattern_cols: 11
+pattern_rows: 8
+square_size_mm: 20.0
+k3_fixed: true
+corner_detection_policy: SB direct; legacy fallback plus cornerSubPix
+camera_matrix:
+- - 7347.865114440015
+  - 0.0
+  - 2070.216530147837
+- - 0.0
+  - 7348.841146643875
+  - 1512.4364541050136
+- - 0.0
+  - 0.0
+  - 1.0
+dist_coeffs:
+- -0.049137165151413566
+- 0.2272759720228212
+- -0.0005131542263022916
+- -0.00047837789954461685
+- 0.0
+opencv_calibrate_rms: 0.11873917229000908
+fit_metrics:
+  image_count: 18
+  point_count: 1584
+  mean_euclidean_reprojection_error: 0.10090991854667664
+  overall_reprojection_rmse: 0.11873996257781982
+  mean_per_image_rmse: 0.1170024602777428
+  median_per_image_rmse: 0.11448564752936363
+  p95_per_image_rmse: 0.15422432273626327
+  max_per_image_rmse: 0.16214732825756073
+test_metrics:
+  image_count: 6
+  point_count: 528
+  mean_euclidean_reprojection_error: 0.10388226807117462
+  overall_reprojection_rmse: 0.12215102463960648
+  mean_per_image_rmse: 0.12059227004647255
+  median_per_image_rmse: 0.11094972491264343
+  p95_per_image_rmse: 0.15127898380160332
+  max_per_image_rmse: 0.15596482157707214

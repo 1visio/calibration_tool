@@ -3,7 +3,12 @@ import unittest
 import numpy as np
 
 from calibration_tool.camera.models import QualityThresholds
-from calibration_tool.camera.quality import analyze_frame, laser_column_metrics, summarize_quality
+from calibration_tool.camera.quality import (
+    analyze_frame,
+    laser_column_metrics,
+    laser_scanline_metrics,
+    summarize_quality,
+)
 
 
 class CameraQualityTests(unittest.TestCase):
@@ -58,6 +63,20 @@ class CameraQualityTests(unittest.TestCase):
             "laser_fwhm_p95_px",
         ):
             self.assertEqual(getattr(horizontal_quality, name), getattr(vertical_quality, name))
+
+    def test_row_axis_metrics_are_exactly_equal_to_legacy_transpose(self):
+        rng = np.random.default_rng(20260811)
+        for dtype, sensor_max in ((np.uint8, 255), (np.uint16, 4095)):
+            image = rng.integers(0, sensor_max + 1, size=(47, 63), dtype=dtype)
+            legacy = laser_column_metrics(image.T, sensor_max_value=sensor_max)
+            optimized = laser_scanline_metrics(
+                image,
+                sensor_max_value=sensor_max,
+                scan_axis="row",
+            )
+            self.assertEqual(legacy.keys(), optimized.keys())
+            for key in legacy:
+                np.testing.assert_array_equal(optimized[key], legacy[key], err_msg=key)
 
     def test_laser_coverage_detects_full_width_stripe(self):
         image = np.full((48, 64), 10, dtype=np.uint8)

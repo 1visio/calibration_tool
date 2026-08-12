@@ -17,6 +17,16 @@ class WizardProjectTests(unittest.TestCase):
             )
             self.assertEqual(WizardProject.load(root / "project.yaml").laser.orientation, "horizontal")
 
+    def test_missing_project_laser_inherits_daheng_camera_orientation(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "camera.yaml").write_text("backend: daheng\n", encoding="utf-8")
+            (root / "project.yaml").write_text(
+                "schema_version: 1\nproject_id: daheng\nworkspace: .\ncamera_config: camera.yaml\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(WizardProject.load(root / "project.yaml").laser.orientation, "vertical")
+
     def test_invalid_project_laser_orientation_is_rejected(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

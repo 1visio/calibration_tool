@@ -9,6 +9,7 @@ from typing import Any
 from ..errors import ConfigError
 from ..io_utils import dump_yaml, load_document, resolve_relative
 from ..laser import LaserConfig, parse_laser_config
+from ..camera.config import load_camera_config
 
 
 @dataclass(slots=True)
@@ -54,11 +55,17 @@ class WizardProject:
         workflow_value = document.get("workflow_plan")
         acceptance_value = document.get("acceptance_plan")
         capture_value = document.get("capture_output")
+        camera_config = resolve_relative(source, camera_value)
+        laser = (
+            parse_laser_config(document["laser"], field_name="wizard project.laser")
+            if "laser" in document
+            else load_camera_config(camera_config)["laser"]
+        )
         return cls(
             project_id=str(document.get("project_id", "")),
             workspace=resolve_relative(source, workspace_value),
-            camera_config=resolve_relative(source, camera_value),
-            laser=parse_laser_config(document.get("laser"), field_name="wizard project.laser"),
+            camera_config=camera_config,
+            laser=laser,
             workflow_plan=resolve_relative(source, workflow_value) if workflow_value else None,
             acceptance_plan=resolve_relative(source, acceptance_value) if acceptance_value else None,
             capture_output=resolve_relative(source, capture_value) if capture_value else None,

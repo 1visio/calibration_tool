@@ -1,0 +1,23 @@
+# 大恒 12MP 线激光：固定正式标定数据的 Steger sigma 离线敏感性扫描
+base_config: laser_model_fit_config.daheng.yaml
+output_dir: ../runs/steger_sigma_sweep
+
+sigma_values: [0.8, 1.0, 1.2, 1.4, 1.5, 1.6, 1.8, 2.0, 2.2, 2.5, 3.0]
+
+baseline:
+  sigma: 1.5
+  rmse_abs_tolerance_mm: 1.0e-4
+  point_count_relative_tolerance: 0.01
+  expected_train_point_count: 16102
+  expected_validation_point_count: 5400
+  expected_validation_board_rmse_mm:
+    circular_cone: 0.08321982635298517
+    quadratic_graph: 0.0801910803822904
+
+analysis:
+  stable_within_percent: 2.0
+  stable_min_consecutive_points: 3
+  point_count_warning_percent: 10.0
+  valid_rate_min: 0.999
+  catastrophic_per_image_ratio: 2.0
+  catastrophic_per_image_abs_increase_mm: 0.05

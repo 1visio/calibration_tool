@@ -25,6 +25,18 @@ class CameraConfigTests(unittest.TestCase):
             )
             self.assertEqual(load_camera_config(path)["laser"].orientation, "vertical")
 
+    def test_daheng_defaults_to_vertical_but_explicit_orientation_wins(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "camera.yaml"
+            path.write_text("backend: daheng\n", encoding="utf-8")
+            self.assertEqual(load_camera_config(path)["laser"].orientation, "vertical")
+
+            path.write_text(
+                "backend: daheng\nlaser:\n  orientation: horizontal\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(load_camera_config(path)["laser"].orientation, "horizontal")
+
     def test_invalid_laser_orientation_has_clear_error(self):
         with tempfile.TemporaryDirectory() as temporary:
             path = Path(temporary) / "camera.yaml"
@@ -72,6 +84,22 @@ tasks:
             self.assertEqual(plan.tasks[0].config.exposure_us, 2000)
             self.assertEqual(plan.tasks[0].config.gain_db, 2)
             self.assertEqual(plan.output_dir, Path(temporary) / "output")
+
+    def test_daheng_capture_plan_defaults_to_vertical(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "plan.yaml"
+            path.write_text(
+                """dataset_id: test
+output_dir: output
+backend: daheng
+tasks:
+  - task_id: one
+    frames: 1
+    filename_template: image{suffix}
+""",
+                encoding="utf-8",
+            )
+            self.assertEqual(load_capture_plan(path).laser.orientation, "vertical")
 
 
 if __name__ == "__main__":

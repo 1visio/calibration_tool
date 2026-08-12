@@ -4,6 +4,9 @@ import threading
 import time
 import unittest
 from pathlib import Path
+from unittest.mock import Mock
+
+import numpy as np
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
@@ -11,8 +14,11 @@ from PySide6.QtCore import QEventLoop, QTimer, Qt
 from PySide6.QtWidgets import QApplication, QCheckBox, QPushButton
 
 from calibration_tool.camera import load_capture_plan
+from calibration_tool.camera.models import CapturedFrame
+from calibration_tool.camera.quality import analyze_frame, quality_to_dict
 from calibration_tool.gui.capture_controller import CaptureTaskGate
 from calibration_tool.gui.main_window import CalibrationWizardWindow
+from calibration_tool.gui.pages import _SEARCH_REGION_QUALITY_ENABLED
 from calibration_tool.io_utils import load_document
 
 
@@ -42,6 +48,56 @@ class GuiCapturePageTests(unittest.TestCase):
         try:
             self.assertEqual(window.capture_page.dataset_id.text(), "laser_plane")
             self.assertEqual(window.capture_page.output.text(), str(ROOT / "projects" / "default" / "data" / "laser_plane"))
+        finally:
+            window.close(); self.app.processEvents()
+
+    def test_search_region_quality_is_temporarily_disabled_in_gui(self):
+        window = CalibrationWizardWindow(default_camera_config=ROOT / "configs" / "camera.example.yaml")
+        try:
+            self.assertFalse(_SEARCH_REGION_QUALITY_ENABLED)
+            self.assertTrue(window.camera_page.search_region_quality.isHidden())
+            self.assertTrue(window.capture_page.live_search_region_quality.isHidden())
+        finally:
+            window.close(); self.app.processEvents()
+
+    def test_selecting_daheng_camera_config_updates_laser_orientation(self):
+        window = CalibrationWizardWindow(default_camera_config=ROOT / "configs" / "camera.example.yaml")
+        try:
+            self.assertEqual(window.project_page.laser_orientation.currentText(), "horizontal")
+            window.project_page.camera_config.setText(
+                str(ROOT / "configs" / "camera.daheng.example.yaml")
+            )
+            self.assertEqual(window.project_page.laser_orientation.currentText(), "vertical")
+        finally:
+            window.close(); self.app.processEvents()
+
+    def test_only_visible_page_renders_live_frame(self):
+        window = CalibrationWizardWindow(default_camera_config=ROOT / "configs" / "camera.example.yaml")
+        frame = CapturedFrame(
+            image=np.zeros((48, 64), dtype=np.uint8),
+            camera_frame_number=1,
+            camera_timestamp_ticks=None,
+            host_timestamp_ns=1,
+            host_monotonic_ns=1,
+        )
+        quality = quality_to_dict(analyze_frame(frame.image, sensor_max_value=255))
+        camera_render = Mock()
+        capture_render = Mock()
+        window.camera_page.preview.set_array = camera_render
+        window.capture_page.live_preview.set_array = capture_render
+        try:
+            window.show()
+            window.steps.setCurrentRow(1)
+            self.app.processEvents()
+            window.camera_page._on_frame(frame, quality)
+            self.assertEqual(camera_render.call_count, 1)
+            self.assertEqual(capture_render.call_count, 0)
+
+            window.steps.setCurrentRow(2)
+            self.app.processEvents()
+            window.camera_page._on_frame(frame, quality)
+            self.assertEqual(camera_render.call_count, 1)
+            self.assertEqual(capture_render.call_count, 1)
         finally:
             window.close(); self.app.processEvents()
 

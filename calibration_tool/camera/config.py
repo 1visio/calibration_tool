@@ -6,7 +6,7 @@ from typing import Any, Mapping
 
 from ..errors import ConfigError
 from ..io_utils import canonical_mapping_hash, load_document, resolve_relative
-from ..laser import parse_laser_config
+from ..laser import default_laser_orientation, parse_laser_config
 from .models import CameraConfig, CapturePlan, CaptureTask, QualityThresholds
 
 
@@ -61,7 +61,10 @@ def load_camera_config(path: str | Path) -> dict[str, Any]:
         "board_pattern": _board_pattern(document.get("board")),
         "backend_options": _mapping(document.get("backend_options"), "backend_options"),
         "calibration_src": resolve_relative(source, calibration_src),
-        "laser": parse_laser_config(document.get("laser")),
+        "laser": parse_laser_config(
+            document.get("laser"),
+            default_orientation=default_laser_orientation(backend),
+        ),
     }
 
 
@@ -69,6 +72,9 @@ def load_capture_plan(path: str | Path) -> CapturePlan:
     source = Path(path).expanduser().resolve()
     document = load_document(source)
     base_config = _camera_config(document.get("camera"))
+    backend = str(document.get("backend", "mvs"))
+    if backend not in {"mvs", "daheng", "synthetic"}:
+        raise ConfigError("backend 必须是 mvs、daheng 或 synthetic")
     tasks_value = document.get("tasks")
     if not isinstance(tasks_value, list) or not tasks_value:
         raise ConfigError("capture plan 的 tasks 必须是非空列表")
@@ -84,7 +90,7 @@ def load_capture_plan(path: str | Path) -> CapturePlan:
         return CapturePlan(
             dataset_id=str(document.get("dataset_id", "")),
             output_dir=resolve_relative(source, output_value),
-            backend=str(document.get("backend", "mvs")),
+            backend=backend,
             serial_number=str(document.get("serial_number", "")),
             base_config=base_config,
             tasks=tuple(tasks),
@@ -92,7 +98,10 @@ def load_capture_plan(path: str | Path) -> CapturePlan:
             board_pattern=_board_pattern(document.get("board")),
             metadata=_mapping(document.get("metadata"), "metadata"),
             backend_options=_mapping(document.get("backend_options"), "backend_options"),
-            laser=parse_laser_config(document.get("laser")),
+            laser=parse_laser_config(
+                document.get("laser"),
+                default_orientation=default_laser_orientation(backend),
+            ),
         )
     except ConfigError:
         raise
