@@ -10,6 +10,9 @@ import numpy as np
 from calibration_tool.cli import main
 
 
+ROOT = Path(__file__).resolve().parents[1]
+
+
 class CameraCliTests(unittest.TestCase):
     def test_search_region_replay_is_read_only_and_reports_health(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -73,6 +76,40 @@ backend_options:
             self.assertEqual(exit_code, 0, stderr.getvalue())
             self.assertIn("frame_count: 4", stdout.getvalue())
             self.assertTrue((output / "dataset_manifest.yaml").is_file())
+
+    def test_capture_plan_rejects_a_different_selected_channel(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            plan = root / "plan.yaml"
+            plan.write_text(
+                """dataset_id: mismatch
+output_dir: output
+backend: synthetic
+camera:
+  width: 64
+  height: 48
+tasks:
+  - task_id: one
+    frames: 1
+    settle_frames: 0
+    image_format: png
+    filename_template: frame{suffix}
+""",
+                encoding="utf-8",
+            )
+            stderr = io.StringIO()
+            with redirect_stdout(io.StringIO()), redirect_stderr(stderr):
+                exit_code = main([
+                    "capture-plan",
+                    str(plan),
+                    "--config",
+                    str(ROOT / "configs" / "camera_channels.example.yaml"),
+                    "--channel",
+                    "daheng",
+                ])
+            self.assertEqual(exit_code, 2)
+            self.assertIn("backend 与所选相机通道不一致", stderr.getvalue())
+            self.assertFalse((root / "output").exists())
 
 
 if __name__ == "__main__":

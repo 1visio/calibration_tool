@@ -36,7 +36,70 @@
   ],
   "compensation_applied": false,
   "smooth_window_applied": false,
-  "residual_definition": "signed vertical residual Zg-(a*Xg+b*Yg+c), fitted independently per frame with iterative MAD rejection",
+  "reference_plane_modes": {
+    "self_fitted": "r_i=Zg-(a_i*Xg+b_i*Yg+c_i), with an independent robust plane fit per frame",
+    "fixed_normal_per_frame_offset": "Z_ref_i=median(Zg_i); r_i=Zg-Z_ref_i; a=b=0",
+    "fixed_ground_plane": "Z_ref=Z0 from the frozen ground-coordinate zero-surface definition; r_i=Zg-Z0"
+  },
+  "baseline_outputs_reference_plane_mode": "self_fitted",
+  "residual_definition": "The legacy heatmap/statistics outputs remain self_fitted; strict three-mode results are stored in reference_plane_mode_comparison files.",
+  "fixed_ground_z0_mm": 0.0,
+  "fixed_ground_z0_source": {
+    "path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0811\\ground_extrinsics\\camera_ground_extrinsics.yaml",
+    "units": "mm",
+    "zero_surface": "checkerboard pattern surface",
+    "origin": "intersection of camera principal axis and checkerboard pattern plane",
+    "Zg_definition": "checkerboard reference-plane normal toward camera; positive for protrusions",
+    "ground_plane_coefficients_from_transform": [
+      -1.2134170485891476e-17,
+      0.0,
+      1.0,
+      -1.13686837721616e-13
+    ],
+    "transformed_z0_mm_before_zero_normalization": 1.13686837721616e-13,
+    "reason": "The checkerboard pattern surface explicitly defines Zg=0, and its camera-frame plane transforms numerically to that ground-frame plane."
+  },
+  "reference_plane_mode_comparison": {
+    "self_fitted": {
+      "residual_bin_count": 40924,
+      "residual_mean_mm": -5.34170173314224e-15,
+      "residual_median_mm": -0.001164203077857761,
+      "residual_mae_mm": 0.04699910617035027,
+      "residual_rms_mm": 0.062484147492219325,
+      "residual_p95_abs_mm": 0.1303284843324189,
+      "median_frame_rms_mm": 0.06127827507241969,
+      "median_pair_correlation_overlap_ge_100": 0.47048475133995504,
+      "common_median_profile_explained_energy_fraction": 0.4839129816345914
+    },
+    "fixed_normal_per_frame_offset": {
+      "residual_bin_count": 44756,
+      "residual_mean_mm": 0.016999913017249086,
+      "residual_median_mm": 0.0,
+      "residual_mae_mm": 0.10063834612119046,
+      "residual_rms_mm": 0.1567576332630531,
+      "residual_p95_abs_mm": 0.38609775,
+      "median_frame_rms_mm": 0.15513489469007286,
+      "median_pair_correlation_overlap_ge_100": 0.2977715197899427,
+      "common_median_profile_explained_energy_fraction": 0.2895685197842486
+    },
+    "fixed_ground_plane": {
+      "residual_bin_count": 44756,
+      "residual_mean_mm": -0.04355473176780767,
+      "residual_median_mm": -0.063544,
+      "residual_mae_mm": 0.12300971961301278,
+      "residual_rms_mm": 0.16417459389208938,
+      "residual_p95_abs_mm": 0.33617275,
+      "median_frame_rms_mm": 0.16380281242029737,
+      "median_pair_correlation_overlap_ge_100": 0.29777151978994276,
+      "common_median_profile_explained_energy_fraction": 0.3270716993226247
+    }
+  },
+  "apparent_tilt_warning": "apparent_tilt_deg is derived from a narrow-band self-fit and is not the checkerboard's true mechanical tilt.",
+  "apparent_tilt_deg": {
+    "median": 32.908207386420415,
+    "min": 1.845847897539712,
+    "max": 75.86756136629803
+  },
   "v_range": [
     0,
     2999

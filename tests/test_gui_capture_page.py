@@ -14,6 +14,8 @@ from PySide6.QtCore import QEventLoop, QTimer, Qt
 from PySide6.QtWidgets import QApplication, QCheckBox, QPushButton
 
 from calibration_tool.camera import load_capture_plan
+from calibration_tool.camera.capture import _new_manifest, _save_state
+from calibration_tool.camera.config import capture_plan_hash
 from calibration_tool.camera.models import CapturedFrame
 from calibration_tool.camera.quality import analyze_frame, quality_to_dict
 from calibration_tool.gui.capture_controller import CaptureTaskGate
@@ -124,6 +126,93 @@ class GuiCapturePageTests(unittest.TestCase):
                 self.assertIn("任务 72", page.plan_summary.text())
                 self.assertEqual(len(page.loaded_plan.tasks), 72)
             finally:
+                window.close(); self.app.processEvents()
+
+    def test_task_exposure_is_individually_editable_and_saved_to_yaml(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            window, page = self._window_page(root)
+            try:
+                page.include_validation.setChecked(False)
+                page.fit_groups.setValue(2)
+                self.assertTrue(page.generate_plan())
+                exposure_item = page.plan_table.item(3, 4)
+                self.assertTrue(exposure_item.flags() & Qt.ItemFlag.ItemIsEditable)
+                self.assertFalse(
+                    page.plan_table.item(3, 3).flags() & Qt.ItemFlag.ItemIsEditable
+                )
+
+                exposure_item.setText("42000")
+                self.app.processEvents()
+
+                self.assertEqual(page.loaded_plan.tasks[0].config.exposure_us, 35000.0)
+                self.assertEqual(page.loaded_plan.tasks[3].config.exposure_us, 42000.0)
+                saved = load_capture_plan(root / "plans" / "capture.yaml")
+                self.assertEqual(saved.tasks[3].config.exposure_us, 42000.0)
+                self.assertIn("42000 μs", page.plan_tasks.item(3).text())
+            finally:
+                window.close(); self.app.processEvents()
+
+    def test_pending_task_exposure_edit_updates_resume_plan_hash(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            window, page = self._window_page(root)
+            try:
+                page.include_validation.setChecked(False)
+                page.fit_groups.setValue(1)
+                self.assertTrue(page.generate_plan())
+                work_dir = root / ".dataset.inprogress"
+                work_dir.mkdir()
+                _save_state(work_dir, _new_manifest(page.loaded_plan))
+
+                page.plan_table.item(1, 4).setText("750")
+                self.app.processEvents()
+
+                manifest = load_document(work_dir / "dataset_manifest.yaml")
+                self.assertEqual(manifest["plan_sha256"], capture_plan_hash(page.loaded_plan))
+                self.assertEqual(
+                    manifest["plan"]["tasks"][1]["camera"]["exposure_us"],
+                    750.0,
+                )
+            finally:
+                window.close(); self.app.processEvents()
+
+    def test_stale_capture_does_not_block_new_task_exposure_edit(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            window, page = self._window_page(root)
+            try:
+                page.include_validation.setChecked(False)
+                page.fit_groups.setValue(1)
+                self.assertTrue(page.generate_plan())
+                work_dir = root / ".dataset.inprogress"
+                work_dir.mkdir()
+                manifest = _new_manifest(page.loaded_plan)
+                manifest["plan_sha256"] = "historical-plan-hash"
+                manifest["status"] = "in_progress"
+                manifest["tasks"][page.loaded_plan.tasks[1].task_id].update(
+                    status="completed",
+                    frames_captured=1,
+                )
+                _save_state(work_dir, manifest)
+
+                # 引导采集中的实时预览仍允许按质量反馈调整曝光；此时没有
+                # 正在写帧，不应被旧现场 hash 阻塞。
+                page._guided_capture_active = True
+                page.plan_table.item(1, 4).setText("750")
+                self.app.processEvents()
+
+                self.assertEqual(page.loaded_plan.tasks[1].config.exposure_us, 750.0)
+                self.assertEqual(
+                    load_capture_plan(root / "plans" / "capture.yaml").tasks[1].config.exposure_us,
+                    750.0,
+                )
+                self.assertEqual(
+                    load_document(work_dir / "dataset_manifest.yaml")["plan_sha256"],
+                    "historical-plan-hash",
+                )
+            finally:
+                page._guided_capture_active = False
                 window.close(); self.app.processEvents()
 
     def test_capture_page_has_vertical_scrollbar_and_wheel_target(self):

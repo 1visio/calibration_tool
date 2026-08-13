@@ -38,7 +38,7 @@ from PySide6.QtWidgets import (
 )
 
 from ..camera import build_camera_provider, load_camera_config, load_capture_plan, run_capture_plan
-from ..camera.config import capture_plan_hash
+from ..camera.config import capture_plan_hash, capture_plan_payload
 from ..camera.capture import _new_manifest, _save_state, _write_image
 from ..camera.plan_builder import (
     CaptureRecipe,
@@ -91,10 +91,17 @@ def _preview_settling_info(quality: Mapping[str, Any]) -> tuple[bool, int]:
 class ProjectPage(QWidget):
     project_changed = Signal(object)
 
-    def __init__(self, default_camera_config: Path, parent=None) -> None:
+    def __init__(
+        self,
+        default_camera_config: Path,
+        default_camera_channel: str | None = None,
+        parent=None,
+    ) -> None:
         super().__init__(parent)
         self.default_camera_config = default_camera_config
+        self.default_camera_channel = default_camera_channel
         self.project: WizardProject | None = None
+        self._camera_config_error: str | None = None
         layout = QVBoxLayout(self)
         title = QLabel("1. 创建或打开标定项目")
         title.setObjectName("pageTitle")
@@ -103,14 +110,8 @@ class ProjectPage(QWidget):
         self.project_id = QLineEdit("line-laser-calibration")
         self.workspace = QLineEdit(str(default_camera_config.parent.parent / "projects" / "default"))
         self.camera_config = QLineEdit(str(default_camera_config))
+        self.camera_channel = QComboBox()
         self.laser_orientation = QComboBox(); self.laser_orientation.addItems(["horizontal", "vertical"])
-        try:
-            self.laser_orientation.setCurrentText(
-                load_camera_config(default_camera_config)["laser"].orientation
-            )
-        except Exception:
-            # 配置错误仍由“应用到向导”统一报告；页面初始化保持可用。
-            pass
         self.workflow_plan = QLineEdit("")
         self.acceptance_plan = QLineEdit("")
         self.pattern_cols = QSpinBox(); self.pattern_cols.setRange(2, 50); self.pattern_cols.setValue(11)
@@ -118,7 +119,8 @@ class ProjectPage(QWidget):
         self.square_size = QDoubleSpinBox(); self.square_size.setRange(0.01, 1000); self.square_size.setValue(20); self.square_size.setSuffix(" mm")
         form.addRow("项目 ID", self.project_id)
         form.addRow("项目工作目录", _path_row(self.workspace, self, directory=True))
-        form.addRow("相机配置", _path_row(self.camera_config, self, file_filter="YAML (*.yaml *.yml)"))
+        form.addRow("相机通道", self.camera_channel)
+        form.addRow("通道注册表/相机配置", _path_row(self.camera_config, self, file_filter="YAML (*.yaml *.yml)"))
         form.addRow("激光线方向", self.laser_orientation)
         form.addRow("标定 workflow", _path_row(self.workflow_plan, self, file_filter="YAML (*.yaml *.yml)"))
         form.addRow("验收计划", _path_row(self.acceptance_plan, self, file_filter="YAML (*.yaml *.yml)"))
@@ -137,7 +139,13 @@ class ProjectPage(QWidget):
         self.open_button.clicked.connect(self._open)
         self.save_button.clicked.connect(self._save)
         self.apply_button.clicked.connect(self.apply)
-        self.camera_config.textChanged.connect(self._sync_laser_orientation_from_camera_config)
+        self.camera_config.textChanged.connect(self._camera_config_path_changed)
+        self.camera_channel.currentIndexChanged.connect(self._camera_channel_changed)
+        self._reload_camera_channels(
+            str(default_camera_config),
+            preferred=default_camera_channel,
+            update_workflow=True,
+        )
 
     def apply(self) -> WizardProject | None:
         try:
@@ -150,6 +158,8 @@ class ProjectPage(QWidget):
         return project
 
     def _from_fields(self) -> WizardProject:
+        if self._camera_config_error:
+            raise ValueError(self._camera_config_error)
         workspace = Path(self.workspace.text()).expanduser().resolve()
         workflow = self.workflow_plan.text().strip()
         capture_output = (
@@ -163,6 +173,7 @@ class ProjectPage(QWidget):
             project_id=self.project_id.text().strip(),
             workspace=workspace,
             camera_config=Path(self.camera_config.text()),
+            camera_channel=self._selected_camera_channel(),
             laser=LaserConfig(self.laser_orientation.currentText()),
             workflow_plan=Path(workflow) if workflow else None,
             acceptance_plan=Path(self.acceptance_plan.text().strip()) if self.acceptance_plan.text().strip() else None,
@@ -174,18 +185,76 @@ class ProjectPage(QWidget):
             extra=self.project.extra if self.project else {},
         )
 
-    def _sync_laser_orientation_from_camera_config(self, path_text: str) -> None:
-        """切换相机配置时采用其中显式方向或后端默认方向。"""
+    def _selected_camera_channel(self) -> str | None:
+        value = self.camera_channel.currentData()
+        return str(value) if value not in (None, "") else None
+
+    def _camera_config_path_changed(self, path_text: str) -> None:
+        self._reload_camera_channels(path_text, update_workflow=True)
+
+    def _reload_camera_channels(
+        self,
+        path_text: str,
+        *,
+        preferred: str | None = None,
+        update_workflow: bool = False,
+    ) -> None:
+        """从统一注册表填充通道；旧版单相机 YAML 显示为一个直连通道。"""
 
         try:
             path = Path(path_text).expanduser()
-            if path.is_file():
-                self.laser_orientation.setCurrentText(
-                    load_camera_config(path)["laser"].orientation
-                )
-        except Exception:
+            if not path.is_file():
+                self._camera_config_error = f"相机通道注册表/配置不存在：{path}"
+                return
+            runtime = load_camera_config(path, channel=preferred)
+        except Exception as exc:
             # 输入路径过程中可能暂时无效；最终校验仍由 apply() 负责。
-            pass
+            self._camera_config_error = str(exc)
+            return
+        self._camera_config_error = None
+
+        registry = runtime.get("channel_registry")
+        with QSignalBlocker(self.camera_channel):
+            self.camera_channel.clear()
+            if registry is None:
+                self.camera_channel.addItem(
+                    f"直接配置（{runtime['backend']}）",
+                    None,
+                )
+                self.camera_channel.setEnabled(False)
+            else:
+                for definition in registry.channels:
+                    self.camera_channel.addItem(
+                        f"{definition.label}  [{definition.name}]",
+                        definition.name,
+                    )
+                selected = self.camera_channel.findData(runtime["channel"])
+                self.camera_channel.setCurrentIndex(max(0, selected))
+                self.camera_channel.setEnabled(len(registry.channels) > 1)
+        self._apply_camera_runtime(runtime, update_workflow=update_workflow)
+
+    def _camera_channel_changed(self, _index: int) -> None:
+        try:
+            runtime = load_camera_config(
+                Path(self.camera_config.text()),
+                channel=self._selected_camera_channel(),
+            )
+        except Exception as exc:
+            self._camera_config_error = str(exc)
+            return
+        self._camera_config_error = None
+        self._apply_camera_runtime(runtime, update_workflow=True)
+
+    def _apply_camera_runtime(
+        self,
+        runtime: Mapping[str, Any],
+        *,
+        update_workflow: bool,
+    ) -> None:
+        self.laser_orientation.setCurrentText(runtime["laser"].orientation)
+        workflow = runtime.get("workflow_plan")
+        if update_workflow and workflow is not None:
+            self.workflow_plan.setText(str(workflow))
 
     def _open(self) -> None:
         path, _ = QFileDialog.getOpenFileName(self, "打开标定项目", "", "YAML (*.yaml *.yml)")
@@ -215,6 +284,11 @@ class ProjectPage(QWidget):
         self.project_id.setText(project.project_id)
         self.workspace.setText(str(project.workspace))
         self.camera_config.setText(str(project.camera_config))
+        self._reload_camera_channels(
+            str(project.camera_config),
+            preferred=project.camera_channel,
+            update_workflow=False,
+        )
         self.laser_orientation.setCurrentText(project.laser.orientation)
         self.workflow_plan.setText(str(project.workflow_plan or ""))
         self.acceptance_plan.setText(str(project.acceptance_plan or ""))
@@ -236,19 +310,21 @@ class CameraPage(QWidget):
         self.last_quality: dict[str, Any] | None = None
         self._pending_capture: tuple[int, Callable[[Any, dict[str, Any]], None]] | None = None
         self._workers: set[FunctionWorker] = set()
+        self._enumeration_token = 0
         layout = QVBoxLayout(self)
         title = QLabel("2. 连接相机并调整采集参数"); title.setObjectName("pageTitle"); layout.addWidget(title)
         splitter = QSplitter(Qt.Orientation.Horizontal)
         controls = QWidget(); form = QFormLayout(controls)
         self.config_path = QLineEdit()
-        load_button = QPushButton("加载")
-        row = QHBoxLayout(); row.addWidget(self.config_path, 1); row.addWidget(load_button)
-        form.addRow("相机配置", row)
+        self.config_path.setReadOnly(True)
+        self.reload_config_button = QPushButton("重新加载")
+        row = QHBoxLayout(); row.addWidget(self.config_path, 1); row.addWidget(self.reload_config_button)
+        form.addRow("通道配置", row)
         self.backend_label = QLabel("--")
         self.devices = QComboBox()
         self.refresh_button = QPushButton("枚举相机")
         device_row = QHBoxLayout(); device_row.addWidget(self.devices, 1); device_row.addWidget(self.refresh_button)
-        form.addRow("后端", self.backend_label); form.addRow("设备", device_row)
+        form.addRow("当前通道 / 后端", self.backend_label); form.addRow("设备", device_row)
         self.exposure = QDoubleSpinBox(); self.exposure.setRange(1, 10_000_000); self.exposure.setDecimals(1); self.exposure.setSuffix(" μs")
         self.gain = QDoubleSpinBox(); self.gain.setRange(-100, 100); self.gain.setDecimals(2); self.gain.setSuffix(" dB")
         self.pixel_format = QComboBox(); self.pixel_format.addItems(["Mono8", "Mono12"])
@@ -289,8 +365,13 @@ class CameraPage(QWidget):
         splitter.addWidget(controls)
         self.preview = ImagePreview(); splitter.addWidget(self.preview); splitter.setStretchFactor(1, 1)
         layout.addWidget(splitter, 1)
-        load_button.clicked.connect(lambda: self.load_config(Path(self.config_path.text())))
-        self.refresh_button.clicked.connect(self.enumerate_devices)
+        self.reload_config_button.clicked.connect(
+            lambda: self.load_config(
+                Path(self.config_path.text()),
+                channel=(self.runtime or {}).get("channel"),
+            )
+        )
+        self.refresh_button.clicked.connect(lambda: self.enumerate_devices())
         self.preview_button.clicked.connect(self.start_preview)
         self.stop_button.clicked.connect(self.stop_preview)
         self.snapshot_button.clicked.connect(self.save_snapshot)
@@ -303,14 +384,23 @@ class CameraPage(QWidget):
         self.quality_mode.currentIndexChanged.connect(self._update_quality_help)
         self._update_quality_help()
 
-    def load_config(self, path: Path) -> bool:
+    def load_config(self, path: Path, *, channel: str | None = None) -> bool:
         try:
-            runtime = load_camera_config(path)
+            runtime = load_camera_config(path, channel=channel)
         except Exception as exc:
             QMessageBox.critical(self, "相机配置无效", str(exc)); return False
+        # 使旧通道尚未结束的枚举结果失效，避免快速切换时覆盖当前设备列表。
+        self._enumeration_token += 1
+        self.refresh_button.setEnabled(True)
+        self.devices.clear()
         self.runtime = runtime
         self.config_path.setText(str(runtime["source"]))
-        self.backend_label.setText(runtime["backend"])
+        self.config_path.setToolTip(
+            f"当前通道实际配置：{runtime['camera_config_source']}"
+        )
+        self.backend_label.setText(
+            f"{runtime['channel_label']}  /  {runtime['backend']}"
+        )
         config = runtime["camera"]
         self.exposure.setValue(config.exposure_us); self.gain.setValue(config.gain_db)
         self.pixel_format.setCurrentText(config.pixel_format)
@@ -331,23 +421,49 @@ class CameraPage(QWidget):
     def selected_serial(self) -> str:
         return str(self.devices.currentData() or (self.runtime or {}).get("serial_number", ""))
 
-    def enumerate_devices(self) -> None:
+    def enumerate_devices(self, *, silent: bool = False) -> None:
         if self.runtime is None:
             QMessageBox.warning(self, "尚未配置", "请先加载相机配置"); return
         self.refresh_button.setEnabled(False); self.status.setText("正在枚举相机…")
         runtime = self.runtime
+        self._enumeration_token += 1
+        token = self._enumeration_token
         worker = FunctionWorker(lambda _progress: build_camera_provider(
             runtime["backend"], calibration_src=runtime["calibration_src"], backend_options=runtime["backend_options"]
         ).list_devices())
-        worker.signals.result.connect(self._set_devices)
-        worker.signals.error.connect(lambda message: self._show_error("相机枚举失败", message))
-        worker.signals.finished.connect(lambda: self.refresh_button.setEnabled(True))
+        worker.signals.result.connect(
+            lambda devices: self._set_devices(devices)
+            if token == self._enumeration_token
+            else None
+        )
+        if silent:
+            worker.signals.error.connect(
+                lambda message: self.status.setText(f"相机枚举失败：{message}")
+                if token == self._enumeration_token
+                else None
+            )
+        else:
+            worker.signals.error.connect(
+                lambda message: self._show_error("相机枚举失败", message)
+                if token == self._enumeration_token
+                else None
+            )
+        worker.signals.finished.connect(
+            lambda: self.refresh_button.setEnabled(True)
+            if token == self._enumeration_token
+            else None
+        )
         self._start_worker(worker)
 
     def _set_devices(self, devices: list[Any]) -> None:
         self.devices.clear()
         for device in devices:
             self.devices.addItem(device.display_name, device.serial_number)
+        configured_serial = str((self.runtime or {}).get("serial_number", ""))
+        if configured_serial:
+            selected = self.devices.findData(configured_serial)
+            if selected >= 0:
+                self.devices.setCurrentIndex(selected)
         self.status.setText(f"找到 {len(devices)} 台相机")
 
     def start_preview(self, initial_discard_frames: int = 3) -> None:
@@ -495,7 +611,7 @@ class CameraPage(QWidget):
 
     def _set_restart_controls_enabled(self, enabled: bool) -> None:
         for widget in (
-            self.devices, self.refresh_button, self.pixel_format, self.offset_x,
+            self.reload_config_button, self.devices, self.refresh_button, self.pixel_format, self.offset_x,
             self.offset_y, self.width, self.height, self.quality_mode,
         ):
             widget.setEnabled(enabled)
@@ -610,6 +726,7 @@ class CapturePage(QWidget):
         self.plan_table.horizontalHeader().setSectionResizeMode(7, QHeaderView.ResizeMode.Stretch)
         self.plan_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.plan_table.setMaximumHeight(220)
+        self.plan_table.horizontalHeaderItem(4).setToolTip("双击可单独修改任务曝光；修改后自动保存到计划 YAML。")
         self.plan_preview = self.plan_table
         layout.addWidget(self.plan_table)
 
@@ -686,6 +803,9 @@ class CapturePage(QWidget):
         self.load_plan_button.clicked.connect(self.load_guided_plan)
         self.preview_task_button.clicked.connect(self.preview_selected_task)
         self.next_task_button.clicked.connect(self.select_next_task)
+        self.plan_table.itemChanged.connect(self._on_plan_item_changed)
+        self.plan_table.cellClicked.connect(lambda row, _column: self.plan_tasks.setCurrentRow(row))
+        self.plan_tasks.currentRowChanged.connect(self.plan_table.selectRow)
         self.live_auto_stretch.toggled.connect(
             lambda checked: self.live_preview.refresh_display(auto_stretch=checked)
         )
@@ -714,6 +834,26 @@ class CapturePage(QWidget):
 
         if not self.plan_path.text().strip():
             self.plan_path.setText(str(project.workspace / "plans" / f"{self.dataset_id.text().strip()}.yaml"))
+        if self.loaded_plan is not None:
+            mismatch = self._plan_camera_mismatch(self.loaded_plan)
+            if mismatch:
+                self._mark_plan_dirty()
+                self.plan_status.setText(f"相机通道已改变：{mismatch}；请重新生成计划。")
+
+    def _plan_camera_mismatch(self, plan: CapturePlan) -> str | None:
+        runtime = self.camera_page.runtime
+        if runtime is None:
+            return "尚未加载相机通道"
+        if plan.backend != runtime["backend"]:
+            return f"计划 backend={plan.backend}，当前通道 backend={runtime['backend']}"
+        plan_channel = plan.metadata.get("camera_channel")
+        runtime_channel = runtime.get("channel")
+        if plan_channel and runtime_channel and str(plan_channel) != str(runtime_channel):
+            return f"计划通道={plan_channel}，当前通道={runtime_channel}"
+        configured_serial = str(runtime.get("serial_number", ""))
+        if configured_serial and plan.serial_number and configured_serial != plan.serial_number:
+            return f"计划序列号={plan.serial_number}，当前配置序列号={configured_serial}"
+        return None
 
     def _mark_plan_dirty(self, *_args: Any) -> None:
         if self._capture_worker is not None or self._guided_capture_active:
@@ -742,7 +882,13 @@ class CapturePage(QWidget):
             serial_number=self.camera_page.selected_serial() or str(runtime.get("serial_number", "")),
             backend=str(runtime["backend"]),
             backend_options=dict(runtime.get("backend_options", {})),
-            metadata={"created_by": "pyside6_wizard"},
+            metadata={
+                "created_by": "pyside6_wizard",
+                "camera_channel": runtime.get("channel"),
+                "camera_config": str(
+                    runtime.get("camera_config_source", runtime.get("source", ""))
+                ),
+            },
             items=self.recipe_table.recipe_items(image_format),
             board_pattern=runtime.get("board_pattern") or (11, 8),
             quality_thresholds=runtime["quality_thresholds"],
@@ -775,29 +921,151 @@ class CapturePage(QWidget):
         summary = capture_plan_summary(plan)
         self.plan_summary.setText(
             f"拟合组 {summary['fit_group_count']} · 验证组 {summary['validation_group_count']} · "
-            f"任务 {summary['task_count']} · 图像 {summary['image_count']}"
+            f"任务 {summary['task_count']} · 图像 {summary['image_count']} · 双击曝光列可单独调节"
         )
-        self.plan_table.setRowCount(len(summary["tasks"]))
-        for row, record in enumerate(summary["tasks"]):
-            values = (
-                record["split"], record["pose_id"], record["task_id"], record["role"],
-                f"{record['exposure_us']:g}", record["laser_state"], record["quality_mode"],
-                record["relative_output_path"], str(record["frames"]),
-            )
-            for column, value in enumerate(values):
-                item = QTableWidgetItem(str(value))
-                item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
-                self.plan_table.setItem(row, column, item)
+        with QSignalBlocker(self.plan_table):
+            self.plan_table.setRowCount(len(summary["tasks"]))
+            for row, record in enumerate(summary["tasks"]):
+                values = (
+                    record["split"], record["pose_id"], record["task_id"], record["role"],
+                    f"{record['exposure_us']:g}", record["laser_state"], record["quality_mode"],
+                    record["relative_output_path"], str(record["frames"]),
+                )
+                for column, value in enumerate(values):
+                    item = QTableWidgetItem(str(value))
+                    if column == 4:
+                        item.setToolTip("双击输入该任务的曝光时间（μs），按 Enter 保存。")
+                    else:
+                        item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+                    self.plan_table.setItem(row, column, item)
         self.plan_tasks.clear()
         for index, task in enumerate(plan.tasks, start=1):
-            self.plan_tasks.addItem(
-                f"{index:02d}. {task.task_id} · pose {task.pose_id} · {task.quality_mode} · "
-                f"{task.config.exposure_us:g} μs · {task.instruction}"
-            )
+            self.plan_tasks.addItem(self._plan_task_text(index, task))
         if plan.tasks:
             self.plan_tasks.setCurrentRow(0)
             self.plan_table.selectRow(0)
         self.guided_preview_index = None
+
+    @staticmethod
+    def _plan_task_text(index: int, task: CaptureTask) -> str:
+        return (
+            f"{index:02d}. {task.task_id} · pose {task.pose_id} · {task.quality_mode} · "
+            f"{task.config.exposure_us:g} μs · {task.instruction}"
+        )
+
+    def _on_plan_item_changed(self, item: QTableWidgetItem) -> None:
+        """把计划表中的单任务曝光修改回写到模型、YAML 和续采 manifest。"""
+
+        if item.column() != 4 or self.loaded_plan is None:
+            return
+        row = item.row()
+        if row < 0 or row >= len(self.loaded_plan.tasks):
+            return
+        old_plan = self.loaded_plan
+        old_task = old_plan.tasks[row]
+
+        def restore_cell() -> None:
+            with QSignalBlocker(self.plan_table):
+                item.setText(f"{old_task.config.exposure_us:g}")
+
+        try:
+            if self._plan_dirty:
+                raise ValueError("配置已改变，请先重新生成并检查计划")
+            if self._capture_worker is not None:
+                raise ValueError("后台采集正在运行，不能修改任务曝光")
+            if self._capture_in_progress:
+                raise ValueError("当前任务正在采集，完成当前任务后再调整下一任务曝光")
+            exposure_us = float(item.text().strip())
+            updated_task = replace(
+                old_task,
+                config=old_task.config.updated({"exposure_us": exposure_us}),
+            )
+            if updated_task.config.exposure_us == old_task.config.exposure_us:
+                restore_cell()
+                return
+            tasks = list(old_plan.tasks)
+            tasks[row] = updated_task
+            updated_plan = replace(old_plan, tasks=tuple(tasks))
+            loaded = self._save_task_exposure_update(old_plan, updated_plan, old_task.task_id)
+        except Exception as exc:
+            restore_cell()
+            QMessageBox.warning(self, "无法修改任务曝光", str(exc))
+            return
+
+        self.loaded_plan = loaded
+        self._generated_recipe = None
+        self._plan_dirty = False
+        task = loaded.tasks[row]
+        with QSignalBlocker(self.plan_table):
+            item.setText(f"{task.config.exposure_us:g}")
+            output_item = self.plan_table.item(row, 7)
+            if output_item is not None:
+                output_item.setText(task.relative_path(1).as_posix())
+        list_item = self.plan_tasks.item(row)
+        if list_item is not None:
+            completed_prefix = "✓ " if list_item.text().startswith("✓ ") else ""
+            list_item.setText(completed_prefix + self._plan_task_text(row + 1, task))
+        self.plan_tasks.setCurrentRow(row)
+        self.plan_table.selectRow(row)
+        self.plan_status.setText(
+            f"{task.task_id} 曝光已更新为 {task.config.exposure_us:g} μs，并保存到 {self.loaded_plan_path}"
+        )
+        preview = self.camera_page.preview_thread
+        if self.guided_preview_index == row and preview is not None and preview.isRunning():
+            self.preview_selected_task()
+
+    def _save_task_exposure_update(
+        self,
+        old_plan: CapturePlan,
+        updated_plan: CapturePlan,
+        task_id: str,
+    ) -> CapturePlan:
+        """保存单任务曝光；存在续采现场时同步其计划快照与 hash。"""
+
+        if self.loaded_plan_path is None:
+            raise ValueError("当前计划没有可写入的 YAML 路径")
+        work_dir = old_plan.output_dir.expanduser().resolve().parent / (
+            f".{old_plan.output_dir.expanduser().resolve().name}.inprogress"
+        )
+        manifest_path = work_dir / "dataset_manifest.yaml"
+        manifest: dict[str, Any] | None = None
+        if manifest_path.is_file():
+            candidate = load_document(manifest_path)
+            if candidate.get("plan_sha256") != capture_plan_hash(old_plan):
+                # 输出目录可能保留上一次异常退出/失败采集的现场。未勾选
+                # “续采”时用户是在编辑新计划，不应被旧现场阻塞；一旦明确
+                # 续采或当前确实正在写帧，仍严格拒绝，避免混用旧帧。
+                capture_active = (
+                    self._capture_worker is not None
+                    or self._capture_in_progress
+                )
+                if self.resume.isChecked() or capture_active:
+                    raise ValueError("当前计划与未完成数据集不一致，拒绝修改曝光")
+            else:
+                manifest = candidate
+                task_state = manifest.get("tasks", {}).get(task_id, {})
+                if (
+                    int(task_state.get("frames_captured") or 0) > 0
+                    or task_state.get("status") == "completed"
+                ):
+                    raise ValueError(f"任务 {task_id} 已开始采集，不能再修改曝光")
+
+        saved = save_generated_capture_plan(
+            updated_plan,
+            self.loaded_plan_path,
+            overwrite=True,
+        )
+        try:
+            if manifest is not None:
+                manifest["plan_sha256"] = capture_plan_hash(updated_plan)
+                manifest["plan"] = capture_plan_payload(updated_plan)
+                _save_state(work_dir, manifest, write_frames_csv=False)
+        except Exception:
+            # YAML 与续采 manifest 必须保持同一个计划；同步失败时恢复旧 YAML。
+            save_generated_capture_plan(old_plan, self.loaded_plan_path, overwrite=True)
+            raise
+        self.loaded_plan_path = saved.resolve()
+        return load_capture_plan(saved)
 
     def _set_capture_buttons_ready(self) -> None:
         ready = (
@@ -836,7 +1104,7 @@ class CapturePage(QWidget):
         for widget in (
             self.plan_path, self.output, self.dataset_id, self.image_format,
             self.fit_groups, self.start_index, self.index_digits,
-            self.include_validation, self.validation_groups, self.resume,
+            self.include_validation, self.validation_groups, self.resume, self.plan_table,
             self.recipe_table, self.load_plan_button,
         ):
             widget.setEnabled(not running)
@@ -889,6 +1157,10 @@ class CapturePage(QWidget):
         if self.camera_page.runtime is None:
             QMessageBox.warning(self, "相机未配置", "请先在相机页面加载配置")
             return
+        mismatch = self._plan_camera_mismatch(self.loaded_plan)
+        if mismatch:
+            QMessageBox.warning(self, "相机通道不匹配", mismatch)
+            return
         resume_requested = self.resume.isChecked() if resume is None else bool(resume)
         try:
             row = self._guided_start_row(resume_requested)
@@ -919,6 +1191,9 @@ class CapturePage(QWidget):
             QMessageBox.warning(self, "相机未配置", "请先在相机页面加载配置"); return
         if self.loaded_plan is None or self._plan_dirty:
             QMessageBox.warning(self, "计划未就绪", "请先点击“生成并检查计划”，并保持配置不变"); return
+        mismatch = self._plan_camera_mismatch(self.loaded_plan)
+        if mismatch:
+            QMessageBox.warning(self, "相机通道不匹配", mismatch); return
         self.camera_page.stop_preview()
         try:
             provider = build_camera_provider(
@@ -1061,6 +1336,9 @@ class CapturePage(QWidget):
         path = Path(self.plan_path.text()).expanduser()
         try:
             plan = load_capture_plan(path)
+            mismatch = self._plan_camera_mismatch(plan)
+            if mismatch:
+                raise ValueError(f"采集计划与当前相机通道不一致：{mismatch}")
         except Exception as exc:
             QMessageBox.critical(self, "采集计划无效", str(exc)); return
         self.camera_page.stop_preview()
@@ -1553,7 +1831,18 @@ class CalibrationPage(QWidget):
         self.project: WizardProject | None = None
         layout = QVBoxLayout(self)
         title = QLabel("4. 一键执行标定 workflow"); title.setObjectName("pageTitle"); layout.addWidget(title)
-        self.workflow = QLineEdit(); layout.addWidget(_labeled_path("Workflow YAML", self.workflow, self, "YAML (*.yaml *.yml)"))
+        self.workflow = QLineEdit()
+        self.workflow.setReadOnly(True)
+        self.workflow.setToolTip("Workflow 由第 1 页项目配置统一选择。")
+        layout.addWidget(
+            _labeled_path(
+                "Workflow YAML",
+                self.workflow,
+                self,
+                "YAML (*.yaml *.yml)",
+                browse=False,
+            )
+        )
         self.refresh_button = QPushButton("检查 Workflow 阶段")
         self.update_workflow_button = QPushButton("从最近采集结果更新 Workflow 输入")
         self.update_workflow_button.setEnabled(False)
@@ -2150,9 +2439,20 @@ def _path_row(line_edit: QLineEdit, parent: QWidget, *, directory: bool = False,
     return widget
 
 
-def _labeled_path(label: str, line_edit: QLineEdit, parent: QWidget, file_filter: str) -> QWidget:
+def _labeled_path(
+    label: str,
+    line_edit: QLineEdit,
+    parent: QWidget,
+    file_filter: str,
+    *,
+    browse: bool = True,
+) -> QWidget:
     widget = QWidget(parent); layout = QHBoxLayout(widget); layout.setContentsMargins(0, 0, 0, 0)
-    layout.addWidget(QLabel(label)); layout.addWidget(_path_row(line_edit, parent, file_filter=file_filter), 1)
+    layout.addWidget(QLabel(label))
+    layout.addWidget(
+        _path_row(line_edit, parent, file_filter=file_filter) if browse else line_edit,
+        1,
+    )
     return widget
 
 

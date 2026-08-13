@@ -2,7 +2,8 @@ schema_version: 1
 project_id: mv-cs050-60gm-calibration
 laser_model: circular_cone
 workspace: ../projects/mv-cs050-60gm-calibration
-camera_config: camera.mvs.example.yaml
+camera_config: camera_channels.example.yaml
+camera_channel: hikrobot
 laser:
   orientation: horizontal
 workflow_plan: workflow.example.yaml

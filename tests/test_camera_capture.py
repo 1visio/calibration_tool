@@ -1,5 +1,6 @@
 import tempfile
 import unittest
+from dataclasses import replace
 from pathlib import Path
 from unittest.mock import patch
 
@@ -36,9 +37,27 @@ class _RecordingProvider(SyntheticCameraProvider):
         self.sessions = []
 
     def open(self, serial_number, config):
-        session = super().open(serial_number, config)
+        session = _RecordingSession(super().open(serial_number, config))
         self.sessions.append(session)
         return session
+
+
+class _RecordingSession:
+    def __init__(self, inner):
+        self.inner = inner
+        self.configure_calls = []
+        self.exposure_gain_calls = []
+
+    def __getattr__(self, name):
+        return getattr(self.inner, name)
+
+    def configure(self, config):
+        self.configure_calls.append(config)
+        return self.inner.configure(config)
+
+    def update_exposure_gain(self, exposure_us, gain_db):
+        self.exposure_gain_calls.append((exposure_us, gain_db))
+        return self.inner.update_exposure_gain(exposure_us, gain_db)
 
 
 class CameraCaptureTests(unittest.TestCase):
@@ -110,11 +129,30 @@ class CameraCaptureTests(unittest.TestCase):
             )
 
             self.assertEqual(seen, [("exposure_01", 800.0), ("exposure_02", 1200.0)])
+            self.assertEqual(provider.sessions[0].configure_calls, [])
+            self.assertEqual(provider.sessions[0].exposure_gain_calls, [(1200.0, 0.0)])
+
+    def test_structural_change_still_uses_full_configure(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            provider = _RecordingProvider(target_fps=1000)
+            plan = self._plan(Path(temporary) / "dataset")
+            second = replace(
+                plan.tasks[1],
+                config=plan.tasks[1].config.updated({"width": 32}),
+            )
+            run_capture_plan(replace(plan, tasks=(plan.tasks[0], second)), provider)
+            self.assertEqual(len(provider.sessions[0].configure_calls), 1)
+            self.assertEqual(provider.sessions[0].exposure_gain_calls, [])
 
     def test_failed_plan_resumes_without_recapturing_completed_task(self):
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary) / "dataset"
             plan = self._plan(output)
+            second = replace(
+                plan.tasks[1],
+                config=plan.tasks[1].config.updated({"width": 32}),
+            )
+            plan = replace(plan, tasks=(plan.tasks[0], second))
             with self.assertRaises(CaptureError):
                 run_capture_plan(plan, _FailOnConfigureProvider(target_fps=1000))
             work = output.parent / f".{output.name}.inprogress"

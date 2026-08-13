@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import asdict
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -8,6 +8,33 @@ from ..errors import ConfigError
 from ..io_utils import canonical_mapping_hash, load_document, resolve_relative
 from ..laser import default_laser_orientation, parse_laser_config
 from .models import CameraConfig, CapturePlan, CaptureTask, QualityThresholds
+
+
+@dataclass(frozen=True, slots=True)
+class CameraChannelDefinition:
+    """一个可切换相机通道及其推荐分析 workflow。"""
+
+    name: str
+    label: str
+    camera_config: Path
+    workflow_plan: Path | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class CameraChannelRegistry:
+    """相机通道注册表；各通道继续复用已有单相机 YAML。"""
+
+    source: Path
+    default_channel: str
+    channels: tuple[CameraChannelDefinition, ...]
+
+    def get(self, name: str | None = None) -> CameraChannelDefinition:
+        selected = str(name or self.default_channel).strip()
+        for channel in self.channels:
+            if channel.name == selected:
+                return channel
+        available = ", ".join(channel.name for channel in self.channels)
+        raise ConfigError(f"未知相机通道 {selected!r}；可用通道：{available}")
 
 
 def _mapping(value: Any, name: str) -> dict[str, Any]:
@@ -45,9 +72,103 @@ def _board_pattern(value: Any) -> tuple[int, int] | None:
     return pattern
 
 
-def load_camera_config(path: str | Path) -> dict[str, Any]:
+def load_camera_channel_registry(path: str | Path) -> CameraChannelRegistry:
     source = Path(path).expanduser().resolve()
     document = load_document(source)
+    return _camera_channel_registry(source, document)
+
+
+def _camera_channel_registry(
+    source: Path,
+    document: Mapping[str, Any],
+) -> CameraChannelRegistry:
+    channels_value = document.get("channels")
+    if not isinstance(channels_value, Mapping) or not channels_value:
+        raise ConfigError(f"相机通道注册表缺少非空 channels：{source}")
+
+    channels: list[CameraChannelDefinition] = []
+    allowed = {"label", "config", "workflow_plan"}
+    for raw_name, raw_value in channels_value.items():
+        name = str(raw_name).strip()
+        if not name:
+            raise ConfigError("相机通道名称不能为空")
+        if isinstance(raw_value, (str, Path)):
+            item = {"config": raw_value}
+        else:
+            item = _mapping(raw_value, f"channels.{name}")
+        unknown = set(item) - allowed
+        if unknown:
+            raise ConfigError(f"channels.{name} 包含未知字段：{sorted(unknown)}")
+        config_value = item.get("config")
+        if not config_value:
+            raise ConfigError(f"channels.{name} 缺少 config")
+        label = str(item.get("label", name)).strip()
+        if not label:
+            raise ConfigError(f"channels.{name}.label 不能为空")
+        workflow_value = item.get("workflow_plan")
+        channels.append(
+            CameraChannelDefinition(
+                name=name,
+                label=label,
+                camera_config=resolve_relative(source, config_value),
+                workflow_plan=(
+                    resolve_relative(source, workflow_value) if workflow_value else None
+                ),
+            )
+        )
+
+    default_channel = str(document.get("default_channel", channels[0].name)).strip()
+    registry = CameraChannelRegistry(source, default_channel, tuple(channels))
+    registry.get(default_channel)
+    return registry
+
+
+def load_camera_config(
+    path: str | Path,
+    *,
+    channel: str | None = None,
+) -> dict[str, Any]:
+    """加载单相机配置，或从统一通道注册表中选择一个配置。
+
+    旧版单相机 YAML 保持兼容；注册表模式额外返回 ``channel``、
+    ``channel_label``、``channel_registry``、``camera_config_source`` 和
+    推荐的 ``workflow_plan``。
+    """
+
+    source = Path(path).expanduser().resolve()
+    document = load_document(source)
+    if "channels" in document:
+        registry = _camera_channel_registry(source, document)
+        selected = registry.get(channel)
+        selected_document = load_document(selected.camera_config)
+        if "channels" in selected_document:
+            raise ConfigError(
+                f"相机通道不能嵌套引用另一个通道注册表：{selected.camera_config}"
+            )
+        runtime = _camera_runtime(selected.camera_config, selected_document)
+        runtime.update(
+            source=source,
+            camera_config_source=selected.camera_config,
+            channel=selected.name,
+            channel_label=selected.label,
+            channel_registry=registry,
+            workflow_plan=selected.workflow_plan,
+        )
+        return runtime
+    if channel is not None and str(channel).strip():
+        raise ConfigError(f"指定了相机通道 {channel!r}，但配置不是通道注册表：{source}")
+    runtime = _camera_runtime(source, document)
+    runtime.update(
+        camera_config_source=source,
+        channel=None,
+        channel_label=runtime["backend"],
+        channel_registry=None,
+        workflow_plan=None,
+    )
+    return runtime
+
+
+def _camera_runtime(source: Path, document: Mapping[str, Any]) -> dict[str, Any]:
     backend = str(document.get("backend", "mvs"))
     if backend not in {"mvs", "daheng", "synthetic"}:
         raise ConfigError("backend 必须是 mvs、daheng 或 synthetic")

@@ -7,7 +7,8 @@ workspace: .
 capture_output: data
 
 # 相对于本文件：projects/daheng -> calibration_tool/configs。
-camera_config: ../../configs/camera.daheng.example.yaml
+camera_config: ../../configs/camera_channels.example.yaml
+camera_channel: daheng
 workflow_plan: ../../configs/workflow_daheng.yaml
 
 # 当前大恒相机图像中的激光条纹沿竖直方向延伸。

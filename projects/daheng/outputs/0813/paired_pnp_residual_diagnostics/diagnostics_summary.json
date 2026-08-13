@@ -1,0 +1,307 @@
+{
+  "schema_version": 1,
+  "ONE_DIMENSIONAL_BV": "PARTIAL",
+  "verdict_checks": [
+    "fit median pair correlation >= 0.7: FAIL",
+    "fit explained energy >= 0.7: FAIL",
+    "validation explained energy using fit profile >= 0.5: FAIL",
+    "fit >=half-frame coverage >= 50% of image rows: PASS",
+    "fit median sign consistency >= 0.8: PASS"
+  ],
+  "scope": {
+    "reference_plane": "same-ID independent chess PnP plane in ground frame",
+    "laser_point_plane_fit_used": false,
+    "compensation_applied": false,
+    "formal_lut_built": false,
+    "median_profile_smoothed": false,
+    "median_profile_interpolated": false,
+    "validation_participates_in_fit_median_bv": false
+  },
+  "residual_definition": "Z_plane=-(plane_nx*Xg+plane_ny*Yg+plane_d)/plane_nz; residual_z=Zg-Z_plane",
+  "binning": {
+    "axis": "v",
+    "bin_width_px": 1,
+    "within_frame_aggregation": "median",
+    "v_range_px": [
+      0,
+      2999
+    ]
+  },
+  "frozen_settings": {
+    "camera_intrinsics": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\calibration_daheng_0811\\calibration_result.yaml",
+    "laser_model": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\calibration_daheng_0811\\circular_cone.yaml",
+    "laser_model_type": "circular_cone",
+    "ground_extrinsics": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\calibration_daheng_0811\\camera_ground_extrinsics.yaml",
+    "ground_u_compensation": null,
+    "steger_method": "steger",
+    "steger": {
+      "sigma": 1.5,
+      "threshold": 30.0,
+      "deriv_thresh": 0.5,
+      "roi_margin": 48,
+      "roi_max_height": 512,
+      "scan_axis": "row"
+    },
+    "reconstruction": {
+      "parallel_epsilon": 1e-09,
+      "quadratic_epsilon": 1e-12,
+      "min_camera_depth_mm": 630.0,
+      "max_camera_depth_mm": 715.0,
+      "model_range_margin_mm": 2.0
+    }
+  },
+  "provenance": {
+    "data_root": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813",
+    "measurement_config": {
+      "path": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\measure_tool_daheng_0811.yaml",
+      "sha256": "9bf6216c9584823511c3926012cd705e27b356a2976e58609cbc9767fb333cee"
+    },
+    "pnp_audit": {
+      "path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0813\\pnp_reference_audit\\paired_pnp_reference_audit.csv",
+      "sha256": "fcd507488fa6d9a75e1353cae07331fda19490dd5b399bee2aae04ce4545014a"
+    },
+    "intrinsics_sha256": "91620a158bde846a47a5cfce6fe79eb34d0df775f70849b8509f559cec742640",
+    "laser_model_sha256": "478d11c97c174e75d3167133a050540573a93dc28451e4b961ce12913709feac",
+    "ground_extrinsics_sha256": "661087ac4ab93a5bda07a2e722f506760cdce71d0a1f0d24ce0dd5b5151b5d0e"
+  },
+  "splits": {
+    "fit": {
+      "frame_count": 10,
+      "frame_ids": [
+        "001",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "007",
+        "008",
+        "009",
+        "010"
+      ],
+      "residual_bins": {
+        "sample_count": 17564,
+        "mean_mm": -0.06844787101663102,
+        "median_mm": -0.08902645148414874,
+        "std_mm": 0.17426711349194926,
+        "mae_mm": 0.14278085907168805,
+        "rmse_mm": 0.18722288546527652,
+        "p95_abs_mm": 0.37374146673520175,
+        "max_abs_mm": 0.8076380917878218,
+        "positive_fraction": 0.23035754953313595
+      },
+      "pair_correlation_overlap_ge_100": {
+        "eligible_pair_count": 45,
+        "median": 0.5152577413726555,
+        "p10": -0.05669592521964255,
+        "p90": 0.7774487270769752,
+        "fraction_positive": 0.8444444444444444,
+        "fraction_ge_0_5": 0.5333333333333333
+      },
+      "median_bv_explained_energy": {
+        "comparable_bin_count": 17564,
+        "total_residual_energy_mm2": 615.6605088999053,
+        "unexplained_energy_mm2": 268.07719204771684,
+        "explained_fraction": 0.5645697780311891
+      },
+      "support": {
+        "rows_observed": 3000,
+        "rows_with_at_least_2_frames": 2997,
+        "rows_with_at_least_half_frames": 2535,
+        "rows_with_all_frames": 0,
+        "max_sample_count": 9,
+        "image_fraction_with_at_least_half_frames": 0.845,
+        "median_std_mm_at_least_half_frames": 0.07466382209369622,
+        "median_sign_consistency_at_least_half_frames": 0.8571428571428572,
+        "fraction_sign_consistency_ge_0_8_at_least_half_frames": 0.7297830374753451
+      },
+      "regions": {
+        "top_0_299": {
+          "v_range": [
+            0,
+            299
+          ],
+          "residual_bins": {
+            "sample_count": 1605,
+            "mean_mm": 0.24868893772074452,
+            "median_mm": 0.16765499588677174,
+            "std_mm": 0.24551927688683803,
+            "mae_mm": 0.26890959755059385,
+            "rmse_mm": 0.3494114274214257,
+            "p95_abs_mm": 0.7011367805068294,
+            "max_abs_mm": 0.8076380917878218,
+            "positive_fraction": 0.8598130841121495
+          },
+          "row_count_with_at_least_2_frames": 300,
+          "median_row_sample_count": 5.0,
+          "median_residual_std_v_mm": 0.25329518541464635,
+          "median_residual_mad_v_mm": 0.13529165291336842,
+          "median_sign_consistency": 1.0,
+          "median_abs_diagnostic_bias_mm": 0.18244187873881484
+        },
+        "middle_300_2699": {
+          "v_range": [
+            300,
+            2699
+          ],
+          "residual_bins": {
+            "sample_count": 13979,
+            "mean_mm": -0.08319326818546566,
+            "median_mm": -0.09081577955739886,
+            "std_mm": 0.1003802890156392,
+            "mae_mm": 0.10761312054854448,
+            "rmse_mm": 0.13037101473979038,
+            "p95_abs_mm": 0.23548284420808688,
+            "max_abs_mm": 0.5287457032581944,
+            "positive_fraction": 0.1627441161742614
+          },
+          "row_count_with_at_least_2_frames": 2397,
+          "median_row_sample_count": 6.0,
+          "median_residual_std_v_mm": 0.06812623508267635,
+          "median_residual_mad_v_mm": 0.04094522468238973,
+          "median_sign_consistency": 1.0,
+          "median_abs_diagnostic_bias_mm": 0.09365034028435412
+        },
+        "bottom_2700_2999": {
+          "v_range": [
+            2700,
+            2999
+          ],
+          "residual_bins": {
+            "sample_count": 1980,
+            "mean_mm": -0.2214168967743827,
+            "median_mm": -0.304973808074953,
+            "std_mm": 0.20729842243337132,
+            "mae_mm": 0.2888279255143043,
+            "rmse_mm": 0.30327607022163083,
+            "p95_abs_mm": 0.4079806766512595,
+            "max_abs_mm": 0.4829023669751912,
+            "positive_fraction": 0.19747474747474747
+          },
+          "row_count_with_at_least_2_frames": 300,
+          "median_row_sample_count": 6.0,
+          "median_residual_std_v_mm": 0.19246824548374492,
+          "median_residual_mad_v_mm": 0.03051644711950373,
+          "median_sign_consistency": 0.8333333333333334,
+          "median_abs_diagnostic_bias_mm": 0.30618042975980286
+        }
+      }
+    },
+    "validation": {
+      "frame_count": 3,
+      "frame_ids": [
+        "011",
+        "012",
+        "013"
+      ],
+      "residual_bins": {
+        "sample_count": 6049,
+        "mean_mm": -0.11407174316113848,
+        "median_mm": -0.12278793003775865,
+        "std_mm": 0.14743054262844682,
+        "mae_mm": 0.1549189773660204,
+        "rmse_mm": 0.18639885784305352,
+        "p95_abs_mm": 0.3471621253382528,
+        "max_abs_mm": 0.6832965039248267,
+        "positive_fraction": 0.09637956687055711
+      },
+      "pair_correlation_overlap_ge_100": {
+        "eligible_pair_count": 3,
+        "median": 0.4569982353185124,
+        "p10": 0.4156411730698053,
+        "p90": 0.7986582112663649,
+        "fraction_positive": 1.0,
+        "fraction_ge_0_5": 0.3333333333333333
+      },
+      "fit_profile_observed_explained_energy": {
+        "comparable_bin_count": 6049,
+        "total_residual_energy_mm2": 210.1696874072238,
+        "unexplained_energy_mm2": 133.6061461190169,
+        "explained_fraction": 0.3642939295040095
+      },
+      "support": {
+        "rows_observed": 2987,
+        "rows_with_at_least_2_frames": 2445,
+        "rows_with_at_least_half_frames": 2445,
+        "rows_with_all_frames": 617,
+        "max_sample_count": 3,
+        "image_fraction_with_at_least_half_frames": 0.815,
+        "median_std_mm_at_least_half_frames": 0.030305297109646794,
+        "median_sign_consistency_at_least_half_frames": 1.0,
+        "fraction_sign_consistency_ge_0_8_at_least_half_frames": 0.885480572597137
+      },
+      "regions": {
+        "top_0_299": {
+          "v_range": [
+            0,
+            299
+          ],
+          "residual_bins": {
+            "sample_count": 684,
+            "mean_mm": 0.10266080968292633,
+            "median_mm": 0.006491673994676456,
+            "std_mm": 0.22496084749054376,
+            "mae_mm": 0.1429989202293949,
+            "rmse_mm": 0.24712878696443233,
+            "p95_abs_mm": 0.5799528332269874,
+            "max_abs_mm": 0.6832965039248267,
+            "positive_fraction": 0.5380116959064327
+          },
+          "row_count_with_at_least_2_frames": 300,
+          "median_row_sample_count": 2.0,
+          "median_residual_std_v_mm": 0.11656843117124221,
+          "median_residual_mad_v_mm": 0.04528436975564085,
+          "median_sign_consistency": 0.6666666666666666,
+          "median_abs_diagnostic_bias_mm": 0.04327147940694642
+        },
+        "middle_300_2699": {
+          "v_range": [
+            300,
+            2699
+          ],
+          "residual_bins": {
+            "sample_count": 4734,
+            "mean_mm": -0.139126690826221,
+            "median_mm": -0.13044379180499843,
+            "std_mm": 0.0663851762663871,
+            "mae_mm": 0.139379425488564,
+            "rmse_mm": 0.15415024101415112,
+            "p95_abs_mm": 0.25971287190130676,
+            "max_abs_mm": 0.36681345507509655,
+            "positive_fraction": 0.004013519222644698
+          },
+          "row_count_with_at_least_2_frames": 1950,
+          "median_row_sample_count": 2.0,
+          "median_residual_std_v_mm": 0.026829705953159484,
+          "median_residual_mad_v_mm": 0.01684166023486846,
+          "median_sign_consistency": 1.0,
+          "median_abs_diagnostic_bias_mm": 0.12441053934046137
+        },
+        "bottom_2700_2999": {
+          "v_range": [
+            2700,
+            2999
+          ],
+          "residual_bins": {
+            "sample_count": 631,
+            "mean_mm": -0.1610367889596165,
+            "median_mm": -0.27868135220365353,
+            "std_mm": 0.2505285323555286,
+            "mae_mm": 0.2844238231177326,
+            "rmse_mm": 0.2976540349906484,
+            "p95_abs_mm": 0.4221113331157306,
+            "max_abs_mm": 0.47197218571747446,
+            "positive_fraction": 0.31061806656101426
+          },
+          "row_count_with_at_least_2_frames": 195,
+          "median_row_sample_count": 3.0,
+          "median_residual_std_v_mm": 0.03812514101407722,
+          "median_residual_mad_v_mm": 0.023645858679736453,
+          "median_sign_consistency": 1.0,
+          "median_abs_diagnostic_bias_mm": 0.2526140330142862
+        }
+      }
+    }
+  },
+  "heatmap_color_limit_p99_abs_mm": 0.595634704995529
+}

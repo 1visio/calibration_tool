@@ -29,6 +29,7 @@ class CalibrationWizardWindow(QMainWindow):
         *,
         project_path: Path | None = None,
         default_camera_config: Path,
+        default_camera_channel: str | None = None,
         parent=None,
     ) -> None:
         super().__init__(parent)
@@ -37,7 +38,7 @@ class CalibrationWizardWindow(QMainWindow):
         self.project: WizardProject | None = None
         self.setWindowTitle("线激光扫描系统 · 标定向导 MVP")
         self.resize(1440, 900)
-        self._build_ui(default_camera_config)
+        self._build_ui(default_camera_config, default_camera_channel)
         self._connect_signals()
         self._apply_style()
         if project_path is not None:
@@ -45,7 +46,11 @@ class CalibrationWizardWindow(QMainWindow):
         else:
             self.project_page.apply()
 
-    def _build_ui(self, default_camera_config: Path) -> None:
+    def _build_ui(
+        self,
+        default_camera_config: Path,
+        default_camera_channel: str | None,
+    ) -> None:
         central = QWidget(self); root = QVBoxLayout(central); root.setContentsMargins(0, 0, 0, 0); root.setSpacing(0)
         header = QFrame(); header.setObjectName("header"); header_layout = QHBoxLayout(header)
         title = QLabel("线激光标定向导"); title.setObjectName("appTitle")
@@ -56,7 +61,7 @@ class CalibrationWizardWindow(QMainWindow):
         self.steps = QListWidget(); self.steps.setObjectName("steps"); self.steps.setFixedWidth(190)
         self.steps.addItems([f"{index + 1}  {name}" for index, name in enumerate(self.STEP_NAMES)])
         self.stack = QStackedWidget()
-        self.project_page = ProjectPage(default_camera_config)
+        self.project_page = ProjectPage(default_camera_config, default_camera_channel)
         self.camera_page = CameraPage(self.thread_pool)
         self.capture_page = CapturePage(self.thread_pool, self.camera_page)
         self.calibration_page = CalibrationPage(self.thread_pool)
@@ -92,9 +97,14 @@ class CalibrationWizardWindow(QMainWindow):
         self.project = project
         self.project_label.setText(f"{project.project_id}  ·  {project.workspace}")
         self.camera_page.stop_preview()
-        self.camera_page.load_config(project.camera_config)
-        if self.camera_page.runtime is not None:
+        loaded = self.camera_page.load_config(
+            project.camera_config,
+            channel=project.camera_channel,
+        )
+        if loaded and self.camera_page.runtime is not None:
             self.camera_page.runtime["laser"] = project.laser
+            # 项目/通道应用后后台枚举；失败只写状态，不在启动时弹出阻塞对话框。
+            self.camera_page.enumerate_devices(silent=True)
         self.capture_page.set_project(project)
         self.calibration_page.set_project(project)
         self.results_page.set_project(project)

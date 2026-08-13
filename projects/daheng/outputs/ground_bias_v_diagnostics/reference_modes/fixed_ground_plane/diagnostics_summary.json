@@ -1,0 +1,90 @@
+{
+  "reference_plane_mode": "fixed_ground_plane",
+  "residual_formula": "r_i = Zg - Z0",
+  "input_dir": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\ground_bias_v_experiment_0812\\input",
+  "frame_count": 31,
+  "frame_ids": [
+    "001",
+    "002",
+    "003",
+    "004",
+    "005",
+    "006",
+    "007",
+    "008",
+    "009",
+    "010",
+    "011",
+    "012",
+    "013",
+    "014",
+    "015",
+    "016",
+    "017",
+    "018",
+    "019",
+    "020",
+    "021",
+    "022",
+    "023",
+    "024",
+    "025",
+    "026",
+    "027",
+    "028",
+    "029",
+    "030",
+    "031"
+  ],
+  "compensation_applied": false,
+  "smooth_window_applied": false,
+  "signed_residual_definition": "vertical ground-frame residual in mm, not orthogonal point-to-plane distance",
+  "v_range": [
+    0,
+    2999
+  ],
+  "support": {
+    "rows_observed": 3000,
+    "rows_with_at_least_10_frames": 2912,
+    "max_sample_count": 24
+  },
+  "metric_definitions": {
+    "pair_correlation": "unique frame pairs with common v support >= 100",
+    "explained_residual_energy": "1 - sum((r-median_profile)^2)/sum(r^2) over observed bins",
+    "median_residual_std_mm": "median per-v cross-frame std for sample_count >= 10",
+    "median_abs_bias_mm": "median |per-v residual median| for sample_count >= 10",
+    "sign_mixing_fraction": "fraction of well-supported rows whose positive-residual fraction is in [0.35, 0.65]",
+    "region_std": "median per-v cross-frame std in fixed image bands for sample_count >= 2"
+  },
+  "comparison_metrics": {
+    "median_pair_correlation": 0.29777151978994276,
+    "fraction_pair_corr_ge_0.5": 0.265658747300216,
+    "explained_residual_energy": 0.3270716993226247,
+    "median_residual_std_mm": 0.11839340383181438,
+    "median_abs_bias_mm": 0.06266475,
+    "sign_mixing_fraction": 0.15487637362637363,
+    "top_region_std": 0.18848627531317375,
+    "middle_region_std": 0.10536829644678698,
+    "bottom_region_std": 0.18386445428433307,
+    "well_supported_row_count": 2912,
+    "retained_pair_count": 463
+  },
+  "heatmap_color_limit_mm": 0.5053489999999999,
+  "apparent_tilt_warning": "self-fit apparent tilt is derived from narrow-band reconstructed points and is not checkerboard mechanical tilt",
+  "fixed_ground_z0_mm": 0.0,
+  "fixed_ground_z0_source": {
+    "path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0811\\ground_extrinsics\\camera_ground_extrinsics.yaml",
+    "units": "mm",
+    "zero_surface": "checkerboard pattern surface",
+    "origin": "intersection of camera principal axis and checkerboard pattern plane",
+    "Zg_definition": "checkerboard reference-plane normal toward camera; positive for protrusions",
+    "ground_plane_coefficients_from_transform": [
+      -1.2134170485891476e-17,
+      0.0,
+      1.0,
+      -1.13686837721616e-13
+    ],
+    "transformed_z0_mm_before_zero_normalization": 1.13686837721616e-13,
+    "reason": "The checkerboard pattern surface explicitly defines Zg=0, and its camera-frame plane transforms numerically to that ground-frame plane."
+  }
+}

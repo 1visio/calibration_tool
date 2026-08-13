@@ -11,6 +11,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
+import yaml
 
 
 ROOT = Path(__file__).resolve().parents[5]
@@ -19,6 +20,7 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from generate_ground_bias_compensation import (  # noqa: E402
+    FramePoints,
     bin_frame,
     frame_plane_residual,
     load_csv_or_txt,
@@ -31,6 +33,137 @@ INPUT_DIR = (
 )
 OUTPUT_DIR = Path(__file__).resolve().parent
 FRAME_COUNT = 31
+REFERENCE_PLANE_MODES = (
+    "self_fitted",
+    "fixed_normal_per_frame_offset",
+    "fixed_ground_plane",
+)
+GROUND_EXTRINSICS = (
+    ROOT
+    / "calibration_tool/projects/daheng/outputs/0811/ground_extrinsics/camera_ground_extrinsics.yaml"
+)
+
+
+def load_fixed_ground_z0(path: Path) -> tuple[float, dict[str, object]]:
+    """Read the explicit ground-coordinate zero surface; never assume Z0 silently."""
+
+    document = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(document, dict):
+        raise ValueError(f"Ground extrinsics must be a mapping: {path}")
+    if str(document.get("units", "")).strip().lower() != "mm":
+        raise ValueError(f"Ground extrinsics must declare units: mm: {path}")
+    convention = document.get("coordinate_convention")
+    if not isinstance(convention, dict):
+        raise ValueError(f"Ground extrinsics lacks coordinate_convention: {path}")
+    zero_surface = str(convention.get("zero_surface", "")).strip().lower()
+    origin = str(convention.get("origin", "")).strip().lower()
+    zg_definition = str(convention.get("Zg", "")).strip()
+    if zero_surface != "checkerboard pattern surface":
+        raise ValueError(
+            "Cannot determine Z0 reliably: zero_surface is not the checkerboard pattern surface"
+        )
+    if "checkerboard pattern plane" not in origin:
+        raise ValueError(
+            "Cannot determine Z0 reliably: origin is not defined on the checkerboard pattern plane"
+        )
+    transform = np.asarray(document.get("T_ground_from_camera"), dtype=np.float64)
+    if transform.shape != (4, 4) or not np.all(np.isfinite(transform)):
+        raise ValueError(
+            "Cannot determine Z0 reliably: T_ground_from_camera must be a finite 4x4 matrix"
+        )
+    plane_document = document.get("ground_plane_in_camera")
+    if not isinstance(plane_document, dict):
+        raise ValueError(
+            "Cannot determine Z0 reliably: ground_plane_in_camera is missing"
+        )
+    plane_camera = np.asarray(plane_document.get("coefficients"), dtype=np.float64)
+    if plane_camera.shape != (4,) or not np.all(np.isfinite(plane_camera)):
+        raise ValueError(
+            "Cannot determine Z0 reliably: camera-frame plane coefficients must contain four finite values"
+        )
+    # p_ground = T_ground_from_camera @ p_camera, therefore
+    # plane_ground = inv(T_ground_from_camera).T @ plane_camera.
+    plane_ground = np.linalg.inv(transform).T @ plane_camera
+    normal_norm = float(np.linalg.norm(plane_ground[:3]))
+    if normal_norm <= 0.0:
+        raise ValueError("Cannot determine Z0 reliably: transformed plane is degenerate")
+    plane_ground /= normal_norm
+    if abs(float(plane_ground[2])) <= 1.0e-12:
+        raise ValueError("Cannot determine Z0 reliably: transformed plane is vertical")
+    if float(np.hypot(plane_ground[0], plane_ground[1])) > 1.0e-9:
+        raise ValueError(
+            "Cannot determine Z0 reliably: transformed reference plane is not parallel to ground XY"
+        )
+    transformed_z0_mm = float(-plane_ground[3] / plane_ground[2])
+    if abs(transformed_z0_mm) > 1.0e-6:
+        raise ValueError(
+            "Cannot determine Z0 reliably: transformed checkerboard zero surface is not Zg=0"
+        )
+    return 0.0, {
+        "path": str(path),
+        "units": "mm",
+        "zero_surface": convention["zero_surface"],
+        "origin": convention["origin"],
+        "Zg_definition": zg_definition,
+        "ground_plane_coefficients_from_transform": plane_ground.tolist(),
+        "transformed_z0_mm_before_zero_normalization": transformed_z0_mm,
+        "reason": "The checkerboard pattern surface explicitly defines Zg=0, and its camera-frame plane transforms numerically to that ground-frame plane.",
+    }
+
+
+def reference_residual_frame(
+    frame: FramePoints,
+    mode: str,
+    *,
+    z0_mm: float,
+    fit_args: SimpleNamespace,
+) -> tuple[FramePoints, dict[str, object]]:
+    if mode not in REFERENCE_PLANE_MODES:
+        raise ValueError(f"Unknown reference_plane_mode: {mode!r}")
+    if mode == "self_fitted":
+        residual_frame, fit = frame_plane_residual(frame, fit_args)
+        fit = dict(fit)
+        a = float(fit["a"])
+        b = float(fit["b"])
+        fit.update(
+            reference_plane_mode=mode,
+            apparent_tilt_deg=float(np.degrees(np.arctan(np.hypot(a, b)))),
+        )
+        return residual_frame, fit
+
+    xyz = frame.xyz.copy()
+    if mode == "fixed_normal_per_frame_offset":
+        reference_z_mm = float(np.median(xyz[:, 2]))
+    else:
+        if not np.isfinite(z0_mm):
+            raise ValueError("fixed_ground_plane requires a finite, verified Z0")
+        reference_z_mm = float(z0_mm)
+    xyz[:, 2] -= reference_z_mm
+    residual_frame = FramePoints(
+        path=frame.path,
+        u=frame.u.copy(),
+        xyz=xyz,
+        compensation_axis=frame.compensation_axis,
+    ).validate()
+    return residual_frame, {
+        "source_file": str(frame.path),
+        "reference_plane_mode": mode,
+        "reference_z_mm": reference_z_mm,
+        "input_point_count": int(frame.u.size),
+        "inlier_point_count": int(frame.u.size),
+    }
+
+
+def residual_matrix(
+    frames: list[tuple[str, FramePoints]], v: np.ndarray, v_min: int
+) -> np.ndarray:
+    matrix = np.full((len(frames), len(v)), np.nan, dtype=np.float64)
+    for row, (_, frame) in enumerate(frames):
+        bins, _, residual = bin_frame(frame, 1.0)
+        indices = np.rint(bins - v_min).astype(int)
+        valid = (indices >= 0) & (indices < len(v))
+        matrix[row, indices[valid]] = residual[valid]
+    return matrix
 
 
 def calculate_statistics(
@@ -121,6 +254,49 @@ def write_correlations(
         )
         writer.writerows(rows)
     return np.asarray(retained, dtype=np.float64)
+
+
+def reference_mode_summary(matrix: np.ndarray) -> dict[str, float | int]:
+    values = matrix[np.isfinite(matrix)]
+    if not values.size:
+        raise ValueError("Reference-mode residual matrix has no finite values")
+    per_frame_rms = []
+    for row in matrix:
+        finite = row[np.isfinite(row)]
+        if finite.size:
+            per_frame_rms.append(float(np.sqrt(np.mean(finite**2))))
+    pair_correlations = []
+    for left_index in range(matrix.shape[0]):
+        for right_index in range(left_index + 1, matrix.shape[0]):
+            common = np.isfinite(matrix[left_index]) & np.isfinite(matrix[right_index])
+            if np.count_nonzero(common) < 100:
+                continue
+            left = matrix[left_index, common]
+            right = matrix[right_index, common]
+            if np.std(left) > 0.0 and np.std(right) > 0.0:
+                pair_correlations.append(float(np.corrcoef(left, right)[0, 1]))
+    median_profile = np.nanmedian(matrix, axis=0)
+    predicted = np.broadcast_to(median_profile, matrix.shape)
+    comparable = np.isfinite(matrix) & np.isfinite(predicted)
+    total_energy = float(np.sum(matrix[comparable] ** 2))
+    unexplained = float(np.sum((matrix[comparable] - predicted[comparable]) ** 2))
+    return {
+        "residual_bin_count": int(values.size),
+        "residual_mean_mm": float(np.mean(values)),
+        "residual_median_mm": float(np.median(values)),
+        "residual_mae_mm": float(np.mean(np.abs(values))),
+        "residual_rms_mm": float(np.sqrt(np.mean(values**2))),
+        "residual_p95_abs_mm": float(np.percentile(np.abs(values), 95)),
+        "median_frame_rms_mm": float(np.median(per_frame_rms)),
+        "median_pair_correlation_overlap_ge_100": (
+            float(np.median(pair_correlations)) if pair_correlations else float("nan")
+        ),
+        "common_median_profile_explained_energy_fraction": (
+            float(1.0 - unexplained / total_energy)
+            if total_energy > 0.0
+            else float("nan")
+        ),
+    }
 
 
 def save_heatmap(
@@ -223,25 +399,91 @@ def main() -> None:
     fit_args = SimpleNamespace(
         plane_fit_mad_threshold=3.5, plane_fit_max_iterations=8
     )
-    frames = []
-    plane_diagnostics = []
+    z0_mm, z0_source = load_fixed_ground_z0(GROUND_EXTRINSICS)
+    raw_frames: list[tuple[str, FramePoints]] = []
     for path in paths:
         frame = load_csv_or_txt(path, ("v", "x", "y", "z"), compensation_axis="v")
-        residual_frame, diagnostic = frame_plane_residual(frame, fit_args)
         frame_id = path.stem.removeprefix("laser ").strip()
-        diagnostic["frame_id"] = frame_id
-        frames.append((frame_id, residual_frame))
-        plane_diagnostics.append(diagnostic)
+        raw_frames.append((frame_id, frame))
 
-    v_min = int(min(np.min(frame.u) for _, frame in frames))
-    v_max = int(max(np.max(frame.u) for _, frame in frames))
+    v_min = int(min(np.min(frame.u) for _, frame in raw_frames))
+    v_max = int(max(np.max(frame.u) for _, frame in raw_frames))
     v = np.arange(v_min, v_max + 1, dtype=np.float64)
-    matrix = np.full((len(frames), len(v)), np.nan, dtype=np.float64)
-    for row, (_, frame) in enumerate(frames):
-        bins, _, residual = bin_frame(frame, 1.0)
-        indices = np.rint(bins - v_min).astype(int)
-        valid = (indices >= 0) & (indices < len(v))
-        matrix[row, indices[valid]] = residual[valid]
+
+    mode_frames: dict[str, list[tuple[str, FramePoints]]] = {
+        mode: [] for mode in REFERENCE_PLANE_MODES
+    }
+    mode_diagnostics: dict[str, list[dict[str, object]]] = {
+        mode: [] for mode in REFERENCE_PLANE_MODES
+    }
+    per_frame_comparison: list[dict[str, object]] = []
+    for frame_id, frame in raw_frames:
+        frame_results: dict[str, dict[str, object]] = {}
+        for mode in REFERENCE_PLANE_MODES:
+            residual_frame, diagnostic = reference_residual_frame(
+                frame, mode, z0_mm=z0_mm, fit_args=fit_args
+            )
+            diagnostic = dict(diagnostic)
+            diagnostic["frame_id"] = frame_id
+            mode_frames[mode].append((frame_id, residual_frame))
+            mode_diagnostics[mode].append(diagnostic)
+            frame_results[mode] = diagnostic
+        self_fit = frame_results["self_fitted"]
+        fixed_normal = frame_results["fixed_normal_per_frame_offset"]
+        fixed_ground_offset_error = float(np.median(frame.xyz[:, 2]) - z0_mm)
+        per_frame_comparison.append(
+            {
+                "frame_id": frame_id,
+                "self_fit_a": self_fit["a"],
+                "self_fit_b": self_fit["b"],
+                "self_fit_c": self_fit["c_mm"],
+                "self_fit_condition_number": self_fit["design_condition_number"],
+                "apparent_tilt_deg": self_fit["apparent_tilt_deg"],
+                "fixed_normal_offset_mm": fixed_normal["reference_z_mm"],
+                "fixed_ground_offset_error_mm": fixed_ground_offset_error,
+                "point_count": int(frame.u.size),
+            }
+        )
+
+    comparison_fields = [
+        "frame_id",
+        "self_fit_a",
+        "self_fit_b",
+        "self_fit_c",
+        "self_fit_condition_number",
+        "apparent_tilt_deg",
+        "fixed_normal_offset_mm",
+        "fixed_ground_offset_error_mm",
+        "point_count",
+    ]
+    with (OUTPUT_DIR / "reference_plane_mode_comparison_per_frame.csv").open(
+        "w", newline="", encoding="utf-8-sig"
+    ) as stream:
+        writer = csv.DictWriter(stream, fieldnames=comparison_fields)
+        writer.writeheader()
+        writer.writerows(per_frame_comparison)
+
+    matrices = {
+        mode: residual_matrix(mode_frames[mode], v, v_min)
+        for mode in REFERENCE_PLANE_MODES
+    }
+    frames = mode_frames["self_fitted"]
+    plane_diagnostics = mode_diagnostics["self_fitted"]
+    matrix = matrices["self_fitted"]
+    reference_mode_summaries = {
+        mode: reference_mode_summary(matrices[mode])
+        for mode in REFERENCE_PLANE_MODES
+    }
+    summary_fields = ["reference_plane_mode", *next(iter(reference_mode_summaries.values())).keys()]
+    with (OUTPUT_DIR / "reference_plane_mode_comparison_summary.csv").open(
+        "w", newline="", encoding="utf-8-sig"
+    ) as stream:
+        writer = csv.DictWriter(stream, fieldnames=summary_fields)
+        writer.writeheader()
+        for mode in REFERENCE_PLANE_MODES:
+            writer.writerow(
+                {"reference_plane_mode": mode, **reference_mode_summaries[mode]}
+            )
 
     (
         count,
@@ -341,7 +583,22 @@ def main() -> None:
         "frame_ids": [frame_id for frame_id, _ in frames],
         "compensation_applied": False,
         "smooth_window_applied": False,
-        "residual_definition": "signed vertical residual Zg-(a*Xg+b*Yg+c), fitted independently per frame with iterative MAD rejection",
+        "reference_plane_modes": {
+            "self_fitted": "r_i=Zg-(a_i*Xg+b_i*Yg+c_i), with an independent robust plane fit per frame",
+            "fixed_normal_per_frame_offset": "Z_ref_i=median(Zg_i); r_i=Zg-Z_ref_i; a=b=0",
+            "fixed_ground_plane": "Z_ref=Z0 from the frozen ground-coordinate zero-surface definition; r_i=Zg-Z0",
+        },
+        "baseline_outputs_reference_plane_mode": "self_fitted",
+        "residual_definition": "The legacy heatmap/statistics outputs remain self_fitted; strict three-mode results are stored in reference_plane_mode_comparison files.",
+        "fixed_ground_z0_mm": z0_mm,
+        "fixed_ground_z0_source": z0_source,
+        "reference_plane_mode_comparison": reference_mode_summaries,
+        "apparent_tilt_warning": "apparent_tilt_deg is derived from a narrow-band self-fit and is not the checkerboard's true mechanical tilt.",
+        "apparent_tilt_deg": {
+            "median": float(np.median([row["apparent_tilt_deg"] for row in per_frame_comparison])),
+            "min": float(np.min([row["apparent_tilt_deg"] for row in per_frame_comparison])),
+            "max": float(np.max([row["apparent_tilt_deg"] for row in per_frame_comparison])),
+        },
         "v_range": [v_min, v_max],
         "observed_point_bin_count": int(np.count_nonzero(observed)),
         "support": {

@@ -13,6 +13,14 @@ from ..laser import LaserConfig
 PIXEL_FORMATS = {"Mono8", "Mono12"}
 IMAGE_FORMATS = {"tif", "png"}
 QUALITY_MODES = {"generic", "chessboard", "laser"}
+CAMERA_RECONFIGURE_FIELDS = (
+    "pixel_format",
+    "offset_x",
+    "offset_y",
+    "width",
+    "height",
+    "timeout_ms",
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -61,6 +69,15 @@ class CameraConfig:
         if unknown:
             raise ValueError(f"未知相机参数：{sorted(unknown)}")
         return replace(self, **dict(values))
+
+
+def requires_camera_reconfigure(current: CameraConfig, target: CameraConfig) -> bool:
+    """结构参数变化时需要停流重配；曝光/增益可走统一在线更新通道。"""
+
+    return any(
+        getattr(current, name) != getattr(target, name)
+        for name in CAMERA_RECONFIGURE_FIELDS
+    )
 
 
 @dataclass(frozen=True, slots=True)

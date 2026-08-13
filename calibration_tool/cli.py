@@ -33,6 +33,7 @@ DEFAULT_POLICY = PACKAGE_ROOT / "configs" / "quality_policy.yaml"
 DEFAULT_GOLDEN = PACKAGE_ROOT / "golden"
 DEFAULT_CALIBRATION_SRC = PACKAGE_ROOT.parent / "calibration" / "src"
 DEFAULT_CAMERA_CONFIG = PACKAGE_ROOT / "configs" / "camera.example.yaml"
+DEFAULT_CAMERA_CHANNELS = PACKAGE_ROOT / "configs" / "camera_channels.example.yaml"
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -64,8 +65,12 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("args", nargs=argparse.REMAINDER)
 
     workflow = sub.add_parser("workflow", help="按一个 YAML 计划顺序运行多个阶段")
-    workflow.add_argument("plan", type=Path)
-    workflow.add_argument("--project", type=Path, help="读取项目中的 laser.orientation")
+    workflow.add_argument("plan", type=Path, nargs="?", help="省略时读取 --project 中的 workflow_plan")
+    workflow.add_argument(
+        "--project",
+        type=Path,
+        help="读取项目所选通道的 workflow_plan 与 laser.orientation",
+    )
 
     bundle = sub.add_parser("bundle-build", help="发布不可拆分的标定包")
     bundle.add_argument("--config", type=Path, required=True)
@@ -77,11 +82,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     camera_list = sub.add_parser("camera-list", help="枚举可用相机")
     camera_list.add_argument("--config", type=Path)
+    camera_list.add_argument("--channel", help="从统一相机配置中选择通道")
     camera_list.add_argument("--backend", choices=("mvs", "daheng", "synthetic"), default="mvs")
     camera_list.add_argument("--calibration-src", type=Path, default=DEFAULT_CALIBRATION_SRC)
 
     preview = sub.add_parser("camera-preview", help="取流并输出曝光/清晰度/激光覆盖等质量指标")
-    preview.add_argument("--config", type=Path, default=DEFAULT_CAMERA_CONFIG)
+    preview.add_argument("--config", type=Path)
+    preview.add_argument("--channel", help="从统一相机配置中选择通道")
     preview.add_argument("--frames", type=int, default=20)
     preview.add_argument("--warmup-frames", type=int, default=5)
     preview.add_argument("--quality-mode", choices=("generic", "chessboard", "laser"), default="generic")
@@ -109,9 +116,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="交互采集时打开实时 OpenCV 窗口；Enter/Space 确认任务，Esc/Q 取消",
     )
     capture.add_argument("--calibration-src", type=Path, default=DEFAULT_CALIBRATION_SRC)
+    capture.add_argument("--config", type=Path, help="统一相机配置，用于校验计划通道")
+    capture.add_argument("--channel", help="与 --config 一起选择相机通道")
 
     exposure = sub.add_parser("capture-exposure-series", help="按多个曝光值批量采集同一姿态")
-    exposure.add_argument("--config", type=Path, default=DEFAULT_CAMERA_CONFIG)
+    exposure.add_argument("--config", type=Path)
+    exposure.add_argument("--channel", help="从统一相机配置中选择通道")
     exposure.add_argument("--output", type=Path, required=True)
     exposure.add_argument("--dataset-id", required=True)
     exposure.add_argument("--pose-id", required=True)
@@ -124,6 +134,7 @@ def build_parser() -> argparse.ArgumentParser:
     gui = sub.add_parser("gui", help="启动 PySide6 标定向导 MVP")
     gui.add_argument("--project", type=Path)
     gui.add_argument("--simulate", action="store_true", help="默认加载 synthetic 相机配置")
+    gui.add_argument("--channel", help="默认相机通道，例如 hikrobot 或 daheng")
 
     acceptance = sub.add_parser("acceptance-report", help="生成补偿前后对比与正式验收报告")
     acceptance.add_argument("plan", type=Path)
@@ -137,7 +148,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.command == "gui":
         from .gui import launch_gui
 
-        return launch_gui(project=args.project, simulate=args.simulate)
+        return launch_gui(
+            project=args.project,
+            simulate=args.simulate,
+            camera_channel=args.channel,
+        )
     try:
         if args.command == "golden-build":
             result = build_golden_baseline(args.registry, args.output)
@@ -162,10 +177,15 @@ def main(argv: Sequence[str] | None = None) -> int:
             if args.project is not None:
                 from .gui.project import WizardProject
 
-                orientation = WizardProject.load(args.project).laser.orientation
+                project = WizardProject.load(args.project)
+                orientation = project.laser.orientation
+                workflow_plan = args.plan or project.workflow_plan
             else:
                 orientation = "horizontal"
-            result = run_workflow(args.plan, laser_orientation=orientation)
+                workflow_plan = args.plan
+            if workflow_plan is None:
+                raise ValueError("workflow 需要 plan 参数，或通过 --project 提供 workflow_plan")
+            result = run_workflow(workflow_plan, laser_orientation=orientation)
         elif args.command == "bundle-build":
             result = build_calibration_bundle(
                 args.config,
@@ -176,8 +196,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                 allow_failed=args.allow_failed,
             )
         elif args.command == "camera-list":
-            if args.config:
-                camera_runtime = load_camera_config(args.config)
+            camera_config = args.config or (DEFAULT_CAMERA_CHANNELS if args.channel else None)
+            if camera_config:
+                camera_runtime = load_camera_config(camera_config, channel=args.channel)
                 provider = build_camera_provider(
                     camera_runtime["backend"],
                     calibration_src=camera_runtime["calibration_src"],
@@ -193,7 +214,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             except Exception as exc:
                 raise CameraError(f"相机枚举失败：{exc}") from exc
         elif args.command == "camera-preview":
-            camera_runtime = load_camera_config(args.config)
+            camera_config = args.config or (
+                DEFAULT_CAMERA_CHANNELS if args.channel else DEFAULT_CAMERA_CONFIG
+            )
+            camera_runtime = load_camera_config(camera_config, channel=args.channel)
             provider = build_camera_provider(
                 camera_runtime["backend"],
                 calibration_src=camera_runtime["calibration_src"],
@@ -229,9 +253,35 @@ def main(argv: Sequence[str] | None = None) -> int:
             }
         elif args.command == "capture-plan":
             plan = load_capture_plan(args.plan)
+            calibration_src = args.calibration_src
+            if args.config is not None or args.channel is not None:
+                camera_config = args.config or DEFAULT_CAMERA_CHANNELS
+                camera_runtime = load_camera_config(camera_config, channel=args.channel)
+                if camera_runtime["backend"] != plan.backend:
+                    raise CameraError(
+                        "采集计划 backend 与所选相机通道不一致："
+                        f"plan={plan.backend}, channel={camera_runtime['backend']}"
+                    )
+                plan_channel = plan.metadata.get("camera_channel")
+                if (
+                    plan_channel
+                    and camera_runtime.get("channel")
+                    and str(plan_channel) != str(camera_runtime["channel"])
+                ):
+                    raise CameraError(
+                        "采集计划通道与所选通道不一致："
+                        f"plan={plan_channel}, channel={camera_runtime['channel']}"
+                    )
+                configured_serial = str(camera_runtime.get("serial_number", ""))
+                if configured_serial and plan.serial_number and configured_serial != plan.serial_number:
+                    raise CameraError(
+                        "采集计划序列号与所选通道配置不一致："
+                        f"plan={plan.serial_number}, channel={configured_serial}"
+                    )
+                calibration_src = camera_runtime["calibration_src"]
             provider = build_camera_provider(
                 plan.backend,
-                calibration_src=args.calibration_src,
+                calibration_src=calibration_src,
                 backend_options=plan.backend_options,
             )
             result = _capture_result_dict(run_capture_plan(
@@ -243,7 +293,10 @@ def main(argv: Sequence[str] | None = None) -> int:
                 progress=_capture_progress,
             ))
         elif args.command == "capture-exposure-series":
-            camera_runtime = load_camera_config(args.config)
+            camera_config = args.config or (
+                DEFAULT_CAMERA_CHANNELS if args.channel else DEFAULT_CAMERA_CONFIG
+            )
+            camera_runtime = load_camera_config(camera_config, channel=args.channel)
             if len(set(args.exposures_us)) != len(args.exposures_us):
                 raise CameraError("exposures-us 不能包含重复值")
             if args.frames_per_exposure <= 0 or args.settle_frames < 0:
@@ -272,7 +325,11 @@ def main(argv: Sequence[str] | None = None) -> int:
                 tasks=tasks,
                 quality_thresholds=camera_runtime["quality_thresholds"],
                 board_pattern=camera_runtime["board_pattern"],
-                metadata={"kind": "exposure_series", "camera_config": str(args.config.resolve())},
+                metadata={
+                    "kind": "exposure_series",
+                    "camera_channel": camera_runtime.get("channel"),
+                    "camera_config": str(camera_runtime["camera_config_source"]),
+                },
                 backend_options=camera_runtime["backend_options"],
                 laser=camera_runtime["laser"],
             )

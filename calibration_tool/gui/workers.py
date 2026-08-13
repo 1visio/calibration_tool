@@ -8,7 +8,12 @@ from typing import Any, Callable
 
 from PySide6.QtCore import QObject, QRunnable, QThread, Signal, Slot
 
-from ..camera.models import CameraConfig, CameraProvider, QualityThresholds
+from ..camera.models import (
+    CameraConfig,
+    CameraProvider,
+    QualityThresholds,
+    requires_camera_reconfigure,
+)
 from ..camera.quality import analyze_frame, quality_to_dict
 
 
@@ -144,10 +149,7 @@ class PreviewThread(QThread):
 
     @staticmethod
     def _requires_restart(current: CameraConfig, target: CameraConfig) -> bool:
-        return any(
-            getattr(current, name) != getattr(target, name)
-            for name in ("pixel_format", "offset_x", "offset_y", "width", "height")
-        )
+        return requires_camera_reconfigure(current, target)
 
     def _emit_frame(
         self,

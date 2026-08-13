@@ -28,6 +28,7 @@ from .models import (
     FrameQuality,
     ProgressCallback,
     QualityThresholds,
+    requires_camera_reconfigure,
 )
 from .quality import analyze_frame, quality_to_dict, summarize_quality
 
@@ -246,7 +247,15 @@ def run_capture_plan(
             # after every task, so this remains a single worker-owned session.
             assert session is not None
             if session.config != task.config:
-                session.configure(task.config)
+                if requires_camera_reconfigure(session.config, task.config):
+                    session.configure(task.config)
+                else:
+                    # 常见三联图只改变曝光/增益。海康 MVS 的完整 configure
+                    # 会关闭并重开 SDK session，因此优先使用两后端共有的在线接口。
+                    session.update_exposure_gain(
+                        task.config.exposure_us,
+                        task.config.gain_db,
+                    )
             if before_task is not None:
                 try:
                     approved = before_task(task)

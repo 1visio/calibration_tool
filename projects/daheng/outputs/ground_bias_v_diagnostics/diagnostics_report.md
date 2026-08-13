@@ -22,6 +22,32 @@ r_i(v) = 同一 image row v 内 signed vertical residual 的中位数
 
 31 帧的 v 覆盖不一致：没有任何一个 image row 同时被全部 31 帧覆盖。相关系数因此按每一对 frame 的实际共同支持区计算，CSV 同时记录 `common_sample_count`。报告中的相关性汇总仅采用共同样本数不少于 100 的 frame pair。
 
+### 三种 reference plane 严格对照
+
+新增诊断同时计算三种 reference plane，既有 heatmap、逐 v 统计和后续 A–E 结论仍以
+`self_fitted` 为 baseline：
+
+| 模式 | residual 定义 | MAE / mm | RMS / mm | P95 abs / mm | median pair correlation | median profile explained energy |
+|---|---|---:|---:|---:|---:|---:|
+| `self_fitted` | `Zg-(a_i Xg+b_i Yg+c_i)` | 0.04700 | 0.06248 | 0.13033 | 0.4705 | 0.4839 |
+| `fixed_normal_per_frame_offset` | `Zg-median(Zg_i)` | 0.10064 | 0.15676 | 0.38610 | 0.2978 | 0.2896 |
+| `fixed_ground_plane` | `Zg-Z0` | 0.12301 | 0.16417 | 0.33617 | 0.2978 | 0.3271 |
+
+`fixed_ground_plane` 的 `Z0=0.0 mm` 来自冻结的 0811 ground extrinsics，而不是任意设为零：
+该文件明确声明棋盘图案表面是 ground 坐标的 zero surface；实现还把 camera-frame 平面经
+`T_ground_from_camera` 变换到 ground frame，数值验证结果为水平的 `Zg=0` 平面。若这些
+语义或数值检查不成立，诊断会停止。
+
+逐帧明细见 `reference_plane_mode_comparison_per_frame.csv`。其中：
+
+```text
+apparent_tilt_deg = degrees(atan(sqrt(self_fit_a^2 + self_fit_b^2)))
+```
+
+**`apparent_tilt_deg` 只是“窄带自拟合得到的表观倾角”，不能当作棋盘真实机械倾角。**
+本数据的窄带 self-fit condition number 中位数约 3,024、最大约 9,875，因此其 `a,b`
+尤其不能替代独立棋盘 PnP 给出的真实姿态。
+
 ## 2. 数据覆盖与总体统计
 
 - v 范围：0–2999 px；3000 行均至少被一帧覆盖。
@@ -127,6 +153,8 @@ sign mixing 通常不是完全连续的整段，而是以 5–19 行的小簇交
 - `residual_v_median_sigma.png`：median `b(v)`、±1 sigma 和 sample count；未平滑。
 - `frame_residual_correlation.csv`：所有 frame pair 的共同支持数和相关系数。
 - `per_frame_plane_fit_diagnostics.csv`：各帧稳健平面系数、条件数和 inlier 数。
+- `reference_plane_mode_comparison_per_frame.csv`：三模式所需的逐帧参考参数和误差。
+- `reference_plane_mode_comparison_summary.csv`：三种 reference mode 的总体 residual 严格对照。
 - `diagnostics_summary.json`：报告使用的结构化汇总、分区和 sign-mixing 范围。
 - `generate_diagnostics.py`：本次诊断的可复核生成脚本。
 

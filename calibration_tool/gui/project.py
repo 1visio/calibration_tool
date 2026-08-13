@@ -17,6 +17,7 @@ class WizardProject:
     project_id: str
     workspace: Path
     camera_config: Path
+    camera_channel: str | None = None
     workflow_plan: Path | None = None
     acceptance_plan: Path | None = None
     capture_output: Path | None = None
@@ -34,6 +35,8 @@ class WizardProject:
             raise ConfigError("棋盘格参数必须为正数")
         self.workspace = self.workspace.expanduser().resolve()
         self.camera_config = self.camera_config.expanduser().resolve()
+        if self.camera_channel is not None:
+            self.camera_channel = self.camera_channel.strip() or None
         if self.workflow_plan is not None:
             self.workflow_plan = self.workflow_plan.expanduser().resolve()
         if self.acceptance_plan is not None:
@@ -52,19 +55,23 @@ class WizardProject:
             raise ConfigError("wizard project.board 必须是映射")
         workspace_value = document.get("workspace", ".")
         camera_value = document.get("camera_config", "camera.mvs.example.yaml")
-        workflow_value = document.get("workflow_plan")
+        camera_config = resolve_relative(source, camera_value)
+        channel_value = document.get("camera_channel")
+        camera_channel = str(channel_value).strip() if channel_value is not None else None
+        camera_runtime = load_camera_config(camera_config, channel=camera_channel)
+        workflow_value = document.get("workflow_plan") or camera_runtime.get("workflow_plan")
         acceptance_value = document.get("acceptance_plan")
         capture_value = document.get("capture_output")
-        camera_config = resolve_relative(source, camera_value)
         laser = (
             parse_laser_config(document["laser"], field_name="wizard project.laser")
             if "laser" in document
-            else load_camera_config(camera_config)["laser"]
+            else camera_runtime["laser"]
         )
         return cls(
             project_id=str(document.get("project_id", "")),
             workspace=resolve_relative(source, workspace_value),
             camera_config=camera_config,
+            camera_channel=str(camera_runtime.get("channel") or "") or None,
             laser=laser,
             workflow_plan=resolve_relative(source, workflow_value) if workflow_value else None,
             acceptance_plan=resolve_relative(source, acceptance_value) if acceptance_value else None,
@@ -93,6 +100,7 @@ class WizardProject:
             "project_id": self.project_id,
             "workspace": relative_or_absolute(self.workspace),
             "camera_config": relative_or_absolute(self.camera_config),
+            "camera_channel": self.camera_channel,
             "laser": {"orientation": self.laser.orientation},
             "workflow_plan": relative_or_absolute(self.workflow_plan),
             "acceptance_plan": relative_or_absolute(self.acceptance_plan),

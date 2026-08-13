@@ -10,6 +10,9 @@ import yaml
 from .errors import ConfigError
 
 
+_HASH_CHUNK_SIZE = 1024 * 1024
+
+
 def load_document(path: str | Path) -> dict[str, Any]:
     source = Path(path).expanduser().resolve()
     if not source.is_file():
@@ -41,8 +44,23 @@ def normalized_bytes(path: str | Path) -> bytes:
 
 def sha256_file(path: str | Path, *, normalize_newlines: bool = True) -> str:
     source = Path(path)
-    data = normalized_bytes(source) if normalize_newlines else source.read_bytes()
-    return hashlib.sha256(data).hexdigest()
+    digest = hashlib.sha256()
+    pending_carriage_return = False
+    with source.open("rb") as stream:
+        while chunk := stream.read(_HASH_CHUNK_SIZE):
+            if not normalize_newlines:
+                digest.update(chunk)
+                continue
+            if pending_carriage_return:
+                chunk = b"\r" + chunk
+                pending_carriage_return = False
+            if chunk.endswith(b"\r"):
+                chunk = chunk[:-1]
+                pending_carriage_return = True
+            digest.update(chunk.replace(b"\r\n", b"\n"))
+    if pending_carriage_return:
+        digest.update(b"\r")
+    return digest.hexdigest()
 
 
 def canonical_mapping_hash(value: Mapping[str, Any]) -> str:
@@ -67,4 +85,3 @@ def dotted_value(document: Mapping[str, Any], selector: str) -> Any:
             raise ConfigError(f"指标路径不存在：{selector}")
         current = current[part]
     return current
-
