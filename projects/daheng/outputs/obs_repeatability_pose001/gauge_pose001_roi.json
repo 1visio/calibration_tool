@@ -1,0 +1,11 @@
+{
+  "platforms": [
+    {"platform_id": "h30", "stable_range": [2139, 2214], "analysis_range": [2139, 2214]},
+    {"platform_id": "h20", "stable_range": [2237, 2301], "analysis_range": [2237, 2301]},
+    {"platform_id": "h10", "stable_range": [2324, 2389], "analysis_range": [2324, 2389]},
+    {"platform_id": "h06", "stable_range": [2411, 2478], "analysis_range": [2411, 2478]},
+    {"platform_id": "h02", "stable_range": [2500, 2570], "analysis_range": [2500, 2570]},
+    {"platform_id": "h1p001", "stable_range": [2590, 2640], "analysis_range": [2590, 2640]},
+    {"platform_id": "base", "stable_range": [2678, 2791], "analysis_range": [2678, 2791]}
+  ]
+}

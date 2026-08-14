@@ -1,0 +1,4 @@
+candidate_a,candidate_b,surface_residual_difference_bias_mm,surface_residual_difference_rms_mm,surface_residual_difference_p95_abs_mm,surface_residual_difference_max_abs_mm,parameter_distance_scaled_l2,parameter_distance_scaled_max_abs
+point_equal,frame_equal,0.00195236970002,0.00247424278856,0.00431971503978,0.0047579460318,0.106665739738,0.106101934627
+point_equal,v_region_equal,0.00497600576171,0.00545281573018,0.00925989935207,0.0122924794031,1.80326696892,1.54544164171
+frame_equal,v_region_equal,0.00302363606168,0.00364667021164,0.00738614948978,0.00998838271916,1.89120426839,1.65154357633

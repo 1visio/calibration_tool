@@ -1,0 +1,495 @@
+{
+  "task": "Task 3A Circular Cone identifiability audit",
+  "formal_cone_sha256_before": "478d11c97c174e75d3167133a050540573a93dc28451e4b961ce12913709feac",
+  "formal_cone_sha256_after": "478d11c97c174e75d3167133a050540573a93dc28451e4b961ce12913709feac",
+  "formal_cone_path": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\calibration_daheng_0811\\circular_cone.yaml",
+  "measurement_config": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\measure_tool_daheng_0811.yaml",
+  "formal_fit_config": "D:\\Docs\\linelaserscan\\calibration_tool\\configs\\laser_model_fit_config.daheng.yaml",
+  "split_registry": {
+    "registry_version": 1,
+    "fit": [
+      "001",
+      "002",
+      "003",
+      "004",
+      "005",
+      "006",
+      "007",
+      "008",
+      "009",
+      "010",
+      "011",
+      "012",
+      "013",
+      "014",
+      "015",
+      "016",
+      "017",
+      "018",
+      "025",
+      "026",
+      "027",
+      "028",
+      "029",
+      "030",
+      "031",
+      "032",
+      "033",
+      "034",
+      "035",
+      "036"
+    ],
+    "validation": [
+      "019",
+      "020",
+      "021",
+      "022",
+      "023",
+      "024",
+      "037",
+      "038",
+      "039",
+      "040"
+    ],
+    "validation_is_never_loaded": true,
+    "manifest_split_is_not_authoritative": true,
+    "formal_working_domain_v_px": [
+      241.99769349665084,
+      2731.977874579812
+    ]
+  },
+  "fit_provenance": [
+    {
+      "frame_id": "001",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 822,
+      "pnp_rmse_px": 0.15676544616,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "002",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 890,
+      "pnp_rmse_px": 0.136185670615,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "003",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 900,
+      "pnp_rmse_px": 0.139706812323,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "004",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 900,
+      "pnp_rmse_px": 0.0928935047474,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "005",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 900,
+      "pnp_rmse_px": 0.0942130658113,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "006",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 900,
+      "pnp_rmse_px": 0.0889700151137,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "007",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 900,
+      "pnp_rmse_px": 0.108611648241,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "008",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 900,
+      "pnp_rmse_px": 0.0927701995256,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "009",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 900,
+      "pnp_rmse_px": 0.0745450976022,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "010",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 900,
+      "pnp_rmse_px": 0.104501100454,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "011",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 900,
+      "pnp_rmse_px": 0.105061537341,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "012",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 900,
+      "pnp_rmse_px": 0.0873102734066,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "013",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 900,
+      "pnp_rmse_px": 0.0890163528644,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "014",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 900,
+      "pnp_rmse_px": 0.0928017326066,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "015",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 900,
+      "pnp_rmse_px": 0.106364933994,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "016",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 900,
+      "pnp_rmse_px": 0.113312421635,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "017",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 890,
+      "pnp_rmse_px": 0.113693609873,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "018",
+      "split": "fit",
+      "source": "original_0811_triplet",
+      "point_count": 900,
+      "pnp_rmse_px": 0.0885718717681,
+      "quality_warnings": "",
+      "manifest_split_tags": "",
+      "path_resolution": "original_task2_provenance"
+    },
+    {
+      "frame_id": "025",
+      "split": "fit",
+      "source": "fit_edge_extension",
+      "point_count": 900,
+      "pnp_rmse_px": 0.15619495732179384,
+      "quality_warnings": "dynamic_range_low;image_too_dark;dynamic_range_low",
+      "manifest_split_tags": "fit",
+      "path_resolution": "chess:recorded_path;nolaser:recorded_path;laser:recorded_path"
+    },
+    {
+      "frame_id": "026",
+      "split": "fit",
+      "source": "fit_edge_extension",
+      "point_count": 900,
+      "pnp_rmse_px": 0.16533904087018206,
+      "quality_warnings": "dynamic_range_low;image_too_dark;dynamic_range_low",
+      "manifest_split_tags": "fit",
+      "path_resolution": "chess:recorded_path;nolaser:recorded_path;laser:recorded_path"
+    },
+    {
+      "frame_id": "027",
+      "split": "fit",
+      "source": "fit_edge_extension",
+      "point_count": 900,
+      "pnp_rmse_px": 0.17413744869654185,
+      "quality_warnings": "dynamic_range_low;image_too_dark;dynamic_range_low",
+      "manifest_split_tags": "fit",
+      "path_resolution": "chess:recorded_path;nolaser:recorded_path;laser:recorded_path"
+    },
+    {
+      "frame_id": "028",
+      "split": "fit",
+      "source": "fit_edge_extension",
+      "point_count": 900,
+      "pnp_rmse_px": 0.18364022678947783,
+      "quality_warnings": "dynamic_range_low;image_too_dark;dynamic_range_low",
+      "manifest_split_tags": "fit",
+      "path_resolution": "chess:recorded_path;nolaser:recorded_path;laser:recorded_path"
+    },
+    {
+      "frame_id": "029",
+      "split": "fit",
+      "source": "fit_edge_extension",
+      "point_count": 900,
+      "pnp_rmse_px": 0.10516999125379041,
+      "quality_warnings": "dynamic_range_low;image_too_dark;dynamic_range_low",
+      "manifest_split_tags": "fit",
+      "path_resolution": "chess:recorded_path;nolaser:recorded_path;laser:recorded_path"
+    },
+    {
+      "frame_id": "030",
+      "split": "fit",
+      "source": "fit_edge_extension",
+      "point_count": 900,
+      "pnp_rmse_px": 0.13097439600221755,
+      "quality_warnings": "dynamic_range_low;image_too_dark;dynamic_range_low",
+      "manifest_split_tags": "fit",
+      "path_resolution": "chess:recorded_path;nolaser:recorded_path;laser:recorded_path"
+    },
+    {
+      "frame_id": "031",
+      "split": "fit",
+      "source": "fit_edge_extension",
+      "point_count": 900,
+      "pnp_rmse_px": 0.11366432285426602,
+      "quality_warnings": "dynamic_range_low;image_too_dark;dynamic_range_low",
+      "manifest_split_tags": "fit",
+      "path_resolution": "chess:recorded_path;nolaser:recorded_path;laser:recorded_path"
+    },
+    {
+      "frame_id": "032",
+      "split": "fit",
+      "source": "fit_edge_extension",
+      "point_count": 900,
+      "pnp_rmse_px": 0.12936397098229507,
+      "quality_warnings": "dynamic_range_low;laser_peak_saturated;laser_peak_near_saturation;image_too_dark;dynamic_range_low",
+      "manifest_split_tags": "fit",
+      "path_resolution": "chess:recorded_path;nolaser:recorded_path;laser:recorded_path"
+    },
+    {
+      "frame_id": "033",
+      "split": "fit",
+      "source": "fit_edge_extension",
+      "point_count": 900,
+      "pnp_rmse_px": 0.12213124401352428,
+      "quality_warnings": "dynamic_range_low;image_too_dark;dynamic_range_low",
+      "manifest_split_tags": "fit",
+      "path_resolution": "chess:recorded_path;nolaser:recorded_path;laser:recorded_path"
+    },
+    {
+      "frame_id": "034",
+      "split": "fit",
+      "source": "fit_edge_extension",
+      "point_count": 900,
+      "pnp_rmse_px": 0.10025242603529741,
+      "quality_warnings": "dynamic_range_low;image_too_dark;dynamic_range_low",
+      "manifest_split_tags": "fit",
+      "path_resolution": "chess:recorded_path;nolaser:recorded_path;laser:recorded_path"
+    },
+    {
+      "frame_id": "035",
+      "split": "fit",
+      "source": "fit_edge_extension",
+      "point_count": 900,
+      "pnp_rmse_px": 0.13316052201322937,
+      "quality_warnings": "dynamic_range_low;image_too_dark;dynamic_range_low",
+      "manifest_split_tags": "fit",
+      "path_resolution": "chess:recorded_path;nolaser:recorded_path;laser:recorded_path"
+    },
+    {
+      "frame_id": "036",
+      "split": "fit",
+      "source": "fit_edge_extension",
+      "point_count": 900,
+      "pnp_rmse_px": 0.09079797262944811,
+      "quality_warnings": "dynamic_range_low;image_too_dark;dynamic_range_low",
+      "manifest_split_tags": "fit",
+      "path_resolution": "chess:recorded_path;nolaser:recorded_path;laser:recorded_path"
+    }
+  ],
+  "validation_metadata_only": [
+    {
+      "frame_id": "019",
+      "split": "validation",
+      "source": "original_0811_triplet",
+      "pnp_rmse_px": "0.119599442805",
+      "point_count": "900",
+      "quality_warnings": "",
+      "opened_in_task3a": false
+    },
+    {
+      "frame_id": "020",
+      "split": "validation",
+      "source": "original_0811_triplet",
+      "pnp_rmse_px": "0.0993805450907",
+      "point_count": "900",
+      "quality_warnings": "",
+      "opened_in_task3a": false
+    },
+    {
+      "frame_id": "021",
+      "split": "validation",
+      "source": "original_0811_triplet",
+      "pnp_rmse_px": "0.128984197172",
+      "point_count": "900",
+      "quality_warnings": "",
+      "opened_in_task3a": false
+    },
+    {
+      "frame_id": "022",
+      "split": "validation",
+      "source": "original_0811_triplet",
+      "pnp_rmse_px": "0.159017726432",
+      "point_count": "900",
+      "quality_warnings": "",
+      "opened_in_task3a": false
+    },
+    {
+      "frame_id": "023",
+      "split": "validation",
+      "source": "original_0811_triplet",
+      "pnp_rmse_px": "0.0952573033552",
+      "point_count": "900",
+      "quality_warnings": "",
+      "opened_in_task3a": false
+    },
+    {
+      "frame_id": "024",
+      "split": "validation",
+      "source": "original_0811_triplet",
+      "pnp_rmse_px": "0.0993109405382",
+      "point_count": "900",
+      "quality_warnings": "",
+      "opened_in_task3a": false
+    },
+    {
+      "frame_id": "037",
+      "split": "validation",
+      "source": "validation_edge_holdout",
+      "pnp_rmse_px": "0.105382826439",
+      "point_count": "900",
+      "quality_warnings": "dynamic_range_low;image_too_dark;dynamic_range_low",
+      "manifest_split_tags": "fit",
+      "path_resolution": "chess:unique_basename_relocated;nolaser:unique_basename_relocated;laser:unique_basename_relocated",
+      "opened_in_task3a": false
+    },
+    {
+      "frame_id": "038",
+      "split": "validation",
+      "source": "validation_edge_holdout",
+      "pnp_rmse_px": "0.081385507654",
+      "point_count": "900",
+      "quality_warnings": "dynamic_range_low;image_too_dark;dynamic_range_low",
+      "manifest_split_tags": "fit",
+      "path_resolution": "chess:unique_basename_relocated;nolaser:unique_basename_relocated;laser:unique_basename_relocated",
+      "opened_in_task3a": false
+    },
+    {
+      "frame_id": "039",
+      "split": "validation",
+      "source": "validation_edge_holdout",
+      "pnp_rmse_px": "0.103185866681",
+      "point_count": "900",
+      "quality_warnings": "dynamic_range_low;image_too_dark;dynamic_range_low",
+      "manifest_split_tags": "fit",
+      "path_resolution": "chess:unique_basename_relocated;nolaser:unique_basename_relocated;laser:unique_basename_relocated",
+      "opened_in_task3a": false
+    },
+    {
+      "frame_id": "040",
+      "split": "validation",
+      "source": "validation_edge_holdout",
+      "pnp_rmse_px": "0.130132694693",
+      "point_count": "900",
+      "quality_warnings": "dynamic_range_low;image_too_dark;dynamic_range_low",
+      "manifest_split_tags": "fit",
+      "path_resolution": "chess:unique_basename_relocated;nolaser:unique_basename_relocated;laser:unique_basename_relocated",
+      "opened_in_task3a": false
+    }
+  ],
+  "m0_invalid_summary": {
+    "by_frame": {
+      "025": 74,
+      "026": 157,
+      "027": 12
+    },
+    "by_region": {
+      "top_formal_edge": 13,
+      "middle_formal": 230
+    },
+    "by_300px_bin": {
+      "0000": 13,
+      "0300": 170,
+      "0600": 60
+    }
+  },
+  "grid": {
+    "u_min_px": 1770.0,
+    "u_max_px": 2160.0,
+    "u_count": 41,
+    "v_min_px": 241.99769349665084,
+    "v_max_px": 2731.977874579812,
+    "v_count": 101
+  },
+  "formal_objective": {
+    "loss": "soft_l1",
+    "f_scale_mm": 0.1,
+    "negative_axial_penalty": 2.0,
+    "fit_max_points": 3000,
+    "weighting": "frame_equal"
+  },
+  "validation_opened": false
+}

@@ -1,0 +1,328 @@
+{
+  "script": "analyze_daheng_gauge_repeatability",
+  "input": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\obs_repeatability\\fit",
+  "pattern": "laser 001*.tif",
+  "frames": [
+    "laser 001.tif",
+    "laser 001_02.tif",
+    "laser 001_03.tif",
+    "laser 001_04.tif",
+    "laser 001_05.tif",
+    "laser 001_06.tif",
+    "laser 001_07.tif",
+    "laser 001_08.tif",
+    "laser 001_09.tif",
+    "laser 001_10.tif",
+    "laser 001_11.tif",
+    "laser 001_12.tif",
+    "laser 001_13.tif",
+    "laser 001_14.tif",
+    "laser 001_15.tif",
+    "laser 001_16.tif",
+    "laser 001_17.tif",
+    "laser 001_18.tif",
+    "laser 001_19.tif",
+    "laser 001_20.tif",
+    "laser 001_21.tif",
+    "laser 001_22.tif",
+    "laser 001_23.tif",
+    "laser 001_24.tif",
+    "laser 001_25.tif",
+    "laser 001_26.tif",
+    "laser 001_27.tif",
+    "laser 001_28.tif",
+    "laser 001_29.tif",
+    "laser 001_30.tif",
+    "laser 001_31.tif",
+    "laser 001_32.tif",
+    "laser 001_33.tif",
+    "laser 001_34.tif",
+    "laser 001_35.tif",
+    "laser 001_36.tif",
+    "laser 001_37.tif",
+    "laser 001_38.tif",
+    "laser 001_39.tif",
+    "laser 001_40.tif",
+    "laser 001_41.tif",
+    "laser 001_42.tif",
+    "laser 001_43.tif",
+    "laser 001_44.tif",
+    "laser 001_45.tif",
+    "laser 001_46.tif",
+    "laser 001_47.tif",
+    "laser 001_48.tif",
+    "laser 001_49.tif",
+    "laser 001_50.tif"
+  ],
+  "frame_count": 50,
+  "image_shape": [
+    3000,
+    4096
+  ],
+  "scan_axis": "row",
+  "scan_range": [
+    900,
+    2300
+  ],
+  "roi_source": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\obs_repeatability_pose001\\gauge_pose001_roi.json",
+  "detect_profile": "ground_z",
+  "steger_options": {
+    "sigma": 1.5,
+    "threshold": 30.0,
+    "deriv_thresh": 0.5,
+    "roi_margin": 48,
+    "roi_max_height": 512,
+    "scan_axis": "row"
+  },
+  "search_region": {
+    "start_px": 1760,
+    "end_px": 2240,
+    "source": "config.search_roi"
+  },
+  "extracted_valid_count": [
+    1955,
+    1959,
+    1949,
+    1960,
+    1948,
+    1957,
+    1957,
+    1954,
+    1958,
+    1953,
+    1953,
+    1959,
+    1956,
+    1954,
+    1956,
+    1956,
+    1958,
+    1956,
+    1957,
+    1959,
+    1958,
+    1949,
+    1958,
+    1953,
+    1960,
+    1954,
+    1954,
+    1959,
+    1956,
+    1946,
+    1954,
+    1951,
+    1949,
+    1954,
+    1955,
+    1958,
+    1955,
+    1950,
+    1958,
+    1951,
+    1958,
+    1956,
+    1954,
+    1959,
+    1956,
+    1954,
+    1950,
+    1955,
+    1955,
+    1960
+  ],
+  "reconstructed_valid_count": [
+    1934,
+    1931,
+    1929,
+    1935,
+    1927,
+    1935,
+    1936,
+    1931,
+    1933,
+    1931,
+    1933,
+    1936,
+    1935,
+    1933,
+    1935,
+    1937,
+    1935,
+    1932,
+    1934,
+    1935,
+    1933,
+    1929,
+    1935,
+    1930,
+    1935,
+    1931,
+    1930,
+    1933,
+    1933,
+    1930,
+    1931,
+    1929,
+    1928,
+    1933,
+    1934,
+    1934,
+    1934,
+    1932,
+    1938,
+    1929,
+    1933,
+    1933,
+    1933,
+    1937,
+    1934,
+    1933,
+    1932,
+    1930,
+    1932,
+    1936
+  ],
+  "detector": {
+    "sigma_threshold": null,
+    "status": "frozen_roi"
+  },
+  "platforms": [
+    {
+      "platform_id": "h30",
+      "stable_range": [
+        2139,
+        2214
+      ],
+      "analysis_range": [
+        2139,
+        2214
+      ],
+      "z_median_mm": 29.819907228662572,
+      "z_sigma_between_frames_mm": 0.0024814808059952114,
+      "z_spatial_sigma_median_mm": 0.013671231913488301,
+      "height_median_mm": 30.09761784294537,
+      "height_sigma_between_frames_mm": 0.0024296212472099915,
+      "height_p95_abs_mm": 0.005017198068478022,
+      "is_reference": false
+    },
+    {
+      "platform_id": "h20",
+      "stable_range": [
+        2237,
+        2301
+      ],
+      "analysis_range": [
+        2237,
+        2301
+      ],
+      "z_median_mm": 19.840184799498388,
+      "z_sigma_between_frames_mm": 0.0024745476333251784,
+      "z_spatial_sigma_median_mm": 0.014070835362842447,
+      "height_median_mm": 20.11756698031087,
+      "height_sigma_between_frames_mm": 0.002365862946382704,
+      "height_p95_abs_mm": 0.00527519453200682,
+      "is_reference": false
+    },
+    {
+      "platform_id": "h10",
+      "stable_range": [
+        2324,
+        2389
+      ],
+      "analysis_range": [
+        2324,
+        2389
+      ],
+      "z_median_mm": 9.838305206436502,
+      "z_sigma_between_frames_mm": 0.0026465593037091873,
+      "z_spatial_sigma_median_mm": 0.0168455793364782,
+      "height_median_mm": 10.11572542882999,
+      "height_sigma_between_frames_mm": 0.0024896405738757186,
+      "height_p95_abs_mm": 0.0043506084401116136,
+      "is_reference": false
+    },
+    {
+      "platform_id": "h06",
+      "stable_range": [
+        2411,
+        2478
+      ],
+      "analysis_range": [
+        2411,
+        2478
+      ],
+      "z_median_mm": 5.84519005764156,
+      "z_sigma_between_frames_mm": 0.003081023820672043,
+      "z_spatial_sigma_median_mm": 0.020108571412944774,
+      "height_median_mm": 6.122517713781832,
+      "height_sigma_between_frames_mm": 0.0027248408978180353,
+      "height_p95_abs_mm": 0.005598504455366536,
+      "is_reference": false
+    },
+    {
+      "platform_id": "h02",
+      "stable_range": [
+        2500,
+        2570
+      ],
+      "analysis_range": [
+        2500,
+        2570
+      ],
+      "z_median_mm": 1.8323241771502694,
+      "z_sigma_between_frames_mm": 0.002637606369197268,
+      "z_spatial_sigma_median_mm": 0.02157454355544508,
+      "height_median_mm": 2.109520348319421,
+      "height_sigma_between_frames_mm": 0.0024852633697378767,
+      "height_p95_abs_mm": 0.005607990155891682,
+      "is_reference": false
+    },
+    {
+      "platform_id": "h1p001",
+      "stable_range": [
+        2590,
+        2640
+      ],
+      "analysis_range": [
+        2590,
+        2640
+      ],
+      "z_median_mm": 0.8003872487800265,
+      "z_sigma_between_frames_mm": 0.0032374488715413456,
+      "z_spatial_sigma_median_mm": 0.02358511378722983,
+      "height_median_mm": 1.0771484684528332,
+      "height_sigma_between_frames_mm": 0.0025396034340138328,
+      "height_p95_abs_mm": 0.00466891949008925,
+      "is_reference": false
+    },
+    {
+      "platform_id": "base",
+      "stable_range": [
+        2678,
+        2791
+      ],
+      "analysis_range": [
+        2678,
+        2791
+      ],
+      "z_median_mm": -0.27706648415448853,
+      "z_sigma_between_frames_mm": 0.0015678850653481876,
+      "z_spatial_sigma_median_mm": 0.03808394624104898,
+      "height_median_mm": 0.0,
+      "height_sigma_between_frames_mm": 0.0,
+      "height_p95_abs_mm": 0.0,
+      "is_reference": true
+    }
+  ],
+  "metadata": {},
+  "plot_warning": null,
+  "config": "D:\\Docs\\linelaserscan\\0704line-laser-3d-scanner\\laser_measurement_tool\\configs\\measure_tool_daheng_0811.yaml",
+  "calibration_config": {
+    "manifest": "calibration_daheng_0811/manifest.yaml",
+    "intrinsics": "calibration_daheng_0811/calibration_result.yaml",
+    "laser_model": "calibration_daheng_0811/circular_cone.yaml",
+    "extrinsics": "calibration_daheng_0811/camera_ground_extrinsics.yaml",
+    "ground_u_compensation": null
+  }
+}

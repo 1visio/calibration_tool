@@ -1,10 +1,10 @@
 schema_version: 1
 dataset_id: laser_plane
-output_dir: D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\test0813
+output_dir: D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\laser_plane_0814
 backend: daheng
 serial_number: GCB26060793
 camera:
-  exposure_us: 120000.0
+  exposure_us: 300.0
   gain_db: 0.0
   pixel_format: Mono8
   offset_x: 0
@@ -63,7 +63,7 @@ tasks:
   frames: 1
   filename_template: fit/nolaser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 500.0
+    exposure_us: 300.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -88,7 +88,7 @@ tasks:
   frames: 1
   filename_template: fit/laser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 200.0
+    exposure_us: 300.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -113,7 +113,7 @@ tasks:
   frames: 1
   filename_template: fit/chess {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 35000.0
+    exposure_us: 120000.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -138,7 +138,7 @@ tasks:
   frames: 1
   filename_template: fit/nolaser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 500.0
+    exposure_us: 300.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -163,7 +163,7 @@ tasks:
   frames: 1
   filename_template: fit/laser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 500.0
+    exposure_us: 300.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -188,7 +188,7 @@ tasks:
   frames: 1
   filename_template: fit/chess {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 35000.0
+    exposure_us: 120000.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -213,7 +213,7 @@ tasks:
   frames: 1
   filename_template: fit/nolaser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 500.0
+    exposure_us: 300.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -238,7 +238,7 @@ tasks:
   frames: 1
   filename_template: fit/laser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 500.0
+    exposure_us: 300.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -263,7 +263,7 @@ tasks:
   frames: 1
   filename_template: fit/chess {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 35000.0
+    exposure_us: 120000.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -288,7 +288,7 @@ tasks:
   frames: 1
   filename_template: fit/nolaser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 500.0
+    exposure_us: 300.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -313,7 +313,7 @@ tasks:
   frames: 1
   filename_template: fit/laser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 500.0
+    exposure_us: 300.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -330,6 +330,81 @@ tasks:
   tags:
     split: fit
     group_index: 4
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_005_01_chess
+  frames: 1
+  filename_template: fit/chess {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 120000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '005'
+  role: chess
+  instruction: 关闭激光，摆放棋盘；准备好后采集姿态 005。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: chessboard
+  tags:
+    split: fit
+    group_index: 5
+    laser_state: 'off'
+    recipe_role: chess
+    filename_prefix: chess
+    quality_mode_requested: chessboard
+- task_id: fit_005_02_nolaser
+  frames: 1
+  filename_template: fit/nolaser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '005'
+  role: nolaser
+  instruction: 保持棋盘完全不动、关闭激光；准备好后采集姿态 005。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: generic
+  tags:
+    split: fit
+    group_index: 5
+    laser_state: 'off'
+    recipe_role: nolaser
+    filename_prefix: nolaser
+    quality_mode_requested: generic
+- task_id: fit_005_03_laser
+  frames: 1
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '005'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 005。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 5
     laser_state: 'on'
     recipe_role: laser
     filename_prefix: laser

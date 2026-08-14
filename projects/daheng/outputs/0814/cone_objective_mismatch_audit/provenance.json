@@ -1,0 +1,842 @@
+{
+  "task": "Task 4D Circular Cone objective mismatch audit",
+  "fit_main_ids": [
+    "001",
+    "002",
+    "003",
+    "004",
+    "005",
+    "006",
+    "007",
+    "008",
+    "009",
+    "010",
+    "011",
+    "012",
+    "013",
+    "014",
+    "015",
+    "016",
+    "017",
+    "018",
+    "025",
+    "026",
+    "028",
+    "029",
+    "030",
+    "031",
+    "032",
+    "033",
+    "034",
+    "035",
+    "036"
+  ],
+  "sensitivity_case_ids": [
+    "027"
+  ],
+  "validation_ids_not_opened": [
+    "019",
+    "020",
+    "021",
+    "022",
+    "023",
+    "024",
+    "037",
+    "038",
+    "039",
+    "040"
+  ],
+  "validation_opened": false,
+  "model_refit": false,
+  "production_writeback": false,
+  "correction_added": false,
+  "formal_cone_sha256_before": "478d11c97c174e75d3167133a050540573a93dc28451e4b961ce12913709feac",
+  "formal_cone_sha256_after": "478d11c97c174e75d3167133a050540573a93dc28451e4b961ce12913709feac",
+  "M_leave027_source": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0814\\leave027_cone_refit_control\\leave027_cone_refit.json",
+  "extension_provenance_count": 12,
+  "audit": {
+    "invalid_by_model_frame": {
+      "M0": {
+        "001": 0,
+        "002": 0,
+        "003": 0,
+        "004": 0,
+        "005": 0,
+        "006": 0,
+        "007": 0,
+        "008": 0,
+        "009": 0,
+        "010": 0,
+        "011": 0,
+        "012": 0,
+        "013": 0,
+        "014": 0,
+        "015": 0,
+        "016": 0,
+        "017": 0,
+        "018": 0,
+        "025": 72,
+        "026": 157,
+        "027": 9,
+        "028": 0,
+        "029": 0,
+        "030": 0,
+        "031": 0,
+        "032": 0,
+        "033": 0,
+        "034": 0,
+        "035": 0,
+        "036": 0
+      },
+      "M_leave027": {
+        "001": 0,
+        "002": 0,
+        "003": 0,
+        "004": 0,
+        "005": 0,
+        "006": 0,
+        "007": 0,
+        "008": 0,
+        "009": 0,
+        "010": 0,
+        "011": 0,
+        "012": 0,
+        "013": 0,
+        "014": 0,
+        "015": 0,
+        "016": 0,
+        "017": 0,
+        "018": 0,
+        "025": 72,
+        "026": 157,
+        "027": 10,
+        "028": 0,
+        "029": 0,
+        "030": 0,
+        "031": 0,
+        "032": 0,
+        "033": 0,
+        "034": 0,
+        "035": 0,
+        "036": 0
+      }
+    },
+    "truth_ray_consistency_max_abs_mm": 0.0
+  },
+  "model_metadata": {
+    "M0": {
+      "axis_unit_camera": [
+        0.9596376594680046,
+        0.009625633081993223,
+        -0.281074562560437
+      ],
+      "apex_camera_mm": [
+        -115.59970742084231,
+        1.7418894155446691,
+        327.03307376521605
+      ],
+      "half_apex_angle_deg": 89.07255025246596
+    },
+    "M_leave027": {
+      "axis_unit_camera": [
+        0.9614114958501985,
+        0.008793168637156843,
+        -0.27497384572428374
+      ],
+      "apex_camera_mm": [
+        -157.4316372968136,
+        20.82798469394664,
+        192.85908671244084
+      ],
+      "half_apex_angle_deg": 88.71046118552593
+    }
+  },
+  "summary": {
+    "main_fit_leave027": {
+      "M0": {
+        "global": {
+          "point_count": 26002,
+          "valid_count": 25773,
+          "invalid_count": 229,
+          "frame_count": 29,
+          "weighting": "frame_equal_within_region",
+          "surface": {
+            "count": 25773,
+            "bias": -0.00366572777590943,
+            "mae": 0.017807257306707854,
+            "rmse": 0.022954101932356127,
+            "p95": 0.04436762519911408,
+            "max_abs": 0.1666736805342266
+          },
+          "signed_surface_distance": {
+            "count": 25773,
+            "bias": -0.003665247538219161,
+            "mae": 0.017804924423132806,
+            "rmse": 0.022951094773732222,
+            "p95": 0.044361812709166414,
+            "max_abs": 0.16665184503845012
+          },
+          "ray_depth": {
+            "count": 25773,
+            "bias": 0.012012589660969818,
+            "mae": 0.058528097703102515,
+            "rmse": 0.07522148931132566,
+            "p95": 0.1464978532542318,
+            "max_abs": 0.5703781115577158
+          },
+          "ray_depth_rmse_over_surface_rmse": 3.2770390901372344,
+          "pearson_surface_vs_depth": -0.9993635523025779,
+          "spearman_surface_vs_depth_point_equal": -0.999786840344755,
+          "linearized_prediction_vs_depth_corr": 0.9999999999999928,
+          "linearization_error": {
+            "count": 25773,
+            "bias": -2.056526795057197e-09,
+            "mae": 2.056669564392172e-09,
+            "rmse": 9.1626594877882e-09,
+            "p95": 9.45577094402239e-09,
+            "max_abs": 3.6088337818096505e-07
+          },
+          "linearized_depth_energy_explained_fraction": 0.9999999999999851,
+          "geometric_amplification_distance_to_Z_median": 3.2970841296327733,
+          "geometric_amplification_distance_to_Z_p95": 3.4370001963962666,
+          "observed_abs_depth_over_surface_median": 3.2966652525868065,
+          "observed_abs_depth_over_surface_p95": 3.4365499305682103,
+          "ray_normal_angle_deg_median": 72.4096300784152,
+          "ray_normal_angle_deg_p95": 73.13872122636748,
+          "surface_small_depth_large_count": 0,
+          "surface_small_depth_large_point_fraction": 0.0,
+          "surface_small_depth_large_frame_weighted_fraction": 0.0
+        },
+        "top_formal_edge": {
+          "point_count": 94,
+          "valid_count": 81,
+          "invalid_count": 13,
+          "frame_count": 7,
+          "weighting": "frame_equal_within_region",
+          "surface": {
+            "count": 81,
+            "bias": 0.047020715746420715,
+            "mae": 0.047558814596645745,
+            "rmse": 0.06343223192822252,
+            "p95": 0.14271618990219714,
+            "max_abs": 0.16390922094681049
+          },
+          "signed_surface_distance": {
+            "count": 81,
+            "bias": 0.04701455568181546,
+            "mae": 0.04755258403707612,
+            "rmse": 0.0634239218325438,
+            "p95": 0.14269749301645096,
+            "max_abs": 0.16388774761586683
+          },
+          "ray_depth": {
+            "count": 81,
+            "bias": -0.15236844616322923,
+            "mae": 0.1540351817009352,
+            "rmse": 0.2024929331408898,
+            "p95": 0.4489312702845609,
+            "max_abs": 0.5155553553942127
+          },
+          "ray_depth_rmse_over_surface_rmse": 3.192271925257542,
+          "pearson_surface_vs_depth": -0.9994192878444667,
+          "spearman_surface_vs_depth_point_equal": -0.9929990966576332,
+          "linearized_prediction_vs_depth_corr": 0.9999999999999735,
+          "linearization_error": {
+            "count": 81,
+            "bias": -5.263752284103694e-08,
+            "mae": 5.263752284103694e-08,
+            "rmse": 1.0576010421812331e-07,
+            "p95": 2.7182048334406517e-07,
+            "max_abs": 3.6088337818096505e-07
+          },
+          "linearized_depth_energy_explained_fraction": 0.9999999999997272,
+          "geometric_amplification_distance_to_Z_median": 3.346599425445154,
+          "geometric_amplification_distance_to_Z_p95": 3.4445279300004694,
+          "observed_abs_depth_over_surface_median": 3.346161655046817,
+          "observed_abs_depth_over_surface_p95": 3.4440770868901676,
+          "ray_normal_angle_deg_median": 72.86592549084415,
+          "ray_normal_angle_deg_p95": 73.36341364062841,
+          "surface_small_depth_large_count": 0,
+          "surface_small_depth_large_point_fraction": 0.0,
+          "surface_small_depth_large_frame_weighted_fraction": 0.0
+        },
+        "middle_formal": {
+          "point_count": 25752,
+          "valid_count": 25536,
+          "invalid_count": 216,
+          "frame_count": 29,
+          "weighting": "frame_equal_within_region",
+          "surface": {
+            "count": 25536,
+            "bias": -0.003669298118284103,
+            "mae": 0.017576292456583525,
+            "rmse": 0.022572874409727658,
+            "p95": 0.04393752584380195,
+            "max_abs": 0.1666736805342266
+          },
+          "signed_surface_distance": {
+            "count": 25536,
+            "bias": -0.0036688174128523413,
+            "mae": 0.017573989831127172,
+            "rmse": 0.022569917194753725,
+            "p95": 0.043931769700079,
+            "max_abs": 0.16665184503845012
+          },
+          "ray_depth": {
+            "count": 25536,
+            "bias": 0.012004001315961238,
+            "mae": 0.0577539239207672,
+            "rmse": 0.07397650490714437,
+            "p95": 0.1443221142104676,
+            "max_abs": 0.5703781115577158
+          },
+          "ray_depth_rmse_over_surface_rmse": 3.2772301641506765,
+          "pearson_surface_vs_depth": -0.9993558010128499,
+          "spearman_surface_vs_depth_point_equal": -0.9997861103349931,
+          "linearized_prediction_vs_depth_corr": 0.9999999999999959,
+          "linearization_error": {
+            "count": 25536,
+            "bias": -1.810157973789112e-09,
+            "mae": 1.8103024181515788e-09,
+            "rmse": 6.831429108426452e-09,
+            "p95": 8.474629831223268e-09,
+            "max_abs": 2.4395080550077e-07
+          },
+          "linearized_depth_energy_explained_fraction": 0.9999999999999915,
+          "geometric_amplification_distance_to_Z_median": 3.2944694398783723,
+          "geometric_amplification_distance_to_Z_p95": 3.4369955295545047,
+          "observed_abs_depth_over_surface_median": 3.294067507039487,
+          "observed_abs_depth_over_surface_p95": 3.4365452612731295,
+          "ray_normal_angle_deg_median": 72.4025969837679,
+          "ray_normal_angle_deg_p95": 73.13701750928975,
+          "surface_small_depth_large_count": 0,
+          "surface_small_depth_large_point_fraction": 0.0,
+          "surface_small_depth_large_frame_weighted_fraction": 0.0
+        },
+        "bottom_formal_edge": {
+          "point_count": 156,
+          "valid_count": 156,
+          "invalid_count": 0,
+          "frame_count": 7,
+          "weighting": "frame_equal_within_region",
+          "surface": {
+            "count": 156,
+            "bias": -0.030854652962486507,
+            "mae": 0.031723759913229156,
+            "rmse": 0.034591663273919285,
+            "p95": 0.05379339671400807,
+            "max_abs": 0.05958428285087969
+          },
+          "signed_surface_distance": {
+            "count": 156,
+            "bias": -0.030850610772728132,
+            "mae": 0.031719603863975446,
+            "rmse": 0.03458713150792661,
+            "p95": 0.05378634937766208,
+            "max_abs": 0.059576476865241396
+          },
+          "ray_depth": {
+            "count": 156,
+            "bias": 0.10304802799036984,
+            "mae": 0.1057632549373126,
+            "rmse": 0.11588730799155124,
+            "p95": 0.17839961285278605,
+            "max_abs": 0.20463806447230581
+          },
+          "ray_depth_rmse_over_surface_rmse": 3.3501513666423084,
+          "pearson_surface_vs_depth": -0.9989496223216144,
+          "spearman_surface_vs_depth_point_equal": -0.9991496894311768,
+          "linearized_prediction_vs_depth_corr": 0.9999999999999981,
+          "linearization_error": {
+            "count": 156,
+            "bias": -1.1154915508675848e-08,
+            "mae": 1.1154915508675848e-08,
+            "rmse": 1.3708872594865094e-08,
+            "p95": 2.5515931617592358e-08,
+            "max_abs": 3.300665676886361e-08
+          },
+          "linearized_depth_energy_explained_fraction": 0.999999999999986,
+          "geometric_amplification_distance_to_Z_median": 3.329625951712865,
+          "geometric_amplification_distance_to_Z_p95": 3.4346382898298695,
+          "observed_abs_depth_over_surface_median": 3.329189306709471,
+          "observed_abs_depth_over_surface_p95": 3.4341879531990247,
+          "ray_normal_angle_deg_median": 72.7889596293543,
+          "ray_normal_angle_deg_p95": 73.3035585378395,
+          "surface_small_depth_large_count": 0,
+          "surface_small_depth_large_point_fraction": 0.0,
+          "surface_small_depth_large_frame_weighted_fraction": 0.0
+        }
+      },
+      "M_leave027": {
+        "global": {
+          "point_count": 26002,
+          "valid_count": 25773,
+          "invalid_count": 229,
+          "frame_count": 29,
+          "weighting": "frame_equal_within_region",
+          "surface": {
+            "count": 25773,
+            "bias": -0.00021530891913890907,
+            "mae": 0.01751036099295425,
+            "rmse": 0.02250621413043631,
+            "p95": 0.04304107549558189,
+            "max_abs": 0.1709089378333406
+          },
+          "signed_surface_distance": {
+            "count": 25773,
+            "bias": -0.00021525438891701167,
+            "mae": 0.017505926230686773,
+            "rmse": 0.02250051409322694,
+            "p95": 0.043030174695899,
+            "max_abs": 0.1708656525744597
+          },
+          "ray_depth": {
+            "count": 25773,
+            "bias": 0.0006902589513581607,
+            "mae": 0.05752208742295397,
+            "rmse": 0.07372178408985522,
+            "p95": 0.14228733012100747,
+            "max_abs": 0.5727351703160366
+          },
+          "ray_depth_rmse_over_surface_rmse": 3.275619065143322,
+          "pearson_surface_vs_depth": -0.9993866181287273,
+          "spearman_surface_vs_depth_point_equal": -0.9998002972266006,
+          "linearized_prediction_vs_depth_corr": 0.9999999999999981,
+          "linearization_error": {
+            "count": 25773,
+            "bias": -1.2546950443797944e-09,
+            "mae": 1.254713455277451e-09,
+            "rmse": 4.64631070208855e-09,
+            "p95": 5.248886769670946e-09,
+            "max_abs": 1.6666286273281372e-07
+          },
+          "linearized_depth_energy_explained_fraction": 0.999999999999996,
+          "geometric_amplification_distance_to_Z_median": 3.297632205857421,
+          "geometric_amplification_distance_to_Z_p95": 3.437781311659345,
+          "observed_abs_depth_over_surface_median": 3.296728461103137,
+          "observed_abs_depth_over_surface_p95": 3.43691297614704,
+          "ray_normal_angle_deg_median": 72.4114996595151,
+          "ray_normal_angle_deg_p95": 73.14024026775087,
+          "surface_small_depth_large_count": 0,
+          "surface_small_depth_large_point_fraction": 0.0,
+          "surface_small_depth_large_frame_weighted_fraction": 0.0
+        },
+        "top_formal_edge": {
+          "point_count": 94,
+          "valid_count": 81,
+          "invalid_count": 13,
+          "frame_count": 7,
+          "weighting": "frame_equal_within_region",
+          "surface": {
+            "count": 81,
+            "bias": 0.0531776145733072,
+            "mae": 0.05350911669108489,
+            "rmse": 0.06834820400251745,
+            "p95": 0.14970166011189967,
+            "max_abs": 0.1709089378333406
+          },
+          "signed_surface_distance": {
+            "count": 81,
+            "bias": 0.053164146542655,
+            "mae": 0.05349556470253576,
+            "rmse": 0.06833089379193516,
+            "p95": 0.14966374591504733,
+            "max_abs": 0.1708656525744597
+          },
+          "ray_depth": {
+            "count": 81,
+            "bias": -0.17253306436026938,
+            "mae": 0.17355976737629733,
+            "rmse": 0.21856246854535352,
+            "p95": 0.47086936137475277,
+            "max_abs": 0.5375299036364822
+          },
+          "ray_depth_rmse_over_surface_rmse": 3.19777925016586,
+          "pearson_surface_vs_depth": -0.9993051926511295,
+          "spearman_surface_vs_depth_point_equal": -0.9918473351400181,
+          "linearized_prediction_vs_depth_corr": 0.999999999999995,
+          "linearization_error": {
+            "count": 81,
+            "bias": -2.6363530321281453e-08,
+            "mae": 2.6363530321281453e-08,
+            "rmse": 4.9768989318790545e-08,
+            "p95": 1.274260807981875e-07,
+            "max_abs": 1.6666286273281372e-07
+          },
+          "linearized_depth_energy_explained_fraction": 0.9999999999999482,
+          "geometric_amplification_distance_to_Z_median": 3.346932424123106,
+          "geometric_amplification_distance_to_Z_p95": 3.4449977791562003,
+          "observed_abs_depth_over_surface_median": 3.34608509986206,
+          "observed_abs_depth_over_surface_p95": 3.444125506472777,
+          "ray_normal_angle_deg_median": 72.86768291824863,
+          "ray_normal_angle_deg_p95": 73.36568299298459,
+          "surface_small_depth_large_count": 0,
+          "surface_small_depth_large_point_fraction": 0.0,
+          "surface_small_depth_large_frame_weighted_fraction": 0.0
+        },
+        "middle_formal": {
+          "point_count": 25752,
+          "valid_count": 25536,
+          "invalid_count": 216,
+          "frame_count": 29,
+          "weighting": "frame_equal_within_region",
+          "surface": {
+            "count": 25536,
+            "bias": -0.00027233000004650955,
+            "mae": 0.017326965721667534,
+            "rmse": 0.022159552522210916,
+            "p95": 0.04280817819719651,
+            "max_abs": 0.16733766822776808
+          },
+          "signed_surface_distance": {
+            "count": 25536,
+            "bias": -0.0002722610283783075,
+            "mae": 0.017322577407010674,
+            "rmse": 0.02215394028226742,
+            "p95": 0.04279733638225708,
+            "max_abs": 0.16729528744662472
+          },
+          "ray_depth": {
+            "count": 25536,
+            "bias": 0.0008646917389626948,
+            "mae": 0.056909459032380025,
+            "rmse": 0.07260908438549782,
+            "p95": 0.1411714005222393,
+            "max_abs": 0.5727351703160366
+          },
+          "ray_depth_rmse_over_surface_rmse": 3.2766493959081724,
+          "pearson_surface_vs_depth": -0.9993846146755658,
+          "spearman_surface_vs_depth_point_equal": -0.9997998867277907,
+          "linearized_prediction_vs_depth_corr": 0.9999999999999989,
+          "linearization_error": {
+            "count": 25536,
+            "bias": -1.1766223419290597e-09,
+            "mae": 1.1766409631728309e-09,
+            "rmse": 3.70068763924363e-09,
+            "p95": 5.08026487544555e-09,
+            "max_abs": 1.1518868997528742e-07
+          },
+          "linearized_depth_energy_explained_fraction": 0.9999999999999974,
+          "geometric_amplification_distance_to_Z_median": 3.2949633556602964,
+          "geometric_amplification_distance_to_Z_p95": 3.4377767689598424,
+          "observed_abs_depth_over_surface_median": 3.2940946826501016,
+          "observed_abs_depth_over_surface_p95": 3.4369063207433874,
+          "ray_normal_angle_deg_median": 72.40246529948325,
+          "ray_normal_angle_deg_p95": 73.1392847040535,
+          "surface_small_depth_large_count": 0,
+          "surface_small_depth_large_point_fraction": 0.0,
+          "surface_small_depth_large_frame_weighted_fraction": 0.0
+        },
+        "bottom_formal_edge": {
+          "point_count": 156,
+          "valid_count": 156,
+          "invalid_count": 0,
+          "frame_count": 7,
+          "weighting": "frame_equal_within_region",
+          "surface": {
+            "count": 156,
+            "bias": -0.0215905460783627,
+            "mae": 0.02213096990114892,
+            "rmse": 0.024241496910696055,
+            "p95": 0.03912648358007864,
+            "max_abs": 0.051722233799596395
+          },
+          "signed_surface_distance": {
+            "count": 156,
+            "bias": -0.02158507794785865,
+            "mae": 0.022125364900184078,
+            "rmse": 0.024235357387024904,
+            "p95": 0.03911657420967162,
+            "max_abs": 0.05170913436601326
+          },
+          "ray_depth": {
+            "count": 156,
+            "bias": 0.07170598233250405,
+            "mae": 0.07339239632532718,
+            "rmse": 0.08062353741065897,
+            "p95": 0.1322251272011954,
+            "max_abs": 0.16637740004182433
+          },
+          "ray_depth_rmse_over_surface_rmse": 3.325848139975445,
+          "pearson_surface_vs_depth": -0.9985214385337511,
+          "spearman_surface_vs_depth_point_equal": -0.9989094529879406,
+          "linearized_prediction_vs_depth_corr": 1.0,
+          "linearization_error": {
+            "count": 156,
+            "bias": -1.0657748034863626e-11,
+            "mae": 1.0658337340302899e-11,
+            "rmse": 1.7330642727092866e-11,
+            "p95": 4.496827910038803e-11,
+            "max_abs": 1.0058101573839906e-10
+          },
+          "linearized_depth_energy_explained_fraction": 1.0,
+          "geometric_amplification_distance_to_Z_median": 3.326005247614081,
+          "geometric_amplification_distance_to_Z_p95": 3.4313349848631387,
+          "observed_abs_depth_over_surface_median": 3.32516288585195,
+          "observed_abs_depth_over_surface_p95": 3.4304659474620025,
+          "ray_normal_angle_deg_median": 72.7696379532631,
+          "ray_normal_angle_deg_p95": 73.28663478761978,
+          "surface_small_depth_large_count": 0,
+          "surface_small_depth_large_point_fraction": 0.0,
+          "surface_small_depth_large_frame_weighted_fraction": 0.0
+        }
+      }
+    },
+    "frame027_sensitivity": {
+      "M0": {
+        "global": {
+          "point_count": 900,
+          "valid_count": 891,
+          "invalid_count": 9,
+          "frame_count": 1,
+          "weighting": "frame_equal_within_region",
+          "surface": {
+            "count": 891,
+            "bias": 0.08622027396625177,
+            "mae": 0.09211551921484509,
+            "rmse": 0.11058366636602736,
+            "p95": 0.1714680982234862,
+            "max_abs": 0.1858457120970849
+          },
+          "signed_surface_distance": {
+            "count": 891,
+            "bias": 0.08620897846703436,
+            "mae": 0.09210345139451309,
+            "rmse": 0.11056917908061947,
+            "p95": 0.17144563462321916,
+            "max_abs": 0.18582136492212267
+          },
+          "ray_depth": {
+            "count": 891,
+            "bias": -0.28121669687466905,
+            "mae": 0.29924953981515695,
+            "rmse": 0.361304868951578,
+            "p95": 0.5700110016566668,
+            "max_abs": 0.6197770723739495
+          },
+          "ray_depth_rmse_over_surface_rmse": 3.2672534816821304,
+          "pearson_surface_vs_depth": -0.9996165711269345,
+          "spearman_surface_vs_depth_point_equal": -0.9998612449209516,
+          "linearized_prediction_vs_depth_corr": 0.9999999999999957,
+          "linearization_error": {
+            "count": 891,
+            "bias": -8.61874200856964e-09,
+            "mae": 8.6187509272043e-09,
+            "rmse": 2.3419166707876193e-08,
+            "p95": 1.7751556002920665e-08,
+            "max_abs": 2.926547418846681e-07
+          },
+          "linearized_depth_energy_explained_fraction": 0.9999999999999958,
+          "geometric_amplification_distance_to_Z_median": 3.205378647975367,
+          "geometric_amplification_distance_to_Z_p95": 3.327124959637415,
+          "observed_abs_depth_over_surface_median": 3.2049588572109418,
+          "observed_abs_depth_over_surface_p95": 3.3266891180942504,
+          "ray_normal_angle_deg_median": 71.84063660525075,
+          "ray_normal_angle_deg_p95": 72.51837963322369,
+          "surface_small_depth_large_count": 0,
+          "surface_small_depth_large_point_fraction": 0.0,
+          "surface_small_depth_large_frame_weighted_fraction": 0.0
+        },
+        "top_formal_edge": {
+          "point_count": 0,
+          "valid_count": 0,
+          "frame_count": 0
+        },
+        "middle_formal": {
+          "point_count": 900,
+          "valid_count": 891,
+          "invalid_count": 9,
+          "frame_count": 1,
+          "weighting": "frame_equal_within_region",
+          "surface": {
+            "count": 891,
+            "bias": 0.08622027396625177,
+            "mae": 0.09211551921484509,
+            "rmse": 0.11058366636602736,
+            "p95": 0.1714680982234862,
+            "max_abs": 0.1858457120970849
+          },
+          "signed_surface_distance": {
+            "count": 891,
+            "bias": 0.08620897846703436,
+            "mae": 0.09210345139451309,
+            "rmse": 0.11056917908061947,
+            "p95": 0.17144563462321916,
+            "max_abs": 0.18582136492212267
+          },
+          "ray_depth": {
+            "count": 891,
+            "bias": -0.28121669687466905,
+            "mae": 0.29924953981515695,
+            "rmse": 0.361304868951578,
+            "p95": 0.5700110016566668,
+            "max_abs": 0.6197770723739495
+          },
+          "ray_depth_rmse_over_surface_rmse": 3.2672534816821304,
+          "pearson_surface_vs_depth": -0.9996165711269345,
+          "spearman_surface_vs_depth_point_equal": -0.9998612449209516,
+          "linearized_prediction_vs_depth_corr": 0.9999999999999957,
+          "linearization_error": {
+            "count": 891,
+            "bias": -8.61874200856964e-09,
+            "mae": 8.6187509272043e-09,
+            "rmse": 2.3419166707876193e-08,
+            "p95": 1.7751556002920665e-08,
+            "max_abs": 2.926547418846681e-07
+          },
+          "linearized_depth_energy_explained_fraction": 0.9999999999999958,
+          "geometric_amplification_distance_to_Z_median": 3.205378647975367,
+          "geometric_amplification_distance_to_Z_p95": 3.327124959637415,
+          "observed_abs_depth_over_surface_median": 3.2049588572109418,
+          "observed_abs_depth_over_surface_p95": 3.3266891180942504,
+          "ray_normal_angle_deg_median": 71.84063660525075,
+          "ray_normal_angle_deg_p95": 72.51837963322369,
+          "surface_small_depth_large_count": 0,
+          "surface_small_depth_large_point_fraction": 0.0,
+          "surface_small_depth_large_frame_weighted_fraction": 0.0
+        },
+        "bottom_formal_edge": {
+          "point_count": 0,
+          "valid_count": 0,
+          "frame_count": 0
+        }
+      },
+      "M_leave027": {
+        "global": {
+          "point_count": 900,
+          "valid_count": 890,
+          "invalid_count": 10,
+          "frame_count": 1,
+          "weighting": "frame_equal_within_region",
+          "surface": {
+            "count": 890,
+            "bias": 0.09128130258942431,
+            "mae": 0.09582674913301645,
+            "rmse": 0.11350195903966546,
+            "p95": 0.17428394030097927,
+            "max_abs": 0.18859046732656104
+          },
+          "signed_surface_distance": {
+            "count": 890,
+            "bias": 0.09125818422672394,
+            "mae": 0.09580247956761795,
+            "rmse": 0.11347321296153286,
+            "p95": 0.17423980027196534,
+            "max_abs": 0.1885427039544157
+          },
+          "ray_depth": {
+            "count": 890,
+            "bias": -0.29724363123900455,
+            "mae": 0.31113725951632626,
+            "rmse": 0.3707193107124661,
+            "p95": 0.5789054786790757,
+            "max_abs": 0.6288572145588205
+          },
+          "ray_depth_rmse_over_surface_rmse": 3.2661930582441405,
+          "pearson_surface_vs_depth": -0.9995956322592823,
+          "spearman_surface_vs_depth_point_equal": -0.9998359415151419,
+          "linearized_prediction_vs_depth_corr": 0.9999999999999984,
+          "linearization_error": {
+            "count": 890,
+            "bias": -1.9722516094748843e-08,
+            "mae": 1.9722516442751184e-08,
+            "rmse": 2.4876247890861214e-08,
+            "p95": 3.722493457924969e-08,
+            "max_abs": 1.1778126285388879e-07
+          },
+          "linearized_depth_energy_explained_fraction": 0.9999999999999954,
+          "geometric_amplification_distance_to_Z_median": 3.206550633669264,
+          "geometric_amplification_distance_to_Z_p95": 3.3272256424935094,
+          "observed_abs_depth_over_surface_median": 3.205738792919264,
+          "observed_abs_depth_over_surface_p95": 3.326383114914365,
+          "ray_normal_angle_deg_median": 71.8472843624852,
+          "ray_normal_angle_deg_p95": 72.51892568214754,
+          "surface_small_depth_large_count": 0,
+          "surface_small_depth_large_point_fraction": 0.0,
+          "surface_small_depth_large_frame_weighted_fraction": 0.0
+        },
+        "top_formal_edge": {
+          "point_count": 0,
+          "valid_count": 0,
+          "frame_count": 0
+        },
+        "middle_formal": {
+          "point_count": 900,
+          "valid_count": 890,
+          "invalid_count": 10,
+          "frame_count": 1,
+          "weighting": "frame_equal_within_region",
+          "surface": {
+            "count": 890,
+            "bias": 0.09128130258942431,
+            "mae": 0.09582674913301645,
+            "rmse": 0.11350195903966546,
+            "p95": 0.17428394030097927,
+            "max_abs": 0.18859046732656104
+          },
+          "signed_surface_distance": {
+            "count": 890,
+            "bias": 0.09125818422672394,
+            "mae": 0.09580247956761795,
+            "rmse": 0.11347321296153286,
+            "p95": 0.17423980027196534,
+            "max_abs": 0.1885427039544157
+          },
+          "ray_depth": {
+            "count": 890,
+            "bias": -0.29724363123900455,
+            "mae": 0.31113725951632626,
+            "rmse": 0.3707193107124661,
+            "p95": 0.5789054786790757,
+            "max_abs": 0.6288572145588205
+          },
+          "ray_depth_rmse_over_surface_rmse": 3.2661930582441405,
+          "pearson_surface_vs_depth": -0.9995956322592823,
+          "spearman_surface_vs_depth_point_equal": -0.9998359415151419,
+          "linearized_prediction_vs_depth_corr": 0.9999999999999984,
+          "linearization_error": {
+            "count": 890,
+            "bias": -1.9722516094748843e-08,
+            "mae": 1.9722516442751184e-08,
+            "rmse": 2.4876247890861214e-08,
+            "p95": 3.722493457924969e-08,
+            "max_abs": 1.1778126285388879e-07
+          },
+          "linearized_depth_energy_explained_fraction": 0.9999999999999954,
+          "geometric_amplification_distance_to_Z_median": 3.206550633669264,
+          "geometric_amplification_distance_to_Z_p95": 3.3272256424935094,
+          "observed_abs_depth_over_surface_median": 3.205738792919264,
+          "observed_abs_depth_over_surface_p95": 3.326383114914365,
+          "ray_normal_angle_deg_median": 71.8472843624852,
+          "ray_normal_angle_deg_p95": 72.51892568214754,
+          "surface_small_depth_large_count": 0,
+          "surface_small_depth_large_point_fraction": 0.0,
+          "surface_small_depth_large_frame_weighted_fraction": 0.0
+        },
+        "bottom_formal_edge": {
+          "point_count": 0,
+          "valid_count": 0,
+          "frame_count": 0
+        }
+      }
+    }
+  },
+  "classification": {
+    "M0": {
+      "max_edge_to_middle_median_geometric_amplification_ratio": 1.0158234843327933,
+      "max_region_surface_small_depth_large_frame_weighted_fraction": 0.0
+    },
+    "M_leave027": {
+      "max_edge_to_middle_median_geometric_amplification_ratio": 1.0157722750917804,
+      "max_region_surface_small_depth_large_frame_weighted_fraction": 0.0
+    },
+    "classification_rule": {
+      "STRONG": "edge/middle median amplification >=1.5 and small-surface/large-depth weighted fraction >=1%",
+      "PARTIAL": "edge/middle median amplification >=1.2 or small-surface/large-depth weighted fraction >=0.1%",
+      "WEAK": "neither gate is met",
+      "thresholds_fixed_before_analysis": true
+    }
+  },
+  "objective_mismatch": "WEAK",
+  "next_step": "C"
+}

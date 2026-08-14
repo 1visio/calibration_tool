@@ -1,0 +1,24 @@
+schema_version: 1
+source_calibration_run: calibration_tool/projects/daheng/outputs/0811
+model_type: circular_cone
+coordinate_system: camera
+units: mm
+description: general circular cone equivalent to a standard cone after rigid transform
+axis_unit_camera:
+- 0.5332136289190951
+- -0.002708965372872879
+- -0.8459762924819691
+apex_camera_mm:
+- -339.128183282
+- 77.6337391731
+- 500.0
+half_apex_angle_deg: 89.51947163692391
+fit_success: true
+z_valid_range_mm:
+- 631.5503788651798
+- 713.6828851676036
+quality:
+  validation_board_rmse_mm: 0.08321982635298517
+  validation_board_p95_abs_mm: 0.14954585010671056
+  validation_board_max_abs_mm: 0.2588777890895244
+  validation_valid_rate: 1.0

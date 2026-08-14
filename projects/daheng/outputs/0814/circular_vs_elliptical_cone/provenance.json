@@ -1,0 +1,229 @@
+{
+  "task": "Task 5A Circular Cone vs Elliptical Cone model-form comparison",
+  "main_fit_ids": [
+    "001",
+    "002",
+    "003",
+    "004",
+    "005",
+    "006",
+    "007",
+    "008",
+    "009",
+    "010",
+    "011",
+    "012",
+    "013",
+    "014",
+    "015",
+    "016",
+    "017",
+    "018",
+    "025",
+    "026",
+    "028",
+    "029",
+    "030",
+    "031",
+    "032",
+    "033",
+    "034",
+    "035",
+    "036"
+  ],
+  "sensitivity_case_ids": [
+    "027"
+  ],
+  "validation_ids_not_opened": [
+    "019",
+    "020",
+    "021",
+    "022",
+    "023",
+    "024",
+    "037",
+    "038",
+    "039",
+    "040"
+  ],
+  "validation_opened": false,
+  "formal_m0_modified": false,
+  "empirical_correction_added": false,
+  "formal_cone_sha256_before": "478d11c97c174e75d3167133a050540573a93dc28451e4b961ce12913709feac",
+  "formal_cone_sha256_after": "478d11c97c174e75d3167133a050540573a93dc28451e4b961ce12913709feac",
+  "objective": "lambda_model_camera_Z - lambda_truth_camera_Z",
+  "sampling": "uniform per frame, fit_max_points=3000",
+  "weighting": "frame_equal",
+  "loss": "soft_l1",
+  "f_scale_mm": 0.1,
+  "max_nfev": 3000,
+  "reference_anchor_mm": [
+    -5.202197946661313,
+    -6.094415025826643,
+    682.015202774701
+  ],
+  "model_definition": {
+    "Circular": "x_perp^T(q^2 I)x_perp-axial^2=0; 6 DOF",
+    "Elliptical": "x_perp^T H x_perp-axial^2=0, H=exp(S) SPD; 8 DOF"
+  },
+  "full_fits": {
+    "Circular": {
+      "params": [
+        1.8522574342520952,
+        0.009167920811359608,
+        -441.57930865052293,
+        -27.72852615863943,
+        8.764399042734269,
+        -3.9295336923058315
+      ],
+      "success": true,
+      "status": 3,
+      "message": "`xtol` termination condition is satisfied.",
+      "robust_cost": 6.5597703006749395,
+      "raw_mse": 0.005923659466573682,
+      "selected_count": 2987,
+      "nfev": 223,
+      "geometry": {
+        "axis": [
+          0.9606102558776193,
+          0.008807045504173095,
+          -0.2777595583453833
+        ],
+        "apex": [
+          -136.52329817160577,
+          20.43130129604645,
+          260.24615852049544
+        ],
+        "H": [
+          [
+            0.00038623391114567013,
+            0.0
+          ],
+          [
+            0.0,
+            0.00038623391114567013
+          ]
+        ],
+        "principal_q": [
+          0.019652834684738742,
+          0.019652834684738742
+        ],
+        "principal_alpha_deg": [
+          88.87412045312347,
+          88.87412045312347
+        ],
+        "principal_orientation_deg_in_transverse_basis": 0.0
+      }
+    },
+    "Elliptical": {
+      "params": [
+        1.871034739077091,
+        0.009973420620687767,
+        -343.73475554463215,
+        -23.173760813866764,
+        0.3778833350237806,
+        -14.083129340795962,
+        -0.12279805602368504,
+        -10.936937942291403
+      ],
+      "success": true,
+      "status": 3,
+      "message": "`xtol` termination condition is satisfied.",
+      "robust_cost": 6.05467466362658,
+      "raw_mse": 0.005342886328130001,
+      "selected_count": 2987,
+      "nfev": 543,
+      "geometry": {
+        "axis": [
+          0.955218496988347,
+          0.009527111741690823,
+          -0.2957479622130721
+        ],
+        "apex": [
+          -107.44807450813165,
+          16.06072342665297,
+          353.76883383556225
+        ],
+        "H": [
+          [
+            7.874970304254947e-07,
+            -6.658930472181331e-07
+          ],
+          [
+            -6.658930472181348e-07,
+            1.784824738202374e-05
+          ]
+        ],
+        "principal_q": [
+          0.0008726661625377873,
+          0.0042277888051806475
+        ],
+        "principal_alpha_deg": [
+          89.94999992465517,
+          89.7577669880239
+        ],
+        "principal_orientation_deg_in_transverse_basis": -177.76823136920467
+      }
+    }
+  },
+  "elliptical_deterministic_seed_costs": [
+    6.054690750712893,
+    6.05467466362658,
+    6.0546833381953284
+  ],
+  "classification": {
+    "rmse_reduction_fraction_elliptical_vs_circular": {
+      "global": 0.05284265662836027,
+      "top_formal_edge": 0.2796619535045267,
+      "middle_formal": 0.055900325998068136,
+      "bottom_formal_edge": -0.7931416640268368
+    },
+    "top_bottom_bias_asymmetry_mm": {
+      "Circular": 0.2505754993897426,
+      "Elliptical": 0.22501418648763788
+    },
+    "asymmetry_reduction_fraction": 0.10201042386169974,
+    "jackknife_paired_heldout_rmse_reduction_median": 0.05088289356619047,
+    "jackknife_paired_heldout_improved_frame_count": 21,
+    "jackknife_frame_count": 29,
+    "elliptical_jackknife_grid_p95_median_mm": 0.0048078959091526485,
+    "elliptical_jackknife_grid_p95_max_mm": 0.009161749478380443,
+    "jackknife_parameter_stability": {
+      "Circular": {
+        "normalized_delta_l2_median": 6.4740226455747365,
+        "normalized_delta_l2_max": 22.42214721570966
+      },
+      "Elliptical": {
+        "normalized_delta_l2_median": 0.002387186275377317,
+        "normalized_delta_l2_max": 0.27995263032190326
+      }
+    },
+    "jackknife_prediction_stability": {
+      "Circular": {
+        "grid_p95_median_mm": 0.010221542737326672,
+        "grid_p95_max_mm": 0.0199362969650565
+      },
+      "Elliptical": {
+        "grid_p95_median_mm": 0.0048078959091526485,
+        "grid_p95_max_mm": 0.009161749478380443
+      }
+    },
+    "jackknife_failure_count": 0,
+    "stable": true,
+    "fixed_rule": {
+      "B": "top RMSE reduction>=20%, bottom>=10%, middle degradation<=5%, asymmetry reduction>=25%, jackknife median heldout reduction>=10%",
+      "C": "at least one global/top/bottom RMSE reduction>=10% and jackknife median heldout reduction>0, but B is not met",
+      "A": "stable comparison with no material improvement gate met",
+      "D": "fit/jackknife failure, incomplete pairing, or elliptical max jackknife grid P95>0.10mm"
+    }
+  },
+  "model_form_result": "C",
+  "circular_formal_crosscheck": {
+    "common_valid_count": 26663,
+    "max_abs_lambda_delta_mm": 4.092726157978177e-12,
+    "generic_invalid_count": 0,
+    "formal_invalid_count": 239,
+    "pass_1e_6_mm": true
+  },
+  "extension_provenance_count": 12
+}

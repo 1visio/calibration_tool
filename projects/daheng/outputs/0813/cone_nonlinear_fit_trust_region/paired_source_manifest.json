@@ -1,0 +1,441 @@
+{
+  "schema_version": 1,
+  "audit": "candidate_roundtrip_production_path",
+  "generated_without_recapture": true,
+  "paired_uv_regeneration": "EXACT_MATCH",
+  "paired_candidate_replay": "PASS",
+  "data_root": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813",
+  "frames": [
+    {
+      "frame_id": "001",
+      "split": "fit",
+      "chess_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\chess 001.tif",
+      "chess_sha256": "c93ac8d198eb2dc296189212fb23f1ce6bccd6c9d5f32055541a2ab97a342669",
+      "laser_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\laser 001.tif",
+      "laser_sha256": "a15612cb7ebad0e5c9e3f2a3db5549dc49b5c773a9581f768271ac2c6184aa3e"
+    },
+    {
+      "frame_id": "002",
+      "split": "fit",
+      "chess_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\chess 002.tif",
+      "chess_sha256": "87957a5372df047840435d1c31e34db694e888ceed02ade661e5368a226853c6",
+      "laser_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\laser 002.tif",
+      "laser_sha256": "7b250b20ecee14b91fd90c075f4b512129a4c89df229449c2e456c8d13abfe5b"
+    },
+    {
+      "frame_id": "003",
+      "split": "fit",
+      "chess_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\chess 003.tif",
+      "chess_sha256": "ce51265cb7599741448680242d9d00dfe85ae72c06012d527f41b1eab678f6bb",
+      "laser_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\laser 003.tif",
+      "laser_sha256": "0de98014a96e8433d407f5f15abae3904e30a72c8d30a97da075d1ddd32afd04"
+    },
+    {
+      "frame_id": "004",
+      "split": "fit",
+      "chess_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\chess 004.tif",
+      "chess_sha256": "60dc5307c980580e2078b50a5d0262a4180adaebb46fd68893b21b8e7c772cf7",
+      "laser_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\laser 004.tif",
+      "laser_sha256": "4c13d78927f353bc40a6ec2477a7dedcd83244295e5ed5baf993e9324f2d677e"
+    },
+    {
+      "frame_id": "005",
+      "split": "fit",
+      "chess_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\chess 005.tif",
+      "chess_sha256": "c27f451bf7c9a4fc730b11e90a38a04c0ca097752bc904b56b9738c2ccba4bab",
+      "laser_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\laser 005.tif",
+      "laser_sha256": "e847c6a807eb1b50721ea8a3fd743a21fa877dcc2983379f0fd69159e8537e6f"
+    },
+    {
+      "frame_id": "006",
+      "split": "fit",
+      "chess_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\chess 006.tif",
+      "chess_sha256": "5a232872ef9ba04dbed62aeb8939770dd75d206e403f4a881ce88c92ba5f13ec",
+      "laser_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\laser 006.tif",
+      "laser_sha256": "bd42c12248355cc7473547d13106da5ca68c4b686c76ff0e20b568815caec0ad"
+    },
+    {
+      "frame_id": "007",
+      "split": "fit",
+      "chess_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\chess 007.tif",
+      "chess_sha256": "27c09a23474f7e4e859011e8ebe6bf3cc524c0148937b48b071138f081c8caf4",
+      "laser_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\laser 007.tif",
+      "laser_sha256": "c6caefdbce1a97f4e432cf4245089219532f63ecaa834c636137d68ca2a90ce2"
+    },
+    {
+      "frame_id": "008",
+      "split": "fit",
+      "chess_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\chess 008.tif",
+      "chess_sha256": "8bdad2bc06df152d3517826148db487c9ca08b0d807b86060d787659090ed2a6",
+      "laser_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\laser 008.tif",
+      "laser_sha256": "c5e8ba5c9b393bcedaa4eca41cbceab8c5aa28129b16c5f3025af45694f7d8a8"
+    },
+    {
+      "frame_id": "009",
+      "split": "fit",
+      "chess_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\chess 009.tif",
+      "chess_sha256": "44ddcd6de43aae7934dc8ea2a76d1c73d62f4bdc5929603f976f363f6ea8ba81",
+      "laser_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\laser 009.tif",
+      "laser_sha256": "bdbe4f25208fdf45ec54b9214dda6078c804bf5c69c2b3bf30c678afc564d16d"
+    },
+    {
+      "frame_id": "010",
+      "split": "fit",
+      "chess_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\chess 010.tif",
+      "chess_sha256": "df387b5d4bb2a30341e1c9e4e739cf2efcb6df00f9cbe1bbc734fd94b0dd2b84",
+      "laser_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\fit\\laser 010.tif",
+      "laser_sha256": "371631204c15e32b7c969bc40aede03d425c65dfabcf090de94ab4ae7fb8e6de"
+    },
+    {
+      "frame_id": "011",
+      "split": "validation",
+      "chess_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\validation\\chess 011.tif",
+      "chess_sha256": "fa08a30e97fa69d5678dc10c0de2087eeea6a020709350cfc70b372800d49fd7",
+      "laser_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\validation\\laser 011.tif",
+      "laser_sha256": "b8e767a2e26234be345c5d08a3fe3ee99a187ebdc5119bee44549e39ed4211d1"
+    },
+    {
+      "frame_id": "012",
+      "split": "validation",
+      "chess_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\validation\\chess 012.tif",
+      "chess_sha256": "3b67130e2f681e4fc4233073f80c186e4ba6533c972f53ae57d2fb1e59ed6f24",
+      "laser_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\validation\\laser 012.tif",
+      "laser_sha256": "e5ad08fbc9e4766c85153fb1db374ed679809b70ed0e68b537e6090bbcc1125a"
+    },
+    {
+      "frame_id": "013",
+      "split": "validation",
+      "chess_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\validation\\chess 013.tif",
+      "chess_sha256": "5f2346dd30268b6f3c5cf7e578010f70cc0d61cc4ec3bd487ed11f8def2a33fa",
+      "laser_path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\validation\\laser 013.tif",
+      "laser_sha256": "c2216790b95af92b6cbc00a4572e944bea551509ece80f5367efb2ff478ed97e"
+    }
+  ],
+  "split_order": {
+    "fit": [
+      "001",
+      "002",
+      "003",
+      "004",
+      "005",
+      "006",
+      "007",
+      "008",
+      "009",
+      "010"
+    ],
+    "validation": [
+      "011",
+      "012",
+      "013"
+    ]
+  },
+  "runtime_config": {
+    "measurement_config": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\measure_tool_daheng_0811.yaml",
+    "effective_extraction_method": "steger",
+    "effective_steger_options": {
+      "sigma": 1.5,
+      "threshold": 30.0,
+      "deriv_thresh": 0.5,
+      "roi_margin": 48,
+      "roi_max_height": 512,
+      "scan_axis": "row"
+    },
+    "config_document_extraction": {
+      "method": "steger",
+      "profile": "../../../calibration/config/realtime_steger.yaml",
+      "steger": {
+        "scan_axis": "row"
+      },
+      "centroid": {
+        "background_kernel": 51,
+        "min_local_contrast_dn": 20.0,
+        "centroid_window_radius": 5,
+        "segment_min_columns": 42,
+        "continuity_max_column_gap": 2,
+        "continuity_max_vertical_jump": 14.0,
+        "correction_window": 7,
+        "correction_max_shift": 3.5,
+        "scan_axis": "row"
+      }
+    },
+    "reconstruction": {
+      "parallel_epsilon": 1e-09,
+      "quadratic_epsilon": 1e-12,
+      "min_camera_depth_mm": 630.0,
+      "max_camera_depth_mm": 715.0,
+      "model_range_margin_mm": 2.0
+    },
+    "production_extraction_entry": "laser.backends.create_extraction_params -> laser.laser_extractor.extract_laser_center -> realtime_steger.steger_backend",
+    "production_reconstruction_entry": "reconstruction.reconstructor.reconstruct_uv_to_ground"
+  },
+  "pixel_hash": {
+    "algorithm": "sha256(frame_id ASCII bytes followed by np.asarray(pixels_uv,dtype='<f8').tobytes(order='C'))",
+    "aggregate_order": "001..013, with FIT=001..010 and VALIDATION=011..013",
+    "rows": [
+      {
+        "scope": "frame",
+        "frame_id": "001",
+        "split": "fit",
+        "extracted_center_count": 1705,
+        "reconstructed_point_count": 1702,
+        "generated_sha256": "971aaab6c563bbe27398e13c1289e7b686d641758f33bd3e8f070eef151349d2",
+        "previous_sha256": "",
+        "comparison_status": "COVERED_BY_EXACT_SPLIT_HASH",
+        "hash_definition": "sha256(frame_id ASCII + float64 little-endian C-order pixels_uv bytes)",
+        "notes": "Previous artifact persisted only split aggregate hash; frame hash is now permanently retained in this CSV."
+      },
+      {
+        "scope": "frame",
+        "frame_id": "002",
+        "split": "fit",
+        "extracted_center_count": 1799,
+        "reconstructed_point_count": 1790,
+        "generated_sha256": "329e07e88b682313ebcf0bc197a4f1ff767ee84d31c4d0679bd604582150b8ed",
+        "previous_sha256": "",
+        "comparison_status": "COVERED_BY_EXACT_SPLIT_HASH",
+        "hash_definition": "sha256(frame_id ASCII + float64 little-endian C-order pixels_uv bytes)",
+        "notes": "Previous artifact persisted only split aggregate hash; frame hash is now permanently retained in this CSV."
+      },
+      {
+        "scope": "frame",
+        "frame_id": "003",
+        "split": "fit",
+        "extracted_center_count": 1609,
+        "reconstructed_point_count": 1530,
+        "generated_sha256": "f2c2303cdf11526256bf5defe60774237e4a52752426529751e890ae57cdbccb",
+        "previous_sha256": "",
+        "comparison_status": "COVERED_BY_EXACT_SPLIT_HASH",
+        "hash_definition": "sha256(frame_id ASCII + float64 little-endian C-order pixels_uv bytes)",
+        "notes": "Previous artifact persisted only split aggregate hash; frame hash is now permanently retained in this CSV."
+      },
+      {
+        "scope": "frame",
+        "frame_id": "004",
+        "split": "fit",
+        "extracted_center_count": 1728,
+        "reconstructed_point_count": 1579,
+        "generated_sha256": "520cb5210d1977d976a8c66b40e3beada93a2f4bc91fd54ce04e739361f2471b",
+        "previous_sha256": "",
+        "comparison_status": "COVERED_BY_EXACT_SPLIT_HASH",
+        "hash_definition": "sha256(frame_id ASCII + float64 little-endian C-order pixels_uv bytes)",
+        "notes": "Previous artifact persisted only split aggregate hash; frame hash is now permanently retained in this CSV."
+      },
+      {
+        "scope": "frame",
+        "frame_id": "005",
+        "split": "fit",
+        "extracted_center_count": 2872,
+        "reconstructed_point_count": 2854,
+        "generated_sha256": "f85ce823997e7c2efe6372c988c61cf67fbf73e9631c74fda52612718671848c",
+        "previous_sha256": "",
+        "comparison_status": "COVERED_BY_EXACT_SPLIT_HASH",
+        "hash_definition": "sha256(frame_id ASCII + float64 little-endian C-order pixels_uv bytes)",
+        "notes": "Previous artifact persisted only split aggregate hash; frame hash is now permanently retained in this CSV."
+      },
+      {
+        "scope": "frame",
+        "frame_id": "006",
+        "split": "fit",
+        "extracted_center_count": 1893,
+        "reconstructed_point_count": 1581,
+        "generated_sha256": "7a1aeb724b94cf8ee1505e7869eac3128234293e6dd8d9e0fa0ee8bd5147bd4b",
+        "previous_sha256": "",
+        "comparison_status": "COVERED_BY_EXACT_SPLIT_HASH",
+        "hash_definition": "sha256(frame_id ASCII + float64 little-endian C-order pixels_uv bytes)",
+        "notes": "Previous artifact persisted only split aggregate hash; frame hash is now permanently retained in this CSV."
+      },
+      {
+        "scope": "frame",
+        "frame_id": "007",
+        "split": "fit",
+        "extracted_center_count": 1968,
+        "reconstructed_point_count": 1374,
+        "generated_sha256": "4d2ce39d132e15270f0eb2f5f4bc289eaceb915a515710bb21b8e340c1d2ba6c",
+        "previous_sha256": "",
+        "comparison_status": "COVERED_BY_EXACT_SPLIT_HASH",
+        "hash_definition": "sha256(frame_id ASCII + float64 little-endian C-order pixels_uv bytes)",
+        "notes": "Previous artifact persisted only split aggregate hash; frame hash is now permanently retained in this CSV."
+      },
+      {
+        "scope": "frame",
+        "frame_id": "008",
+        "split": "fit",
+        "extracted_center_count": 1871,
+        "reconstructed_point_count": 1847,
+        "generated_sha256": "a698ef41b8f7f93bc2f5994557318b0aafe8b9bdc017110e22dc7ea1635ffd40",
+        "previous_sha256": "",
+        "comparison_status": "COVERED_BY_EXACT_SPLIT_HASH",
+        "hash_definition": "sha256(frame_id ASCII + float64 little-endian C-order pixels_uv bytes)",
+        "notes": "Previous artifact persisted only split aggregate hash; frame hash is now permanently retained in this CSV."
+      },
+      {
+        "scope": "frame",
+        "frame_id": "009",
+        "split": "fit",
+        "extracted_center_count": 1868,
+        "reconstructed_point_count": 1815,
+        "generated_sha256": "8343755954a10ab5d26dfb95a7568a35bee246e3a7319b2cf2facc70aa10c90e",
+        "previous_sha256": "",
+        "comparison_status": "COVERED_BY_EXACT_SPLIT_HASH",
+        "hash_definition": "sha256(frame_id ASCII + float64 little-endian C-order pixels_uv bytes)",
+        "notes": "Previous artifact persisted only split aggregate hash; frame hash is now permanently retained in this CSV."
+      },
+      {
+        "scope": "frame",
+        "frame_id": "010",
+        "split": "fit",
+        "extracted_center_count": 1632,
+        "reconstructed_point_count": 1492,
+        "generated_sha256": "5789e1a58c6caafdb0dd5c924dad66b72ec3dbddf59f90cf3f71490dfc2afc78",
+        "previous_sha256": "",
+        "comparison_status": "COVERED_BY_EXACT_SPLIT_HASH",
+        "hash_definition": "sha256(frame_id ASCII + float64 little-endian C-order pixels_uv bytes)",
+        "notes": "Previous artifact persisted only split aggregate hash; frame hash is now permanently retained in this CSV."
+      },
+      {
+        "scope": "frame",
+        "frame_id": "011",
+        "split": "validation",
+        "extracted_center_count": 1694,
+        "reconstructed_point_count": 1673,
+        "generated_sha256": "1b6926cfa4dd279488dc43fdf3a89f29c4fc402ddf3e5695542a37048bc6b2a9",
+        "previous_sha256": "",
+        "comparison_status": "COVERED_BY_EXACT_SPLIT_HASH",
+        "hash_definition": "sha256(frame_id ASCII + float64 little-endian C-order pixels_uv bytes)",
+        "notes": "Previous artifact persisted only split aggregate hash; frame hash is now permanently retained in this CSV."
+      },
+      {
+        "scope": "frame",
+        "frame_id": "012",
+        "split": "validation",
+        "extracted_center_count": 2626,
+        "reconstructed_point_count": 2592,
+        "generated_sha256": "64b90cf145597c29facde286d7d1ff07f094bf00df0f4d5c6b51d2b465097fea",
+        "previous_sha256": "",
+        "comparison_status": "COVERED_BY_EXACT_SPLIT_HASH",
+        "hash_definition": "sha256(frame_id ASCII + float64 little-endian C-order pixels_uv bytes)",
+        "notes": "Previous artifact persisted only split aggregate hash; frame hash is now permanently retained in this CSV."
+      },
+      {
+        "scope": "frame",
+        "frame_id": "013",
+        "split": "validation",
+        "extracted_center_count": 1799,
+        "reconstructed_point_count": 1784,
+        "generated_sha256": "e512cda5771a64d3a27b2d6e27750f55c8aeb75ec12334caf39edcae7cded9c5",
+        "previous_sha256": "",
+        "comparison_status": "COVERED_BY_EXACT_SPLIT_HASH",
+        "hash_definition": "sha256(frame_id ASCII + float64 little-endian C-order pixels_uv bytes)",
+        "notes": "Previous artifact persisted only split aggregate hash; frame hash is now permanently retained in this CSV."
+      },
+      {
+        "scope": "split",
+        "frame_id": "fit_001_010",
+        "split": "fit",
+        "extracted_center_count": 18945,
+        "reconstructed_point_count": 17564,
+        "generated_sha256": "33ac7b3ca72a1a7e83c86fec1d49bc9bd54f773e79d7005812e6d09dd7a24660",
+        "previous_sha256": "33ac7b3ca72a1a7e83c86fec1d49bc9bd54f773e79d7005812e6d09dd7a24660",
+        "comparison_status": "EXACT_MATCH",
+        "hash_definition": "sha256(concatenated frame_id ASCII + float64 little-endian C-order pixels_uv bytes in frame order)",
+        "notes": "Historical FIT/VALIDATION frozen-pixel hash from prior reports."
+      },
+      {
+        "scope": "split",
+        "frame_id": "validation_001_013",
+        "split": "validation",
+        "extracted_center_count": 6119,
+        "reconstructed_point_count": 6049,
+        "generated_sha256": "7f1790ccf1f1792ea413088a3cb4115d72cb1db97376d941e13dc35d28c2fa00",
+        "previous_sha256": "7f1790ccf1f1792ea413088a3cb4115d72cb1db97376d941e13dc35d28c2fa00",
+        "comparison_status": "EXACT_MATCH",
+        "hash_definition": "sha256(concatenated frame_id ASCII + float64 little-endian C-order pixels_uv bytes in frame order)",
+        "notes": "Historical FIT/VALIDATION frozen-pixel hash from prior reports."
+      },
+      {
+        "scope": "overall",
+        "frame_id": "001_013",
+        "split": "fit+validation",
+        "extracted_center_count": 25064,
+        "reconstructed_point_count": 23613,
+        "generated_sha256": "0a356781cc4c2d6e46da0033af6aa8349c7a3a1722eacd9554c0c2d4f1997b3a",
+        "previous_sha256": "",
+        "comparison_status": "NO_PREVIOUS_OVERALL_REFERENCE",
+        "hash_definition": "same as split aggregate over ordered 001..013",
+        "notes": "Stored for future exact replay; previous reports stored separate FIT and VALIDATION hashes only."
+      }
+    ],
+    "historical_fit_sha256": "33ac7b3ca72a1a7e83c86fec1d49bc9bd54f773e79d7005812e6d09dd7a24660",
+    "historical_validation_sha256": "7f1790ccf1f1792ea413088a3cb4115d72cb1db97376d941e13dc35d28c2fa00"
+  },
+  "pnp_reference": {
+    "source": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0813\\pnp_reference_audit\\paired_pnp_reference_audit.csv",
+    "frozen_copy": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0813\\cone_nonlinear_fit_trust_region\\paired_pnp_reference.csv",
+    "consistency": {
+      "row_count": 13,
+      "max_difference": 0.0,
+      "status": "PASS"
+    },
+    "truth_source": "same-ID chess image PnP audit; laser images only paired by manifest/hash"
+  },
+  "candidate_yaml": {
+    "M1_point_equal": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0813\\cone_nonlinear_fit_trust_region\\candidate_roundtrip_yaml\\circular_cone_point_equal.yaml",
+    "M2_frame_equal": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0813\\cone_nonlinear_fit_trust_region\\candidate_roundtrip_yaml\\circular_cone_frame_equal.yaml",
+    "M3_v_region_equal": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0813\\cone_nonlinear_fit_trust_region\\candidate_roundtrip_yaml\\circular_cone_v_region_equal.yaml"
+  },
+  "source_files": {
+    "measurement_config": {
+      "path": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\measure_tool_daheng_0811.yaml",
+      "sha256": "9bf6216c9584823511c3926012cd705e27b356a2976e58609cbc9767fb333cee"
+    },
+    "extraction_profile": {
+      "path": "D:\\Docs\\linelaserscan\\calibration\\config\\realtime_steger.yaml",
+      "sha256": "4ffe544c002bfcdcfee494dbe2fa9c8dbfb75bef292ccc5f0156e6e0e2acbf96"
+    },
+    "realtime_steger_source": {
+      "path": "D:\\Docs\\linelaserscan\\calibration\\src\\realtime_steger.py",
+      "sha256": "86b7bb785531c8a719916ee9a82237246c9806ace61eecfc18235346a4d1546a"
+    },
+    "measurement_backends_source": {
+      "path": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\laser\\backends.py",
+      "sha256": "fe516ba2dd0f14b49fa667e19472dee3da25617963be0b34e6ffe9b108e762d1"
+    },
+    "laser_extractor_source": {
+      "path": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\laser\\laser_extractor.py",
+      "sha256": "53785248d320a1a1ef9c2c6daefb3b0b54266485167c39e0bd9bb9ac2e0ff321"
+    },
+    "reconstructor_source": {
+      "path": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\reconstruction\\reconstructor.py",
+      "sha256": "9e4b0706e5648e12e3cc3bd8dfdbe407a7c6e26bc38388b02f49052130b2a006"
+    },
+    "intrinsics": {
+      "path": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\calibration_daheng_0811\\calibration_result.yaml",
+      "sha256": "91620a158bde846a47a5cfce6fe79eb34d0df775f70849b8509f559cec742640"
+    },
+    "laser_model": {
+      "path": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\calibration_daheng_0811\\circular_cone.yaml",
+      "sha256": "478d11c97c174e75d3167133a050540573a93dc28451e4b961ce12913709feac"
+    },
+    "ground_extrinsics": {
+      "path": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\calibration_daheng_0811\\camera_ground_extrinsics.yaml",
+      "sha256": "661087ac4ab93a5bda07a2e722f506760cdce71d0a1f0d24ce0dd5b5151b5d0e"
+    },
+    "pnp_audit": {
+      "path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0813\\pnp_reference_audit\\paired_pnp_reference_audit.csv",
+      "sha256": "fcd507488fa6d9a75e1353cae07331fda19490dd5b399bee2aae04ce4545014a"
+    },
+    "dataset_manifest": {
+      "path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\extrinsics0813\\dataset_manifest.yaml",
+      "sha256": "4cd11b700b209dc4f3b3eba8a6877f255442c3272eba8a91aec92ed518bda740"
+    }
+  },
+  "git_heads": {
+    "calibration_tool": "3e55e8b468f039ea590da3f9943915c33e0a9b21",
+    "measurement_tool": "1546fe38164429d812db8002a6c8179e3ca2577b"
+  },
+  "replay_summary": {
+    "max_rmse_difference_mm": 4.347529281023554e-12,
+    "status": "PASS"
+  }
+}

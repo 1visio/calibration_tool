@@ -354,7 +354,8 @@ def optimize_weighting(
             predicted_objective = weighted_objective(linear_residual, weights)
             predicted_reduction = current_objective - predicted_objective
             is_in_bounds = bounds_ok(trial_theta)
-            invalid_count = len(residual)
+            invalid_count = 0
+            evaluated = False
             trial_objective = float("inf")
             actual_reduction = float("-inf")
             reduction_ratio = float("-inf")
@@ -367,6 +368,7 @@ def optimize_weighting(
                 message = "bounds_rejected"
             else:
                 candidate = sensitivity.evaluate_candidate(trial_theta, data, "fit")
+                evaluated = True
                 invalid_count = int(np.count_nonzero(candidate.invalid_mask))
                 if invalid_count:
                     message = "invalid_intersection_rejected"
@@ -393,6 +395,7 @@ def optimize_weighting(
                     "accepted_step_before": accepted_steps,
                     "accepted": accepted,
                     "message": "accepted" if accepted else message,
+                    "evaluated": evaluated,
                     "radius_before": radius_before,
                     "radius_after": radius,
                     "scaled_step_l2": step_norm,
@@ -940,10 +943,25 @@ def render_report(
     cone_hash: str,
 ) -> str:
     overall = classifications["v_region_equal"]
+    parameter_convergence = (
+        "CONVERGED"
+        if all(
+            result.status
+            in {
+                "converged_gradient",
+                "converged_step",
+                "converged_objective",
+                "converged_active_bounds",
+            }
+            for result in results.values()
+        )
+        else "UNRESOLVED_BOUNDARY"
+    )
     lines = [
         "# Circular Cone FIT-only damped trust-region reoptimization",
         "",
-        f"**FIT_CONE_RESULT = {overall}**",
+        f"**FIT_SURFACE_RESULT = {overall}**  ",
+        f"**PARAMETER_CONVERGENCE = {parameter_convergence}**",
         "",
         "本步骤只优化 FIT 001–010。VALIDATION 011–013 未打开、未重建、未评分。"
         "所有 candidate 仅在内存和本实验 CSV 中存在，没有写出或覆盖任何正式 Cone YAML。",
@@ -1073,13 +1091,15 @@ def render_report(
         "",
         f"**FIT_CONE_RESULT = {overall}**",
         "",
-        "- SUCCESS：matching global explained >=0.80 且 top/middle/bottom 各 >=0.50。",
+        "- FIT_SURFACE SUCCESS：matching global explained >=0.80 且 top/middle/bottom 各 >=0.50。",
         "- PARTIAL：matching global explained >=0.30 且三个大区均为正改善。",
         "- 其他情况为 FAIL；`v_region_equal` 是总体判定的预注册主分支。",
     ]
     if overall == "SUCCESS":
         lines += [
-            "- FIT 上，Circular Cone 的真实非线性参数调整已经同时解释全局和上下边缘的主要 residual。",
+            "- FIT 表面目标上，Circular Cone 的真实非线性调整已经同时解释全局和上下边缘的主要 residual。",
+            "- 但本轮三个分支均为 max_accepted_steps，参数沿 apex/alpha 近退化谷漂移并触及 A_z 上界；"
+            "因此 `PARAMETER_CONVERGENCE=UNRESOLVED_BOUNDARY`，不能把 candidate 当作已收敛参数。",
             "- 这使“0811 参数/objective 不匹配”成为更强假设，但还不能查看 validation 后直接发布；"
             "下一步应先做 FIT frame jackknife 与弱方向 profile。",
         ]
@@ -1108,7 +1128,7 @@ def render_report(
     return "\n".join(lines)
 
 
-def render_output_files(overall: str) -> str:
+def render_output_files(overall: str, parameter_convergence: str) -> str:
     rows = [
         ("cone_nonlinear_fit_trace.csv", "每个 exact trial 的半径、阻尼、预测/实际下降、接受状态", "检查 optimizer 是否真实收敛", "不含 validation"),
         ("cone_nonlinear_fit_candidates.csv", "Theta0 与三组实验 candidate/delta/scale", "查看参数移动和 weighting 差异", "不是可部署 YAML"),
@@ -1125,7 +1145,8 @@ def render_output_files(overall: str) -> str:
     lines = [
         "# Circular Cone FIT nonlinear outputs",
         "",
-        f"**FIT_CONE_RESULT = {overall}**",
+        f"**FIT_SURFACE_RESULT = {overall}**  ",
+        f"**PARAMETER_CONVERGENCE = {parameter_convergence}**",
         "",
         "| 文件 | 文件体现什么 | 主要看什么 | 不能得出什么 |",
         "|---|---|---|---|",
@@ -1200,6 +1221,20 @@ def main(argv: Sequence[str] | None = None) -> int:
     classifications = classify_results(results, global_rows, region_rows)
     consistency = surface_consistency_rows(results)
     overall = classifications["v_region_equal"]
+    parameter_convergence = (
+        "CONVERGED"
+        if all(
+            result.status
+            in {
+                "converged_gradient",
+                "converged_step",
+                "converged_objective",
+                "converged_active_bounds",
+            }
+            for result in results.values()
+        )
+        else "UNRESOLVED_BOUNDARY"
+    )
 
     output_dir.mkdir(parents=True, exist_ok=True)
     write_rows(
@@ -1241,7 +1276,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         encoding="utf-8",
     )
     output_paths["OUTPUT_FILES.md"].write_text(
-        render_output_files(overall), encoding="utf-8"
+        render_output_files(overall, parameter_convergence), encoding="utf-8"
     )
 
     cone_hash_after = sensitivity.sha256_file(cone_path)
@@ -1251,7 +1286,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     if actual_names != set(OUTPUT_NAMES):
         raise RuntimeError(f"Unexpected output files: {sorted(actual_names)}")
 
-    print(f"FIT_CONE_RESULT={overall}")
+    print(f"FIT_SURFACE_RESULT={overall}")
+    print(f"PARAMETER_CONVERGENCE={parameter_convergence}")
     for weighting in sensitivity.WEIGHTINGS:
         row = next(
             row

@@ -1,0 +1,420 @@
+{
+  "task": "Task 3B-1 Circular Cone equivalent local parameterization",
+  "formal_cone_path": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\calibration_daheng_0811\\circular_cone.yaml",
+  "formal_cone_sha256_before": "478d11c97c174e75d3167133a050540573a93dc28451e4b961ce12913709feac",
+  "formal_cone_sha256_after": "478d11c97c174e75d3167133a050540573a93dc28451e4b961ce12913709feac",
+  "measurement_config": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\measure_tool_daheng_0811.yaml",
+  "task3a_diagnostic_input": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0814\\cone_identifiability_audit\\fullfit_diagnostic_result.json",
+  "validation_opened": false,
+  "production_writeback": false,
+  "optimizer_called": false,
+  "reference_anchor": {
+    "p_ref_camera_mm": [
+      -5.400870389961511,
+      -7.002832713450796,
+      681.3566154039942
+    ],
+    "definition": "equal-weight mean of per-frame independent ray-plane truth centroids",
+    "fit_frame_count": 30,
+    "fit_frame_ids": [
+      "001",
+      "002",
+      "003",
+      "004",
+      "005",
+      "006",
+      "007",
+      "008",
+      "009",
+      "010",
+      "011",
+      "012",
+      "013",
+      "014",
+      "015",
+      "016",
+      "017",
+      "018",
+      "025",
+      "026",
+      "027",
+      "028",
+      "029",
+      "030",
+      "031",
+      "032",
+      "033",
+      "034",
+      "035",
+      "036"
+    ],
+    "validation_used": false,
+    "frame_centroids": [
+      {
+        "frame_id": "001",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 822,
+        "centroid_camera_mm": [
+          -12.03950219609803,
+          32.182862942505636,
+          661.3257842181305
+        ],
+        "pnp_rmse_px": 0.15676544616
+      },
+      {
+        "frame_id": "002",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 890,
+        "centroid_camera_mm": [
+          -6.088117478361309,
+          32.14790267133087,
+          680.4796431265657
+        ],
+        "pnp_rmse_px": 0.136185670615
+      },
+      {
+        "frame_id": "003",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -11.119615626074552,
+          -3.579638840805552,
+          663.1530631156224
+        ],
+        "pnp_rmse_px": 0.139706812323
+      },
+      {
+        "frame_id": "004",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -14.628829662176056,
+          -40.125448264327446,
+          650.5367184583436
+        ],
+        "pnp_rmse_px": 0.0928935047474
+      },
+      {
+        "frame_id": "005",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -15.102182834293748,
+          4.207617292435636,
+          650.4864067028502
+        ],
+        "pnp_rmse_px": 0.0942130658113
+      },
+      {
+        "frame_id": "006",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          1.3125663813498154,
+          7.071057061294252,
+          703.5346434379776
+        ],
+        "pnp_rmse_px": 0.0889700151137
+      },
+      {
+        "frame_id": "007",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          2.0343936711227864,
+          -45.713683019906384,
+          704.0613931640522
+        ],
+        "pnp_rmse_px": 0.108611648241
+      },
+      {
+        "frame_id": "008",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          2.9573774698595723,
+          -8.674111846703449,
+          708.2867362214793
+        ],
+        "pnp_rmse_px": 0.0927701995256
+      },
+      {
+        "frame_id": "009",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          2.6676427438265753,
+          -40.95538973714336,
+          706.2573657410542
+        ],
+        "pnp_rmse_px": 0.0745450976022
+      },
+      {
+        "frame_id": "010",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -3.5436541084321496,
+          -32.989935908951665,
+          686.4911155815192
+        ],
+        "pnp_rmse_px": 0.104501100454
+      },
+      {
+        "frame_id": "011",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -6.170989704888845,
+          -36.26210797409856,
+          677.8982769189553
+        ],
+        "pnp_rmse_px": 0.105061537341
+      },
+      {
+        "frame_id": "012",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          1.6316274564843671,
+          39.73070015199317,
+          705.5369618474715
+        ],
+        "pnp_rmse_px": 0.0873102734066
+      },
+      {
+        "frame_id": "013",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          4.1745759160509595,
+          3.1593827131992054,
+          712.5374147051737
+        ],
+        "pnp_rmse_px": 0.0890163528644
+      },
+      {
+        "frame_id": "014",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          4.883590312715669,
+          -49.32315064796264,
+          713.0452122293993
+        ],
+        "pnp_rmse_px": 0.0928017326066
+      },
+      {
+        "frame_id": "015",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -4.9665865211000355,
+          -43.5169811475188,
+          681.4944548579377
+        ],
+        "pnp_rmse_px": 0.106364933994
+      },
+      {
+        "frame_id": "016",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -9.505613432860816,
+          3.478860142784572,
+          668.4988225290391
+        ],
+        "pnp_rmse_px": 0.113312421635
+      },
+      {
+        "frame_id": "017",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 890,
+        "centroid_camera_mm": [
+          -9.531972140931906,
+          -29.324763285851894,
+          667.340998415773
+        ],
+        "pnp_rmse_px": 0.113693609873
+      },
+      {
+        "frame_id": "018",
+        "split": "fit",
+        "source": "original_0811_triplet",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          2.704586375096006,
+          -20.643085182597975,
+          706.9391736417504
+        ],
+        "pnp_rmse_px": 0.0885718717681
+      },
+      {
+        "frame_id": "025",
+        "split": "fit",
+        "source": "fit_edge_extension",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -12.900817210274488,
+          -18.266078291727297,
+          656.8725129011109
+        ],
+        "pnp_rmse_px": 0.15619495732179384
+      },
+      {
+        "frame_id": "026",
+        "split": "fit",
+        "source": "fit_edge_extension",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -13.455667436349444,
+          15.681946236690372,
+          656.0092721628805
+        ],
+        "pnp_rmse_px": 0.16533904087018206
+      },
+      {
+        "frame_id": "027",
+        "split": "fit",
+        "source": "fit_edge_extension",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -11.162371245667279,
+          -33.34694565455123,
+          662.2575816534999
+        ],
+        "pnp_rmse_px": 0.17413744869654185
+      },
+      {
+        "frame_id": "028",
+        "split": "fit",
+        "source": "fit_edge_extension",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -17.404037433994585,
+          -6.237691519181895,
+          642.6203944341702
+        ],
+        "pnp_rmse_px": 0.18364022678947783
+      },
+      {
+        "frame_id": "029",
+        "split": "fit",
+        "source": "fit_edge_extension",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -8.77329854696615,
+          -10.853244906456748,
+          670.3483590851368
+        ],
+        "pnp_rmse_px": 0.10516999125379041
+      },
+      {
+        "frame_id": "030",
+        "split": "fit",
+        "source": "fit_edge_extension",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -2.2237287678877964,
+          -13.860411672791027,
+          691.3294972095141
+        ],
+        "pnp_rmse_px": 0.13097439600221755
+      },
+      {
+        "frame_id": "031",
+        "split": "fit",
+        "source": "fit_edge_extension",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -4.7201784532463895,
+          22.71588833642216,
+          684.5003630863717
+        ],
+        "pnp_rmse_px": 0.11366432285426602
+      },
+      {
+        "frame_id": "032",
+        "split": "fit",
+        "source": "fit_edge_extension",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -7.338660645782986,
+          12.801891678067081,
+          675.6858979130778
+        ],
+        "pnp_rmse_px": 0.12936397098229507
+      },
+      {
+        "frame_id": "033",
+        "split": "fit",
+        "source": "fit_edge_extension",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -2.5297039499326868,
+          18.943432608765264,
+          691.3904497311692
+        ],
+        "pnp_rmse_px": 0.12213124401352428
+      },
+      {
+        "frame_id": "034",
+        "split": "fit",
+        "source": "fit_edge_extension",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -8.744727522575074,
+          7.070224317375379,
+          671.0460373957749
+        ],
+        "pnp_rmse_px": 0.10025242603529741
+      },
+      {
+        "frame_id": "035",
+        "split": "fit",
+        "source": "fit_edge_extension",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          -6.485274197112065,
+          9.05054047329658,
+          678.2977755934952
+        ],
+        "pnp_rmse_px": 0.13316052201322937
+      },
+      {
+        "frame_id": "036",
+        "split": "fit",
+        "source": "fit_edge_extension",
+        "point_count": 900,
+        "centroid_camera_mm": [
+          4.043057089655276,
+          15.345379870891872,
+          712.436136040526
+        ],
+        "pnp_rmse_px": 0.09079797262944811
+      }
+    ],
+    "extension_provenance_count": 12,
+    "formal_working_domain_v_px": [
+      241.99769349665084,
+      2731.977874579812
+    ]
+  }
+}

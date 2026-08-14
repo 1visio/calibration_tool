@@ -1,0 +1,142 @@
+{
+  "script": "analyze_daheng_gauge_repeatability",
+  "input": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\obs\\test_350\\fit",
+  "pattern": "laser 003*.tif",
+  "frames": [
+    "laser 003.tif",
+    "laser 003_02.tif"
+  ],
+  "frame_count": 2,
+  "image_shape": [
+    3000,
+    4096
+  ],
+  "scan_axis": "row",
+  "scan_range": [
+    1050,
+    1850
+  ],
+  "detect_profile": "center",
+  "steger_options": {
+    "sigma": 1.5,
+    "threshold": 30.0,
+    "deriv_thresh": 0.5,
+    "roi_margin": 48,
+    "roi_max_height": 512,
+    "scan_axis": "row"
+  },
+  "search_region": {
+    "start_px": 1760,
+    "end_px": 2240,
+    "source": "config.search_roi"
+  },
+  "extracted_valid_count": [
+    2437,
+    2433
+  ],
+  "reconstructed_valid_count": [
+    1931,
+    1929
+  ],
+  "detector": {
+    "sigma_threshold": 0.04205439258775466,
+    "status": "ok"
+  },
+  "platforms": [
+    {
+      "platform_id": "p01",
+      "stable_range": [
+        1050,
+        1102
+      ],
+      "analysis_range": [
+        1058,
+        1094
+      ],
+      "z_median_mm": -0.026208861319332755,
+      "z_sigma_between_frames_mm": 0.0016456143058804157,
+      "height_median_mm": 0.011762835115433745,
+      "height_sigma_between_frames_mm": 0.0020353788587598467,
+      "height_p95_abs_mm": 0.0014392301933128238,
+      "is_reference": false
+    },
+    {
+      "platform_id": "p02",
+      "stable_range": [
+        1292,
+        1380
+      ],
+      "analysis_range": [
+        1300,
+        1372
+      ],
+      "z_median_mm": 20.028440757941837,
+      "z_sigma_between_frames_mm": 0.001999904508891619,
+      "height_median_mm": 20.066412454376604,
+      "height_sigma_between_frames_mm": 0.00238966906177105,
+      "height_p95_abs_mm": 0.0016897511983700042,
+      "is_reference": false
+    },
+    {
+      "platform_id": "p03",
+      "stable_range": [
+        1390,
+        1448
+      ],
+      "analysis_range": [
+        1398,
+        1440
+      ],
+      "z_median_mm": 10.002793447459055,
+      "z_sigma_between_frames_mm": 0.0003676406213108055,
+      "height_median_mm": 10.040765143893822,
+      "height_sigma_between_frames_mm": 2.21239315686255e-05,
+      "height_p95_abs_mm": 1.5643982038682225e-05,
+      "is_reference": false
+    },
+    {
+      "platform_id": "p04",
+      "stable_range": [
+        1485,
+        1572
+      ],
+      "analysis_range": [
+        1493,
+        1564
+      ],
+      "z_median_mm": 6.004955853503475,
+      "z_sigma_between_frames_mm": 0.003677522552322992,
+      "height_median_mm": 6.042927549938241,
+      "height_sigma_between_frames_mm": 0.003287757999443561,
+      "height_p95_abs_mm": 0.0023247959763068593,
+      "is_reference": false
+    },
+    {
+      "platform_id": "p05",
+      "stable_range": [
+        1763,
+        1824
+      ],
+      "analysis_range": [
+        1771,
+        1816
+      ],
+      "z_median_mm": -0.0379716964347665,
+      "z_sigma_between_frames_mm": 0.000389764552879431,
+      "height_median_mm": 0.0,
+      "height_sigma_between_frames_mm": 0.0,
+      "height_p95_abs_mm": 0.0,
+      "is_reference": true
+    }
+  ],
+  "metadata": {},
+  "plot_warning": null,
+  "config": "D:\\Docs\\linelaserscan\\0704line-laser-3d-scanner\\laser_measurement_tool\\configs\\measure_tool_daheng_0811.yaml",
+  "calibration_config": {
+    "manifest": "calibration_daheng_0811/manifest.yaml",
+    "intrinsics": "calibration_daheng_0811/calibration_result.yaml",
+    "laser_model": "calibration_daheng_0811/circular_cone.yaml",
+    "extrinsics": "calibration_daheng_0811/camera_ground_extrinsics.yaml",
+    "ground_u_compensation": null
+  }
+}
