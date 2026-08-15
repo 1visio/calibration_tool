@@ -294,7 +294,8 @@ def process_groups(
                 "scope": "fixed_pose_groups",
                 "group_id": group_id,
                 "valid_point_count": int(len(residual)),
-                "raw_point_count": int(len(uv)),
+                "used_point_count": int(len(uv)),
+                "uniform_subsample_cap": int(EXTRACTION_CONFIG["max_points_per_image"]),
                 "valid_fraction": float(np.mean(valid)),
                 "bias_mm": float(np.mean(residual)),
                 "mae_mm": float(np.mean(abs_residual)),
@@ -501,21 +502,28 @@ def overlap_rows(processed: Mapping[str, Mapping[str, Any]]) -> tuple[list[dict[
 
 
 def add_summary_row(summary: list[dict[str, Any]], overlap_aggregate: Mapping[str, Any]) -> dict[str, Any]:
-    a = np.asarray([float(row["a_frame_mm"]) for row in summary if row["row_type"] == "group"])
-    k = np.asarray([float(row["k_frame_mm_per_normalized_stripe"]) for row in summary if row["row_type"] == "group"])
-    rmse = np.asarray([float(row["rmse_mm"]) for row in summary if row["row_type"] == "group"])
+    groups = [row for row in summary if row["row_type"] == "group"]
+    a = np.asarray([float(row["a_frame_mm"]) for row in groups])
+    k = np.asarray([float(row["k_frame_mm_per_normalized_stripe"]) for row in groups])
+    rmse = np.asarray([float(row["rmse_mm"]) for row in groups])
+    pair_a = np.asarray([a[i] - a[j] for i, j in itertools.combinations(range(len(a)), 2)], dtype=np.float64)
+    pair_k = np.asarray([k[i] - k[j] for i, j in itertools.combinations(range(len(k)), 2)], dtype=np.float64)
     row = {
         "row_type": "aggregate",
         "scope": "five_groups_and_ten_pairs",
         "group_id": "all",
         "group_count": len(a),
         "pair_count": PAIRWISE_COUNT,
-        "bias_mm_median": float(np.median([float(item["bias_mm"]) for item in summary if item["row_type"] == "group"])),
+        "bias_mm_median": float(np.median([float(item["bias_mm"]) for item in groups])),
         "rmse_mm_median": float(np.median(rmse)),
         "a_frame_std_mm": float(np.std(a, ddof=1)),
         "a_frame_range_mm": float(np.ptp(a)),
         "k_frame_std_mm_per_normalized_stripe": float(np.std(k, ddof=1)),
         "k_frame_range_mm_per_normalized_stripe": float(np.ptp(k)),
+        "pairwise_a_delta_std_mm": float(np.std(pair_a, ddof=1)),
+        "pairwise_a_delta_range_mm": float(np.ptp(pair_a)),
+        "pairwise_k_delta_std_mm_per_normalized_stripe": float(np.std(pair_k, ddof=1)),
+        "pairwise_k_delta_range_mm_per_normalized_stripe": float(np.ptp(pair_k)),
         "pairwise_e_delta_rmse_median_mm": overlap_aggregate["e_delta_rmse_mm_median"],
         "pairwise_e_delta_rmse_p95_mm": overlap_aggregate["e_delta_rmse_mm_p95"],
         "pairwise_e_delta_rmse_max_mm": overlap_aggregate["e_delta_rmse_mm_max"],
@@ -541,7 +549,14 @@ def classify(summary_row: Mapping[str, Any], overlap_aggregate: Mapping[str, Any
     # <=25% / <=0.10 mm are MODERATE; otherwise STRONG.  The chess motion
     # gate is diagnostic and is not used to call an unobservable laser marker
     # motion zero.
-    if ratio <= 0.10 and a_range <= 0.05 and k_range <= 0.05 and (not math.isfinite(chess_p95) or chess_p95 <= 0.10):
+    if (
+        ratio <= 0.10
+        and a_range <= 0.05
+        and k_range <= 0.05
+        and math.isfinite(chess_p95)
+        and chess_p95 <= 0.10
+        and int(motion_summary["chess_to_chess_repeat_count"]) == PAIRWISE_COUNT
+    ):
         verdict = "A. LOW"
     elif ratio <= 0.25 and a_range <= 0.10 and k_range <= 0.10:
         verdict = "B. MODERATE"
@@ -587,7 +602,7 @@ def render_report(
         "",
         f"- Data: `{data_root}`; five explicit FIT triplets `001–005`, fixed board pose, no re-placement.",
         "- Historical Validation was not opened or used. No Cone was fitted, refit, or written back; no compensation was created.",
-        "- Each group independently runs PnP on `chess`, Steger laser-center extraction from `laser − nolaser`, ray/plane `lambda_truth`, and the frozen Circular Cone reconstruction.",
+        "- Each group independently runs PnP on `chess`, Steger laser-center extraction from `laser − nolaser`, ray/plane `lambda_truth`, and the frozen Circular Cone reconstruction. The formal extractor keeps a uniform 900-point subsample per group for this audit.",
         f"- Frozen Circular provenance SHA-256: `{frozen_info['provenance_sha256']}`; formal cone/config SHA-256: `{frozen_info['formal_cone_sha256']}`.",
         "- Residual convention: `e_lambda = lambda_truth - lambda_model`. `a_frame` and `k_frame` are the intercept and normalized-stripe slope of `e_lambda`; `k_frame` is not a time derivative.",
         "- The ten between-repeat comparisons are the ten unordered pairs `C(5,2)=10`. Overlap is evaluated on a 1-pixel v-grid common to each pair.",
@@ -605,8 +620,8 @@ def render_report(
         "",
         "## Repeatability across the ten pairs",
         "",
-        f"- `a_frame` std/range: **{fmt(summary_row['a_frame_std_mm'])} / {fmt(summary_row['a_frame_range_mm'])} mm**.",
-        f"- `k_frame` std/range: **{fmt(summary_row['k_frame_std_mm_per_normalized_stripe'])} / {fmt(summary_row['k_frame_range_mm_per_normalized_stripe'])} mm per normalized stripe**.",
+        f"- `a_frame` std/range across the five group estimates: **{fmt(summary_row['a_frame_std_mm'])} / {fmt(summary_row['a_frame_range_mm'])} mm**; across the ten pairwise deltas: **{fmt(summary_row['pairwise_a_delta_std_mm'])} / {fmt(summary_row['pairwise_a_delta_range_mm'])} mm**.",
+        f"- `k_frame` std/range across the five group estimates: **{fmt(summary_row['k_frame_std_mm_per_normalized_stripe'])} / {fmt(summary_row['k_frame_range_mm_per_normalized_stripe'])} mm per normalized stripe**; across the ten pairwise deltas: **{fmt(summary_row['pairwise_k_delta_std_mm_per_normalized_stripe'])} / {fmt(summary_row['pairwise_k_delta_range_mm_per_normalized_stripe'])} mm per normalized stripe**.",
         f"- Pointwise overlap residual delta RMSE: median **{fmt(overlap_aggregate['e_delta_rmse_mm_median'])} mm**, P95 across pairs **{fmt(overlap_aggregate['e_delta_rmse_mm_p95'])} mm**, max **{fmt(overlap_aggregate['e_delta_rmse_mm_max'])} mm**.",
         f"- Pointwise overlap residual delta P95: median **{fmt(overlap_aggregate['e_delta_p95_abs_mm_median'])} mm**, P95 across pairs **{fmt(overlap_aggregate['e_delta_p95_abs_mm_p95'])} mm**.",
         f"- Median pairwise laser-center delta RMSE: **{fmt(overlap_aggregate['u_delta_rmse_px_median'])} px**; median pairwise PnP-truth delta RMSE: **{fmt(overlap_aggregate['truth_delta_rmse_mm_median'])} mm**.",

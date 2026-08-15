@@ -1,0 +1,58 @@
+{
+  "task": "6H-0",
+  "validation_opened": false,
+  "baseline_frame_ids": [
+    "001",
+    "002",
+    "003",
+    "004",
+    "005",
+    "006",
+    "007",
+    "008",
+    "009",
+    "010",
+    "011",
+    "012",
+    "013",
+    "014",
+    "015",
+    "016",
+    "017",
+    "018"
+  ],
+  "candidate_frame_ids": [
+    "025",
+    "026",
+    "027",
+    "028",
+    "029",
+    "030",
+    "031",
+    "032",
+    "033",
+    "034",
+    "035",
+    "036"
+  ],
+  "baseline_fit_dir": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\laser_plane\\fit",
+  "candidate_fit_dir": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\laser_plane\\fit_edge_extension\\fit",
+  "formal_intrinsics": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0811\\intrinsics\\calibration_result.yaml",
+  "pnp_solver": "SOLVEPNP_ITERATIVE + solvePnPRefineLM",
+  "camera_calibration_modified": false,
+  "cone_refit": false,
+  "laser_images_opened": false,
+  "classification_counts": {
+    "HIGH_VALUE": 4,
+    "USEFUL": 4,
+    "REDUNDANT": 4,
+    "REJECT_QUALITY": 0
+  },
+  "reusable": "PARTIAL",
+  "category_rules": {
+    "reject_quality": "not detected, not 88 corners, or solvePnP RMSE > 0.40 px",
+    "high_value": "new depth/tilt/apparent-size range, new sensor-u edge range, or tilt-direction distance >=8 deg",
+    "useful": "tilt-direction distance >=4 deg, or moderate novelty with a new support dimension",
+    "redundant": "otherwise quality-passing candidate"
+  }
+}

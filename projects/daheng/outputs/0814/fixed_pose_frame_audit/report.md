@@ -6,7 +6,7 @@
 
 - Data: `D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\laser_plane_0814`; five explicit FIT triplets `001–005`, fixed board pose, no re-placement.
 - Historical Validation was not opened or used. No Cone was fitted, refit, or written back; no compensation was created.
-- Each group independently runs PnP on `chess`, Steger laser-center extraction from `laser − nolaser`, ray/plane `lambda_truth`, and the frozen Circular Cone reconstruction.
+- Each group independently runs PnP on `chess`, Steger laser-center extraction from `laser − nolaser`, ray/plane `lambda_truth`, and the frozen Circular Cone reconstruction. The formal extractor keeps a uniform 900-point subsample per group for this audit.
 - Frozen Circular provenance SHA-256: `4cd60c8f77ee2358329a9f844b2f8861b1f53c13c40698ec0361f3fb05a8dc66`; formal cone/config SHA-256: `478d11c97c174e75d3167133a050540573a93dc28451e4b961ce12913709feac`.
 - Residual convention: `e_lambda = lambda_truth - lambda_model`. `a_frame` and `k_frame` are the intercept and normalized-stripe slope of `e_lambda`; `k_frame` is not a time derivative.
 - The ten between-repeat comparisons are the ten unordered pairs `C(5,2)=10`. Overlap is evaluated on a 1-pixel v-grid common to each pair.
@@ -23,8 +23,8 @@
 
 ## Repeatability across the ten pairs
 
-- `a_frame` std/range: **0.0111 / 0.0264 mm**.
-- `k_frame` std/range: **0.0077 / 0.0193 mm per normalized stripe**.
+- `a_frame` std/range across the five group estimates: **0.0111 / 0.0264 mm**; across the ten pairwise deltas: **0.0104 / 0.0338 mm**.
+- `k_frame` std/range across the five group estimates: **0.0077 / 0.0193 mm per normalized stripe**; across the ten pairwise deltas: **0.0114 / 0.0365 mm per normalized stripe**.
 - Pointwise overlap residual delta RMSE: median **0.0214 mm**, P95 across pairs **0.0319 mm**, max **0.0327 mm**.
 - Pointwise overlap residual delta P95: median **0.0383 mm**, P95 across pairs **0.0498 mm**.
 - Median pairwise laser-center delta RMSE: **0.0627 px**; median pairwise PnP-truth delta RMSE: **0.0059 mm**.
