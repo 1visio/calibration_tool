@@ -1,0 +1,303 @@
+{
+  "schema_version": 1,
+  "model_id": "C1_4k",
+  "frozen": true,
+  "definition": {
+    "prediction": "lambda_cone + F(s)",
+    "target": "lambda_truth - lambda_cone",
+    "coordinate": "frozen PCA pca_s",
+    "degree": 3,
+    "interior_knot_count": 4,
+    "basis_count": 8,
+    "smoothness": "moderate_second_difference",
+    "second_difference_penalty": 0.1,
+    "training_weighting": "frame_equal_total_weight_1_per_fit_frame",
+    "extrapolation": "BSpline extrapolate=True outside frozen FIT s domain"
+  },
+  "fit": {
+    "fit_ids": [
+      "001",
+      "002",
+      "003",
+      "004",
+      "005",
+      "006",
+      "007",
+      "008",
+      "009",
+      "010",
+      "011",
+      "012",
+      "013",
+      "014",
+      "015",
+      "016",
+      "017",
+      "018",
+      "025",
+      "026",
+      "027",
+      "028",
+      "029",
+      "030",
+      "031",
+      "032",
+      "033",
+      "034",
+      "035",
+      "036"
+    ],
+    "point_count": 26663,
+    "point_count_by_frame": {
+      "001": 822,
+      "002": 890,
+      "003": 900,
+      "004": 900,
+      "005": 900,
+      "006": 900,
+      "007": 900,
+      "008": 900,
+      "009": 900,
+      "010": 900,
+      "011": 900,
+      "012": 900,
+      "013": 900,
+      "014": 900,
+      "015": 900,
+      "016": 900,
+      "017": 890,
+      "018": 900,
+      "025": 828,
+      "026": 743,
+      "027": 890,
+      "028": 900,
+      "029": 900,
+      "030": 900,
+      "031": 900,
+      "032": 900,
+      "033": 900,
+      "034": 900,
+      "035": 900,
+      "036": 900
+    },
+    "training_target_bias_mm": 0.008907123724591015,
+    "training_target_rmse_mm": 0.09901762136055133,
+    "training_after_f_mm": 0.09137892585574968
+  },
+  "pca_s": {
+    "source_summary_sha256": "a01dca9079cf8985c4a7d3e97235a6e4d6249751ef633d3d2928ec3ab6a51c83",
+    "center_xn": -0.00802118750571203,
+    "center_yn": -0.009412682850753275,
+    "axis_s_xn": -0.01011985172687763,
+    "axis_s_yn": 0.999948792989434,
+    "axis_t_xn": -0.999948792989434,
+    "axis_t_yn": -0.01011985172687763,
+    "domain_min": -0.1641225636200761,
+    "domain_max": 0.19495848459253196,
+    "coordinate_definition": "(undistorted_xn,undistorted_yn) centered by frozen PCA center and projected onto frozen axis_s/axis_t"
+  },
+  "spline": {
+    "degree": 3,
+    "interior_knot_count": 4,
+    "basis_count": 8,
+    "penalty": 0.1,
+    "knots": [
+      -0.1641225636200761,
+      -0.1641225636200761,
+      -0.1641225636200761,
+      -0.1641225636200761,
+      -0.09230635397755449,
+      -0.020490144335032878,
+      0.05132606530748873,
+      0.12314227495001034,
+      0.19495848459253196,
+      0.19495848459253196,
+      0.19495848459253196,
+      0.19495848459253196
+    ],
+    "coefficients_mm": [
+      0.21876875420989125,
+      0.0024621671127253164,
+      -0.07115188532013308,
+      0.06605255342225047,
+      -0.0021617427962606767,
+      -0.0017604813187322506,
+      -0.0005623531548489871,
+      -0.04522504373034775
+    ]
+  },
+  "frozen_cone": {
+    "runtime_model": {
+      "model_type": "circular_cone",
+      "axis_unit_camera": [
+        0.9606102558776193,
+        0.008807045504173095,
+        -0.2777595583453833
+      ],
+      "apex_camera_mm": [
+        -136.52329817160577,
+        20.43130129604645,
+        260.24615852049544
+      ],
+      "half_apex_angle_deg": 88.87412045312347,
+      "z_valid_range_mm": [
+        631.5503788651798,
+        713.6828851676036
+      ],
+      "fit_success": true,
+      "frozen_source": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0814\\circular_vs_elliptical_cone\\provenance.json"
+    },
+    "provenance": {
+      "path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0814\\circular_vs_elliptical_cone\\provenance.json",
+      "sha256": "4cd60c8f77ee2358329a9f844b2f8861b1f53c13c40698ec0361f3fb05a8dc66"
+    },
+    "formal_cone": {
+      "path": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\calibration_daheng_0811\\circular_cone.yaml",
+      "sha256": "478d11c97c174e75d3167133a050540573a93dc28451e4b961ce12913709feac"
+    },
+    "loader_info": {
+      "provenance_sha256": "4cd60c8f77ee2358329a9f844b2f8861b1f53c13c40698ec0361f3fb05a8dc66",
+      "formal_cone_sha256": "478d11c97c174e75d3167133a050540573a93dc28451e4b961ce12913709feac",
+      "z_valid_range_mm": [
+        631.5503788651798,
+        713.6828851676036
+      ],
+      "circular_params": [
+        1.8522574342520952,
+        0.009167920811359608,
+        -441.57930865052293,
+        -27.72852615863943,
+        8.764399042734269,
+        -3.9295336923058315
+      ],
+      "reference_anchor_mm": [
+        -5.202197946661313,
+        -6.094415025826643,
+        682.015202774701
+      ],
+      "main_fit_ids": [
+        "001",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "007",
+        "008",
+        "009",
+        "010",
+        "011",
+        "012",
+        "013",
+        "014",
+        "015",
+        "016",
+        "017",
+        "018",
+        "025",
+        "026",
+        "028",
+        "029",
+        "030",
+        "031",
+        "032",
+        "033",
+        "034",
+        "035",
+        "036"
+      ],
+      "sensitivity_case_ids": [
+        "027"
+      ],
+      "validation_ids_not_opened": [
+        "019",
+        "020",
+        "021",
+        "022",
+        "023",
+        "024",
+        "037",
+        "038",
+        "039",
+        "040"
+      ],
+      "validation_opened": false,
+      "formal_m0_modified": false,
+      "empirical_correction_added": false
+    }
+  },
+  "frozen_runtime": {
+    "measurement_config": {
+      "path": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\measure_tool_daheng_0811.yaml",
+      "sha256": "9bf6216c9584823511c3926012cd705e27b356a2976e58609cbc9767fb333cee"
+    },
+    "calibration_files": {
+      "intrinsics": {
+        "path": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\calibration_daheng_0811\\calibration_result.yaml",
+        "sha256": "91620a158bde846a47a5cfce6fe79eb34d0df775f70849b8509f559cec742640"
+      },
+      "extrinsics": {
+        "path": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\calibration_daheng_0811\\camera_ground_extrinsics.yaml",
+        "sha256": "661087ac4ab93a5bda07a2e722f506760cdce71d0a1f0d24ce0dd5b5151b5d0e"
+      },
+      "ground_u_compensation": null
+    },
+    "camera_matrix": [
+      [
+        7347.865114440015,
+        0.0,
+        2070.216530147837
+      ],
+      [
+        0.0,
+        7348.841146643875,
+        1512.4364541050136
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "dist_coeffs": [
+      -0.049137165151413566,
+      0.2272759720228212,
+      -0.0005131542263022916,
+      -0.00047837789954461685,
+      0.0
+    ],
+    "reconstruction": {
+      "parallel_epsilon": 1e-09,
+      "quadratic_epsilon": 1e-12,
+      "min_camera_depth_mm": 630.0,
+      "max_camera_depth_mm": 715.0,
+      "model_range_margin_mm": 2.0
+    }
+  },
+  "input_points": {
+    "path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0817\\spatial_residual_observability\\fit_ray_residual_points.csv",
+    "sha256": "ea68251e05e1d472db7e25bb2090b2094f2e813f04dd5475fea1c06e4af01f8f"
+  },
+  "validation_policy": {
+    "validation_read_passes": 1,
+    "validation_ids": [
+      "019",
+      "020",
+      "021",
+      "022",
+      "023",
+      "024",
+      "037",
+      "038",
+      "039",
+      "040"
+    ],
+    "min_global_rmse_improvement_pct": 5.0,
+    "min_edge_frame_improvement_fraction": 0.5,
+    "max_middle_degradation_pct": 2.0,
+    "max_worst_degradation_pct": 2.0,
+    "max_edge_middle_degradation_pct": 2.0,
+    "max_bias_range_degradation_pct": 5.0
+  },
+  "parameter_sha256": "be7c316c91b54ac9b13a1ff2485a9ca2ceebf6644a57a91ffca98f858f726037"
+}

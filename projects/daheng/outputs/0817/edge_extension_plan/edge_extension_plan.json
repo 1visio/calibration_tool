@@ -1,0 +1,933 @@
+{
+  "schema_version": 1,
+  "plan_id": "c1_edge_extension_v1",
+  "status": "planning_only",
+  "source": {
+    "support_csv": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0817\\c1_support_comparison\\c1_support_comparison.csv",
+    "support_csv_sha256": "f804bcf6c2c35bde244e151237e5b921bd370a7ac32ed4cef72544d7aed65e88",
+    "standard_usage_basis": "height subset for the 20 mm / 50 mm target positions",
+    "laser_center_domain_reported": {
+      "v_px": [
+        0.0,
+        2999.0
+      ],
+      "s": [
+        -0.19688258257423438,
+        0.2119623062368466
+      ]
+    },
+    "validation_data_read": false,
+    "standard_objects_used_for_training": false,
+    "c1_refit": false
+  },
+  "current_coverage": {
+    "fit_ids": [
+      "001",
+      "002",
+      "003",
+      "004",
+      "005",
+      "006",
+      "007",
+      "008",
+      "009",
+      "010",
+      "011",
+      "012",
+      "013",
+      "014",
+      "015",
+      "016",
+      "017",
+      "018",
+      "025",
+      "026",
+      "027",
+      "028",
+      "029",
+      "030",
+      "031",
+      "032",
+      "033",
+      "034",
+      "035",
+      "036"
+    ],
+    "validation_ids": [
+      "019",
+      "020",
+      "021",
+      "022",
+      "023",
+      "024",
+      "037",
+      "038",
+      "039",
+      "040"
+    ],
+    "fit_point_count": 26663,
+    "fit_v_support_px": [
+      238.98377882459297,
+      2874.0060377373225
+    ],
+    "frozen_s_support": [
+      -0.1641225636200761,
+      0.19495848459253196
+    ],
+    "frame_027_retained": true,
+    "coverage_status": "INSUFFICIENT"
+  },
+  "standard_usage": {
+    "height_position_summaries": [
+      {
+        "dataset": "20mm",
+        "position": "P01_v125.0",
+        "region": "top",
+        "directory": "frame_000974_measure",
+        "v_range_px": [
+          86.0,
+          164.0
+        ],
+        "s_range": [
+          -0.18500106019725174,
+          -0.17435127459253474
+        ],
+        "v_median_px": 125.0,
+        "s_median": -0.17967590132581804,
+        "v_extrapolated_count": 79,
+        "v_extrapolated_fraction": 1.0,
+        "s_extrapolated_count": 79,
+        "s_extrapolated_fraction": 1.0,
+        "v_outside_distance_max_px": 152.98377882459297,
+        "s_outside_distance_max": 0.020878496577175637,
+        "coverage_status": "extrapolation"
+      },
+      {
+        "dataset": "20mm",
+        "position": "P02_v346.0",
+        "region": "middle",
+        "directory": "frame_004021_measure",
+        "v_range_px": [
+          311.0,
+          381.0
+        ],
+        "s_range": [
+          -0.15428825464045026,
+          -0.1447379912961798
+        ],
+        "v_median_px": 346.0,
+        "s_median": -0.14951275731343272,
+        "v_extrapolated_count": 0,
+        "v_extrapolated_fraction": 0.0,
+        "s_extrapolated_count": 0,
+        "s_extrapolated_fraction": 0.0,
+        "v_outside_distance_max_px": 0.0,
+        "s_outside_distance_max": 0.0,
+        "coverage_status": "interpolation"
+      },
+      {
+        "dataset": "20mm",
+        "position": "P03_v849.0",
+        "region": "middle",
+        "directory": "frame_005772_measure",
+        "v_range_px": [
+          812.0,
+          886.0
+        ],
+        "s_range": [
+          -0.08598635944557906,
+          -0.07590709196283918
+        ],
+        "v_median_px": 849.0,
+        "s_median": -0.08094652468365315,
+        "v_extrapolated_count": 0,
+        "v_extrapolated_fraction": 0.0,
+        "s_extrapolated_count": 0,
+        "s_extrapolated_fraction": 0.0,
+        "v_outside_distance_max_px": 0.0,
+        "s_outside_distance_max": 0.0,
+        "coverage_status": "interpolation"
+      },
+      {
+        "dataset": "20mm",
+        "position": "P04_v1467.5",
+        "region": "middle",
+        "directory": "frame_007020_measure",
+        "v_range_px": [
+          1431.0,
+          1504.0
+        ],
+        "s_range": [
+          -0.0017199416500510779,
+          0.008214505745280027
+        ],
+        "v_median_px": 1467.5,
+        "s_median": 0.0032473559995698127,
+        "v_extrapolated_count": 0,
+        "v_extrapolated_fraction": 0.0,
+        "s_extrapolated_count": 0,
+        "s_extrapolated_fraction": 0.0,
+        "v_outside_distance_max_px": 0.0,
+        "s_outside_distance_max": 0.0,
+        "coverage_status": "interpolation"
+      },
+      {
+        "dataset": "20mm",
+        "position": "P05_v2006.5",
+        "region": "middle",
+        "directory": "frame_008310_measure",
+        "v_range_px": [
+          1969.0,
+          2044.0
+        ],
+        "s_range": [
+          0.07151129719313241,
+          0.08172630072772288
+        ],
+        "v_median_px": 2006.5,
+        "s_median": 0.07661860028949546,
+        "v_extrapolated_count": 0,
+        "v_extrapolated_fraction": 0.0,
+        "s_extrapolated_count": 0,
+        "s_extrapolated_fraction": 0.0,
+        "v_outside_distance_max_px": 0.0,
+        "s_outside_distance_max": 0.0,
+        "coverage_status": "interpolation"
+      },
+      {
+        "dataset": "20mm",
+        "position": "P06_v2516.5",
+        "region": "middle",
+        "directory": "frame_009614_measure",
+        "v_range_px": [
+          2480.0,
+          2553.0
+        ],
+        "s_range": [
+          0.14116215867056753,
+          0.1511235702580172
+        ],
+        "v_median_px": 2516.5,
+        "s_median": 0.14614241976329992,
+        "v_extrapolated_count": 0,
+        "v_extrapolated_fraction": 0.0,
+        "s_extrapolated_count": 0,
+        "s_extrapolated_fraction": 0.0,
+        "v_outside_distance_max_px": 0.0,
+        "s_outside_distance_max": 0.0,
+        "coverage_status": "interpolation"
+      },
+      {
+        "dataset": "20mm",
+        "position": "P07_v2593.0",
+        "region": "middle",
+        "directory": "frame_011317_measure",
+        "v_range_px": [
+          2557.0,
+          2629.0
+        ],
+        "s_range": [
+          0.15166953123178328,
+          0.16149779467439798
+        ],
+        "v_median_px": 2593.0,
+        "s_median": 0.15658344314475545,
+        "v_extrapolated_count": 0,
+        "v_extrapolated_fraction": 0.0,
+        "s_extrapolated_count": 0,
+        "s_extrapolated_fraction": 0.0,
+        "v_outside_distance_max_px": 0.0,
+        "s_outside_distance_max": 0.0,
+        "coverage_status": "interpolation"
+      },
+      {
+        "dataset": "20mm",
+        "position": "P08_v2905.0",
+        "region": "bottom",
+        "directory": "frame_012686_measure",
+        "v_range_px": [
+          2872.0,
+          2938.0
+        ],
+        "s_range": [
+          0.1946902776541396,
+          0.2037112277937999
+        ],
+        "v_median_px": 2905.0,
+        "s_median": 0.19920045154618465,
+        "v_extrapolated_count": 64,
+        "v_extrapolated_fraction": 0.9552238805970149,
+        "s_extrapolated_count": 65,
+        "s_extrapolated_fraction": 0.9701492537313433,
+        "v_outside_distance_max_px": 63.99396226267754,
+        "s_outside_distance_max": 0.008752743201267954,
+        "coverage_status": "mixed"
+      },
+      {
+        "dataset": "50mm",
+        "position": "P01_v429.5",
+        "region": "top",
+        "directory": "frame_065292_measure",
+        "v_range_px": [
+          392.0,
+          467.0
+        ],
+        "s_range": [
+          -0.1430906886742937,
+          -0.13286152907480264
+        ],
+        "v_median_px": 429.5,
+        "s_median": -0.1379760398902322,
+        "v_extrapolated_count": 0,
+        "v_extrapolated_fraction": 0.0,
+        "s_extrapolated_count": 0,
+        "s_extrapolated_fraction": 0.0,
+        "v_outside_distance_max_px": 0.0,
+        "s_outside_distance_max": 0.0,
+        "coverage_status": "interpolation"
+      },
+      {
+        "dataset": "50mm",
+        "position": "P02_v1272.0",
+        "region": "middle",
+        "directory": "frame_063995_measure",
+        "v_range_px": [
+          1234.0,
+          1310.0
+        ],
+        "s_range": [
+          -0.02838371861578747,
+          -0.018040408596567394
+        ],
+        "v_median_px": 1272.0,
+        "s_median": -0.023212108359868353,
+        "v_extrapolated_count": 0,
+        "v_extrapolated_fraction": 0.0,
+        "s_extrapolated_count": 0,
+        "s_extrapolated_fraction": 0.0,
+        "v_outside_distance_max_px": 0.0,
+        "s_outside_distance_max": 0.0,
+        "coverage_status": "interpolation"
+      },
+      {
+        "dataset": "50mm",
+        "position": "P03_v2084.0",
+        "region": "middle",
+        "directory": "frame_062878_measure",
+        "v_range_px": [
+          2044.0,
+          2124.0
+        ],
+        "s_range": [
+          0.08187239102376341,
+          0.09277088454022052
+        ],
+        "v_median_px": 2084.0,
+        "s_median": 0.08732144289121348,
+        "v_extrapolated_count": 0,
+        "v_extrapolated_fraction": 0.0,
+        "s_extrapolated_count": 0,
+        "s_extrapolated_fraction": 0.0,
+        "v_outside_distance_max_px": 0.0,
+        "s_outside_distance_max": 0.0,
+        "coverage_status": "interpolation"
+      },
+      {
+        "dataset": "50mm",
+        "position": "P04_v2846.5",
+        "region": "bottom",
+        "directory": "frame_061303_measure",
+        "v_range_px": [
+          2810.0,
+          2883.0
+        ],
+        "s_range": [
+          0.1863643564578584,
+          0.1963396721901564
+        ],
+        "v_median_px": 2846.5,
+        "s_median": 0.191351769186543,
+        "v_extrapolated_count": 9,
+        "v_extrapolated_fraction": 0.12162162162162163,
+        "s_extrapolated_count": 11,
+        "s_extrapolated_fraction": 0.14864864864864866,
+        "v_outside_distance_max_px": 8.993962262677542,
+        "s_outside_distance_max": 0.0013811875976244559,
+        "coverage_status": "mixed"
+      }
+    ],
+    "edge_union": {
+      "top": {
+        "v_px": [
+          86.0,
+          467.0
+        ],
+        "s": [
+          -0.18500106019725174,
+          -0.13286152907480264
+        ]
+      },
+      "bottom": {
+        "v_px": [
+          2810.0,
+          2938.0
+        ],
+        "s": [
+          0.1863643564578584,
+          0.2037112277937999
+        ]
+      }
+    },
+    "laser_center_union_not_primary_target": {
+      "v_px": [
+        0.0,
+        2999.0
+      ],
+      "s": [
+        -0.19688258257423438,
+        0.2119623062368466
+      ]
+    }
+  },
+  "safety_margin": {
+    "method": "max(10% of observed edge span, absolute acquisition guard)",
+    "relative_span_fraction": 0.1,
+    "absolute_v_guard_px": 50.0,
+    "absolute_s_guard": 0.005,
+    "rounding": "v rounded outward to 10 px; s rounded outward to 0.001",
+    "basis": "height subset defines target standard-object usage; laser-center union is reported separately and is not used as the target-position domain"
+  },
+  "recommended_edge_domains": {
+    "top": {
+      "observed_required_domain": {
+        "v_px": [
+          86.0,
+          467.0
+        ],
+        "s": [
+          -0.18500106019725174,
+          -0.13286152907480264
+        ]
+      },
+      "observed_v_span_px": 381.0,
+      "observed_s_span": 0.052139531122449095,
+      "v_margin_px": 50.0,
+      "s_margin": 0.00521395311224491,
+      "exact_domain_with_margin": {
+        "v_px": [
+          36.0,
+          517.0
+        ],
+        "s": [
+          -0.19021501330949664,
+          -0.12764757596255774
+        ]
+      },
+      "recommended_rounded_domain": {
+        "v_px": [
+          30.0,
+          520.0
+        ],
+        "s": [
+          -0.191,
+          -0.127
+        ]
+      }
+    },
+    "bottom": {
+      "observed_required_domain": {
+        "v_px": [
+          2810.0,
+          2938.0
+        ],
+        "s": [
+          0.1863643564578584,
+          0.2037112277937999
+        ]
+      },
+      "observed_v_span_px": 128.0,
+      "observed_s_span": 0.01734687133594151,
+      "v_margin_px": 50.0,
+      "s_margin": 0.005,
+      "exact_domain_with_margin": {
+        "v_px": [
+          2760.0,
+          2988.0
+        ],
+        "s": [
+          0.1813643564578584,
+          0.2087112277937999
+        ]
+      },
+      "recommended_rounded_domain": {
+        "v_px": [
+          2760.0,
+          2990.0
+        ],
+        "s": [
+          0.181,
+          0.209
+        ]
+      }
+    }
+  },
+  "fit_extension": {
+    "dataset_id": "fit_edge_extension_v2",
+    "split": "fit",
+    "root": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\laser_plane\\fit_edge_extension_v2",
+    "pose_ids": [
+      "041",
+      "042",
+      "043",
+      "044"
+    ],
+    "minimum_pose_count_total": 4,
+    "minimum_pose_count_by_edge": {
+      "Top": 2,
+      "Bottom": 2
+    },
+    "reason_for_two_per_edge": "one outer guard plus one inner bridge; a single pose would make the new edge support frame-specific",
+    "poses": [
+      {
+        "pose_id": "041",
+        "edge": "Top",
+        "role": "outer_guard",
+        "reference_standard_position": "20mm P01_v125.0",
+        "target_center_v_px": 125.0,
+        "target_center_s": -0.17967590132581804,
+        "edge_target_domain_v_px": [
+          30.0,
+          520.0
+        ],
+        "edge_target_domain_s": [
+          -0.191,
+          -0.127
+        ],
+        "acquisition_rule": "调节棋盘姿态，使 laser-center/height 对应的实际 v/s 落入该 edge target domain；最终以采后实际点覆盖验收。"
+      },
+      {
+        "pose_id": "042",
+        "edge": "Top",
+        "role": "inner_bridge",
+        "reference_standard_position": "50mm P01_v429.5",
+        "target_center_v_px": 429.5,
+        "target_center_s": -0.1379760398902322,
+        "edge_target_domain_v_px": [
+          30.0,
+          520.0
+        ],
+        "edge_target_domain_s": [
+          -0.191,
+          -0.127
+        ],
+        "acquisition_rule": "调节棋盘姿态，使 laser-center/height 对应的实际 v/s 落入该 edge target domain；最终以采后实际点覆盖验收。"
+      },
+      {
+        "pose_id": "043",
+        "edge": "Bottom",
+        "role": "inner_bridge",
+        "reference_standard_position": "50mm P04_v2846.5",
+        "target_center_v_px": 2846.5,
+        "target_center_s": 0.191351769186543,
+        "edge_target_domain_v_px": [
+          2760.0,
+          2990.0
+        ],
+        "edge_target_domain_s": [
+          0.181,
+          0.209
+        ],
+        "acquisition_rule": "调节棋盘姿态，使 laser-center/height 对应的实际 v/s 落入该 edge target domain；最终以采后实际点覆盖验收。"
+      },
+      {
+        "pose_id": "044",
+        "edge": "Bottom",
+        "role": "outer_guard",
+        "reference_standard_position": "20mm P08_v2905.0",
+        "target_center_v_px": 2905.0,
+        "target_center_s": 0.19920045154618465,
+        "edge_target_domain_v_px": [
+          2760.0,
+          2990.0
+        ],
+        "edge_target_domain_s": [
+          0.181,
+          0.209
+        ],
+        "acquisition_rule": "调节棋盘姿态，使 laser-center/height 对应的实际 v/s 落入该 edge target domain；最终以采后实际点覆盖验收。"
+      }
+    ],
+    "tasks": [
+      {
+        "task_id": "fit_041_01_chess",
+        "pose_id": "041",
+        "role": "chess",
+        "split": "fit",
+        "frames": 1,
+        "relative_path": "fit/chess 041.tif",
+        "dataset_id": "fit_edge_extension_v2"
+      },
+      {
+        "task_id": "fit_041_02_nolaser",
+        "pose_id": "041",
+        "role": "nolaser",
+        "split": "fit",
+        "frames": 1,
+        "relative_path": "fit/nolaser 041.tif",
+        "dataset_id": "fit_edge_extension_v2"
+      },
+      {
+        "task_id": "fit_041_03_laser",
+        "pose_id": "041",
+        "role": "laser",
+        "split": "fit",
+        "frames": 1,
+        "relative_path": "fit/laser 041.tif",
+        "dataset_id": "fit_edge_extension_v2"
+      },
+      {
+        "task_id": "fit_042_01_chess",
+        "pose_id": "042",
+        "role": "chess",
+        "split": "fit",
+        "frames": 1,
+        "relative_path": "fit/chess 042.tif",
+        "dataset_id": "fit_edge_extension_v2"
+      },
+      {
+        "task_id": "fit_042_02_nolaser",
+        "pose_id": "042",
+        "role": "nolaser",
+        "split": "fit",
+        "frames": 1,
+        "relative_path": "fit/nolaser 042.tif",
+        "dataset_id": "fit_edge_extension_v2"
+      },
+      {
+        "task_id": "fit_042_03_laser",
+        "pose_id": "042",
+        "role": "laser",
+        "split": "fit",
+        "frames": 1,
+        "relative_path": "fit/laser 042.tif",
+        "dataset_id": "fit_edge_extension_v2"
+      },
+      {
+        "task_id": "fit_043_01_chess",
+        "pose_id": "043",
+        "role": "chess",
+        "split": "fit",
+        "frames": 1,
+        "relative_path": "fit/chess 043.tif",
+        "dataset_id": "fit_edge_extension_v2"
+      },
+      {
+        "task_id": "fit_043_02_nolaser",
+        "pose_id": "043",
+        "role": "nolaser",
+        "split": "fit",
+        "frames": 1,
+        "relative_path": "fit/nolaser 043.tif",
+        "dataset_id": "fit_edge_extension_v2"
+      },
+      {
+        "task_id": "fit_043_03_laser",
+        "pose_id": "043",
+        "role": "laser",
+        "split": "fit",
+        "frames": 1,
+        "relative_path": "fit/laser 043.tif",
+        "dataset_id": "fit_edge_extension_v2"
+      },
+      {
+        "task_id": "fit_044_01_chess",
+        "pose_id": "044",
+        "role": "chess",
+        "split": "fit",
+        "frames": 1,
+        "relative_path": "fit/chess 044.tif",
+        "dataset_id": "fit_edge_extension_v2"
+      },
+      {
+        "task_id": "fit_044_02_nolaser",
+        "pose_id": "044",
+        "role": "nolaser",
+        "split": "fit",
+        "frames": 1,
+        "relative_path": "fit/nolaser 044.tif",
+        "dataset_id": "fit_edge_extension_v2"
+      },
+      {
+        "task_id": "fit_044_03_laser",
+        "pose_id": "044",
+        "role": "laser",
+        "split": "fit",
+        "frames": 1,
+        "relative_path": "fit/laser 044.tif",
+        "dataset_id": "fit_edge_extension_v2"
+      }
+    ],
+    "directory_tree": [
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\laser_plane\\fit_edge_extension_v2/dataset_manifest.yaml",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\laser_plane\\fit_edge_extension_v2/fit/chess 041.tif ... fit/chess 044.tif",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\laser_plane\\fit_edge_extension_v2/fit/nolaser 041.tif ... fit/nolaser 044.tif",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\laser_plane\\fit_edge_extension_v2/fit/laser 041.tif ... fit/laser 044.tif"
+    ]
+  },
+  "validation_extension": {
+    "dataset_id": "validation_edge_holdout_v2",
+    "split": "validation",
+    "root": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\laser_plane\\validation_edge_holdout_v2",
+    "pose_ids": [
+      "045",
+      "046",
+      "047",
+      "048"
+    ],
+    "minimum_pose_count_total": 2,
+    "recommended_pose_count_total": 4,
+    "recommended_pose_count_by_edge": {
+      "Top": 2,
+      "Bottom": 2
+    },
+    "reason_for_four_recommended": "independently checks both outer and inner edge clusters seen in 20 mm / 50 mm standards",
+    "poses": [
+      {
+        "pose_id": "045",
+        "edge": "Top",
+        "role": "outer_edge_holdout",
+        "reference_standard_position": "20mm P01_v125.0",
+        "target_center_v_px": 125.0,
+        "target_center_s": -0.17967590132581804,
+        "edge_target_domain_v_px": [
+          30.0,
+          520.0
+        ],
+        "edge_target_domain_s": [
+          -0.191,
+          -0.127
+        ],
+        "acquisition_rule": "调节棋盘姿态，使 laser-center/height 对应的实际 v/s 落入该 edge target domain；最终以采后实际点覆盖验收。"
+      },
+      {
+        "pose_id": "046",
+        "edge": "Top",
+        "role": "inner_edge_holdout",
+        "reference_standard_position": "50mm P01_v429.5",
+        "target_center_v_px": 429.5,
+        "target_center_s": -0.1379760398902322,
+        "edge_target_domain_v_px": [
+          30.0,
+          520.0
+        ],
+        "edge_target_domain_s": [
+          -0.191,
+          -0.127
+        ],
+        "acquisition_rule": "调节棋盘姿态，使 laser-center/height 对应的实际 v/s 落入该 edge target domain；最终以采后实际点覆盖验收。"
+      },
+      {
+        "pose_id": "047",
+        "edge": "Bottom",
+        "role": "inner_edge_holdout",
+        "reference_standard_position": "50mm P04_v2846.5",
+        "target_center_v_px": 2846.5,
+        "target_center_s": 0.191351769186543,
+        "edge_target_domain_v_px": [
+          2760.0,
+          2990.0
+        ],
+        "edge_target_domain_s": [
+          0.181,
+          0.209
+        ],
+        "acquisition_rule": "调节棋盘姿态，使 laser-center/height 对应的实际 v/s 落入该 edge target domain；最终以采后实际点覆盖验收。"
+      },
+      {
+        "pose_id": "048",
+        "edge": "Bottom",
+        "role": "outer_edge_holdout",
+        "reference_standard_position": "20mm P08_v2905.0",
+        "target_center_v_px": 2905.0,
+        "target_center_s": 0.19920045154618465,
+        "edge_target_domain_v_px": [
+          2760.0,
+          2990.0
+        ],
+        "edge_target_domain_s": [
+          0.181,
+          0.209
+        ],
+        "acquisition_rule": "调节棋盘姿态，使 laser-center/height 对应的实际 v/s 落入该 edge target domain；最终以采后实际点覆盖验收。"
+      }
+    ],
+    "tasks": [
+      {
+        "task_id": "validation_045_01_chess",
+        "pose_id": "045",
+        "role": "chess",
+        "split": "validation",
+        "frames": 1,
+        "relative_path": "validation/chess 045.tif",
+        "dataset_id": "validation_edge_holdout_v2"
+      },
+      {
+        "task_id": "validation_045_02_nolaser",
+        "pose_id": "045",
+        "role": "nolaser",
+        "split": "validation",
+        "frames": 1,
+        "relative_path": "validation/nolaser 045.tif",
+        "dataset_id": "validation_edge_holdout_v2"
+      },
+      {
+        "task_id": "validation_045_03_laser",
+        "pose_id": "045",
+        "role": "laser",
+        "split": "validation",
+        "frames": 1,
+        "relative_path": "validation/laser 045.tif",
+        "dataset_id": "validation_edge_holdout_v2"
+      },
+      {
+        "task_id": "validation_046_01_chess",
+        "pose_id": "046",
+        "role": "chess",
+        "split": "validation",
+        "frames": 1,
+        "relative_path": "validation/chess 046.tif",
+        "dataset_id": "validation_edge_holdout_v2"
+      },
+      {
+        "task_id": "validation_046_02_nolaser",
+        "pose_id": "046",
+        "role": "nolaser",
+        "split": "validation",
+        "frames": 1,
+        "relative_path": "validation/nolaser 046.tif",
+        "dataset_id": "validation_edge_holdout_v2"
+      },
+      {
+        "task_id": "validation_046_03_laser",
+        "pose_id": "046",
+        "role": "laser",
+        "split": "validation",
+        "frames": 1,
+        "relative_path": "validation/laser 046.tif",
+        "dataset_id": "validation_edge_holdout_v2"
+      },
+      {
+        "task_id": "validation_047_01_chess",
+        "pose_id": "047",
+        "role": "chess",
+        "split": "validation",
+        "frames": 1,
+        "relative_path": "validation/chess 047.tif",
+        "dataset_id": "validation_edge_holdout_v2"
+      },
+      {
+        "task_id": "validation_047_02_nolaser",
+        "pose_id": "047",
+        "role": "nolaser",
+        "split": "validation",
+        "frames": 1,
+        "relative_path": "validation/nolaser 047.tif",
+        "dataset_id": "validation_edge_holdout_v2"
+      },
+      {
+        "task_id": "validation_047_03_laser",
+        "pose_id": "047",
+        "role": "laser",
+        "split": "validation",
+        "frames": 1,
+        "relative_path": "validation/laser 047.tif",
+        "dataset_id": "validation_edge_holdout_v2"
+      },
+      {
+        "task_id": "validation_048_01_chess",
+        "pose_id": "048",
+        "role": "chess",
+        "split": "validation",
+        "frames": 1,
+        "relative_path": "validation/chess 048.tif",
+        "dataset_id": "validation_edge_holdout_v2"
+      },
+      {
+        "task_id": "validation_048_02_nolaser",
+        "pose_id": "048",
+        "role": "nolaser",
+        "split": "validation",
+        "frames": 1,
+        "relative_path": "validation/nolaser 048.tif",
+        "dataset_id": "validation_edge_holdout_v2"
+      },
+      {
+        "task_id": "validation_048_03_laser",
+        "pose_id": "048",
+        "role": "laser",
+        "split": "validation",
+        "frames": 1,
+        "relative_path": "validation/laser 048.tif",
+        "dataset_id": "validation_edge_holdout_v2"
+      }
+    ],
+    "directory_tree": [
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\laser_plane\\validation_edge_holdout_v2/dataset_manifest.yaml",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\laser_plane\\validation_edge_holdout_v2/validation/chess 045.tif ... validation/chess 048.tif",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\laser_plane\\validation_edge_holdout_v2/validation/nolaser 045.tif ... validation/nolaser 048.tif",
+      "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\data\\laser_plane\\validation_edge_holdout_v2/validation/laser 045.tif ... validation/laser 048.tif"
+    ]
+  },
+  "strict_separation": {
+    "fit_pose_ids": [
+      "041",
+      "042",
+      "043",
+      "044"
+    ],
+    "validation_pose_ids": [
+      "045",
+      "046",
+      "047",
+      "048"
+    ],
+    "pose_id_intersection": [],
+    "raw_file_reuse": false,
+    "acquisition_session_reuse": false,
+    "checksum_intersection_allowed": false,
+    "validation_manifest_split": "validation",
+    "validation_manifest_dataset_id": "validation_edge_holdout_v2",
+    "validation_must_not_enter_c1_fit_csv": true,
+    "spatial_domain_note": "FIT and Validation intentionally target the same required edge domain; separation is by pose/session/raw files. Disjoint v/s ranges would turn Validation into an extrapolation test rather than independent in-domain generalization."
+  },
+  "acceptance_gates_after_acquisition": {
+    "fit": [
+      "actual FIT union covers each recommended rounded Top/Bottom v and s domain",
+      "each edge has at least two distinct contributing FIT pose_ids",
+      "all three tasks per pose pass chessboard/laser quality checks",
+      "new FIT is the only new data allowed into a future C1 refit; 045–048 remain excluded"
+    ],
+    "validation": [
+      "045–048 are acquired independently and pass quality checks",
+      "all Validation raw files and hashes are disjoint from FIT",
+      "Validation is read only after the future model is frozen, once, with no parameter tuning",
+      "report actual v/s support and extrapolation counts before any accuracy metric is interpreted"
+    ]
+  },
+  "number_conflict_check": {
+    "new_fit_ids": [
+      "041",
+      "042",
+      "043",
+      "044"
+    ],
+    "new_validation_ids": [
+      "045",
+      "046",
+      "047",
+      "048"
+    ],
+    "overlap_with_current_ids": []
+  },
+  "output_dir": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0817\\edge_extension_plan"
+}

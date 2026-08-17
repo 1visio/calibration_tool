@@ -254,7 +254,7 @@ manifest，不会擅自删除原始图像。
 4. 启动 `python -m calibration_tool gui --channel hikrobot`。第 1 页填写独立的
    项目 ID/工作目录，选择“海康 MVS”，点击“应用到向导”；第 2 页确认自动枚举的
    型号和序列号，再调曝光、增益和 ROI。
-5. 第 3 页生成计划并按 `chess → nolaser → laser` 采集。默认方向是
+5. 第 3 页生成计划并按 `chess → laser → nolaser` 采集。默认方向是
    `horizontal`；模板 `1200 μs`、向导配方中的曝光都只是起点，必须按现场回读
    调整。常见三联图只切换曝光/增益时会复用同一个 MVS session，不再关闭重开。
 6. 把 `workflow.example.yaml` 复制到项目目录，在第 1 页指向该副本并应用；第 4 页
@@ -307,11 +307,11 @@ manifest，不会擅自删除原始图像。
 
 ```text
 chess 001.tif     高曝光、激光关闭；棋盘位姿和运动参考
-nolaser 001.tif   低曝光、激光关闭；背景扣除
-laser 001.tif     相同低曝光、激光开启；激光中心提取
+laser 001.tif     低曝光、激光开启；激光中心提取
+nolaser 001.tif   相同低曝光、激光关闭；背景扣除
 ```
 
-三张图之间不得移动棋盘、相机或支架。`nolaser` 和 `laser` 应使用相同短曝光；短曝光图看不清棋盘并不等于发生了运动。
+三张图之间不得移动棋盘、相机或支架。应按 `chess → laser → nolaser` 采集；`nolaser` 和 `laser` 使用相同短曝光，短曝光图看不清棋盘并不等于发生了运动。
 
 ### 4.5 数据集追溯文件
 
@@ -355,7 +355,7 @@ laser 001.tif     相同低曝光、激光开启；激光中心提取
 
 ![批量采集页面](docs/images/user_manual/03_capture.png)
 
-填写输出数据集、数据集 ID、曝光序列/姿态任务、保存格式和质量模式，点击“生成并检查计划”确认任务预览，再点击“开始采集”。正式三联图应按 `chess → nolaser → laser` 完成一组后再移动棋盘。
+填写输出数据集、数据集 ID、曝光序列/姿态任务、保存格式和质量模式，点击“生成并检查计划”确认任务预览，再点击“开始采集”。正式三联图应按 `chess → laser → nolaser` 完成一组后再移动棋盘。
 
 若中断，保持计划不变，勾选“续采对应的 .inprogress 数据集”。页面会记录计划、数据集根目录、fit/validation 目录、manifest 和 `frames.csv`。
 

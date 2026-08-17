@@ -238,7 +238,7 @@ def build_capture_plan_from_recipe(
                 task_id = f"{split.name}_{pose_id}_{item_index:02d}_{item.role}"
                 task_config = base_config.updated({"exposure_us": float(item.exposure_us)})
                 # 三联图共享 split 目录，文件名直接由配方前缀和姿态编号组成：
-                # ``fit/chess 001.tif``、``fit/nolaser 001.tif``、``fit/laser 001.tif``。
+                # ``fit/chess 001.tif``、``fit/laser 001.tif``、``fit/nolaser 001.tif``。
                 # 曝光已经保存在 task.camera/config 中，不再重复编码到目录层级。
                 filename_template = (
                     f"{split.name}/{item.filename_prefix} "

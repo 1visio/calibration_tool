@@ -24,7 +24,7 @@ from ..camera.plan_builder import CaptureRecipeItem
 
 
 class CaptureRecipeTable(QWidget):
-    """默认 chess/nolaser/laser 三联图，字段变化通过 ``changed`` 通知页面。"""
+    """默认 chess/laser/nolaser 三联图，字段变化通过 ``changed`` 通知页面。"""
 
     changed = Signal()
     HEADERS = ("启用", "角色", "文件前缀", "曝光 μs", "激光提示", "质量模式", "帧数", "稳定帧")
@@ -39,20 +39,20 @@ class CaptureRecipeTable(QWidget):
             "settle": 5,
         },
         {
-            "role": "nolaser",
-            "prefix": "nolaser",
-            "exposure": 500.0,
-            "laser": "off",
-            "quality": "generic",
-            "frames": 1,
-            "settle": 5,
-        },
-        {
             "role": "laser",
             "prefix": "laser",
             "exposure": 500.0,
             "laser": "on",
             "quality": "laser",
+            "frames": 1,
+            "settle": 5,
+        },
+        {
+            "role": "nolaser",
+            "prefix": "nolaser",
+            "exposure": 500.0,
+            "laser": "off",
+            "quality": "generic",
             "frames": 1,
             "settle": 5,
         },

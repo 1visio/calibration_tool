@@ -270,7 +270,7 @@ class GuiCapturePageTests(unittest.TestCase):
                 self.assertEqual(page.plan_tasks.currentRow(), 1)
                 self.assertEqual(page.plan_table.currentRow(), 1)
                 self.assertEqual(page.camera_page.exposure.value(), 500.0)
-                self.assertEqual(page.camera_page.quality_mode.currentData(), "generic")
+                self.assertEqual(page.camera_page.quality_mode.currentData(), "laser")
                 self.assertIn(next_task.task_id, page.live_camera.text())
             finally:
                 page._capture_worker = None

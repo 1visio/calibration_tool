@@ -6,6 +6,7 @@ Modes:
   watch  - watch a Git worktree and probabilistically run read-only auditors
   audit  - run an audit immediately (with --final to force both auditors)
   hook   - Codex hook bridge for UserPromptSubmit + Stop
+  checkpoint-hook - non-blocking PostToolUse checkpoint for apply_patch
 
 Uses only the Python standard library. Reviewer processes are fresh, ephemeral,
 and read-only Codex exec invocations.
@@ -14,12 +15,14 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
+import contextlib
 import datetime as dt
 import hashlib
 import json
 import os
 import pathlib
 import random
+import shlex
 import shutil
 import subprocess
 import sys
@@ -35,16 +38,26 @@ DEFAULT_CONFIG: dict[str, Any] = {
     "max_parallel_auditors": 2,
     "final_audit_on_stop": True,
     "block_on_audit_error": False,
+    "checkpoint": {
+        "enabled": True,
+        "debounce_seconds": 8.0,
+        "minimum_interval_seconds": 90.0,
+        "activation_probability": 0.35,
+    },
     "auditors": {
         "code-smell-auditor": {
             "enabled": True,
             "activation_probability": 0.4,
             "timeout_seconds": 120,
+            "model": "gpt-5.6-luna",
+            "reasoning_effort": "high",
         },
         "success-goal-auditor": {
             "enabled": True,
             "activation_probability": 0.4,
-            "timeout_seconds": 120,
+            "timeout_seconds": 180,
+            "model": "gpt-5.6-luna",
+            "reasoning_effort": "xhigh",
         },
     },
 }
@@ -52,6 +65,19 @@ DEFAULT_CONFIG: dict[str, Any] = {
 PASS_SENTINELS = {
     "code-smell-auditor": "NO_FINDING",
     "success-goal-auditor": "GOAL_ALIGNED",
+}
+
+AUDITOR_EXECUTION_DEFAULTS: dict[str, dict[str, Any]] = {
+    "code-smell-auditor": {
+        "model": "gpt-5.6-luna",
+        "reasoning_effort": "high",
+        "timeout_seconds": 120,
+    },
+    "success-goal-auditor": {
+        "model": "gpt-5.6-luna",
+        "reasoning_effort": "xhigh",
+        "timeout_seconds": 180,
+    },
 }
 
 
@@ -64,6 +90,8 @@ def run(cmd: list[str], cwd: pathlib.Path, timeout: float | None = None) -> subp
         cmd,
         cwd=str(cwd),
         text=True,
+        encoding="utf-8",
+        errors="replace",
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         timeout=timeout,
@@ -110,30 +138,38 @@ def load_config(root: pathlib.Path) -> dict[str, Any]:
     return deep_merge(DEFAULT_CONFIG, data)
 
 
-def git_fingerprint(root: pathlib.Path, base_ref: str) -> str:
-    """Hash tracked diff plus untracked file contents (excluding runtime state)."""
-    h = hashlib.sha256()
-    cp = run(["git", "diff", "--binary", "--no-ext-diff", base_ref, "--", "."], root)
-    h.update(cp.stdout.encode("utf-8", errors="replace"))
-    if cp.returncode != 0:
-        h.update(cp.stderr.encode("utf-8", errors="replace"))
+def _git_command_failure(command: list[str], completed: subprocess.CompletedProcess[str]) -> RuntimeError:
+    stderr = (completed.stderr or "").strip()
+    diagnostic = stderr or (completed.stdout or "").strip() or "<no diagnostic>"
+    return RuntimeError(
+        f"git command failed: command={shlex.join(command)}; returncode={completed.returncode}; stderr={diagnostic}"
+    )
 
-    untracked = run(["git", "ls-files", "--others", "--exclude-standard", "-z"], root)
+
+def git_fingerprint(root: pathlib.Path, base_ref: str) -> str:
+    """Hash tracked diff plus untracked path metadata (excluding runtime state)."""
+    h = hashlib.sha256()
+    diff_command = ["git", "diff", "--binary", "--no-ext-diff", base_ref, "--", "."]
+    cp = run(diff_command, root)
+    if cp.returncode != 0:
+        raise _git_command_failure(diff_command, cp)
+    h.update((cp.stdout or "").encode("utf-8", errors="replace"))
+
+    ls_files_command = ["git", "ls-files", "--others", "--exclude-standard", "-z"]
+    untracked = run(ls_files_command, root)
+    if untracked.returncode != 0:
+        raise _git_command_failure(ls_files_command, untracked)
     for rel in sorted(x for x in untracked.stdout.split("\0") if x):
         if rel == ".codex-shadow" or rel.startswith(".codex-shadow/"):
             continue
-        h.update(rel.encode("utf-8", errors="replace"))
         p = root / rel
-        try:
-            if p.is_file():
-                with p.open("rb") as f:
-                    while True:
-                        chunk = f.read(1024 * 1024)
-                        if not chunk:
-                            break
-                        h.update(chunk)
-        except OSError as exc:
-            h.update(f"<unreadable:{exc}>".encode())
+        stat = p.stat()
+        normalized_rel = rel.replace("\\", "/")
+        h.update(
+            f"untracked\0path={normalized_rel}\0size={stat.st_size}\0mtime_ns={stat.st_mtime_ns}\n".encode(
+                "utf-8", errors="replace"
+            )
+        )
     return h.hexdigest()
 
 
@@ -147,15 +183,116 @@ def requirements_path(root: pathlib.Path) -> pathlib.Path:
     return state_dir(root) / "requirements.md"
 
 
+@contextlib.contextmanager
+def _exclusive_file_lock(path: pathlib.Path):
+    """Serialize append/dedup checks across concurrent hook processes."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a+", encoding="utf-8") as lock:
+        if os.name == "nt":
+            import msvcrt
+
+            lock.seek(0, os.SEEK_END)
+            if lock.tell() == 0:
+                lock.write("0")
+                lock.flush()
+            lock.seek(0)
+            msvcrt.locking(lock.fileno(), msvcrt.LK_LOCK, 1)
+            try:
+                yield
+            finally:
+                lock.seek(0)
+                msvcrt.locking(lock.fileno(), msvcrt.LK_UNLCK, 1)
+        else:
+            import fcntl
+
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
+
+
+def events_path(root: pathlib.Path) -> pathlib.Path:
+    return state_dir(root) / "events.jsonl"
+
+
+def _short_error(exc: BaseException, limit: int = 240) -> str:
+    message = " ".join(str(exc).split())
+    if not message:
+        message = "(no error message)"
+    return message[:limit]
+
+
+def _error_fields(exc: BaseException) -> dict[str, str]:
+    return {"error_type": type(exc).__name__, "error": _short_error(exc)}
+
+
+def append_event(root: pathlib.Path, data: dict[str, Any]) -> None:
+    """Best-effort append of one structured hook diagnostic event."""
+    try:
+        path = events_path(root)
+        lock_path = path.with_name(path.name + ".lock")
+        line = json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n"
+        with _exclusive_file_lock(lock_path):
+            with path.open("a", encoding="utf-8") as f:
+                f.write(line)
+    except Exception as exc:
+        # Diagnostics must never change the hook's behavior. There is no usable
+        # persistent fallback if the state directory itself is unavailable, so
+        # leave a best-effort stderr breadcrumb as the last resort.
+        print(f"shadow audit: failed to write event log: {_short_error(exc)}", file=sys.stderr)
+
+
+def record_event(
+    root: pathlib.Path,
+    event_name: str,
+    session_id: str,
+    turn_id: str,
+    **details: Any,
+) -> None:
+    payload: dict[str, Any] = {
+        "timestamp": now_iso(),
+        "event": event_name,
+        "session_id": session_id,
+        "turn_id": turn_id,
+    }
+    payload.update(details)
+    try:
+        append_event(root, payload)
+    except Exception as exc:
+        # Keep callers fail-soft even if tests or an embedding caller replace
+        # append_event with an implementation that raises.
+        print(f"shadow audit: event {event_name} unavailable: {_short_error(exc)}", file=sys.stderr)
+
+
+def _requirement_marker(session_id: str | None, turn_id: str | None) -> str | None:
+    if not (session_id or turn_id):
+        return None
+    return f"<!-- session={session_id or ''} turn={turn_id or ''} -->"
+
+
+def normalize_prompt(prompt: str) -> tuple[str, int]:
+    """Make a prompt safe for strict UTF-8 persistence without dropping it."""
+    replacement_count = sum(0xD800 <= ord(character) <= 0xDFFF for character in prompt)
+    normalized = prompt.encode("utf-8", errors="backslashreplace").decode("utf-8")
+    return normalized, replacement_count
+
+
 def append_requirement(root: pathlib.Path, prompt: str, session_id: str | None = None, turn_id: str | None = None) -> None:
+    prompt, _ = normalize_prompt(prompt)
     if not prompt.strip() or prompt.startswith("SHADOW_AUDIT_FEEDBACK:"):
         return
     path = requirements_path(root)
     header = f"\n\n## Requirement update — {now_iso()}"
-    if session_id or turn_id:
-        header += f"\n<!-- session={session_id or ''} turn={turn_id or ''} -->"
-    with path.open("a", encoding="utf-8") as f:
-        f.write(header + "\n\n" + prompt.strip() + "\n")
+    marker = _requirement_marker(session_id, turn_id)
+    if marker:
+        header += f"\n{marker}"
+    lock_path = path.with_name(path.name + ".lock")
+    with _exclusive_file_lock(lock_path):
+        if marker and path.exists() and marker in path.read_text(encoding="utf-8"):
+            return
+        with path.open("a", encoding="utf-8") as f:
+            f.write(header + "\n\n" + prompt.strip() + "\n")
 
 
 def init_requirements(root: pathlib.Path, text: str | None, source_file: str | None, force: bool) -> pathlib.Path:
@@ -207,19 +344,78 @@ def write_run_metadata(report_dir: pathlib.Path, data: dict[str, Any]) -> None:
     (report_dir / "metadata.json").write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def auditor_execution_settings(auditor: str, cfg: dict[str, Any]) -> dict[str, Any]:
+    defaults = AUDITOR_EXECUTION_DEFAULTS.get(auditor, {})
+    return {
+        "model": str(cfg.get("model", defaults.get("model", "gpt-5.6-luna"))),
+        "reasoning_effort": str(cfg.get("reasoning_effort", defaults.get("reasoning_effort", "high"))),
+        "timeout_seconds": float(cfg.get("timeout_seconds", defaults.get("timeout_seconds", 120))),
+    }
+
+
+def auditor_event_summary(results: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [
+        {
+            "auditor": result.get("auditor"),
+            "model": result.get("model"),
+            "reasoning_effort": result.get("reasoning_effort"),
+            "duration_seconds": result.get("duration_seconds"),
+            "status": result.get("status"),
+        }
+        for result in results
+    ]
+
+
+def configured_auditor_summary(cfg: dict[str, Any]) -> list[dict[str, Any]]:
+    return [
+        {
+            "auditor": name,
+            **{
+                key: settings[key]
+                for key in ("model", "reasoning_effort", "timeout_seconds")
+            },
+        }
+        for name, auditor_cfg in cfg.get("auditors", {}).items()
+        if auditor_cfg.get("enabled", True)
+        for settings in [auditor_execution_settings(name, auditor_cfg)]
+    ]
+
+
 def run_one_auditor(root: pathlib.Path, auditor: str, cfg: dict[str, Any], base_ref: str, final: bool, report_dir: pathlib.Path) -> dict[str, Any]:
-    timeout = float(cfg.get("timeout_seconds", 120))
+    settings = auditor_execution_settings(auditor, cfg)
+    timeout = settings["timeout_seconds"]
+    model = settings["model"]
+    reasoning_effort = settings["reasoning_effort"]
     output_path = report_dir / f"{auditor}.md"
     stderr_path = report_dir / f"{auditor}.stderr.log"
     prompt = auditor_prompt(root, auditor, base_ref, final)
     started = time.time()
-    result: dict[str, Any] = {"auditor": auditor, "started_at": now_iso(), "timeout_seconds": timeout}
+    result: dict[str, Any] = {
+        "auditor": auditor,
+        "started_at": now_iso(),
+        "timeout_seconds": timeout,
+        "model": model,
+        "reasoning_effort": reasoning_effort,
+    }
     try:
         exe = codex_executable()
         env = os.environ.copy()
         env["CODEX_SHADOW_AUDIT_CHILD"] = "1"
         cp = subprocess.run(
-            [exe, "exec", "--ephemeral", "--sandbox", "read-only", "-o", str(output_path), prompt],
+            [
+                exe,
+                "exec",
+                "--ephemeral",
+                "--sandbox",
+                "read-only",
+                "--model",
+                model,
+                "--config",
+                f"model_reasoning_effort={reasoning_effort}",
+                "-o",
+                str(output_path),
+                prompt,
+            ],
             cwd=str(root),
             env=env,
             text=True,
@@ -272,7 +468,13 @@ def report_is_issue(auditor: str, report: str, block_on_error: bool) -> bool:
     return True
 
 
-def audit_cycle(root: pathlib.Path, final: bool = False, seed: int | None = None) -> dict[str, Any]:
+def audit_cycle(
+    root: pathlib.Path,
+    final: bool = False,
+    seed: int | None = None,
+    session_id: str | None = None,
+    turn_id: str | None = None,
+) -> dict[str, Any]:
     cfg = load_config(root)
     if not cfg.get("enabled", True):
         return {"status": "disabled", "reports": []}
@@ -292,7 +494,19 @@ def audit_cycle(root: pathlib.Path, final: bool = False, seed: int | None = None
             for name in selected
         }
         for future in concurrent.futures.as_completed(futures):
-            results.append(future.result())
+            result = future.result()
+            results.append(result)
+            record_event(
+                root,
+                "auditor_finished",
+                session_id or "unknown-session",
+                turn_id or "unknown-turn",
+                auditor=result.get("auditor"),
+                model=result.get("model"),
+                reasoning_effort=result.get("reasoning_effort"),
+                duration_seconds=result.get("duration_seconds"),
+                status=result.get("status"),
+            )
     results.sort(key=lambda r: r["auditor"])
 
     block_on_error = bool(cfg.get("block_on_audit_error", False))
@@ -303,6 +517,7 @@ def audit_cycle(root: pathlib.Path, final: bool = False, seed: int | None = None
         "base_ref": base_ref,
         "fingerprint": git_fingerprint(root, base_ref),
         "selected": selected,
+        "auditors": auditor_event_summary(results),
         "results": [{k: v for k, v in r.items() if k != "report"} for r in results],
         "issue_auditors": [r["auditor"] for r in issues],
     }
@@ -369,11 +584,367 @@ def watch(root: pathlib.Path, once: bool = False) -> None:
         print("\nStopped.")
 
 
+CHECKPOINT_AUDITOR = "code-smell-auditor"
+
+
+def checkpoint_state_file(root: pathlib.Path) -> pathlib.Path:
+    return state_dir(root) / "checkpoint-state.json"
+
+
+def _checkpoint_skip(
+    root: pathlib.Path,
+    session_id: str,
+    turn_id: str,
+    reason: str,
+    **details: Any,
+) -> int:
+    record_event(root, "checkpoint_skipped", session_id, turn_id, reason=reason, **details)
+    print("{}")
+    return 0
+
+
+def _checkpoint_number(state: dict[str, Any], key: str) -> float | None:
+    value = state.get(key)
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ValueError(f"checkpoint state field {key!r} is not numeric")
+    return float(value)
+
+
+def _checkpoint_process(
+    root: pathlib.Path,
+    event: dict[str, Any],
+    session_id: str,
+    turn_id: str,
+) -> int:
+    state_path = checkpoint_state_file(root)
+    lock_path = state_path.with_name(state_path.name + ".lock")
+    with _exclusive_file_lock(lock_path):
+        return _checkpoint_process_unlocked(root, event, session_id, turn_id)
+
+
+def _checkpoint_process_unlocked(
+    root: pathlib.Path,
+    event: dict[str, Any],
+    session_id: str,
+    turn_id: str,
+) -> int:
+    try:
+        cfg = load_config(root)
+    except (Exception, SystemExit) as exc:
+        return _checkpoint_skip(root, session_id, turn_id, "config_failed", **_error_fields(exc))
+    if not cfg.get("enabled", True):
+        return _checkpoint_skip(root, session_id, turn_id, "shadow_audit_disabled")
+
+    checkpoint_cfg = cfg.get("checkpoint", {})
+    if not isinstance(checkpoint_cfg, dict) or not checkpoint_cfg.get("enabled", True):
+        return _checkpoint_skip(root, session_id, turn_id, "checkpoint_disabled")
+    try:
+        debounce_seconds = max(0.0, float(checkpoint_cfg.get("debounce_seconds", 8.0)))
+        minimum_interval_seconds = max(
+            0.0,
+            float(checkpoint_cfg.get("minimum_interval_seconds", 90.0)),
+        )
+        activation_probability = max(
+            0.0,
+            min(1.0, float(checkpoint_cfg.get("activation_probability", 0.35))),
+        )
+    except (TypeError, ValueError) as exc:
+        return _checkpoint_skip(root, session_id, turn_id, "config_invalid", **_error_fields(exc))
+
+    auditor_cfgs = cfg.get("auditors", {})
+    auditor_cfg = auditor_cfgs.get(CHECKPOINT_AUDITOR) if isinstance(auditor_cfgs, dict) else None
+    if not isinstance(auditor_cfg, dict) or not auditor_cfg.get("enabled", True):
+        return _checkpoint_skip(
+            root,
+            session_id,
+            turn_id,
+            "auditor_disabled",
+            auditor=CHECKPOINT_AUDITOR,
+        )
+
+    try:
+        state_path = checkpoint_state_file(root)
+        state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
+        if not isinstance(state, dict):
+            raise ValueError("checkpoint state must be a JSON object")
+        for key in ("pending_fingerprint", "last_decided_fingerprint", "last_audited_fingerprint"):
+            value = state.get(key)
+            if value is not None and not isinstance(value, str):
+                raise ValueError(f"checkpoint state field {key!r} is not a string")
+        pending_since = _checkpoint_number(state, "pending_since")
+        last_audit_at = _checkpoint_number(state, "last_audit_at")
+    except Exception as exc:
+        return _checkpoint_skip(root, session_id, turn_id, "state_invalid", **_error_fields(exc))
+
+    base_ref = str(cfg.get("base_ref", "HEAD"))
+    try:
+        fingerprint = git_fingerprint(root, base_ref)
+    except Exception as exc:
+        return _checkpoint_skip(root, session_id, turn_id, "fingerprint_failed", **_error_fields(exc))
+
+    if fingerprint == state.get("last_decided_fingerprint"):
+        return _checkpoint_skip(
+            root,
+            session_id,
+            turn_id,
+            "fingerprint_unchanged",
+            fingerprint=fingerprint,
+        )
+
+    now = time.time()
+    pending_fingerprint = state.get("pending_fingerprint")
+    if pending_fingerprint != fingerprint:
+        state["pending_fingerprint"] = fingerprint
+        state["pending_since"] = now
+        pending_since = now
+        record_event(
+            root,
+            "checkpoint_candidate",
+            session_id,
+            turn_id,
+            fingerprint=fingerprint,
+            base_ref=base_ref,
+            auditor=CHECKPOINT_AUDITOR,
+        )
+        try:
+            write_json_atomic(state_path, state)
+        except Exception as exc:
+            return _checkpoint_skip(
+                root,
+                session_id,
+                turn_id,
+                "state_write_failed",
+                phase="candidate",
+                fingerprint=fingerprint,
+                **_error_fields(exc),
+            )
+    elif pending_since is None:
+        return _checkpoint_skip(
+            root,
+            session_id,
+            turn_id,
+            "state_invalid",
+            **_error_fields(ValueError("pending fingerprint has no pending_since timestamp")),
+        )
+
+    assert pending_since is not None
+    candidate_age = max(0.0, now - pending_since)
+    if candidate_age < debounce_seconds:
+        return _checkpoint_skip(
+            root,
+            session_id,
+            turn_id,
+            "debounce",
+            fingerprint=fingerprint,
+            elapsed_seconds=round(candidate_age, 3),
+            required_seconds=debounce_seconds,
+        )
+
+    if last_audit_at is not None:
+        since_last_audit = max(0.0, now - last_audit_at)
+        if since_last_audit < minimum_interval_seconds:
+            return _checkpoint_skip(
+                root,
+                session_id,
+                turn_id,
+                "minimum_interval",
+                fingerprint=fingerprint,
+                elapsed_seconds=round(since_last_audit, 3),
+                required_seconds=minimum_interval_seconds,
+            )
+
+    sample = random.random()
+    if sample >= activation_probability:
+        state["last_decided_fingerprint"] = fingerprint
+        state.pop("pending_fingerprint", None)
+        state.pop("pending_since", None)
+        try:
+            write_json_atomic(state_path, state)
+        except Exception as exc:
+            return _checkpoint_skip(
+                root,
+                session_id,
+                turn_id,
+                "state_write_failed",
+                phase="probability",
+                fingerprint=fingerprint,
+                **_error_fields(exc),
+            )
+        return _checkpoint_skip(
+            root,
+            session_id,
+            turn_id,
+            "activation_probability",
+            fingerprint=fingerprint,
+            sample=round(sample, 6),
+            probability=activation_probability,
+        )
+
+    try:
+        stamp = dt.datetime.now().strftime("%Y%m%d-%H%M%S-%f")
+        report_dir = state_dir(root) / "reports" / f"checkpoint-{stamp}"
+        report_dir.mkdir(parents=True, exist_ok=True)
+        settings = auditor_execution_settings(CHECKPOINT_AUDITOR, auditor_cfg)
+        state["last_decided_fingerprint"] = fingerprint
+        state["last_audit_started_at"] = now
+        state.pop("pending_fingerprint", None)
+        state.pop("pending_since", None)
+        write_json_atomic(state_path, state)
+    except Exception as exc:
+        return _checkpoint_skip(
+            root,
+            session_id,
+            turn_id,
+            "start_failed",
+            fingerprint=fingerprint,
+            **_error_fields(exc),
+        )
+
+    record_event(
+        root,
+        "checkpoint_started",
+        session_id,
+        turn_id,
+        fingerprint=fingerprint,
+        auditor=CHECKPOINT_AUDITOR,
+        model=settings["model"],
+        reasoning_effort=settings["reasoning_effort"],
+        timeout_seconds=settings["timeout_seconds"],
+    )
+    started = time.time()
+    result: dict[str, Any]
+    execution_error: BaseException | None = None
+    try:
+        result = run_one_auditor(
+            root,
+            CHECKPOINT_AUDITOR,
+            auditor_cfg,
+            base_ref,
+            False,
+            report_dir,
+        )
+    except Exception as exc:
+        execution_error = exc
+        result = {
+            "auditor": CHECKPOINT_AUDITOR,
+            "model": settings["model"],
+            "reasoning_effort": settings["reasoning_effort"],
+            "status": "error",
+            "duration_seconds": round(time.time() - started, 3),
+            "report": f"AUDIT_ERROR\nreason: {exc}",
+        }
+    finished_at = time.time()
+
+    state["last_audited_fingerprint"] = fingerprint
+    state["last_audit_at"] = finished_at
+    state.pop("last_audit_started_at", None)
+    state_saved = True
+    state_error: BaseException | None = None
+    try:
+        write_json_atomic(state_path, state)
+    except Exception as exc:
+        state_saved = False
+        state_error = exc
+
+    metadata_error: BaseException | None = None
+    try:
+        write_run_metadata(
+            report_dir,
+            {
+                "created_at": now_iso(),
+                "checkpoint": True,
+                "final": False,
+                "base_ref": base_ref,
+                "fingerprint": fingerprint,
+                "selected": [CHECKPOINT_AUDITOR],
+                "auditors": auditor_event_summary([result]),
+                "results": [{k: v for k, v in result.items() if k != "report"}],
+            },
+        )
+    except Exception as exc:
+        metadata_error = exc
+
+    duration = result.get("duration_seconds")
+    if isinstance(duration, bool) or not isinstance(duration, (int, float)):
+        duration = round(finished_at - started, 3)
+    finished_details: dict[str, Any] = {
+        "fingerprint": fingerprint,
+        "auditor": result.get("auditor", CHECKPOINT_AUDITOR),
+        "model": result.get("model", settings["model"]),
+        "reasoning_effort": result.get("reasoning_effort", settings["reasoning_effort"]),
+        "duration_seconds": duration,
+        "status": result.get("status", "error"),
+        "state_saved": state_saved,
+        "report_dir": str(report_dir),
+    }
+    if execution_error is not None:
+        finished_details.update(_error_fields(execution_error))
+    if state_error is not None:
+        finished_details["state_error_type"] = type(state_error).__name__
+        finished_details["state_error"] = _short_error(state_error)
+    if metadata_error is not None:
+        finished_details["metadata_error_type"] = type(metadata_error).__name__
+        finished_details["metadata_error"] = _short_error(metadata_error)
+    record_event(root, "checkpoint_finished", session_id, turn_id, **finished_details)
+    print("{}")
+    return 0
+
+
+def checkpoint_hook_main(root: pathlib.Path) -> int:
+    # Auditor child codex processes inherit project hooks. Never recurse.
+    if os.environ.get("CODEX_SHADOW_AUDIT_CHILD") == "1":
+        print("{}")
+        return 0
+    try:
+        event = json.load(sys.stdin)
+    except Exception:
+        print("{}")
+        return 0
+
+    event_name = event.get("hook_event_name")
+    session_id = str(event.get("session_id") or "unknown-session")
+    turn_id = str(event.get("turn_id") or "unknown-turn")
+    record_event(
+        root,
+        "hook_received",
+        session_id,
+        turn_id,
+        hook_event_name=event_name,
+    )
+    tool_name = str(event.get("tool_name") or event.get("toolName") or "")
+    if event_name != "PostToolUse" or tool_name != "apply_patch":
+        return _checkpoint_skip(
+            root,
+            session_id,
+            turn_id,
+            "tool_not_apply_patch",
+            tool_name=tool_name,
+        )
+    try:
+        return _checkpoint_process(root, event, session_id, turn_id)
+    except (Exception, SystemExit) as exc:
+        return _checkpoint_skip(root, session_id, turn_id, "checkpoint_failed", **_error_fields(exc))
+
+
 def turn_state_file(root: pathlib.Path, session_id: str, turn_id: str) -> pathlib.Path:
     safe = hashlib.sha256(f"{session_id}:{turn_id}".encode()).hexdigest()[:20]
     p = state_dir(root) / "turns"
     p.mkdir(parents=True, exist_ok=True)
     return p / f"{safe}.json"
+
+
+def write_json_atomic(path: pathlib.Path, data: dict[str, Any]) -> None:
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.{time.time_ns()}.tmp")
+    try:
+        temporary.write_text(json.dumps(data, indent=2), encoding="utf-8")
+        os.replace(temporary, path)
+    finally:
+        try:
+            temporary.unlink()
+        except FileNotFoundError:
+            pass
 
 
 def hook_main(root: pathlib.Path) -> int:
@@ -387,52 +958,175 @@ def hook_main(root: pathlib.Path) -> int:
         print("{}")
         return 0
 
-    cfg = load_config(root)
-    if not cfg.get("enabled", True):
-        print("{}")
-        return 0
     event_name = event.get("hook_event_name")
     session_id = str(event.get("session_id") or "unknown-session")
     turn_id = str(event.get("turn_id") or "unknown-turn")
+    record_event(
+        root,
+        "hook_received",
+        session_id,
+        turn_id,
+        hook_event_name=event_name,
+    )
+
+    cfg = load_config(root)
+    if not cfg.get("enabled", True):
+        if event_name == "Stop":
+            record_event(root, "stop", session_id, turn_id, reason="final_audit_disabled")
+        else:
+            record_event(root, "hook_disabled", session_id, turn_id)
+        print("{}")
+        return 0
     base_ref = str(cfg.get("base_ref", "HEAD"))
 
     if event_name == "UserPromptSubmit":
         prompt = str(event.get("prompt") or "")
-        append_requirement(root, prompt, session_id, turn_id)
+        prompt, replacement_count = normalize_prompt(prompt)
+        if replacement_count:
+            record_event(
+                root,
+                "prompt_unicode_sanitized",
+                session_id,
+                turn_id,
+                replacement_count=replacement_count,
+            )
+        try:
+            append_requirement(root, prompt, session_id, turn_id)
+        except Exception as exc:
+            record_event(root, "requirement_failed", session_id, turn_id, **_error_fields(exc))
+            print(f"shadow audit: failed to record requirement: {exc}", file=sys.stderr)
+            print("{}")
+            return 0
+        record_event(root, "requirement_saved", session_id, turn_id)
+
+        try:
+            state_path = turn_state_file(root, session_id, turn_id)
+        except Exception as exc:
+            record_event(root, "turn_state_failed", session_id, turn_id, phase="path", **_error_fields(exc))
+            print(f"shadow audit: failed to prepare turn state: {exc}", file=sys.stderr)
+            print("{}")
+            return 0
+
+        try:
+            existing = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else None
+        except Exception as exc:
+            record_event(root, "turn_state_failed", session_id, turn_id, phase="read", **_error_fields(exc))
+            existing = None
+        if (
+            isinstance(existing, dict)
+            and existing.get("session_id") == session_id
+            and existing.get("turn_id") == turn_id
+            and isinstance(existing.get("baseline_fingerprint"), str)
+            and existing["baseline_fingerprint"]
+        ):
+            record_event(root, "turn_state_saved", session_id, turn_id, action="reused")
+            print("{}")
+            return 0
+
+        try:
+            baseline_fingerprint = git_fingerprint(root, base_ref)
+        except Exception as exc:
+            record_event(root, "baseline_failed", session_id, turn_id, **_error_fields(exc))
+            print(f"shadow audit: baseline fingerprint unavailable: {exc}", file=sys.stderr)
+            print("{}")
+            return 0
+        record_event(root, "baseline_saved", session_id, turn_id)
+
         state = {
             "session_id": session_id,
             "turn_id": turn_id,
-            "baseline_fingerprint": git_fingerprint(root, base_ref),
+            "baseline_fingerprint": baseline_fingerprint,
             "captured_at": now_iso(),
         }
-        turn_state_file(root, session_id, turn_id).write_text(json.dumps(state, indent=2), encoding="utf-8")
+        try:
+            write_json_atomic(state_path, state)
+        except Exception as exc:
+            record_event(root, "turn_state_failed", session_id, turn_id, phase="write", **_error_fields(exc))
+            print(f"shadow audit: failed to record baseline state: {exc}", file=sys.stderr)
+        else:
+            record_event(root, "turn_state_saved", session_id, turn_id, action="written")
         print("{}")
         return 0
 
     if event_name == "Stop":
         if bool(event.get("stop_hook_active")):
+            record_event(root, "stop", session_id, turn_id, reason="stop_reentry")
             print("{}")
             return 0
         if not cfg.get("final_audit_on_stop", True):
+            record_event(root, "stop", session_id, turn_id, reason="final_audit_disabled")
             print("{}")
             return 0
-        state_path = turn_state_file(root, session_id, turn_id)
-        if not state_path.exists():
+
+        try:
+            state_path = turn_state_file(root, session_id, turn_id)
+            state_exists = state_path.exists()
+        except Exception as exc:
+            record_event(root, "turn_state_failed", session_id, turn_id, phase="Stop_path", **_error_fields(exc))
+            record_event(root, "stop", session_id, turn_id, reason="state_missing", **_error_fields(exc))
+            print("{}")
+            return 0
+        if not state_exists:
+            record_event(root, "stop", session_id, turn_id, reason="state_missing")
             print("{}")
             return 0
         try:
             state = json.loads(state_path.read_text(encoding="utf-8"))
-        except Exception:
+        except Exception as exc:
+            record_event(root, "turn_state_failed", session_id, turn_id, phase="Stop_read", **_error_fields(exc))
+            record_event(root, "stop", session_id, turn_id, reason="state_invalid", **_error_fields(exc))
             print("{}")
             return 0
-        current = git_fingerprint(root, base_ref)
+        if (
+            not isinstance(state, dict)
+            or state.get("session_id") != session_id
+            or state.get("turn_id") != turn_id
+            or not isinstance(state.get("baseline_fingerprint"), str)
+            or not state["baseline_fingerprint"]
+        ):
+            exc = ValueError("turn state is missing a valid session, turn, or baseline fingerprint")
+            record_event(root, "turn_state_failed", session_id, turn_id, phase="Stop_validate", **_error_fields(exc))
+            record_event(root, "stop", session_id, turn_id, reason="state_invalid", **_error_fields(exc))
+            print("{}")
+            return 0
+        try:
+            current = git_fingerprint(root, base_ref)
+        except Exception as exc:
+            record_event(root, "stop", session_id, turn_id, reason="fingerprint_failed", **_error_fields(exc))
+            print("{}")
+            return 0
         if current == state.get("baseline_fingerprint"):
+            record_event(root, "stop", session_id, turn_id, reason="fingerprint_unchanged")
             print("{}")
             return 0
 
-        cycle = audit_cycle(root, final=True)
-        issues = cycle.get("issues", [])
+        record_event(
+            root,
+            "audit_started",
+            session_id,
+            turn_id,
+            final=True,
+            auditors=configured_auditor_summary(cfg),
+        )
+        try:
+            cycle = audit_cycle(root, final=True, session_id=session_id, turn_id=turn_id)
+            issues = cycle.get("issues", [])
+        except Exception as exc:
+            record_event(root, "audit_finished", session_id, turn_id, final=True, status="error", **_error_fields(exc))
+            record_event(root, "stop", session_id, turn_id, reason="audit_failed", **_error_fields(exc))
+            raise
+        record_event(
+            root,
+            "audit_finished",
+            session_id,
+            turn_id,
+            final=True,
+            status=cycle.get("status", "ok"),
+            issue_count=len(issues) if isinstance(issues, list) else None,
+            auditors=auditor_event_summary(cycle.get("reports", [])),
+        )
         if not issues:
+            record_event(root, "stop", session_id, turn_id, reason="audit_pass")
             print("{}")
             return 0
         report_text = []
@@ -440,6 +1134,7 @@ def hook_main(root: pathlib.Path) -> int:
             report_text.append(f"[{item['auditor']}]\n{item['report'].strip()}")
         reason = "SHADOW_AUDIT_FEEDBACK:\n" + "\n\n".join(report_text)
         # Stop decision:block asks the main Codex turn to continue with this feedback.
+        record_event(root, "stop", session_id, turn_id, reason="audit_block", issue_count=len(issues))
         print(json.dumps({"decision": "block", "reason": reason}, ensure_ascii=False))
         return 0
 
@@ -465,6 +1160,7 @@ def build_parser() -> argparse.ArgumentParser:
     audit_p.add_argument("--seed", type=int, help="Random seed for probabilistic checkpoint selection")
 
     sub.add_parser("hook", help="Read a Codex hook event JSON from stdin")
+    sub.add_parser("checkpoint-hook", help="Run a non-blocking apply_patch checkpoint from hook JSON")
     return p
 
 
@@ -484,6 +1180,8 @@ def main() -> int:
         return 1 if cycle.get("issues") else 0
     if args.command == "hook":
         return hook_main(root)
+    if args.command == "checkpoint-hook":
+        return checkpoint_hook_main(root)
     return 2
 
 

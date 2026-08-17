@@ -25,18 +25,18 @@ class CapturePlanBuilderTests(unittest.TestCase):
                 instruction_template="{split} pose {pose_id}: chess ({laser_state})",
             ),
             CaptureRecipeItem(
-                role="nolaser",
-                filename_prefix="nolaser",
-                exposure_us=1200,
-                laser_state="off",
-                quality_mode="generic",
-            ),
-            CaptureRecipeItem(
                 role="laser",
                 filename_prefix="laser",
                 exposure_us=1600,
                 laser_state="on",
                 quality_mode="laser",
+            ),
+            CaptureRecipeItem(
+                role="nolaser",
+                filename_prefix="nolaser",
+                exposure_us=1200,
+                laser_state="off",
+                quality_mode="generic",
             ),
         )
 
@@ -70,7 +70,7 @@ class CapturePlanBuilderTests(unittest.TestCase):
             self.assertTrue(all(task.relative_path(1).parts[0] == "validation" for task in plan.tasks[54:]))
             self.assertEqual(
                 [task.relative_path(1).as_posix() for task in plan.tasks[:3]],
-                ["fit/chess 001.tif", "fit/nolaser 001.tif", "fit/laser 001.tif"],
+                ["fit/chess 001.tif", "fit/laser 001.tif", "fit/nolaser 001.tif"],
             )
             self.assertEqual(plan.tasks[54].relative_path(1).as_posix(), "validation/chess 019.tif")
 
@@ -78,14 +78,14 @@ class CapturePlanBuilderTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             plan = build_capture_plan_from_recipe(self._recipe(Path(temporary)))
             first_group = plan.tasks[:3]
-            self.assertEqual([task.config.exposure_us for task in first_group], [800.0, 1200.0, 1600.0])
-            self.assertEqual([task.tags["laser_state"] for task in first_group], ["off", "off", "on"])
+            self.assertEqual([task.config.exposure_us for task in first_group], [800.0, 1600.0, 1200.0])
+            self.assertEqual([task.tags["laser_state"] for task in first_group], ["off", "on", "off"])
 
     def test_disabled_item_reduces_task_count(self):
         with tempfile.TemporaryDirectory() as temporary:
             items = (
                 self._items()[0],
-                self._items()[1],
+                self._items()[2],
                 CaptureRecipeItem(
                     enabled=False,
                     role="laser",

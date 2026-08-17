@@ -7,16 +7,26 @@
   "max_parallel_auditors": 2,
   "final_audit_on_stop": true,
   "block_on_audit_error": false,
+  "checkpoint": {
+    "enabled": true,
+    "debounce_seconds": 8.0,
+    "minimum_interval_seconds": 90.0,
+    "activation_probability": 0.35
+  },
   "auditors": {
     "code-smell-auditor": {
       "enabled": true,
       "activation_probability": 0.4,
-      "timeout_seconds": 120
+      "timeout_seconds": 120,
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "high"
     },
     "success-goal-auditor": {
       "enabled": true,
       "activation_probability": 0.4,
-      "timeout_seconds": 120
+      "timeout_seconds": 180,
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "xhigh"
     }
   }
 }
