@@ -1,0 +1,5 @@
+interface:
+  display_name: "Shadow Code Audit"
+  short_description: "Run independent structure and goal-alignment reviewers"
+policy:
+  allow_implicit_invocation: false

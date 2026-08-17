@@ -1,0 +1,5 @@
+interface:
+  display_name: "Code Smell Auditor"
+  short_description: "Read-only code and project-structure audit"
+policy:
+  allow_implicit_invocation: false

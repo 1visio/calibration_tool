@@ -311,6 +311,35 @@ def render_report(path: Path, part_a: str, final_class: str, freeze: str, stats:
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+_render_report_legacy = render_report
+
+
+def render_report(path: Path, part_a: str, final_class: str, freeze: str, stats: Mapping[str, Any], summaries: Mapping[str, Mapping[str, Any]],
+                  coverage: Sequence[Mapping[str, Any]], decoupling: Sequence[Mapping[str, Any]], new_leverage: Sequence[Mapping[str, Any]]) -> None:
+    """Render the legacy report and normalize punctuation/LOO wording.
+
+    The audit outputs are intentionally plain UTF-8/ASCII-friendly Markdown so
+    that signs and ranges remain unambiguous when viewed from Windows shells.
+    """
+    _render_report_legacy(path, part_a, final_class, freeze, stats, summaries, coverage, decoupling, new_leverage)
+    report_lines = path.read_text(encoding="utf-8").splitlines()
+    normalized = []
+    for line in report_lines:
+        line = line.replace("〞", "-").replace("每", "-").replace("～", " deg").replace("−", "-")
+        if line.startswith("M2 relative to M1-core:"):
+            d = stats["decision"]
+            line = (
+                f"M2 relative to M1-core: raw LOO P95 change = {d['loo_p95_gain'] * 100:+.2f}%, "
+                f"max change = {d['loo_max_gain'] * 100:+.2f}%. New 0815 omission maximum = "
+                f"{d['new_leverage_max_mm']:.6g} mm. Negative values mean improvement; positive values "
+                "mean the raw absolute delta increased."
+            )
+        if line == "- `provenance.json":
+            line = "- `provenance.json`"
+        normalized.append(line)
+    path.write_text("\n".join(normalized) + "\n", encoding="utf-8")
+
+
 def run(args: argparse.Namespace) -> None:
     if args.mc_reps < 1:
         raise ValueError("--mc-reps must be positive")

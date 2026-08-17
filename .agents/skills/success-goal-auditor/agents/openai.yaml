@@ -1,0 +1,5 @@
+interface:
+  display_name: "Success Goal Auditor"
+  short_description: "Check implementation against original requirements"
+policy:
+  allow_implicit_invocation: false

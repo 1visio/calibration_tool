@@ -1,0 +1,437 @@
+{
+  "task": "6I",
+  "classification": "C. WEAK",
+  "validation_opened": true,
+  "validation_ids": [
+    "019",
+    "020",
+    "021",
+    "022",
+    "023",
+    "024",
+    "037",
+    "038",
+    "039",
+    "040"
+  ],
+  "fit_ids": [
+    "001",
+    "002",
+    "003",
+    "004",
+    "005",
+    "006",
+    "007",
+    "008",
+    "009",
+    "010",
+    "011",
+    "012",
+    "013",
+    "014",
+    "015",
+    "016",
+    "017",
+    "018",
+    "025",
+    "026",
+    "027",
+    "028",
+    "029",
+    "030",
+    "031",
+    "032",
+    "033",
+    "034",
+    "035",
+    "036"
+  ],
+  "frame027_retained": true,
+  "formal_intrinsics": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0811\\intrinsics\\calibration_result.yaml",
+  "formal_intrinsics_sha256": "d162d581ffd12df510b15e4edd42536a97abb4dc7d883352b0be76cb8c65f9b0",
+  "formal_cone": "D:\\Docs\\linelaserscan\\linelaser_tool\\laser_measurement_tool\\configs\\calibration_daheng_0811\\circular_cone.yaml",
+  "formal_cone_sha256_before": "478d11c97c174e75d3167133a050540573a93dc28451e4b961ce12913709feac",
+  "formal_fit_config": "D:\\Docs\\linelaserscan\\calibration_tool\\configs\\laser_model_fit_config.daheng.yaml",
+  "m1_core_camera": {
+    "fx": 7348.795134256532,
+    "fy": 7349.749125032007,
+    "cx": 2072.1197705878253,
+    "cy": 1509.6614156719509,
+    "dist_coeffs": [
+      -0.048845879995519335,
+      0.2209637291792533,
+      -0.0006548251217047682,
+      -0.0004027220699315478,
+      0.0
+    ],
+    "calibration_summary": {
+      "row_type": "dataset_summary",
+      "dataset": "M1-core",
+      "frame_count": 22,
+      "frame_ids": "001;002;003;004;005;006;007;008;009;010;011;012;013;014;015;016;017;018;026;027;028;035",
+      "global_reprojection_rmse_px": 0.12831789973504165,
+      "status": "ok",
+      "fx": 7348.795134256532,
+      "delta_fx": 0.9300198165174152,
+      "delta_fx_pct": 0.012657007199135182,
+      "fy": 7349.749125032007,
+      "delta_fy": 0.9079783881325056,
+      "delta_fy_pct": 0.012355395497250178,
+      "cx": 2072.1197705878253,
+      "delta_cx": 1.903240439988167,
+      "delta_cx_pct": 0.09193436591158191,
+      "cy": 1509.6614156719509,
+      "delta_cy": -2.7750384330627185,
+      "delta_cy_pct": -0.18348132415949014,
+      "k1": -0.048845879995519335,
+      "delta_k1": 0.0002912851558942303,
+      "delta_k1_pct": -0.5928000831888665,
+      "k2": 0.2209637291792533,
+      "delta_k2": -0.006312242843567906,
+      "delta_k2_pct": -2.777347199260501,
+      "p1": -0.0006548251217047682,
+      "delta_p1": -0.00014167089540247655,
+      "delta_p1_pct": 27.60785902969847,
+      "p2": -0.0004027220699315478,
+      "delta_p2": 7.565582961306904e-05,
+      "delta_p2_pct": -15.81507625772182,
+      "k3": 0.0,
+      "delta_k3": 0.0,
+      "delta_k3_pct": NaN
+    },
+    "per_frame_rmse": [
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "001",
+        "pnp_reprojection_rmse_px": 0.168215759106421,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "002",
+        "pnp_reprojection_rmse_px": 0.15176642345074218,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "003",
+        "pnp_reprojection_rmse_px": 0.149107787046261,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "004",
+        "pnp_reprojection_rmse_px": 0.10275661882226356,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "005",
+        "pnp_reprojection_rmse_px": 0.09989708433954729,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "006",
+        "pnp_reprojection_rmse_px": 0.09340321302426291,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "007",
+        "pnp_reprojection_rmse_px": 0.11334786795419455,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "008",
+        "pnp_reprojection_rmse_px": 0.0965455870619638,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "009",
+        "pnp_reprojection_rmse_px": 0.1095024872728526,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "010",
+        "pnp_reprojection_rmse_px": 0.11924785072585586,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "011",
+        "pnp_reprojection_rmse_px": 0.11563144273481522,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "012",
+        "pnp_reprojection_rmse_px": 0.0926538401260517,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "013",
+        "pnp_reprojection_rmse_px": 0.10862377233138931,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "014",
+        "pnp_reprojection_rmse_px": 0.09350136059185456,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "015",
+        "pnp_reprojection_rmse_px": 0.11493088113948362,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "016",
+        "pnp_reprojection_rmse_px": 0.13351816134166838,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "017",
+        "pnp_reprojection_rmse_px": 0.1286816340738653,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "018",
+        "pnp_reprojection_rmse_px": 0.12225711091093026,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "026",
+        "pnp_reprojection_rmse_px": 0.16313447590382638,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "027",
+        "pnp_reprojection_rmse_px": 0.1676129324231997,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "028",
+        "pnp_reprojection_rmse_px": 0.18476171530144736,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      },
+      {
+        "row_type": "per_frame_rmse",
+        "dataset": "M1-core",
+        "frame_id": "035",
+        "pnp_reprojection_rmse_px": 0.13096931569237866,
+        "corner_count": 88,
+        "detection_method": "SB",
+        "validation_opened": false
+      }
+    ]
+  },
+  "frozen_uv": {
+    "old_fit_ids": [
+      "001",
+      "002",
+      "003",
+      "004",
+      "005",
+      "006",
+      "007",
+      "008",
+      "009",
+      "010",
+      "011",
+      "012",
+      "013",
+      "014",
+      "015",
+      "016",
+      "017",
+      "018"
+    ],
+    "extension_fit_ids": [
+      "025",
+      "026",
+      "027",
+      "028",
+      "029",
+      "030",
+      "031",
+      "032",
+      "033",
+      "034",
+      "035",
+      "036"
+    ],
+    "old_validation_ids": [
+      "019",
+      "020",
+      "021",
+      "022",
+      "023",
+      "024"
+    ],
+    "extension_validation_ids": [
+      "037",
+      "038",
+      "039",
+      "040"
+    ],
+    "extension_fit_extraction": "formal M0 K/D, existing Steger config, frozen and reused for M0/M1-core",
+    "extension_validation_extraction": "formal M0 K/D, existing Steger config, frozen and reused for M0/M1-core"
+  },
+  "cone_fit": {
+    "M0": {
+      "fit_success": true,
+      "status": "success",
+      "optimizer_cost": 1.3748167583921274,
+      "objective_mse": 0.00045827225279737577,
+      "model": {
+        "model_type": "circular_cone",
+        "description": "general circular cone equivalent to a standard cone after rigid transform",
+        "axis_unit_camera": [
+          0.9606048307944032,
+          0.009032293766057029,
+          -0.27777108691111074
+        ],
+        "apex_camera_mm": [
+          -135.5074755363352,
+          15.017378745349875,
+          263.36137225549436
+        ],
+        "half_apex_angle_deg": 88.87484610599498,
+        "fit_success": true,
+        "optimizer_cost": 1.1717042980777557,
+        "z_valid_range_mm": [
+          621.3006216352024,
+          713.6860742356441
+        ]
+      }
+    },
+    "M1-core": {
+      "fit_success": true,
+      "status": "success",
+      "optimizer_cost": 1.3501013616048585,
+      "objective_mse": 0.0004500337872016195,
+      "model": {
+        "model_type": "circular_cone",
+        "description": "general circular cone equivalent to a standard cone after rigid transform",
+        "axis_unit_camera": [
+          0.9606563300987683,
+          0.008942887480685583,
+          -0.2775958216628522
+        ],
+        "apex_camera_mm": [
+          -135.67235214197638,
+          14.74620914938254,
+          263.0380019275255
+        ],
+        "half_apex_angle_deg": 88.88080887501854,
+        "fit_success": true,
+        "optimizer_cost": 1.1519380148274883,
+        "z_valid_range_mm": [
+          621.4145163058159,
+          713.8284140856475
+        ]
+      }
+    }
+  },
+  "cone_parameter_delta_m1_minus_m0": {
+    "axis_angle_deg": 0.011652836090221285,
+    "apex_delta_mm": 0.4530845548852152,
+    "half_apex_angle_delta_deg": 0.005962769023568626
+  },
+  "attribution": {
+    "global_rmse_improvement_fraction": 0.0015560892157178144,
+    "top_rmse_improvement_fraction": -0.020462311072470783,
+    "middle_rmse_improvement_fraction": 0.0017018661940951438,
+    "bottom_rmse_improvement_fraction": -0.012027171039224512,
+    "edge_rmse_improvement_fraction": -0.015507941874793759,
+    "edge_middle_ratio_m0": 1.4044607321854001,
+    "edge_middle_ratio_m1": 1.4286724369083716,
+    "edge_middle_ratio_change_fraction": -0.017239146790026007,
+    "bias_asymmetry_m0_mm": 0.2261176286294343,
+    "bias_asymmetry_m1_mm": 0.22992701973593133,
+    "bias_asymmetry_reduction_fraction": -0.01684694435187063,
+    "verdict": "C. WEAK",
+    "frame_rmse_median_m0_mm": 0.08550160852599117,
+    "frame_rmse_median_m1_mm": 0.08461312384753115
+  },
+  "formal_kd_modified": false,
+  "formal_cone_modified": false,
+  "steger_changed": false,
+  "elliptical_or_correction_used": false,
+  "production_writeback": false
+}

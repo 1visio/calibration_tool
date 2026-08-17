@@ -1,0 +1,31 @@
+{
+  "description": "Project hooks including Codex shadow audit",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'C:\\Users\\18029\\AppData\\Local\\Programs\\Python\\Python310\\python.exe' 'D:\\Docs\\linelaserscan\\calibration_tool\\.agents\\skills\\shadow-code-audit\\scripts\\shadow_audit.py' --repo 'D:\\Docs\\linelaserscan\\calibration_tool' hook",
+            "commandWindows": "C:\\Users\\18029\\AppData\\Local\\Programs\\Python\\Python310\\python.exe D:\\Docs\\linelaserscan\\calibration_tool\\.agents\\skills\\shadow-code-audit\\scripts\\shadow_audit.py --repo D:\\Docs\\linelaserscan\\calibration_tool hook",
+            "timeout": 5,
+            "statusMessage": "Recording requirement context for shadow audit"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'C:\\Users\\18029\\AppData\\Local\\Programs\\Python\\Python310\\python.exe' 'D:\\Docs\\linelaserscan\\calibration_tool\\.agents\\skills\\shadow-code-audit\\scripts\\shadow_audit.py' --repo 'D:\\Docs\\linelaserscan\\calibration_tool' hook",
+            "commandWindows": "C:\\Users\\18029\\AppData\\Local\\Programs\\Python\\Python310\\python.exe D:\\Docs\\linelaserscan\\calibration_tool\\.agents\\skills\\shadow-code-audit\\scripts\\shadow_audit.py --repo D:\\Docs\\linelaserscan\\calibration_tool hook",
+            "timeout": 300,
+            "statusMessage": "Running independent shadow completion audit"
+          }
+        ]
+      }
+    ]
+  }
+}
