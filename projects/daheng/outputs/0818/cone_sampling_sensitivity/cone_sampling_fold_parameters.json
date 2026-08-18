@@ -1,0 +1,386 @@
+{
+  "6000": {
+    "0": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9588151623660458,
+        0.00869303347261767,
+        -0.28389772029027854
+      ],
+      "apex_camera_mm": [
+        -98.42461909756015,
+        21.00429608150671,
+        383.13246063187995
+      ],
+      "half_apex_angle_deg": 89.22909202877327,
+      "fit_success": true,
+      "optimizer_cost": 2.714350247697856,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "1": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9610579532113421,
+        0.008933353893397366,
+        -0.2762024723955976
+      ],
+      "apex_camera_mm": [
+        -154.74578943054104,
+        14.894321227160459,
+        201.47033796529493
+      ],
+      "half_apex_angle_deg": 88.77867160433517,
+      "fit_success": true,
+      "optimizer_cost": 2.7533171919211354,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.6150335313896
+      ]
+    },
+    "2": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9639766521568409,
+        0.008418950386288501,
+        -0.2658535976263668
+      ],
+      "apex_camera_mm": [
+        -230.95442753167043,
+        27.175921082131413,
+        -43.67300847797052
+      ],
+      "half_apex_angle_deg": 88.1659190274463,
+      "fit_success": true,
+      "optimizer_cost": 1.940908954768622,
+      "z_valid_range_mm": [
+        613.9723422627321,
+        713.8641567975121
+      ]
+    },
+    "3": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9595128822767429,
+        0.008693238749489138,
+        -0.28153056023284895
+      ],
+      "apex_camera_mm": [
+        -112.56473410962424,
+        20.777772873890857,
+        337.6128048344652
+      ],
+      "half_apex_angle_deg": 89.08905293312117,
+      "fit_success": true,
+      "optimizer_cost": 2.590450427126949,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "4": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9610829661305188,
+        0.009030023496524726,
+        -0.2761122794977007
+      ],
+      "apex_camera_mm": [
+        -152.30370815610053,
+        12.824254849155407,
+        209.26751640681243
+      ],
+      "half_apex_angle_deg": 88.77370217916534,
+      "fit_success": true,
+      "optimizer_cost": 2.599978615916647,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "5": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9602014469592416,
+        0.008720134908971142,
+        -0.27917224164402177
+      ],
+      "apex_camera_mm": [
+        -132.07515533087206,
+        19.86368685617078,
+        274.5659989828484
+      ],
+      "half_apex_angle_deg": 88.95753930890179,
+      "fit_success": true,
+      "optimizer_cost": 2.6769247958985947,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    }
+  },
+  "12000": {
+    "0": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9587861102098976,
+        0.008740088556929143,
+        -0.2839943762129654
+      ],
+      "apex_camera_mm": [
+        -97.69456817377396,
+        19.90062667597678,
+        385.4583322056661
+      ],
+      "half_apex_angle_deg": 89.23439123369117,
+      "fit_success": true,
+      "optimizer_cost": 5.388566087483439,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "1": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9610159802888112,
+        0.009009651085754458,
+        -0.2763460001824673
+      ],
+      "apex_camera_mm": [
+        -153.66010272230415,
+        13.126791971203573,
+        204.92324867569553
+      ],
+      "half_apex_angle_deg": 88.78688118357098,
+      "fit_success": true,
+      "optimizer_cost": 5.4955548439537765,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.6150335313896
+      ]
+    },
+    "2": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9644476216865858,
+        0.008471869573305967,
+        -0.2641382449571079
+      ],
+      "apex_camera_mm": [
+        -243.3471118925938,
+        25.9258938936226,
+        -83.6208178470351
+      ],
+      "half_apex_angle_deg": 88.06416598615424,
+      "fit_success": true,
+      "optimizer_cost": 3.847416381968484,
+      "z_valid_range_mm": [
+        613.9723422627321,
+        713.8641567975121
+      ]
+    },
+    "3": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9594753377290411,
+        0.008744812192613966,
+        -0.281656891535532
+      ],
+      "apex_camera_mm": [
+        -111.58857222551116,
+        19.582712169947698,
+        340.72932926165356
+      ],
+      "half_apex_angle_deg": 89.09614674830402,
+      "fit_success": true,
+      "optimizer_cost": 5.155962998894157,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "4": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9610895439762656,
+        0.009110021839311632,
+        -0.27608675441169084
+      ],
+      "apex_camera_mm": [
+        -152.42383109566015,
+        10.965905502867574,
+        208.83032305142706
+      ],
+      "half_apex_angle_deg": 88.7719927465077,
+      "fit_success": true,
+      "optimizer_cost": 5.157773158165965,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "5": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9602254075216049,
+        0.008783588093330833,
+        -0.2790878272697941
+      ],
+      "apex_camera_mm": [
+        -132.6339934883354,
+        18.37726972632127,
+        272.7258807129065
+      ],
+      "half_apex_angle_deg": 88.95241703828012,
+      "fit_success": true,
+      "optimizer_cost": 5.3448338481364415,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    }
+  },
+  "all_feasible": {
+    "0": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9588518804391967,
+        0.008744947614686069,
+        -0.2837720868398316
+      ],
+      "apex_camera_mm": [
+        -99.34073337989042,
+        19.81042506696897,
+        380.149030508232
+      ],
+      "half_apex_angle_deg": 89.2216507700622,
+      "fit_success": true,
+      "optimizer_cost": 12.116302419310294,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "1": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9611206633312669,
+        0.009017241416578644,
+        -0.275981448425253
+      ],
+      "apex_camera_mm": [
+        -156.35548998206613,
+        12.971943289263457,
+        196.22671430541473
+      ],
+      "half_apex_angle_deg": 88.76563676364346,
+      "fit_success": true,
+      "optimizer_cost": 12.369824161404601,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.6150335313896
+      ]
+    },
+    "2": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9644871547374683,
+        0.008488699718560179,
+        -0.2639933149220092
+      ],
+      "apex_camera_mm": [
+        -244.37042637266492,
+        25.549122728346266,
+        -86.93780520059931
+      ],
+      "half_apex_angle_deg": 88.05579646187495,
+      "fit_success": true,
+      "optimizer_cost": 8.665351971103474,
+      "z_valid_range_mm": [
+        613.9723422627321,
+        713.8641567975121
+      ]
+    },
+    "3": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.959526976116616,
+        0.008752537431954397,
+        -0.2814806835166586
+      ],
+      "apex_camera_mm": [
+        -112.87914950653722,
+        19.422831540035997,
+        336.5653613353505
+      ],
+      "half_apex_angle_deg": 89.08593168435755,
+      "fit_success": true,
+      "optimizer_cost": 11.600055094471621,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "4": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.961189383282652,
+        0.009122810961452753,
+        -0.27573854243626644
+      ],
+      "apex_camera_mm": [
+        -154.90805128260715,
+        10.68712579254909,
+        200.81264407470624
+      ],
+      "half_apex_angle_deg": 88.75162206307408,
+      "fit_success": true,
+      "optimizer_cost": 11.625464249432541,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "5": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9603239140757507,
+        0.008791478630291323,
+        -0.27874843489735224
+      ],
+      "apex_camera_mm": [
+        -135.09612964840935,
+        18.210063596076715,
+        264.78189602762086
+      ],
+      "half_apex_angle_deg": 88.93262738147077,
+      "fit_success": true,
+      "optimizer_cost": 12.024683771496324,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    }
+  }
+}

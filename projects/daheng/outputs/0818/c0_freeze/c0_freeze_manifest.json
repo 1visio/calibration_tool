@@ -1,0 +1,241 @@
+{
+  "freeze_status": "FROZEN",
+  "freeze_record_version": "1.0",
+  "freeze_date": "2026-08-18",
+  "project": "daheng",
+  "final_c0_status": "QUADRATIC",
+  "model": {
+    "model_type": "quadratic_graph",
+    "frozen_yaml": "quadratic_graph.yaml",
+    "frozen_yaml_sha256": "113d3c1b8f92d5a734a2bf612b82a4bd59c0436a89664b5e565e7dd1034bab27",
+    "source_yaml": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0817\\grouped_cv_model_comparison\\candidate_models\\full_fit\\quadratic_graph.yaml",
+    "source_yaml_sha256": "113d3c1b8f92d5a734a2bf612b82a4bd59c0436a89664b5e565e7dd1034bab27",
+    "freeze_copy_matches_source": true,
+    "dependent_axis": "X",
+    "independent_axes": [
+      "Y",
+      "Z"
+    ],
+    "equation": "D = beta0 + beta1*p + beta2*q + beta3*p^2 + beta4*p*q + beta5*q^2",
+    "z_valid_range_mm": [
+      599.9158940171042,
+      713.8641567975121
+    ]
+  },
+  "fit_dataset": {
+    "name": "Full-36 FIT",
+    "pose_ids": [
+      "001", "002", "003", "004", "005", "006", "007", "008", "009",
+      "010", "011", "012", "013", "014", "015", "016", "017", "018",
+      "025", "026", "027", "028", "029", "030", "031", "032", "033",
+      "034", "035", "036", "049", "050", "051", "052", "053", "054"
+    ],
+    "pose_count": 36,
+    "point_count": 32400,
+    "mask": "full_board_physical",
+    "mask_inset_mm": 0.0,
+    "source_metadata": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0817\\grouped_cv_model_comparison\\candidate_models\\full_fit\\model_parameters.json",
+    "selection_basis": "完整 Full-36 FIT；不按模型 residual 删除 pose"
+  },
+  "protocol": {
+    "intrinsics": {
+      "path": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0811\\intrinsics\\calibration_result.yaml",
+      "sha256": "d162d581ffd12df510b15e4edd42536a97abb4dc7d883352b0be76cb8c65f9b0"
+    },
+    "extraction_config": {
+      "path": "D:\\Docs\\linelaserscan\\calibration_tool\\configs\\laser_model_fit_config.daheng.yaml",
+      "sha256": "2241737d68276dbdfb226f5285b7ae77dad07be2eaef02ed66966d6b6206cebf"
+    },
+    "laser_orientation": "vertical",
+    "mask": "full_board_physical",
+    "mask_inset_mm": 0.0,
+    "steger": {
+      "method": "steger",
+      "sigma": 1.5,
+      "min_intensity": 8.0,
+      "min_response": 0.8,
+      "max_subpixel_offset": 0.6
+    },
+    "continuity": {
+      "poly_degree": 2,
+      "threshold_px": 2.0
+    },
+    "point_limits": {
+      "min_points_per_image": 80,
+      "max_points_per_image": 900
+    },
+    "weighting": "frame-balanced",
+    "v_domain_px": [
+      0.0,
+      3000.0
+    ],
+    "v_bin_width_px": 100
+  },
+  "validation_decision": {
+    "primary_scope": "055-060",
+    "primary_rule": "Primary 055-060 only; Historical and pooled results cannot change the Primary decision",
+    "primary": {
+      "pose_count": 6,
+      "point_count": 5400,
+      "quadratic": {
+        "bias_mm": -0.014469457692250337,
+        "rmse_mm": 0.09403619585442925,
+        "p95_mm": 0.19671996987472085,
+        "max_mm": 0.4612128009918024,
+        "worst_v_bin": "v_0000_0100",
+        "worst_v_bin_rmse_mm": 0.21938274792830334,
+        "worst_v_bin_p95_mm": 0.2626944155546198,
+        "pose_rmse_wins": 3
+      },
+      "cone": {
+        "bias_mm": -0.02830205444767694,
+        "rmse_mm": 0.09800884360607871,
+        "p95_mm": 0.19771201193191246,
+        "max_mm": 0.5524898073606437,
+        "worst_v_bin": "v_0000_0100",
+        "worst_v_bin_rmse_mm": 0.18044212074031957,
+        "worst_v_bin_p95_mm": 0.2759844863669514,
+        "pose_rmse_wins": 3
+      },
+      "paired_q_minus_c": {
+        "same_point_rmse_delta_mm": -0.003972647751649461,
+        "same_point_p95_delta_mm": -0.000992042057191611,
+        "quadratic_absolute_error_better_fraction": 0.5916666666666667
+      },
+      "metric_vote": {
+        "quadratic": 5,
+        "cone": 1,
+        "winners": {
+          "abs_bias": "Quadratic",
+          "global_rmse": "Quadratic",
+          "global_p95": "Quadratic",
+          "global_max": "Quadratic",
+          "worst_rmse": "Cone",
+          "worst_p95": "Quadratic"
+        }
+      }
+    },
+    "historical": {
+      "019-024": {
+        "pose_count": 6,
+        "point_count": 5400,
+        "quadratic": {
+          "bias_mm": -0.00518161977437642,
+          "rmse_mm": 0.07797064835682364,
+          "p95_mm": 0.14521936254300272,
+          "max_mm": 0.2592508772175961,
+          "worst_v_bin": "v_0300_0400",
+          "worst_v_bin_rmse_mm": 0.13299862461099524
+        },
+        "cone": {
+          "bias_mm": -0.00662457036531687,
+          "rmse_mm": 0.08117924351347498,
+          "p95_mm": 0.14874100281383562,
+          "max_mm": 0.2621158977852929,
+          "worst_v_bin": "v_2400_2500",
+          "worst_v_bin_rmse_mm": 0.1368949749973528
+        }
+      },
+      "037-040": {
+        "pose_count": 4,
+        "point_count": 3600,
+        "quadratic": {
+          "bias_mm": -0.06092406873828423,
+          "rmse_mm": 0.09903193418081611,
+          "p95_mm": 0.19054395652312905,
+          "max_mm": 0.3854061293828863,
+          "worst_v_bin": "v_0700_0800",
+          "worst_v_bin_rmse_mm": 0.18852228458119763
+        },
+        "cone": {
+          "bias_mm": -0.06927671595594465,
+          "rmse_mm": 0.10347515029691955,
+          "p95_mm": 0.2067406624449859,
+          "max_mm": 0.42574159473167583,
+          "worst_v_bin": "v_0700_0800",
+          "worst_v_bin_rmse_mm": 0.19916996003544193
+        }
+      },
+      "pooled_019-024_037-040": {
+        "pose_count": 10,
+        "point_count": 9000,
+        "quadratic": {
+          "bias_mm": -0.02747859935993955,
+          "rmse_mm": 0.08700909606556928,
+          "p95_mm": 0.16719171367049057,
+          "max_mm": 0.3854061293828863,
+          "worst_v_bin": "v_0700_0800",
+          "worst_v_bin_rmse_mm": 0.15120970004778422
+        },
+        "cone": {
+          "bias_mm": -0.03168542860156798,
+          "rmse_mm": 0.09075728311292752,
+          "p95_mm": 0.1798792127442539,
+          "max_mm": 0.42574159473167583,
+          "worst_v_bin": "v_2900_3000",
+          "worst_v_bin_rmse_mm": 0.1976419706546763
+        }
+      }
+    },
+    "all_validation": {
+      "pose_count": 16,
+      "point_count": 14400,
+      "quadratic": {
+        "bias_mm": -0.022600171234556092,
+        "rmse_mm": 0.08970878746188625,
+        "p95_mm": 0.18180114448796303,
+        "max_mm": 0.4612128009918024,
+        "worst_v_bin": "v_0000_0100",
+        "worst_v_bin_rmse_mm": 0.1868466169558123
+      },
+      "cone": {
+        "bias_mm": -0.030416663293858844,
+        "rmse_mm": 0.09354251871822966,
+        "p95_mm": 0.18681193599718426,
+        "max_mm": 0.5524898073606437,
+        "worst_v_bin": "v_2900_3000",
+        "worst_v_bin_rmse_mm": 0.18448770986855612
+      },
+      "strict_v_out_of_range_points": 1
+    },
+    "source_report": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0818\\final_validation_qc\\report.md"
+  },
+  "cross_stage_status": {
+    "fit_set_recommendation": "FULL_36",
+    "fit_set_source": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0818\\fit_set_model_comparison\\report.md",
+    "full36_grouped_cv_status": "REUSED_EXISTING",
+    "full36_grouped_cv_source": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0817\\grouped_cv_model_comparison",
+    "paired_cv_status": "UNRESOLVED",
+    "paired_cv_source": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0818\\paired_model_stability\\report.md",
+    "cone_sampling_status": "UNSTABLE",
+    "cone_sampling_source": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0818\\cone_sampling_sensitivity\\report.md",
+    "cone_surface_status": "EQUIVALENT",
+    "cone_surface_source": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0818\\cone_surface_equivalence\\report.md"
+  },
+  "cone_candidate": {
+    "model_type": "circular_cone",
+    "final_status": "UNSELECTED_CANDIDATE",
+    "selection_status": "not selected as C0",
+    "primary_reason": "Primary 055-060 selected Quadratic; Cone won only the primary worst-v-bin RMSE metric and tied pose RMSE wins",
+    "sampling_note": "3000-point baseline reused; larger sampling changed parameters but did not materially improve operational surface prediction",
+    "old_cone_c1_status": "HISTORICAL_REFERENCE_ONLY"
+  },
+  "future_compensation": {
+    "definition": "lambda_final = lambda_quadratic + delta_lambda",
+    "legacy_rule": "旧 Cone-C1 仅作历史参考，不作为当前 C0 或补偿基准"
+  },
+  "reuse_policy": {
+    "current_freeze_action": "reuse existing formal artifacts and recorded metrics; no refit or recalculation",
+    "validation_predictions": "frozen Q/C parameters; no Validation refit or tuning",
+    "grouped_cv": "reuse existing Full-36 6-fold pose-grouped artifacts",
+    "c1": "not trained"
+  },
+  "constraints": [
+    "不重新拟合 Quadratic/Cone",
+    "不训练 C1",
+    "不读取或修改原始 FIT/Validation",
+    "不修改正式生产测量配置",
+    "不根据 residual 删除 pose",
+    "后续模型或协议变化必须新建版本化 freeze record"
+  ]
+}
