@@ -22,6 +22,7 @@ import json
 import os
 import pathlib
 import random
+import re
 import shlex
 import shutil
 import subprocess
@@ -468,12 +469,89 @@ def report_is_issue(auditor: str, report: str, block_on_error: bool) -> bool:
     return True
 
 
+_FINDING_MARKER_RE = re.compile(
+    r"^\s*(?:#{1,6}\s*)?(?:finding|issue|code[_ -]?smell(?:\s+finding)?)\b",
+    re.IGNORECASE,
+)
+_SEVERITY_SCORES = {
+    "critical": 4,
+    "high": 3,
+    "medium": 2,
+    "low": 1,
+}
+
+
+def _checkpoint_finding_blocks(report: str) -> list[str]:
+    lines = report.strip().splitlines()
+    markers = [index for index, line in enumerate(lines) if _FINDING_MARKER_RE.match(line)]
+    if len(markers) > 1:
+        blocks = []
+        for index, start in enumerate(markers):
+            end = markers[index + 1] if index + 1 < len(markers) else len(lines)
+            block = "\n".join(lines[start:end]).strip()
+            if block:
+                blocks.append(block)
+        return blocks
+    paragraphs = [paragraph.strip() for paragraph in report.strip().split("\n\n") if paragraph.strip()]
+    return paragraphs or ([report.strip()] if report.strip() else [])
+
+
+def _checkpoint_finding_score(block: str, index: int) -> tuple[int, int, int]:
+    lower = block.lower()
+    severity = max(
+        (score for name, score in _SEVERITY_SCORES.items() if re.search(rf"\b{name}\b", lower)),
+        default=0,
+    )
+    specificity = sum(
+        token in lower
+        for token in ("file", "path", "line", "impact", "why", "fix", "suggest")
+    )
+    return severity, specificity, -index
+
+
+def _checkpoint_finding_lines(block: str) -> list[str]:
+    lines: list[str] = []
+    for raw_line in block.splitlines():
+        line = re.sub(r"^\s*(?:[-*]\s+|#{1,6}\s+)", "", raw_line).strip()
+        line = re.sub(
+            r"^(?:finding|issue|code[_ -]?smell(?:\s+finding)?)\s*(?:#?\d+)?\s*[:\-]?\s*",
+            "",
+            line,
+            flags=re.IGNORECASE,
+        ).strip()
+        if line:
+            lines.append(line)
+    if not lines:
+        return []
+    if len(lines) == 1:
+        lines.append("scope: code and project structure")
+    return lines[:4]
+
+
+def checkpoint_additional_context(report: str, status: str) -> str | None:
+    if status != "ok":
+        return None
+    stripped = report.strip()
+    if not stripped or not report_is_issue(CHECKPOINT_AUDITOR, stripped, False):
+        return None
+    blocks = _checkpoint_finding_blocks(stripped)
+    if not blocks:
+        return None
+    best = max(enumerate(blocks), key=lambda item: _checkpoint_finding_score(item[1], item[0]))[1]
+    lines = _checkpoint_finding_lines(best)
+    if not lines:
+        return None
+    return "🔴 shadow · [代码与项目结构审计者 / code-smell-auditor]\n" + "\n".join(lines)
+
+
 def audit_cycle(
     root: pathlib.Path,
     final: bool = False,
     seed: int | None = None,
     session_id: str | None = None,
     turn_id: str | None = None,
+    skip_auditors: set[str] | None = None,
+    precomputed_results: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     cfg = load_config(root)
     if not cfg.get("enabled", True):
@@ -481,12 +559,17 @@ def audit_cycle(
     base_ref = str(cfg.get("base_ref", "HEAD"))
     rng = random.Random(seed)
     audit_cfgs: dict[str, Any] = cfg.get("auditors", {})
-    selected = [name for name, acfg in audit_cfgs.items() if should_activate(acfg, final, rng)]
+    skipped = skip_auditors or set()
+    selected = [
+        name
+        for name, acfg in audit_cfgs.items()
+        if name not in skipped and should_activate(acfg, final, rng)
+    ]
     stamp = dt.datetime.now().strftime("%Y%m%d-%H%M%S-%f")
     out_dir = state_dir(root) / "reports" / stamp
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    results: list[dict[str, Any]] = []
+    results: list[dict[str, Any]] = list(precomputed_results or [])
     max_workers = max(1, min(int(cfg.get("max_parallel_auditors", 2)), len(selected) or 1))
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
         futures = {
@@ -610,6 +693,74 @@ def _checkpoint_number(state: dict[str, Any], key: str) -> float | None:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         raise ValueError(f"checkpoint state field {key!r} is not numeric")
     return float(value)
+
+
+def _checkpoint_reusable_result(
+    root: pathlib.Path,
+    fingerprint: str,
+    cfg: dict[str, Any],
+) -> tuple[dict[str, Any] | None, dict[str, Any]]:
+    """Return a checkpoint PASS only when its durable state proves it is reusable."""
+    try:
+        state_path = checkpoint_state_file(root)
+        lock_path = state_path.with_name(state_path.name + ".lock")
+        with _exclusive_file_lock(lock_path):
+            if not state_path.exists():
+                return None, {"reason": "checkpoint_state_missing"}
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+        if not isinstance(state, dict):
+            raise ValueError("checkpoint state must be a JSON object")
+    except Exception as exc:
+        return None, {"reason": "checkpoint_state_unavailable", **_error_fields(exc)}
+
+    audited_fingerprint = state.get("audited_fingerprint")
+    if audited_fingerprint != fingerprint:
+        return None, {
+            "reason": "fingerprint_not_reusable",
+            "checkpoint_fingerprint": audited_fingerprint,
+        }
+
+    auditor = state.get("auditor", state.get("audited_auditor"))
+    if auditor != CHECKPOINT_AUDITOR:
+        return None, {"reason": "auditor_not_reusable", "checkpoint_auditor": auditor}
+
+    status = state.get("status", state.get("audited_status"))
+    if status != "ok":
+        return None, {"reason": "checkpoint_not_successful", "checkpoint_status": status}
+    if state.get("audited_pass") is not True:
+        return None, {"reason": "checkpoint_not_pass", "checkpoint_status": status}
+
+    timestamp = state.get("timestamp", state.get("audited_at"))
+    if not isinstance(timestamp, str) or not timestamp:
+        return None, {"reason": "checkpoint_timestamp_missing"}
+
+    auditor_cfgs = cfg.get("auditors", {})
+    auditor_cfg = auditor_cfgs.get(CHECKPOINT_AUDITOR) if isinstance(auditor_cfgs, dict) else None
+    if not isinstance(auditor_cfg, dict) or not auditor_cfg.get("enabled", True):
+        return None, {"reason": "auditor_disabled", "auditor": CHECKPOINT_AUDITOR}
+    settings = auditor_execution_settings(CHECKPOINT_AUDITOR, auditor_cfg)
+    duration = state.get("audited_duration_seconds")
+    if isinstance(duration, bool) or not isinstance(duration, (int, float)):
+        duration = 0.0
+    return {
+        "auditor": CHECKPOINT_AUDITOR,
+        "started_at": timestamp,
+        "finished_at": timestamp,
+        "timeout_seconds": settings["timeout_seconds"],
+        "model": str(state.get("audited_model") or settings["model"]),
+        "reasoning_effort": str(state.get("audited_reasoning_effort") or settings["reasoning_effort"]),
+        "duration_seconds": duration,
+        "status": "ok",
+        "report": PASS_SENTINELS[CHECKPOINT_AUDITOR],
+        "reused": True,
+        "checkpoint_timestamp": timestamp,
+    }, {
+        "reason": "valid_pass",
+        "fingerprint": fingerprint,
+        "auditor": CHECKPOINT_AUDITOR,
+        "status": "ok",
+        "checkpoint_timestamp": timestamp,
+    }
 
 
 def _checkpoint_process(
@@ -837,8 +988,31 @@ def _checkpoint_process_unlocked(
         }
     finished_at = time.time()
 
+    result_status = str(result.get("status") or "error")
+    result_report = str(result.get("report") or "")
+    audited_pass = result_status == "ok" and result_report.strip() == PASS_SENTINELS[CHECKPOINT_AUDITOR]
+    if audited_pass:
+        audited_outcome = "pass"
+    elif result_status == "ok":
+        audited_outcome = "finding"
+    else:
+        audited_outcome = result_status
+    audited_timestamp = now_iso()
     state["last_audited_fingerprint"] = fingerprint
     state["last_audit_at"] = finished_at
+    state["audited_fingerprint"] = fingerprint
+    state["auditor"] = CHECKPOINT_AUDITOR
+    state["status"] = result_status
+    state["timestamp"] = audited_timestamp
+    state["audited_auditor"] = CHECKPOINT_AUDITOR
+    state["audited_status"] = result_status
+    state["audited_at"] = audited_timestamp
+    state["audited_timestamp"] = finished_at
+    state["audited_pass"] = audited_pass
+    state["audited_outcome"] = audited_outcome
+    state["audited_model"] = result.get("model", settings["model"])
+    state["audited_reasoning_effort"] = result.get("reasoning_effort", settings["reasoning_effort"])
+    state["audited_duration_seconds"] = result.get("duration_seconds")
     state.pop("last_audit_started_at", None)
     state_saved = True
     state_error: BaseException | None = None
@@ -875,7 +1049,13 @@ def _checkpoint_process_unlocked(
         "model": result.get("model", settings["model"]),
         "reasoning_effort": result.get("reasoning_effort", settings["reasoning_effort"]),
         "duration_seconds": duration,
-        "status": result.get("status", "error"),
+        "status": result_status,
+        "audited_fingerprint": fingerprint,
+        "audited_auditor": CHECKPOINT_AUDITOR,
+        "audited_status": result_status,
+        "audited_pass": audited_pass,
+        "audited_outcome": audited_outcome,
+        "audited_timestamp": audited_timestamp,
         "state_saved": state_saved,
         "report_dir": str(report_dir),
     }
@@ -888,7 +1068,34 @@ def _checkpoint_process_unlocked(
         finished_details["metadata_error_type"] = type(metadata_error).__name__
         finished_details["metadata_error"] = _short_error(metadata_error)
     record_event(root, "checkpoint_finished", session_id, turn_id, **finished_details)
-    print("{}")
+    context = checkpoint_additional_context(
+        str(result.get("report") or ""),
+        str(result.get("status") or ""),
+    )
+    if context:
+        record_event(
+            root,
+            "checkpoint_feedback_emitted",
+            session_id,
+            turn_id,
+            fingerprint=fingerprint,
+            auditor=CHECKPOINT_AUDITOR,
+            finding_count=1,
+            context_line_count=max(0, len(context.splitlines()) - 1),
+        )
+        print(
+            json.dumps(
+                {
+                    "hookSpecificOutput": {
+                        "hookEventName": "PostToolUse",
+                        "additionalContext": context,
+                    }
+                },
+                ensure_ascii=False,
+            )
+        )
+    else:
+        print("{}")
     return 0
 
 
@@ -1109,7 +1316,34 @@ def hook_main(root: pathlib.Path) -> int:
             auditors=configured_auditor_summary(cfg),
         )
         try:
-            cycle = audit_cycle(root, final=True, session_id=session_id, turn_id=turn_id)
+            reusable, reuse_details = _checkpoint_reusable_result(root, current, cfg)
+            if reusable is not None:
+                record_event(
+                    root,
+                    "code_smell_reused",
+                    session_id,
+                    turn_id,
+                    fingerprint=current,
+                    auditor=CHECKPOINT_AUDITOR,
+                    status=reusable.get("status"),
+                    checkpoint_timestamp=reusable.get("checkpoint_timestamp"),
+                )
+                cycle = audit_cycle(
+                    root,
+                    final=True,
+                    session_id=session_id,
+                    turn_id=turn_id,
+                    skip_auditors={CHECKPOINT_AUDITOR},
+                    precomputed_results=[reusable],
+                )
+            else:
+                rerun_details: dict[str, Any] = {
+                    "fingerprint": current,
+                    "auditor": CHECKPOINT_AUDITOR,
+                }
+                rerun_details.update(reuse_details)
+                record_event(root, "code_smell_rerun", session_id, turn_id, **rerun_details)
+                cycle = audit_cycle(root, final=True, session_id=session_id, turn_id=turn_id)
             issues = cycle.get("issues", [])
         except Exception as exc:
             record_event(root, "audit_finished", session_id, turn_id, final=True, status="error", **_error_fields(exc))

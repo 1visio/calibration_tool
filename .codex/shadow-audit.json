@@ -9,9 +9,9 @@
   "block_on_audit_error": false,
   "checkpoint": {
     "enabled": true,
-    "debounce_seconds": 8.0,
-    "minimum_interval_seconds": 90.0,
-    "activation_probability": 0.35
+    "debounce_seconds": 0.0,
+    "minimum_interval_seconds": 0.0,
+    "activation_probability": 1.0
   },
   "auditors": {
     "code-smell-auditor": {

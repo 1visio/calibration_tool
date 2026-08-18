@@ -46,6 +46,11 @@ from calibration_tool.laser import (  # noqa: E402
     normalize_laser_orientation,
     parse_laser_config,
 )
+from calibration_tool.board_mask import (  # noqa: E402
+    FULL_BOARD_PHYSICAL,
+    full_board_physical_mask,
+    projected_board_boundary,
+)
 
 import cv2
 import matplotlib.pyplot as plt
@@ -268,6 +273,45 @@ def board_inner_mask(shape: Tuple[int, int], corners: np.ndarray, margin_px: int
         else:
             mask = cv2.erode(mask, kernel)
     return mask > 0
+
+
+def board_mask_for_pose(
+    shape: Tuple[int, int],
+    pose: BoardPose,
+    k: np.ndarray,
+    d: np.ndarray,
+    board_cfg: Mapping[str, Any],
+    extraction_cfg: Mapping[str, Any],
+) -> np.ndarray:
+    """按配置生成正式激光点提取 mask。
+
+    ``board_inner_mask`` 的语义保持不变，仅在显式选择
+    ``inner_corner_hull`` 时使用。正式 laser-plane 三联图默认使用完整
+    棋盘物理边界，且不再使用像素腐蚀/膨胀。
+    """
+    mode = str(extraction_cfg.get("board_mask_mode", FULL_BOARD_PHYSICAL)).strip().lower()
+    if mode == FULL_BOARD_PHYSICAL:
+        return full_board_physical_mask(
+            shape,
+            pose.rvec,
+            pose.tvec,
+            k,
+            d,
+            pattern_cols=int(board_cfg["pattern_cols"]),
+            pattern_rows=int(board_cfg["pattern_rows"]),
+            square_size_mm=float(board_cfg["square_size_mm"]),
+            inset_mm=float(extraction_cfg.get("board_mask_inset_mm", 0.0)),
+        )
+    if mode == "inner_corner_hull":
+        return board_inner_mask(
+            shape,
+            pose.corners,
+            margin_px=int(extraction_cfg.get("board_mask_margin_px", -2)),
+        )
+    raise ValueError(
+        f"不支持的 extraction.board_mask_mode={mode!r}；"
+        "可选 full_board_physical 或 inner_corner_hull"
+    )
 
 
 def positive_difference(laser: np.ndarray, background: np.ndarray) -> np.ndarray:
@@ -935,10 +979,13 @@ def process_dataset(
                 square_size_mm=float(board_cfg["square_size_mm"]),
                 max_rmse_px=float(board_cfg.get("max_pnp_rmse_px", 0.4)),
             )
-            mask = board_inner_mask(
+            mask = board_mask_for_pose(
                 (h, w),
-                pose.corners,
-                margin_px=int(extraction_cfg.get("board_mask_margin_px", -2)),
+                pose,
+                k,
+                d,
+                board_cfg,
+                extraction_cfg,
             )
             u, v, response, diff = extract_laser_centers(
                 laser,
@@ -1190,6 +1237,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     board_cfg = cfg["board"]
     extraction_cfg = cfg.get("extraction", {})
     datasets_cfg = cfg["datasets"]
+    print(
+        "Board mask:",
+        str(extraction_cfg.get("board_mask_mode", FULL_BOARD_PHYSICAL)),
+        "inset_mm=",
+        float(extraction_cfg.get("board_mask_inset_mm", 0.0)),
+    )
 
     def resolve_dataset(dataset: Mapping[str, Any]) -> Dict[str, Any]:
         resolved = dict(dataset)

@@ -41,7 +41,10 @@ extraction:
   min_intensity: 8.0
   min_response: 0.8
   max_subpixel_offset: 0.60
-  # 负数表示将角点凸包向内缩，避免棋盘格边缘和板外表面。
+  # 正式 laser-plane 提点使用完整 12x9 方格物理边界；不做额外像素腐蚀。
+  board_mask_mode: full_board_physical
+  board_mask_inset_mm: 0.0
+  # 仅 board_mask_mode=inner_corner_hull 时使用，保留用于旧流程兼容。
   board_mask_margin_px: -2
   continuity_poly_degree: 2
   continuity_threshold_px: 2.0

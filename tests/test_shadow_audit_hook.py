@@ -119,6 +119,14 @@ class ShadowAuditHookTests(unittest.TestCase):
             self.assertTrue(all(item["model"] == "gpt-5.6-luna" for item in started + finished))
             self.assertTrue(all(item["reasoning_effort"] == "high" for item in started + finished))
             self.assertTrue(all(item["status"] == "ok" for item in finished))
+            checkpoint_state = json.loads(
+                (root / ".codex-shadow" / "checkpoint-state.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(checkpoint_state["audited_fingerprint"], "fp-2")
+            self.assertEqual(checkpoint_state["auditor"], "code-smell-auditor")
+            self.assertEqual(checkpoint_state["status"], "ok")
+            self.assertTrue(checkpoint_state["audited_pass"])
+            self.assertIsInstance(checkpoint_state["timestamp"], str)
 
     def test_checkpoint_probability_skip_is_non_blocking_and_deduplicated(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -168,6 +176,121 @@ class ShadowAuditHookTests(unittest.TestCase):
             self.assertEqual(failures[0]["reason"], "fingerprint_failed")
             self.assertEqual(failures[0]["error_type"], "RuntimeError")
             self.assertEqual(failures[0]["error"], "git diff unavailable")
+
+    @staticmethod
+    def _ready_checkpoint_state(root, fingerprint="fp-ready"):
+        path = shadow_audit.checkpoint_state_file(root)
+        path.write_text(
+            json.dumps({"pending_fingerprint": fingerprint, "pending_since": 1000.0}),
+            encoding="utf-8",
+        )
+
+    def test_checkpoint_pass_emits_no_additional_context(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self._ready_checkpoint_state(root)
+            event = {
+                "hook_event_name": "PostToolUse",
+                "session_id": "session-pass",
+                "turn_id": "turn-pass",
+                "tool_name": "apply_patch",
+            }
+            result_data = {
+                "auditor": "code-smell-auditor",
+                "model": "gpt-5.6-luna",
+                "reasoning_effort": "high",
+                "duration_seconds": 0.01,
+                "status": "ok",
+                "report": "NO_FINDING",
+            }
+            with patch.object(shadow_audit, "git_fingerprint", return_value="fp-ready"), patch.object(
+                shadow_audit.time, "time", return_value=1008.0
+            ), patch.object(shadow_audit.random, "random", return_value=0.1), patch.object(
+                shadow_audit, "run_one_auditor", return_value=result_data
+            ):
+                result, stdout, _ = self._run_checkpoint_hook(root, event)
+
+            self.assertEqual(result, 0)
+            self.assertEqual(json.loads(stdout.getvalue()), {})
+            self.assertNotIn(
+                "checkpoint_feedback_emitted",
+                [item["event"] for item in self._events(root)],
+            )
+
+    def test_checkpoint_finding_emits_non_blocking_post_tool_context(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self._ready_checkpoint_state(root)
+            event = {
+                "hook_event_name": "PostToolUse",
+                "session_id": "session-finding",
+                "turn_id": "turn-finding",
+                "tool_name": "apply_patch",
+            }
+            result_data = {
+                "auditor": "code-smell-auditor",
+                "model": "gpt-5.6-luna",
+                "reasoning_effort": "high",
+                "duration_seconds": 0.01,
+                "status": "ok",
+                "report": "FINDING\nseverity: high\nfile: calibration_tool/a.py:10\nproblem: duplicated validation\nfix: extract the shared helper",
+            }
+            with patch.object(shadow_audit, "git_fingerprint", return_value="fp-ready"), patch.object(
+                shadow_audit.time, "time", return_value=1008.0
+            ), patch.object(shadow_audit.random, "random", return_value=0.1), patch.object(
+                shadow_audit, "run_one_auditor", return_value=result_data
+            ):
+                result, stdout, _ = self._run_checkpoint_hook(root, event)
+
+            self.assertEqual(result, 0)
+            response = json.loads(stdout.getvalue())
+            self.assertEqual(response.keys(), {"hookSpecificOutput"})
+            output = response["hookSpecificOutput"]
+            self.assertEqual(output["hookEventName"], "PostToolUse")
+            self.assertIn("additionalContext", output)
+            self.assertNotIn("decision", response)
+            self.assertNotIn("continue", response)
+            context = output["additionalContext"]
+            self.assertTrue(context.startswith("🔴 shadow · [代码与项目结构审计者 / code-smell-auditor]\n"))
+            self.assertIn("severity: high", context)
+            self.assertIn("calibration_tool/a.py:10", context)
+            self.assertLessEqual(len(context.splitlines()) - 1, 4)
+            feedback = [item for item in self._events(root) if item["event"] == "checkpoint_feedback_emitted"]
+            self.assertEqual(len(feedback), 1)
+            self.assertEqual(feedback[0]["finding_count"], 1)
+
+    def test_checkpoint_finding_returns_only_highest_value_one(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self._ready_checkpoint_state(root)
+            event = {
+                "hook_event_name": "PostToolUse",
+                "session_id": "session-one-finding",
+                "turn_id": "turn-one-finding",
+                "tool_name": "apply_patch",
+            }
+            result_data = {
+                "auditor": "code-smell-auditor",
+                "model": "gpt-5.6-luna",
+                "reasoning_effort": "high",
+                "duration_seconds": 0.01,
+                "status": "ok",
+                "report": (
+                    "FINDING 1:\nseverity: low\nfile: low.py:1\nproblem: low value\n\n"
+                    "FINDING 2:\nseverity: high\nfile: high.py:2\nproblem: high value\n"
+                ),
+            }
+            with patch.object(shadow_audit, "git_fingerprint", return_value="fp-ready"), patch.object(
+                shadow_audit.time, "time", return_value=1008.0
+            ), patch.object(shadow_audit.random, "random", return_value=0.1), patch.object(
+                shadow_audit, "run_one_auditor", return_value=result_data
+            ):
+                _, stdout, _ = self._run_checkpoint_hook(root, event)
+
+            context = json.loads(stdout.getvalue())["hookSpecificOutput"]["additionalContext"]
+            self.assertIn("high.py:2", context)
+            self.assertNotIn("low.py:1", context)
+            self.assertEqual(context.count("file:"), 1)
 
     def test_untracked_fingerprint_uses_metadata_without_reading_file(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -576,13 +699,128 @@ class ShadowAuditHookTests(unittest.TestCase):
             self.assertEqual([item["event"] for item in events], [
                 "hook_received",
                 "audit_started",
+                "code_smell_rerun",
                 "audit_finished",
                 "stop",
             ])
             self.assertTrue(events[1]["final"])
-            self.assertEqual(events[2]["status"], "ok")
-            self.assertEqual(events[2]["issue_count"], 1)
-            self.assertEqual(events[3]["reason"], "audit_block")
+            self.assertEqual(events[2]["reason"], "checkpoint_state_missing")
+            self.assertEqual(events[3]["status"], "ok")
+            self.assertEqual(events[3]["issue_count"], 1)
+            self.assertEqual(events[4]["reason"], "audit_block")
+
+    def test_stop_reuses_checkpoint_pass_and_still_forces_success_goal_auditor(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            session_id = "session-reuse"
+            turn_id = "turn-reuse"
+            state_path = shadow_audit.turn_state_file(root, session_id, turn_id)
+            state_path.write_text(
+                json.dumps({
+                    "session_id": session_id,
+                    "turn_id": turn_id,
+                    "baseline_fingerprint": "baseline-1",
+                }),
+                encoding="utf-8",
+            )
+            shadow_audit.checkpoint_state_file(root).write_text(
+                json.dumps({
+                    "audited_fingerprint": "current-2",
+                    "auditor": "code-smell-auditor",
+                    "status": "ok",
+                    "timestamp": "2026-08-18T12:00:00+08:00",
+                    "audited_pass": True,
+                    "audited_model": "gpt-5.6-luna",
+                    "audited_reasoning_effort": "high",
+                    "audited_duration_seconds": 0.25,
+                }),
+                encoding="utf-8",
+            )
+            event = {
+                "hook_event_name": "Stop",
+                "session_id": session_id,
+                "turn_id": turn_id,
+            }
+
+            def fake_run_one(root_arg, auditor, cfg, base_ref, final, report_dir):
+                self.assertEqual(auditor, "success-goal-auditor")
+                self.assertTrue(final)
+                return {
+                    "auditor": auditor,
+                    "model": cfg["model"],
+                    "reasoning_effort": cfg["reasoning_effort"],
+                    "duration_seconds": 0.1,
+                    "status": "ok",
+                    "report": "GOAL_ALIGNED",
+                }
+
+            with patch.object(shadow_audit, "git_fingerprint", return_value="current-2"), patch.object(
+                shadow_audit, "run_one_auditor", side_effect=fake_run_one
+            ) as run_one:
+                result, stdout, _ = self._run_hook(root, event)
+
+            self.assertEqual(result, 0)
+            self.assertEqual(stdout.getvalue(), "{}\n")
+            self.assertEqual([call.args[1] for call in run_one.call_args_list], ["success-goal-auditor"])
+            events = self._events(root)
+            self.assertIn("code_smell_reused", [item["event"] for item in events])
+            self.assertNotIn("code_smell_rerun", [item["event"] for item in events])
+            finished = next(item for item in events if item["event"] == "audit_finished")
+            self.assertEqual(
+                {item["auditor"] for item in finished["auditors"]},
+                {"code-smell-auditor", "success-goal-auditor"},
+            )
+            self.assertEqual(next(item for item in events if item["event"] == "stop")["reason"], "audit_pass")
+
+    def test_checkpoint_finding_failure_and_timeout_are_never_reused_as_pass(self):
+        cases = [
+            ("ok", False),
+            ("error", False),
+            ("timeout", False),
+        ]
+        for status, audited_pass in cases:
+            with self.subTest(status=status):
+                with tempfile.TemporaryDirectory() as temporary:
+                    root = Path(temporary)
+                    session_id = f"session-no-reuse-{status}"
+                    turn_id = "turn-1"
+                    state_path = shadow_audit.turn_state_file(root, session_id, turn_id)
+                    state_path.write_text(
+                        json.dumps({
+                            "session_id": session_id,
+                            "turn_id": turn_id,
+                            "baseline_fingerprint": "baseline-1",
+                        }),
+                        encoding="utf-8",
+                    )
+                    shadow_audit.checkpoint_state_file(root).write_text(
+                        json.dumps({
+                            "audited_fingerprint": "current-2",
+                            "auditor": "code-smell-auditor",
+                            "status": status,
+                            "timestamp": "2026-08-18T12:00:00+08:00",
+                            "audited_pass": audited_pass,
+                        }),
+                        encoding="utf-8",
+                    )
+                    event = {
+                        "hook_event_name": "Stop",
+                        "session_id": session_id,
+                        "turn_id": turn_id,
+                    }
+                    cycle = {"status": "ok", "reports": [], "issues": []}
+                    with patch.object(shadow_audit, "git_fingerprint", return_value="current-2"), patch.object(
+                        shadow_audit, "audit_cycle", return_value=cycle
+                    ) as audit:
+                        result, stdout, _ = self._run_hook(root, event)
+
+                    self.assertEqual(result, 0)
+                    self.assertEqual(stdout.getvalue(), "{}\n")
+                    audit.assert_called_once_with(root, final=True, session_id=session_id, turn_id=turn_id)
+                    events = self._events(root)
+                    self.assertNotIn("code_smell_reused", [item["event"] for item in events])
+                    rerun = next(item for item in events if item["event"] == "code_smell_rerun")
+                    self.assertIn(rerun["reason"], {"checkpoint_not_pass", "checkpoint_not_successful"})
 
 
 if __name__ == "__main__":

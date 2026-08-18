@@ -1,0 +1,142 @@
+{
+  "global_plane": {
+    "model_type": "global_plane",
+    "equation": "a*X + b*Y + c*Z + d = 0",
+    "normal": [
+      0.9551186812146258,
+      0.009937766860655785,
+      -0.2960566594161618
+    ],
+    "d_mm": 206.92724035915987,
+    "plane_abcd": [
+      0.9551186812146258,
+      0.009937766860655785,
+      -0.2960566594161618,
+      206.92724035915987
+    ],
+    "z_valid_range_mm": [
+      599.9158940171042,
+      713.8641567975121
+    ]
+  },
+  "quadratic_graph": {
+    "model_type": "quadratic_graph",
+    "dependent_axis": "X",
+    "independent_axes": [
+      "Y",
+      "Z"
+    ],
+    "equation": "D = beta0 + beta1*p + beta2*q + beta3*p^2 + beta4*p*q + beta5*q^2",
+    "normalization": {
+      "independent_center_mm": [
+        -10.98752311856499,
+        677.1720248013299
+      ],
+      "independent_scale_mm": [
+        66.96753407116536,
+        24.316113306359032
+      ]
+    },
+    "coefficients": [
+      -6.730266505159904,
+      -0.7044589604940028,
+      7.546847626227388,
+      0.09944863849830846,
+      0.0016106341750085817,
+      0.004626110351827968
+    ],
+    "z_valid_range_mm": [
+      599.9158940171042,
+      713.8641567975121
+    ]
+  },
+  "circular_cone": {
+    "model_type": "circular_cone",
+    "description": "general circular cone equivalent to a standard cone after rigid transform",
+    "axis_unit_camera": [
+      0.9601975767572603,
+      0.008908966286114988,
+      -0.2791795907819877
+    ],
+    "apex_camera_mm": [
+      -131.7861067660557,
+      15.527164588243114,
+      275.4447668676389
+    ],
+    "half_apex_angle_deg": 88.95473797801328,
+    "fit_success": true,
+    "optimizer_cost": 1.2441240964029925,
+    "z_valid_range_mm": [
+      599.9158940171042,
+      713.8641567975121
+    ]
+  },
+  "cone_subset_diagnostics": [
+    {
+      "subset": "global",
+      "status": "OK",
+      "frame_count": 36,
+      "point_count": 32400,
+      "fit_success": true,
+      "optimizer_cost": 1.2441240964029925,
+      "half_apex_angle_deg": 88.95473797801328,
+      "axis_x": 0.9601975767572603,
+      "axis_y": 0.008908966286114988,
+      "axis_z": -0.2791795907819877,
+      "apex_x_mm": -131.7861067660557,
+      "apex_y_mm": 15.527164588243114,
+      "apex_z_mm": 275.4447668676389,
+      "axis_angle_to_global_deg": 8.537736462515939e-07
+    },
+    {
+      "subset": "fit_001_018",
+      "status": "OK",
+      "frame_count": 18,
+      "point_count": 16200,
+      "fit_success": true,
+      "optimizer_cost": 0.9029625844076943,
+      "half_apex_angle_deg": 88.96615036284126,
+      "axis_x": 0.9601505096379321,
+      "axis_y": 0.009469917543534486,
+      "axis_z": -0.27932296630198133,
+      "apex_x_mm": -134.32017353837801,
+      "apex_y_mm": 2.9580155565841157,
+      "apex_z_mm": 266.82380521051243,
+      "axis_angle_to_global_deg": 0.03328279116400341
+    },
+    {
+      "subset": "fit_025_036",
+      "status": "OK",
+      "frame_count": 12,
+      "point_count": 10800,
+      "fit_success": true,
+      "optimizer_cost": 1.826349850117734,
+      "half_apex_angle_deg": 86.78775473879264,
+      "axis_x": 0.9700970454683339,
+      "axis_y": 0.00810316101804783,
+      "axis_z": -0.2425820709680023,
+      "apex_x_mm": -372.71906708105786,
+      "apex_y_mm": 33.74853136753192,
+      "apex_z_mm": -499.99999991364655,
+      "axis_angle_to_global_deg": 2.172862361715929
+    },
+    {
+      "subset": "fit_049_054",
+      "status": "OK",
+      "frame_count": 6,
+      "point_count": 5400,
+      "fit_success": true,
+      "optimizer_cost": 0.7420551993072394,
+      "half_apex_angle_deg": 89.50773951129497,
+      "axis_x": 0.9573487422509445,
+      "axis_y": 0.007817567586459287,
+      "axis_z": -0.28882913867469445,
+      "apex_x_mm": -62.3174708647677,
+      "apex_y_mm": 39.36218896383981,
+      "apex_z_mm": 499.99999999999994,
+      "axis_angle_to_global_deg": 0.5798538340526509
+    }
+  ],
+  "fit_model_winner": "QUADRATIC",
+  "validation_read": false
+}

@@ -1,0 +1,446 @@
+{
+  "0": {
+    "global_plane": {
+      "model_type": "global_plane",
+      "equation": "a*X + b*Y + c*Z + d = 0",
+      "normal": [
+        0.9550985225135353,
+        0.009982283722427987,
+        -0.29612018895061337
+      ],
+      "d_mm": 206.96958341653493,
+      "plane_abcd": [
+        0.9550985225135353,
+        0.009982283722427987,
+        -0.29612018895061337,
+        206.96958341653493
+      ],
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "quadratic_graph": {
+      "model_type": "quadratic_graph",
+      "dependent_axis": "X",
+      "independent_axes": [
+        "Y",
+        "Z"
+      ],
+      "equation": "D = beta0 + beta1*p + beta2*q + beta3*p^2 + beta4*p*q + beta5*q^2",
+      "normalization": {
+        "independent_center_mm": [
+          -13.861486842664547,
+          676.4064134564863
+        ],
+        "independent_scale_mm": [
+          66.80031947956697,
+          23.63098209965179
+        ]
+      },
+      "coefficients": [
+        -6.935859413369178,
+        -0.7113241204262263,
+        7.334186878648026,
+        0.09762747508076623,
+        0.0028174092147382553,
+        0.005234832088096754
+      ],
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "circular_cone": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9585737491555808,
+        0.008719315461269328,
+        -0.2847109779543116
+      ],
+      "apex_camera_mm": [
+        -92.3780479662429,
+        20.29788058336845,
+        402.59431557909664
+      ],
+      "half_apex_angle_deg": 89.27620278662543,
+      "fit_success": true,
+      "optimizer_cost": 1.3644924808504557,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    }
+  },
+  "1": {
+    "global_plane": {
+      "model_type": "global_plane",
+      "equation": "a*X + b*Y + c*Z + d = 0",
+      "normal": [
+        0.9551159463340599,
+        0.010012879493362327,
+        -0.29606295158740226
+      ],
+      "d_mm": 206.93386109831562,
+      "plane_abcd": [
+        0.9551159463340599,
+        0.010012879493362327,
+        -0.29606295158740226,
+        206.93386109831562
+      ],
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.6150335313896
+      ]
+    },
+    "quadratic_graph": {
+      "model_type": "quadratic_graph",
+      "dependent_axis": "X",
+      "independent_axes": [
+        "Y",
+        "Z"
+      ],
+      "equation": "D = beta0 + beta1*p + beta2*q + beta3*p^2 + beta4*p*q + beta5*q^2",
+      "normalization": {
+        "independent_center_mm": [
+          -13.642609479772457,
+          676.0829404177709
+        ],
+        "independent_scale_mm": [
+          66.57463118777726,
+          24.308946561674503
+        ]
+      },
+      "coefficients": [
+        -7.0396795869963675,
+        -0.7078493172839634,
+        7.545173029568226,
+        0.09750979075698922,
+        0.0005550097551586724,
+        0.004475499718333036
+      ],
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.6150335313896
+      ]
+    },
+    "circular_cone": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9611191035387979,
+        0.009026787315265442,
+        -0.27598656837524255
+      ],
+      "apex_camera_mm": [
+        -156.1768508550326,
+        12.509117365452164,
+        196.79166952330888
+      ],
+      "half_apex_angle_deg": 88.76580302554142,
+      "fit_success": true,
+      "optimizer_cost": 1.3925251899230355,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.6150335313896
+      ]
+    }
+  },
+  "2": {
+    "global_plane": {
+      "model_type": "global_plane",
+      "equation": "a*X + b*Y + c*Z + d = 0",
+      "normal": [
+        0.9550938498867446,
+        0.009896190729260124,
+        -0.29613814904123215
+      ],
+      "d_mm": 206.97931977011638,
+      "plane_abcd": [
+        0.9550938498867446,
+        0.009896190729260124,
+        -0.29613814904123215,
+        206.97931977011638
+      ],
+      "z_valid_range_mm": [
+        613.9723422627321,
+        713.8641567975121
+      ]
+    },
+    "quadratic_graph": {
+      "model_type": "quadratic_graph",
+      "dependent_axis": "X",
+      "independent_axes": [
+        "Y",
+        "Z"
+      ],
+      "equation": "D = beta0 + beta1*p + beta2*q + beta3*p^2 + beta4*p*q + beta5*q^2",
+      "normalization": {
+        "independent_center_mm": [
+          -8.6609159585045,
+          676.246565187394
+        ],
+        "independent_scale_mm": [
+          67.3679405261171,
+          23.518616316654285
+        ]
+      },
+      "coefficients": [
+        -7.040479061399519,
+        -0.7010369210922024,
+        7.299100322331051,
+        0.1004477718506904,
+        0.0006690133401832258,
+        0.004563556220873478
+      ],
+      "z_valid_range_mm": [
+        613.9723422627321,
+        713.8641567975121
+      ]
+    },
+    "circular_cone": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9633126020609276,
+        0.008615707120095828,
+        -0.2682435466165507
+      ],
+      "apex_camera_mm": [
+        -213.4163820130652,
+        22.344721426422115,
+        12.67220199359201
+      ],
+      "half_apex_angle_deg": 88.30777935008886,
+      "fit_success": true,
+      "optimizer_cost": 0.9759042783671436,
+      "z_valid_range_mm": [
+        613.9723422627321,
+        713.8641567975121
+      ]
+    }
+  },
+  "3": {
+    "global_plane": {
+      "model_type": "global_plane",
+      "equation": "a*X + b*Y + c*Z + d = 0",
+      "normal": [
+        0.9551178540284941,
+        0.00988207326317575,
+        -0.2960611922289466
+      ],
+      "d_mm": 206.9280805133866,
+      "plane_abcd": [
+        0.9551178540284941,
+        0.00988207326317575,
+        -0.2960611922289466,
+        206.9280805133866
+      ],
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "quadratic_graph": {
+      "model_type": "quadratic_graph",
+      "dependent_axis": "X",
+      "independent_axes": [
+        "Y",
+        "Z"
+      ],
+      "equation": "D = beta0 + beta1*p + beta2*q + beta3*p^2 + beta4*p*q + beta5*q^2",
+      "normalization": {
+        "independent_center_mm": [
+          -9.017508674005406,
+          681.1144982099843
+        ],
+        "independent_scale_mm": [
+          67.16337149905301,
+          24.334477729265082
+        ]
+      },
+      "coefficients": [
+        -5.527834576511473,
+        -0.702051840741949,
+        7.553773856111685,
+        0.10166294996367288,
+        0.002443497952263041,
+        0.003911935677374029
+      ],
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "circular_cone": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.959406852527533,
+        0.008692474135317771,
+        -0.2818917029935775
+      ],
+      "apex_camera_mm": [
+        -109.99898942281223,
+        20.745476819746123,
+        345.88349737081364
+      ],
+      "half_apex_angle_deg": 89.10989553517197,
+      "fit_success": true,
+      "optimizer_cost": 1.2989852395209838,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    }
+  },
+  "4": {
+    "global_plane": {
+      "model_type": "global_plane",
+      "equation": "a*X + b*Y + c*Z + d = 0",
+      "normal": [
+        0.9551410167982844,
+        0.009878255279037516,
+        -0.2959865843280426
+      ],
+      "d_mm": 206.87938583376913,
+      "plane_abcd": [
+        0.9551410167982844,
+        0.009878255279037516,
+        -0.2959865843280426,
+        206.87938583376913
+      ],
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "quadratic_graph": {
+      "model_type": "quadratic_graph",
+      "dependent_axis": "X",
+      "independent_axes": [
+        "Y",
+        "Z"
+      ],
+      "equation": "D = beta0 + beta1*p + beta2*q + beta3*p^2 + beta4*p*q + beta5*q^2",
+      "normalization": {
+        "independent_center_mm": [
+          -8.320913306981577,
+          681.2703667632926
+        ],
+        "independent_scale_mm": [
+          66.87376464234873,
+          25.614091539035616
+        ]
+      },
+      "coefficients": [
+        -5.488153552072454,
+        -0.6962328557535462,
+        7.951825644349566,
+        0.10007905171703224,
+        0.0008640310266101918,
+        0.005591162704179856
+      ],
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "circular_cone": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9607076277168058,
+        0.009083096470182678,
+        -0.27741368280108397
+      ],
+      "apex_camera_mm": [
+        -142.9406981647984,
+        11.404963910479765,
+        239.403304165213
+      ],
+      "half_apex_angle_deg": 88.85003717616063,
+      "fit_success": true,
+      "optimizer_cost": 1.314077916859039,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    }
+  },
+  "5": {
+    "global_plane": {
+      "model_type": "global_plane",
+      "equation": "a*X + b*Y + c*Z + d = 0",
+      "normal": [
+        0.9551538294917256,
+        0.009986619833921464,
+        -0.2959415980080945
+      ],
+      "d_mm": 206.85491431053867,
+      "plane_abcd": [
+        0.9551538294917256,
+        0.009986619833921464,
+        -0.2959415980080945,
+        206.85491431053867
+      ],
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "quadratic_graph": {
+      "model_type": "quadratic_graph",
+      "dependent_axis": "X",
+      "independent_axes": [
+        "Y",
+        "Z"
+      ],
+      "equation": "D = beta0 + beta1*p + beta2*q + beta3*p^2 + beta4*p*q + beta5*q^2",
+      "normalization": {
+        "independent_center_mm": [
+          -12.612732821648681,
+          672.2934537593896
+        ],
+        "independent_scale_mm": [
+          66.80582590229588,
+          23.75528231042866
+        ]
+      },
+      "coefficients": [
+        -8.228182517740088,
+        -0.7066483578387273,
+        7.369487081311669,
+        0.09891745430863802,
+        0.0021415868331142755,
+        0.003969128338309055
+      ],
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    },
+    "circular_cone": {
+      "model_type": "circular_cone",
+      "description": "general circular cone equivalent to a standard cone after rigid transform",
+      "axis_unit_camera": [
+        0.9599654600721713,
+        0.008784994226057004,
+        -0.27998060530128244
+      ],
+      "apex_camera_mm": [
+        -126.16879453861367,
+        18.196624893309394,
+        293.5604484732531
+      ],
+      "half_apex_angle_deg": 89.00466890182456,
+      "fit_success": true,
+      "optimizer_cost": 1.3532105433596544,
+      "z_valid_range_mm": [
+        599.9158940171042,
+        713.8641567975121
+      ]
+    }
+  }
+}
