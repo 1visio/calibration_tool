@@ -1,0 +1,1732 @@
+schema_version: 1
+dataset_id: obs_50mm
+status: completed
+created_at: '2026-08-19T00:53:51.476+00:00'
+updated_at: '2026-08-19T00:55:18.074+00:00'
+completed_at: '2026-08-19T00:55:18.074+00:00'
+plan_sha256: 32ed0318f9b5ed3247fbfebb9281fcce4feee80f05f4fb143c5fa527392ef70d
+plan:
+  dataset_id: obs_50mm
+  output_dir: D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\obs_50mm
+  backend: daheng
+  serial_number: GCB26060793
+  camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    max_saturation_fraction: 0.05
+    max_dark_fraction: 0.95
+    min_dynamic_range_u8: 20.0
+    min_laser_coverage: 0.3
+    require_chessboard_detection: true
+    max_chessboard_saturation_fraction: 0.005
+    max_chessboard_highlight_fraction: 0.2
+    max_chessboard_p995_u8: 245.0
+    max_laser_saturation_fraction: 0.001
+    max_laser_peak_saturation_fraction: 0.02
+    max_laser_peak_near_saturation_fraction: 0.1
+    max_laser_saturated_width_px: 1.0
+  board_pattern:
+  - 11
+  - 8
+  metadata:
+    created_by: pyside6_wizard
+    camera_channel: daheng
+    camera_config: D:\Docs\linelaserscan\calibration_tool\configs\camera.daheng.example.yaml
+  backend_options:
+    discovery_timeout_ms: 1000
+  laser:
+    orientation: vertical
+  tasks:
+  - task_id: fit_001_02_laser
+    frames: 5
+    filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+    camera:
+      exposure_us: 300.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 4096
+      height: 3000
+      timeout_ms: 2000
+    pose_id: '001'
+    role: laser
+    instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 001。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags: &id001
+      split: fit
+      group_index: 1
+      laser_state: 'on'
+      recipe_role: laser
+      filename_prefix: laser
+      quality_mode_requested: laser
+  - task_id: fit_002_02_laser
+    frames: 5
+    filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+    camera:
+      exposure_us: 300.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 4096
+      height: 3000
+      timeout_ms: 2000
+    pose_id: '002'
+    role: laser
+    instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 002。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags:
+      split: fit
+      group_index: 2
+      laser_state: 'on'
+      recipe_role: laser
+      filename_prefix: laser
+      quality_mode_requested: laser
+  - task_id: fit_003_02_laser
+    frames: 5
+    filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+    camera:
+      exposure_us: 300.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 4096
+      height: 3000
+      timeout_ms: 2000
+    pose_id: '003'
+    role: laser
+    instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 003。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags:
+      split: fit
+      group_index: 3
+      laser_state: 'on'
+      recipe_role: laser
+      filename_prefix: laser
+      quality_mode_requested: laser
+  - task_id: fit_004_02_laser
+    frames: 5
+    filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+    camera:
+      exposure_us: 300.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 4096
+      height: 3000
+      timeout_ms: 2000
+    pose_id: '004'
+    role: laser
+    instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 004。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags:
+      split: fit
+      group_index: 4
+      laser_state: 'on'
+      recipe_role: laser
+      filename_prefix: laser
+      quality_mode_requested: laser
+  - task_id: fit_005_02_laser
+    frames: 5
+    filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+    camera:
+      exposure_us: 300.0
+      gain_db: 0.0
+      pixel_format: Mono8
+      offset_x: 0
+      offset_y: 0
+      width: 4096
+      height: 3000
+      timeout_ms: 2000
+    pose_id: '005'
+    role: laser
+    instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 005。
+    settle_frames: 5
+    image_format: tif
+    quality_mode: laser
+    tags:
+      split: fit
+      group_index: 5
+      laser_state: 'on'
+      recipe_role: laser
+      filename_prefix: laser
+      quality_mode_requested: laser
+laser:
+  orientation: vertical
+device: null
+network_packet_size: null
+tasks:
+  fit_001_02_laser:
+    status: completed
+    frames_expected: 5
+    frames_captured: 5
+    error: null
+    completed_at: '2026-08-19T00:53:53.053+00:00'
+  fit_002_02_laser:
+    status: completed
+    frames_expected: 5
+    frames_captured: 5
+    error: null
+    completed_at: '2026-08-19T00:54:17.329+00:00'
+  fit_003_02_laser:
+    status: completed
+    frames_expected: 5
+    frames_captured: 5
+    error: null
+    completed_at: '2026-08-19T00:54:41.868+00:00'
+  fit_004_02_laser:
+    status: completed
+    frames_expected: 5
+    frames_captured: 5
+    error: null
+    completed_at: '2026-08-19T00:54:56.207+00:00'
+  fit_005_02_laser:
+    status: completed
+    frames_expected: 5
+    frames_captured: 5
+    error: null
+    completed_at: '2026-08-19T00:55:18.074+00:00'
+frames:
+- task_id: fit_001_02_laser
+  pose_id: '001'
+  role: laser
+  tags: *id001
+  index: 1
+  filename: fit/laser 001.tif
+  sha256: b1c7bd8e85f00e457a5f872fdb08205fc7287ff35df5412364e825b30b2b6a06
+  camera_frame_number: 73
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1587869584775
+  host_timestamp_ns: 1787100831331409400
+  host_monotonic_ns: 328412903180300
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.06855159252882004
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 1.1393229166666668e-06
+    dark_fraction: 0.9986355794270834
+    focus_laplacian: 6.348670572912839
+    laser_coverage: 0.7783333333333333
+    laser_peak_saturation_fraction: 0.0059957173447537475
+    laser_peak_near_saturation_fraction: 0.006852248394004282
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_001_02_laser
+  pose_id: '001'
+  role: laser
+  tags:
+    split: fit
+    group_index: 1
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 2
+  filename: fit/laser 001_02.tif
+  sha256: 358a4af6c4c7e6c2a9feffcb543cda82fb23027f8d285dd4c135391eda284ff2
+  camera_frame_number: 74
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1587912060775
+  host_timestamp_ns: 1787100831373928600
+  host_monotonic_ns: 328412946638100
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.06852604448795319
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 1.0579427083333333e-06
+    dark_fraction: 0.9986383463541667
+    focus_laplacian: 6.357833658853926
+    laser_coverage: 0.7763333333333333
+    laser_peak_saturation_fraction: 0.0055817947617003
+    laser_peak_near_saturation_fraction: 0.006440532417346501
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_001_02_laser
+  pose_id: '001'
+  role: laser
+  tags:
+    split: fit
+    group_index: 1
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 3
+  filename: fit/laser 001_03.tif
+  sha256: 9ba6f72fa38792a4f7ea22009e913730c39b3db6bf04b7ef7f3d736f80fbae3a
+  camera_frame_number: 75
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1587954536775
+  host_timestamp_ns: 1787100831415937200
+  host_monotonic_ns: 328412988340500
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.06853198260068893
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 1.0579427083333333e-06
+    dark_fraction: 0.9986396484375
+    focus_laplacian: 6.3803924967428784
+    laser_coverage: 0.7793333333333333
+    laser_peak_saturation_fraction: 0.005560307955517536
+    laser_peak_near_saturation_fraction: 0.007698887938408896
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_001_02_laser
+  pose_id: '001'
+  role: laser
+  tags:
+    split: fit
+    group_index: 1
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 4
+  filename: fit/laser 001_04.tif
+  sha256: 24c907fb7aff838c5d89fea41f88e5977b194acd38696cdd87d47ba7ecc6a6a5
+  camera_frame_number: 76
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1587997012775
+  host_timestamp_ns: 1787100831458931000
+  host_monotonic_ns: 328413031031200
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.06852880865335464
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 1.1393229166666668e-06
+    dark_fraction: 0.9986376139322917
+    focus_laplacian: 6.353422281900735
+    laser_coverage: 0.7796666666666666
+    laser_peak_saturation_fraction: 0.005985463873450192
+    laser_peak_near_saturation_fraction: 0.006840530141085934
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_001_02_laser
+  pose_id: '001'
+  role: laser
+  tags:
+    split: fit
+    group_index: 1
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 5
+  filename: fit/laser 001_05.tif
+  sha256: bc5b0e514831cc315597146e6d2694e1bb2d6b8ed4ae6c53832a4d74955d72ff
+  camera_frame_number: 77
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1588039488775
+  host_timestamp_ns: 1787100831994490200
+  host_monotonic_ns: 328413567094200
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.06852099299430847
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 1.1393229166666668e-06
+    dark_fraction: 0.998638916015625
+    focus_laplacian: 6.383186116535648
+    laser_coverage: 0.7793333333333333
+    laser_peak_saturation_fraction: 0.005988023952095809
+    laser_peak_near_saturation_fraction: 0.006843455945252352
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_002_02_laser
+  pose_id: '002'
+  role: laser
+  tags:
+    split: fit
+    group_index: 2
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 1
+  filename: fit/laser 002.tif
+  sha256: 43b301f79aca2aa5233804f0ccbd1fec27c5463ae98cadbdc4fcd6c0ba2937ef
+  camera_frame_number: 637
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1611826048775
+  host_timestamp_ns: 1787100855287868500
+  host_monotonic_ns: 328436859711300
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.06947729736566544
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 9.765625e-07
+    dark_fraction: 0.998616943359375
+    focus_laplacian: 6.4165309244759605
+    laser_coverage: 0.7883333333333333
+    laser_peak_saturation_fraction: 0.00507399577167019
+    laser_peak_near_saturation_fraction: 0.005919661733615222
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_002_02_laser
+  pose_id: '002'
+  role: laser
+  tags:
+    split: fit
+    group_index: 2
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 2
+  filename: fit/laser 002_02.tif
+  sha256: e46ccb6cf492ef6a0a05e567f67ac45c316501e413a38c7cb89a5f2132ae78cc
+  camera_frame_number: 638
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1611868524775
+  host_timestamp_ns: 1787100855334864600
+  host_monotonic_ns: 328436907334500
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.0694480761885643
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 1.0579427083333333e-06
+    dark_fraction: 0.99861669921875
+    focus_laplacian: 6.428976399736924
+    laser_coverage: 0.7886666666666666
+    laser_peak_saturation_fraction: 0.005494505494505495
+    laser_peak_near_saturation_fraction: 0.006339814032121725
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_002_02_laser
+  pose_id: '002'
+  role: laser
+  tags:
+    split: fit
+    group_index: 2
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 3
+  filename: fit/laser 002_03.tif
+  sha256: b3cc2e6b521e1c42831d408cdafce785228d62549d22120d73c22177acfd0381
+  camera_frame_number: 639
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1611911000775
+  host_timestamp_ns: 1787100855667665000
+  host_monotonic_ns: 328437239759800
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.06947550177574158
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 9.765625e-07
+    dark_fraction: 0.9986181640625
+    focus_laplacian: 6.4349274088532145
+    laser_coverage: 0.7863333333333333
+    laser_peak_saturation_fraction: 0.005086901229334464
+    laser_peak_near_saturation_fraction: 0.0072064434082238235
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_002_02_laser
+  pose_id: '002'
+  role: laser
+  tags:
+    split: fit
+    group_index: 2
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 4
+  filename: fit/laser 002_04.tif
+  sha256: 2a98dc0f5cdd6ba3dd93161d0aa021a1fbdf520cd91d5bfa3306ebd376bf74ae
+  camera_frame_number: 640
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1611953476775
+  host_timestamp_ns: 1787100855672657500
+  host_monotonic_ns: 328437245363000
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.06944360584020615
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 9.765625e-07
+    dark_fraction: 0.9986171061197917
+    focus_laplacian: 6.409517008458712
+    laser_coverage: 0.7876666666666666
+    laser_peak_saturation_fraction: 0.0050782903089293275
+    laser_peak_near_saturation_fraction: 0.006347862886161659
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_002_02_laser
+  pose_id: '002'
+  role: laser
+  tags:
+    split: fit
+    group_index: 2
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 5
+  filename: fit/laser 002_05.tif
+  sha256: deb64bdf8023d8f9c2e7b41cee684eb7a4c100a937f1973b13def4cd50e30586
+  camera_frame_number: 641
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1611995952775
+  host_timestamp_ns: 1787100855678658100
+  host_monotonic_ns: 328437250841700
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.06947126984596252
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 1.1393229166666668e-06
+    dark_fraction: 0.9986131184895833
+    focus_laplacian: 6.43485205077911
+    laser_coverage: 0.7856666666666666
+    laser_peak_saturation_fraction: 0.005939753924480272
+    laser_peak_near_saturation_fraction: 0.006364022061943148
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_003_02_laser
+  pose_id: '003'
+  role: laser
+  tags:
+    split: fit
+    group_index: 3
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 1
+  filename: fit/laser 003.tif
+  sha256: 24494878d20c9da58e2e945a044503af5119cf144985d1da01cf5a95e71cc346
+  camera_frame_number: 1224
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1636759460775
+  host_timestamp_ns: 1787100880221201900
+  host_monotonic_ns: 328461793524800
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.0699874684214592
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 1.1393229166666668e-06
+    dark_fraction: 0.998593017578125
+    focus_laplacian: 6.5806031901015265
+    laser_coverage: 0.8
+    laser_peak_saturation_fraction: 0.005833333333333334
+    laser_peak_near_saturation_fraction: 0.00625
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_003_02_laser
+  pose_id: '003'
+  role: laser
+  tags:
+    split: fit
+    group_index: 3
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 2
+  filename: fit/laser 003_02.tif
+  sha256: 21976146980fb30ab33f84d3d5b5e7470e797df173dd23963be2cb57248a8252
+  camera_frame_number: 1225
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1636801936775
+  host_timestamp_ns: 1787100880263484600
+  host_monotonic_ns: 328461835751700
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.06998340040445328
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 1.0579427083333333e-06
+    dark_fraction: 0.9985927734375
+    focus_laplacian: 6.51593196614318
+    laser_coverage: 0.8003333333333333
+    laser_peak_saturation_fraction: 0.005414410662224073
+    laser_peak_near_saturation_fraction: 0.0058309037900874635
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_003_02_laser
+  pose_id: '003'
+  role: laser
+  tags:
+    split: fit
+    group_index: 3
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 3
+  filename: fit/laser 003_03.tif
+  sha256: 3a98e4a7d6a3901e1c56eed24fbe27ba3a480f001e13592b81d09ef4ea19d529
+  camera_frame_number: 1226
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1636844412775
+  host_timestamp_ns: 1787100880742228300
+  host_monotonic_ns: 328462314047700
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.07002213597297668
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 1.1393229166666668e-06
+    dark_fraction: 0.998591064453125
+    focus_laplacian: 6.5587486979114695
+    laser_coverage: 0.7956666666666666
+    laser_peak_saturation_fraction: 0.005865102639296188
+    laser_peak_near_saturation_fraction: 0.005865102639296188
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_003_02_laser
+  pose_id: '003'
+  role: laser
+  tags:
+    split: fit
+    group_index: 3
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 4
+  filename: fit/laser 003_04.tif
+  sha256: f7cac4253e47adefb08c2570e6cc1e9336908b4fba80878d36b9e4de96a73466
+  camera_frame_number: 1227
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1636886888775
+  host_timestamp_ns: 1787100881070341400
+  host_monotonic_ns: 328462642909200
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.07004386186599731
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 1.1393229166666668e-06
+    dark_fraction: 0.998591064453125
+    focus_laplacian: 6.544135091140644
+    laser_coverage: 0.7983333333333333
+    laser_peak_saturation_fraction: 0.005845511482254697
+    laser_peak_near_saturation_fraction: 0.005845511482254697
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_003_02_laser
+  pose_id: '003'
+  role: laser
+  tags:
+    split: fit
+    group_index: 3
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 5
+  filename: fit/laser 003_05.tif
+  sha256: 94da3a4983401428c323edf72608f81aa7e33004c622c8da29d3ce8cf07bed33
+  camera_frame_number: 1228
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1636929364775
+  host_timestamp_ns: 1787100881395201400
+  host_monotonic_ns: 328462967061300
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.0700596496462822
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 1.1393229166666668e-06
+    dark_fraction: 0.9985916341145833
+    focus_laplacian: 6.543413655594148
+    laser_coverage: 0.7983333333333333
+    laser_peak_saturation_fraction: 0.005845511482254697
+    laser_peak_near_saturation_fraction: 0.005845511482254697
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_004_02_laser
+  pose_id: '004'
+  role: laser
+  tags:
+    split: fit
+    group_index: 4
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 1
+  filename: fit/laser 004.tif
+  sha256: cbc42f6e6dcb679a06b8996b4cce3ea302f3a860bd269862865eff8c92c284a1
+  camera_frame_number: 1548
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1650521684775
+  host_timestamp_ns: 1787100893983748100
+  host_monotonic_ns: 328475555548800
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.07989200949668884
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 6.510416666666666e-07
+    dark_fraction: 0.99861474609375
+    focus_laplacian: 8.12825569658396
+    laser_coverage: 0.7793333333333333
+    laser_peak_saturation_fraction: 0.003421727972626176
+    laser_peak_near_saturation_fraction: 0.004704875962360992
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_004_02_laser
+  pose_id: '004'
+  role: laser
+  tags:
+    split: fit
+    group_index: 4
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 2
+  filename: fit/laser 004_02.tif
+  sha256: 70b5d72ca7cfcce08a75282a1b9729f20dc7cc5031e08f8f1892a6a3fa6d92b5
+  camera_frame_number: 1549
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1650564160775
+  host_timestamp_ns: 1787100894026747800
+  host_monotonic_ns: 328475598638200
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.07991943508386612
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 5.696614583333334e-07
+    dark_fraction: 0.9986162109375
+    focus_laplacian: 8.120853841115194
+    laser_coverage: 0.7783333333333333
+    laser_peak_saturation_fraction: 0.0029978586723768737
+    laser_peak_near_saturation_fraction: 0.003426124197002141
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_004_02_laser
+  pose_id: '004'
+  role: laser
+  tags:
+    split: fit
+    group_index: 4
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 3
+  filename: fit/laser 004_03.tif
+  sha256: 3df2189cba2a24759841460079fefda38ff9fe3d435c34d24e6907ed1ab438f0
+  camera_frame_number: 1550
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1650606636775
+  host_timestamp_ns: 1787100894363335600
+  host_monotonic_ns: 328475935505200
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.07989762723445892
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 6.510416666666666e-07
+    dark_fraction: 0.998615966796875
+    focus_laplacian: 8.121410156215658
+    laser_coverage: 0.775
+    laser_peak_saturation_fraction: 0.0034408602150537634
+    laser_peak_near_saturation_fraction: 0.003870967741935484
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_004_02_laser
+  pose_id: '004'
+  role: laser
+  tags:
+    split: fit
+    group_index: 4
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 4
+  filename: fit/laser 004_04.tif
+  sha256: 63568bb9e4458c2fcff556475102301c5f5825ea787eb47fbef777f9d2c72ecb
+  camera_frame_number: 1551
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1650649112775
+  host_timestamp_ns: 1787100894369335700
+  host_monotonic_ns: 328475941440200
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.07994499057531357
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 5.696614583333334e-07
+    dark_fraction: 0.9986153971354167
+    focus_laplacian: 8.124206868455254
+    laser_coverage: 0.7783333333333333
+    laser_peak_saturation_fraction: 0.0029978586723768737
+    laser_peak_near_saturation_fraction: 0.004282655246252677
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_004_02_laser
+  pose_id: '004'
+  role: laser
+  tags:
+    split: fit
+    group_index: 4
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 5
+  filename: fit/laser 004_05.tif
+  sha256: 4c3e8cb4ee80a22f4afdd69318344be14f62f30e0837481d82e8d16c71db6946
+  camera_frame_number: 1552
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1650691588775
+  host_timestamp_ns: 1787100894374335800
+  host_monotonic_ns: 328475947023200
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.07993709295988083
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 9.0
+    saturation_fraction: 5.696614583333334e-07
+    dark_fraction: 0.99861376953125
+    focus_laplacian: 8.144694661411583
+    laser_coverage: 0.777
+    laser_peak_saturation_fraction: 0.003003003003003003
+    laser_peak_near_saturation_fraction: 0.003861003861003861
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_005_02_laser
+  pose_id: '005'
+  role: laser
+  tags:
+    split: fit
+    group_index: 5
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 1
+  filename: fit/laser 005.tif
+  sha256: 222097e86bdae927a8c65fb86ee55e55e5189aba0fc14718a1d0946cd0421644
+  camera_frame_number: 2072
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1672779108775
+  host_timestamp_ns: 1787100916240378600
+  host_monotonic_ns: 328497812702000
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.07912695407867432
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 11.0
+    saturation_fraction: 1.953125e-06
+    dark_fraction: 0.998414306640625
+    focus_laplacian: 7.747775634765628
+    laser_coverage: 0.8336666666666667
+    laser_peak_saturation_fraction: 0.009196321471411436
+    laser_peak_near_saturation_fraction: 0.011595361855257898
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_005_02_laser
+  pose_id: '005'
+  role: laser
+  tags:
+    split: fit
+    group_index: 5
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 2
+  filename: fit/laser 005_02.tif
+  sha256: ad2a00421a071b5a279a52ca1a7c53273c85cd77b69d766aa6dcc8e9bf462e8d
+  camera_frame_number: 2073
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1672821584775
+  host_timestamp_ns: 1787100916285380800
+  host_monotonic_ns: 328497857578800
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.07903832942247391
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 11.0
+    saturation_fraction: 2.0345052083333333e-06
+    dark_fraction: 0.9984154459635417
+    focus_laplacian: 7.711605631510175
+    laser_coverage: 0.8306666666666667
+    laser_peak_saturation_fraction: 0.009630818619582664
+    laser_peak_near_saturation_fraction: 0.011235955056179775
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_005_02_laser
+  pose_id: '005'
+  role: laser
+  tags:
+    split: fit
+    group_index: 5
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 3
+  filename: fit/laser 005_03.tif
+  sha256: e53f4f4affeea3331f17585309253ecf44976351e822bb508badc89e21fe64b6
+  camera_frame_number: 2074
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1672864060775
+  host_timestamp_ns: 1787100916839290900
+  host_monotonic_ns: 328498411743200
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.07900968194007874
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 11.0
+    saturation_fraction: 1.8717447916666666e-06
+    dark_fraction: 0.9984129231770833
+    focus_laplacian: 7.742624674478742
+    laser_coverage: 0.832
+    laser_peak_saturation_fraction: 0.008814102564102564
+    laser_peak_near_saturation_fraction: 0.010817307692307692
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_005_02_laser
+  pose_id: '005'
+  role: laser
+  tags:
+    split: fit
+    group_index: 5
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 4
+  filename: fit/laser 005_04.tif
+  sha256: aee4fe857bb2a53da9f6d2f7420c565d6705d39e7e13106f1ca9665ef224062f
+  camera_frame_number: 2075
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1672906536775
+  host_timestamp_ns: 1787100917189998400
+  host_monotonic_ns: 328498762176400
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.07902758568525314
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 11.0
+    saturation_fraction: 1.8717447916666666e-06
+    dark_fraction: 0.998412841796875
+    focus_laplacian: 7.711176920572678
+    laser_coverage: 0.8306666666666667
+    laser_peak_saturation_fraction: 0.00882825040128411
+    laser_peak_near_saturation_fraction: 0.010032102728731942
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+- task_id: fit_005_02_laser
+  pose_id: '005'
+  role: laser
+  tags:
+    split: fit
+    group_index: 5
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+  index: 5
+  filename: fit/laser 005_05.tif
+  sha256: 2814ad42d7f30cf70788226ef6b30fab9bb8005b4e8738c0bc77889a2a48586d
+  camera_frame_number: 2076
+  camera_frame_gap: null
+  transport_warnings: []
+  camera_timestamp_ticks: 1672949012775
+  host_timestamp_ns: 1787100917546494500
+  host_monotonic_ns: 328499118917900
+  requested_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  applied_camera:
+    exposure_us: 300.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  quality:
+    mean_dn: 0.07908471673727036
+    p01_dn: 0.0
+    p50_dn: 0.0
+    p99_dn: 1.0
+    dynamic_range_u8: 11.0
+    saturation_fraction: 1.7903645833333333e-06
+    dark_fraction: 0.998412841796875
+    focus_laplacian: 7.732906087238925
+    laser_coverage: 0.8333333333333334
+    laser_peak_saturation_fraction: 0.0084
+    laser_peak_near_saturation_fraction: 0.01
+    laser_saturated_width_p95_px: 0.0
+    laser_fwhm_p50_px: 2.0
+    laser_fwhm_p95_px: 5.0
+    chessboard_highlight_fraction: null
+    chessboard_p995_u8: null
+    chessboard_detected: null
+    chessboard_pattern_used: null
+    chessboard_detection_method: null
+    chessboard_hint: null
+    warnings:
+    - dynamic_range_low
+    passed: false
+quality_summary:
+  frames: 25
+  passed: 0
+  warnings: 25
+  warning_counts:
+    dynamic_range_low: 25
