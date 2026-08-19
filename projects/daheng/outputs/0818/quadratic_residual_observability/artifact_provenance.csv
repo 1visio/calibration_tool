@@ -1,0 +1,10 @@
+artifact,path,action,status,notes
+Full-36 calibration points/ray/PnP truth,D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0817\full_fit_v_coverage_audit\full_fit_points.csv,REUSED_EXISTING,CONFIRMED,32400 points; no re-extraction
+Frozen Full-36 Quadratic YAML,D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0818\c0_freeze\quadratic_graph.yaml,LOADED_ONLY,CONFIRMED,sha256=113d3c1b8f92d5a734a2bf612b82a4bd59c0436a89664b5e565e7dd1034bab27; fit() not called
+Full-36 metadata,D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0817\grouped_cv_model_comparison\candidate_models\full_fit\model_parameters.json,REUSED_EXISTING,CONFIRMED,source/mask/point-count assertions passed
+Formal extraction config,D:\Docs\linelaserscan\calibration_tool\configs\laser_model_fit_config.daheng.yaml,READ_ONLY_ASSERTED,CONFIRMED,full_board_physical; inset=0; unchanged Steger/continuity
+Intrinsics,D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0811\intrinsics\calibration_result.yaml,REUSED_EXISTING,CONFIRMED,sha256=d162d581ffd12df510b15e4edd42536a97abb4dc7d883352b0be76cb8c65f9b0
+Frame board geometry summary,D:\Docs\linelaserscan\calibration_tool\projects\daheng\outputs\0814\board_coordinate_audit\frame_board_geometry_summary.csv,REUSED_EXISTING,CONFIRMED,30 frame PnP poses for board-local boundary coordinates
+FIT chess 049-054,D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\laser_plane\fit; D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\laser_plane_0817\fit,READ_CHESS_ONLY,SUPPLEMENTAL,PnP boundary geometry only; laser points not re-extracted
+Validation datasets,019-024;037-040;055-060,NOT_READ,EXCLUDED,FIT-only audit
+Old Cone observability script,D:\Docs\linelaserscan\calibration_tool\scripts\audit_spatial_residual_observability.py,REFERENCE_ONLY,REFERENCE,method reference only; old output excluded 049-054

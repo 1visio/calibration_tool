@@ -1,0 +1,90 @@
+{
+  "C1_STATUS": "PARTIAL",
+  "FRAME027_C1_DECISION": "QUARANTINE_PENDING_RECAPTURE",
+  "validation_read": false,
+  "c0_refit": false,
+  "production_config_modified": false,
+  "points_artifact": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0818\\quadratic_residual_observability\\quadratic_residual_points.csv",
+  "points_sha256": "6cff09a4036c815ef3931dd2e818650af0b6c3439b0bf8fb333827d9bd6d995e",
+  "audit_summary": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0818\\quadratic_residual_observability\\audit_summary.json",
+  "frozen_model": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0818\\c0_freeze\\quadratic_graph.yaml",
+  "frozen_model_sha256": "113d3c1b8f92d5a734a2bf612b82a4bd59c0436a89664b5e565e7dd1034bab27",
+  "fit_ids": [
+    "001",
+    "002",
+    "003",
+    "004",
+    "005",
+    "006",
+    "007",
+    "008",
+    "009",
+    "010",
+    "011",
+    "012",
+    "013",
+    "014",
+    "015",
+    "016",
+    "017",
+    "018",
+    "025",
+    "026",
+    "027",
+    "028",
+    "029",
+    "030",
+    "031",
+    "032",
+    "033",
+    "034",
+    "035",
+    "036",
+    "049",
+    "050",
+    "051",
+    "052",
+    "053",
+    "054"
+  ],
+  "frame027_retained": true,
+  "grouped_cv_folds": 6,
+  "smoothness_penalty": 0.1,
+  "robust_loss": "Huber_IRLS",
+  "frame_balanced_weighting": true,
+  "pca_s_domain": [
+    -0.1923654071984672,
+    0.2166209347652564
+  ],
+  "selected_candidate_for_followup": "C1_3k",
+  "passing_full36_candidates": [
+    "C1_3k",
+    "C1_4k",
+    "C1_5k"
+  ],
+  "curve_stats": {
+    "C1_3k": {
+      "curve_delta_rms_mm": 0.007086850585281826,
+      "curve_delta_max_abs_mm": 0.016827417913269416,
+      "curve_delta_p95_abs_mm": 0.016404540221716984
+    },
+    "C1_4k": {
+      "curve_delta_rms_mm": 0.0069629574687583955,
+      "curve_delta_max_abs_mm": 0.015701270668206785,
+      "curve_delta_p95_abs_mm": 0.01529400433530681
+    },
+    "C1_5k": {
+      "curve_delta_rms_mm": 0.0069364310122593835,
+      "curve_delta_max_abs_mm": 0.01567793691519663,
+      "curve_delta_p95_abs_mm": 0.015126320772769512
+    }
+  },
+  "clean_gain": {
+    "rmse_gain_excluding_027_pct": 0.0010354851677694572,
+    "p95_gain_excluding_027_pct": 0.23480430646923828,
+    "pose_ratio_change": 0.0
+  },
+  "curve_material": false,
+  "stress_no_gain": true,
+  "clean_generalization_material": false
+}

@@ -1,0 +1,6 @@
+record_type,metric,historical_value,reproduced_value,delta_mm,tolerance_mm,pass
+status,C1_REPRODUCTION,HISTORICAL,REPRODUCED,,1e-09,True
+metric,rmse_mm,0.3427769353278134,0.3427769353278134,0.0,1e-09,True
+metric,p95_abs_mm,0.5817684299673349,0.5817684299673349,0.0,1e-09,True
+metric,p99_abs_mm,0.637601725339716,0.637601725339716,0.0,1e-09,True
+metric,max_abs_mm,0.7106873588764425,0.7106873588764425,0.0,1e-09,True

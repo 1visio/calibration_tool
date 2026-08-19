@@ -1,0 +1,62 @@
+{
+  "C1_OPERATIONAL_MODEL": "C1_4k",
+  "C1_FIT_STATUS": "READY_FOR_VALIDATION",
+  "operational_pose_count": 35,
+  "operational_pose_excludes": [
+    "027"
+  ],
+  "frame027_status": "EXCLUDED_OUTSIDE_OPERATIONAL_POSE_DOMAIN",
+  "frame027_exclusion_reason": "超出实际工作姿态域",
+  "source_grouped_cv_scenario": "exclude027_grouped_cv_non027",
+  "source_dir": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0818\\c1_frozen_quadratic_grouped_cv",
+  "source_manifest": "D:\\Docs\\linelaserscan\\calibration_tool\\projects\\daheng\\outputs\\0818\\c1_frozen_quadratic_grouped_cv\\c1_run_manifest.json",
+  "validation_read": false,
+  "c0_refit": false,
+  "production_config_modified": false,
+  "paired_summaries": {
+    "C1_4k_vs_C1_3k": {
+      "rmse_better_pose_count": 32,
+      "rmse_better_pose_fraction": 0.9142857142857143,
+      "rmse_gain_median_pct": 2.92881382629632,
+      "rmse_gain_p05_pct": -0.33581875326983823,
+      "rmse_gain_p95_pct": 5.32599919902427,
+      "p95_better_pose_count": 32,
+      "p95_better_pose_fraction": 0.9142857142857143,
+      "p95_gain_median_pct": 3.2041103885817135,
+      "p95_gain_p05_pct": -0.7968696578826402,
+      "p95_gain_p95_pct": 5.129580259747184
+    },
+    "C1_5k_vs_C1_3k": {
+      "rmse_better_pose_count": 32,
+      "rmse_better_pose_fraction": 0.9142857142857143,
+      "rmse_gain_median_pct": 4.314912378992311,
+      "rmse_gain_p05_pct": -0.5721753897020629,
+      "rmse_gain_p95_pct": 7.430602073619757,
+      "p95_better_pose_count": 32,
+      "p95_better_pose_fraction": 0.9142857142857143,
+      "p95_gain_median_pct": 4.439666105770173,
+      "p95_gain_p05_pct": -1.3145184995525736,
+      "p95_gain_p95_pct": 8.473520861190323
+    },
+    "C1_5k_vs_C1_4k": {
+      "rmse_better_pose_count": 28,
+      "rmse_better_pose_fraction": 0.8,
+      "rmse_gain_median_pct": 1.2972522400217659,
+      "rmse_gain_p05_pct": -0.9628722105165052,
+      "rmse_gain_p95_pct": 2.9805626785537656,
+      "p95_better_pose_count": 28,
+      "p95_better_pose_fraction": 0.8,
+      "p95_gain_median_pct": 1.5257101973329905,
+      "p95_gain_p05_pct": -1.6375851754362525,
+      "p95_gain_p95_pct": 4.419483397040374
+    }
+  },
+  "selection_decision": {
+    "four_k_stable_over_3k": true,
+    "five_k_saturated_over_4k": true,
+    "selection_rule": "4k has stable paired pose gains over 3k and 5k has saturated incremental gains over 4k.",
+    "selected_candidate": "C1_4k",
+    "C1_OPERATIONAL_MODEL": "C1_4k",
+    "C1_FIT_STATUS": "READY_FOR_VALIDATION"
+  }
+}
