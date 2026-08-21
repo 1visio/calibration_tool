@@ -1,6 +1,6 @@
 schema_version: 1
-dataset_id: chessboard_v2
-output_dir: D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\chessboard_v2
+dataset_id: chessboard_0821
+output_dir: D:\Docs\linelaserscan\calibration_tool\projects\daheng\data\chessboard_0821
 backend: daheng
 serial_number: GCB26060793
 camera:
@@ -34,11 +34,86 @@ backend_options:
 laser:
   orientation: vertical
 tasks:
+- task_id: fit_001_01_chess
+  frames: 1
+  filename_template: fit/chess {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 120000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '001'
+  role: chess
+  instruction: 关闭激光，摆放棋盘；准备好后采集姿态 001。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: chessboard
+  tags:
+    split: fit
+    group_index: 1
+    laser_state: 'off'
+    recipe_role: chess
+    filename_prefix: chess
+    quality_mode_requested: chessboard
+- task_id: fit_001_02_laser
+  frames: 5
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '001'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 001。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 1
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_002_01_chess
+  frames: 1
+  filename_template: fit/chess {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 120000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '002'
+  role: chess
+  instruction: 关闭激光，摆放棋盘；准备好后采集姿态 002。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: chessboard
+  tags:
+    split: fit
+    group_index: 2
+    laser_state: 'off'
+    recipe_role: chess
+    filename_prefix: chess
+    quality_mode_requested: chessboard
 - task_id: fit_002_02_laser
   frames: 5
   filename_template: fit/laser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 300.0
+    exposure_us: 600.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -59,11 +134,36 @@ tasks:
     recipe_role: laser
     filename_prefix: laser
     quality_mode_requested: laser
+- task_id: fit_003_01_chess
+  frames: 1
+  filename_template: fit/chess {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 120000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '003'
+  role: chess
+  instruction: 关闭激光，摆放棋盘；准备好后采集姿态 003。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: chessboard
+  tags:
+    split: fit
+    group_index: 3
+    laser_state: 'off'
+    recipe_role: chess
+    filename_prefix: chess
+    quality_mode_requested: chessboard
 - task_id: fit_003_02_laser
   frames: 5
   filename_template: fit/laser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 320.0
+    exposure_us: 600.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -84,11 +184,36 @@ tasks:
     recipe_role: laser
     filename_prefix: laser
     quality_mode_requested: laser
+- task_id: fit_004_01_chess
+  frames: 1
+  filename_template: fit/chess {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 120000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '004'
+  role: chess
+  instruction: 关闭激光，摆放棋盘；准备好后采集姿态 004。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: chessboard
+  tags:
+    split: fit
+    group_index: 4
+    laser_state: 'off'
+    recipe_role: chess
+    filename_prefix: chess
+    quality_mode_requested: chessboard
 - task_id: fit_004_02_laser
   frames: 5
   filename_template: fit/laser {pose_id}{index_suffix}{suffix}
   camera:
-    exposure_us: 350.0
+    exposure_us: 600.0
     gain_db: 0.0
     pixel_format: Mono8
     offset_x: 0
@@ -105,6 +230,156 @@ tasks:
   tags:
     split: fit
     group_index: 4
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: fit_005_01_chess
+  frames: 1
+  filename_template: fit/chess {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 120000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '005'
+  role: chess
+  instruction: 关闭激光，摆放棋盘；准备好后采集姿态 005。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: chessboard
+  tags:
+    split: fit
+    group_index: 5
+    laser_state: 'off'
+    recipe_role: chess
+    filename_prefix: chess
+    quality_mode_requested: chessboard
+- task_id: fit_005_02_laser
+  frames: 5
+  filename_template: fit/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '005'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 005。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: fit
+    group_index: 5
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: validation_006_01_chess
+  frames: 1
+  filename_template: validation/chess {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 120000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '006'
+  role: chess
+  instruction: 关闭激光，摆放棋盘；准备好后采集姿态 006。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: chessboard
+  tags:
+    split: validation
+    group_index: 6
+    laser_state: 'off'
+    recipe_role: chess
+    filename_prefix: chess
+    quality_mode_requested: chessboard
+- task_id: validation_006_02_laser
+  frames: 5
+  filename_template: validation/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '006'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 006。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: validation
+    group_index: 6
+    laser_state: 'on'
+    recipe_role: laser
+    filename_prefix: laser
+    quality_mode_requested: laser
+- task_id: validation_007_01_chess
+  frames: 1
+  filename_template: validation/chess {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 120000.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '007'
+  role: chess
+  instruction: 关闭激光，摆放棋盘；准备好后采集姿态 007。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: chessboard
+  tags:
+    split: validation
+    group_index: 7
+    laser_state: 'off'
+    recipe_role: chess
+    filename_prefix: chess
+    quality_mode_requested: chessboard
+- task_id: validation_007_02_laser
+  frames: 5
+  filename_template: validation/laser {pose_id}{index_suffix}{suffix}
+  camera:
+    exposure_us: 600.0
+    gain_db: 0.0
+    pixel_format: Mono8
+    offset_x: 0
+    offset_y: 0
+    width: 4096
+    height: 3000
+    timeout_ms: 2000
+  pose_id: '007'
+  role: laser
+  instruction: 保持棋盘完全不动、只打开激光；准备好后采集姿态 007。
+  settle_frames: 5
+  image_format: tif
+  quality_mode: laser
+  tags:
+    split: validation
+    group_index: 7
     laser_state: 'on'
     recipe_role: laser
     filename_prefix: laser
